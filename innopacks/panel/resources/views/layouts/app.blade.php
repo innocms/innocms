@@ -61,7 +61,9 @@
       </div>
 
       <p class="text-center text-secondary mt-5">
-        <a href="https://www.innocms.com" class="ms-2" target="_blank">InnoCMS</a> &copy; {{ date('Y') }} All Rights
+        <a href="https://www.innocms.com" class="ms-2" target="_blank">InnoCMS</a>
+        v{{ config('innocms.version') }}({{ config('innocms.build') }})
+        &copy; {{ date('Y') }} All Rights
         Reserved
       </p>
     </div>
