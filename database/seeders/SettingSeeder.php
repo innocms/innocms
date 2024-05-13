@@ -52,6 +52,34 @@ class SettingSeeder extends Seeder
                 'value' => 'innoshop是一款创新的开源电子商务平台，基于Laravel 11开发，具有多语言和多货币支持的特性。它采用了基于Hook的强大而灵活的插件架构，为用户提供了丰富的定制和扩展功能。欢迎体验innoshop，打造属于您自己的电子商务平台！',
                 'json'  => 0,
             ],
+            [
+                'id'    => 4,
+                'space' => 'system',
+                'name'  => 'front_logo',
+                'value' => 'images/logo.png',
+                'json'  => 0,
+            ],
+            [
+                'id'    => 5,
+                'space' => 'system',
+                'name'  => 'panel_logo',
+                'value' => 'images/logo-panel.png',
+                'json'  => 0,
+            ],
+            [
+                'id'    => 6,
+                'space' => 'system',
+                'name'  => 'placeholder',
+                'value' => 'images/placeholder.png',
+                'json'  => 0,
+            ],
+            [
+                'id'    => 7,
+                'space' => 'system',
+                'name'  => 'favicon',
+                'value' => 'images/favicon.png',
+                'json'  => 0,
+            ],
         ];
     }
 }

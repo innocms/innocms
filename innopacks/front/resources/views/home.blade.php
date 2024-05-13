@@ -13,130 +13,92 @@
         <div class="row">
           <div class="col-md-6">
             <div class="home-banner-left">
-              <h1 data-aos="fade-up" data-aos-duration="1000">InnoShop</h1>
-              <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">创新开源<span
-                    class="text-primary">电商系统</span></p>
+              <h1 data-aos="fade-up" data-aos-duration="1000">InnoCMS</h1>
+              <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">轻量级
+                <span class="text-primary">企业官网CMS</span></p>
               <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1800">
-                - 面向全球的开源电商系统, 15年行业持续深耕集大成者。<br/>
-                - 用户友好、界面直观、快速上手、拖拽式设计、无需复杂培训。<br/>
-                - 基于最新技术, 深度集成 AI, 支持多语言和多货币等特性。<br>
-                - 高内聚、低耦合的模块化设计, 简单方便快速开发插件。<br>
+                - 打造企业官网，从未如此简单！<br/>
+                - 轻量级CMS，专为快速开发和上线设计，从构想到现实，仅需几步!<br/>
+                - 易用性与高效性并存，让您的团队轻松上手，快速掌握。<br>
               </p>
               <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
-                <a href="{{ url('products') }}" class="btn btn-lg btn-primary">立即探索</a>
-                <div class="text-secondary">打造您面向海外市场的电商平台！</div>
+                <button type="button" class="btn btn-lg btn-primary">立即探索</button>
               </div>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="home-banner-right"><img src="{{ asset('images/front/home/top-1.png') }}" class="img-fluid"
-                                                data-aos="fade-up" data-aos-duration="2000"></div>
+            <div class="home-banner-right">
+              <img src="{{ asset('images/cms/home/top-bg-4.png') }}" class="img-fluid" data-aos="fade-up" data-aos-duration="2000">
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <img src="{{ asset('images/front/home/top-bg.svg') }}" class="img-fluid home-banner-bg">
+    <div class="bottom-bg">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none"><path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path></svg>
+    </div>
   </div>
 
   <div class="home-business">
     <div class="container home-business-container">
       <div class="business-top">
         <div class="module-title" data-aos="fade-up">我们的产品</div>
-        <div class="module-sub-title" data-aos="fade-up">InnoShop
-          是一款创新的开源电子商务平台, 通过集成AI技术、多语言支持、深入数据分析和开源可定制性, 为全球商家提供了一个高效、灵活且用户友好的在线销售和营销解决方案。
+        <div class="module-sub-title" data-aos="fade-up">
+          InnoCMS 是一款专为企业官网快速建站而设计的轻量级内容管理系统（CMS）。它以其简洁、高效、易用的特性，帮助企业快速搭建起专业、美观且功能齐全的官方网站。InnoCMS 旨在提供一个稳定而灵活的平台，让企业能够轻松管理网站内容，同时保持网站界面的现代化和用户友好性。
         </div>
       </div>
       <div class="business-info">
-        <div class="row align-items-center business-1">
-          <div class="col-12 col-md-6">
-            <div class="business-img"><img src="{{ asset('images/front/home/home-1.png') }}" class="img-fluid"></div>
-          </div>
-          <div class="col-12 col-md-6">
-            <div class="business-text text-right">
-              <div data-aos="fade-up" class="text-item">
-                <div class="icon"><i class="bi bi-star-fill"></i></div>
-                <div class="title">AI 集成</div>
-                <div class="sub-title">
-                  通过先进的人工智能技术, 实现文案自动编写、描述翻译、图片生成和美化, 极大提升内容创作和商品展示的效率与质量。
-                </div>
+        <div class="row">
+          <div class="col-12 col-md-3">
+            <div data-aos="fade-up" class="business-item">
+              <div class="icon"><i class="bi bi-boxes"></i></div>
+              <div class="title">快速建站</div>
+              <div class="sub-title">
+                InnoCMS 提供了一套完整的网站模板和定制选项，企业可以根据自己的品牌形象和需求，快速搭建起一个全新的官网。
               </div>
-              <div data-aos="fade-up" class="text-item">
-                <div class="icon"><i class="bi bi-hexagon-fill"></i></div>
-                <div class="title">多语言和多货币支持</div>
-                <div class="sub-title">
-                  平台支持多种语言和货币, 确保全球用户都能获得无障碍的购物体验, 拓宽了市场范围。
-                </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div data-aos="fade-up" class="business-item" data-aos-duration="600">
+              <div class="icon"><i class="bi bi-bounding-box-circles"></i></div>
+              <div class="title">轻量级架构</div>
+              <div class="sub-title">
+                系统设计注重性能优化，确保网站加载速度快，用户体验流畅，尤其适合对速度和性能有较高要求的企业。
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div data-aos="fade-up" class="business-item" data-aos-duration="1200">
+              <div class="icon"><i class="bi bi-graph-up-arrow"></i></div>
+              <div class="title">易于管理</div>
+              <div class="sub-title">
+                直观的后台管理界面，让非技术人员也能轻松上手，进行内容更新和管理。
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div data-aos="fade-up" class="business-item" data-aos-duration="1800">
+              <div class="icon"><i class="bi bi-pencil-square"></i></div>
+              <div class="title">高度可定制</div>
+              <div class="sub-title">
+                提供丰富的插件和扩展，企业可以根据业务发展需要，灵活添加或调整网站功能。
               </div>
             </div>
           </div>
         </div>
-        <div class="row align-items-center">
-          <div class="col-12 col-md-6">
-            <div class="business-text text-left">
-              <div data-aos="fade-up" class="text-item">
-                <div class="icon"><i class="bi bi-star-fill"></i></div>
-                <div class="title">扩展性和定制性</div>
-                <div class="sub-title">
-                  作为一个开源电商平台, 通过完善的插件机制提供高度的扩展性和定制性, 允许商家根据特定业务需求方便简单的进行个性化开发和调整, 以满足不断变化的市场需求。
-                </div>
-              </div>
-              <div data-aos="fade-up" class="text-item">
-                <div class="icon"><i class="bi bi-hexagon-fill"></i></div>
-                <div class="title">营销与数据分析</div>
-                <div class="sub-title">
-                  结合丰富的促销活动与提供深入的数据分析工具, 帮助商家洞察用户行为和销售趋势, 从而制定更精准的市场策略和优化运营。同时通过精准的市场推广, 增强品牌吸引力和客户忠诚度。
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-6">
-            <div class="img-home-2-box"><img src="{{ asset('images/front/home/home-2.png') }}" class="img-fluid img-home-2"></div>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-
-  <div class="home-core-function">
-    @php
-      $function = [
-        ['icon' => 'bi bi-star-fill', 'title' => '商品管理', 'sub_title' => '包括商品分类、商品添加、库存管理、价格管理等'],
-        ['icon' => 'bi bi-star-fill', 'title' => '订单管理', 'sub_title' => '包括订单查询、订单管理、订单状态处理、退款管理等'],
-        ['icon' => 'bi bi-star-fill', 'title' => '用户管理', 'sub_title' => '包括用户注册、登录、个人信息管理、购物车管理等'],
-        ['icon' => 'bi bi-star-fill', 'title' => '支付和结算', 'sub_title' => '支持多种支付方式, 包括支付宝、微信支付、银行卡等'],
-        ['icon' => 'bi bi-star-fill', 'title' => '物流管理', 'sub_title' => '包括发货、物流跟踪、订单配送等'],
-        ['icon' => 'bi bi-star-fill', 'title' => 'SEO优化', 'sub_title' => '支持SEO优化, 包括页面标题、关键词、描述等'],
-      ];
-    @endphp
-    <div class="container function-info">
-      <div class="module-title" data-aos="fade-up">更多核心功能</div>
-      <div class="row">
-        @foreach ($function as $item)
-          <div class="col-12 col-lg-4">
-            <div class="core-function-item" data-aos="fade-up">
-              <div class="icon"><i class="{{ $item['icon'] }}"></i></div>
-              <div class="item-text">
-                <div class="title">{{ $item['title'] }}</div>
-                <div class="sub-title">{{ $item['sub_title'] }}</div>
-              </div>
-            </div>
-          </div>
-        @endforeach
-      </div>
-    </div>
-    <img src="{{ asset('images/front/home/top-bg.svg') }}" class="img-fluid function-bg">
   </div>
 
   <div class="home-contact">
     <div class="container">
-      <div class="title">如果您需要与我们取得联系, 以下是我们的联系方式</div>
+      <div class="title" data-aos="fade-up">如果您需要与我们取得联系, 以下是我们的联系方式</div>
       <div class="contact-icon">
-        <img src="{{ asset('images/front/home/home-3.png') }}" class="img-fluid" data-aos="fade-up"
-             data-aos-duration="2000">
+        <img src="{{ asset('images/front/home/home-3.png') }}" class="img-fluid" data-aos="fade-up">
       </div>
       <div class="row">
         <div class="col-12 col-lg-4">
-          <div class="contact-item" data-aos="fade-up" data-aos-duration="2000">
+          <div class="contact-item" data-aos="fade-up">
             <div class="icon"><i class="bi bi-telephone-fill"></i></div>
             <div class="right">
               <div class="text-1">联系电话</div>
@@ -147,7 +109,7 @@
           </div>
         </div>
         <div class="col-12 col-lg-4">
-          <div class="contact-item" data-aos="fade-up" data-aos-duration="2000">
+          <div class="contact-item" data-aos="fade-up">
             <div class="icon"><i class="bi bi-envelope-fill"></i></div>
             <div class="right">
               <div class="text-1">联系邮箱</div>
@@ -158,7 +120,7 @@
           </div>
         </div>
         <div class="col-12 col-lg-4">
-          <div class="contact-item wechat-box" data-aos="fade-up" data-aos-duration="2000">
+          <div class="contact-item wechat-box" data-aos="fade-up">
             <div class="icon"><i class="bi bi-wechat"></i></div>
             <div class="right">
               <div class="text-1">微信联系</div>
@@ -182,6 +144,12 @@
       easing: 'ease-in-out',
       once: true,
       mirror: false
+    });
+
+    $(".home-banner .left-btn button").click(function () {
+      $('html, body').animate({
+        scrollTop: $(".home-business").offset().top - 100
+      }, 200);
     });
   </script>
 @endpush
