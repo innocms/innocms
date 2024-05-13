@@ -7,14 +7,20 @@
 
 现在就加入我们，体验前所未有的开发速度和便捷性，让您的企业在互联网上大放异彩！
 
-## 成功案例前台截图
+## Demo 演示站
+- 前台: https://demo.innocms.com/
+- 后台: https://demo.innocms.com/panel
+- 账号: admin@innocms.com
+- 密码: 123456
+
+### Demo 前台截图
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
         <img src="https://www.innoshop.cn/images/readme/front.jpg?" alt="Front">
     </a>
 </p>
 
-## 成功案例后台截图
+### Demo 后台截图
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
         <img src="https://www.innoshop.cn/images/readme/panel.jpg?" alt="Panel">
@@ -43,13 +49,16 @@
 ### 7. 数据库迁移与数据填充
 执行以下命令创建数据库结构并导入基础数据： `php artisan migrate && php artisan db:seed`
 
-### 8. 前端资源编译
-最后，运行以下命令来编译前端的CSS和JavaScript文件： `npm install && npm run build`
+### 8. 上传资源目录设置
+运行以下命令来创建上传资源目录： `php artisan storage:link`
 
-### 9. 登录网站后台进行配置
+### 9. 前端资源编译
+最后，运行以下命令来编译前端的CSS和JavaScript文件： `npm install && npm run prod`
+
+### 10. 登录网站后台进行配置
 要访问您的网站后台，请使用您网站的特定后台地址。
 
-例如，如果您的网站地址是 `example.com`，则后台访问地址可能是 `example.com/panel`。
+例如，如果您的网站地址是 `example.com`，则后台访问地址是 `example.com/panel`。
 
 登录时，请使用您的管理员账号和密码。通常，初始登录凭证是：
 - 邮箱: admin@innocms.com
@@ -91,7 +100,7 @@ php artisan vendor:publish --provider="InnoCMS\Panel\PanelServiceProvider" --tag
 ### 6. 后端开发：
 即将推出基于 “钩子(`hook`)” 的插件开发机制，让您在无需触碰系统核心代码的前提下，享受到自由灵活的定制化开发体验。
 
-敬请期待我们带来的创新与便利！
+### 敬请期待我们带来的创新与便利！
 
 - 如果您发现 `InnoCMS` 对您有所帮助，请不吝赐给我们一个星星(star)。
 - 您的每一次点赞都是我们不断进步的动力。
