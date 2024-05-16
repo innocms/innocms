@@ -1,7 +1,7 @@
 <div class="footer-box">
   <div class="top-bg"><img src="{{ asset('images/front/home/footer-bg.svg') }}" class="img-fluid"></div>
   <div class="container">
-    <div class="top-title">InnoShop 创新开源电商系统</div>
+    <div class="top-title">InnoCMS 创新开源CMS系统</div>
     <div class="bottom-box">
       <div class="row">
         <div class="col-md-6">
