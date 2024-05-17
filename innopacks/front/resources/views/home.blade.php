@@ -90,25 +90,25 @@
     </div>
   </div>
 
-  <div class="home-contact">
+  <div class="home-contact" id="contactUsContent">
     <div class="container">
       <div class="title" data-aos="fade-up">如果您需要与我们取得联系, 以下是我们的联系方式</div>
       <div class="contact-icon">
         <img src="{{ asset('images/front/home/home-3.png') }}" class="img-fluid" data-aos="fade-up">
       </div>
       <div class="row">
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-3">
           <div class="contact-item" data-aos="fade-up">
             <div class="icon"><i class="bi bi-telephone-fill"></i></div>
             <div class="right">
               <div class="text-1">联系电话</div>
               <div class="text-2">
-                <a href="tel:17828469818"><i class="bi bi-telephone-fill text-primary"></i> 17828469818</a>
+                <a href="tel:17828469818"><i class="bi bi-telephone-fill text-primary"></i> 杨先生：17828469818</a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-3">
           <div class="contact-item" data-aos="fade-up">
             <div class="icon"><i class="bi bi-envelope-fill"></i></div>
             <div class="right">
@@ -119,7 +119,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-3">
           <div class="contact-item wechat-box" data-aos="fade-up">
             <div class="icon"><i class="bi bi-wechat"></i></div>
             <div class="right">
@@ -131,10 +131,104 @@
             </div>
           </div>
         </div>
+          <div class="col-12 col-lg-3">
+              <div class="contact-item wechat-box" data-aos="fade-up">
+                  <div class="icon"><i class="bi bi-tencent-qq"></i></div>
+                  <div class="right">
+                      <div class="text-1">QQ交流群</div>
+                      <div class="text-2"><i class="bi bi-tencent-qq text-primary"></i> 960062283</div>
+                      <div class="w-code">
+                          <img src="{{ asset('images/front/home/q-code.png') }}" class="img-fluid">
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
     </div>
   </div>
 
+  <div class="home-customized">
+      <div class="home-banner-info">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="home-banner-right">
+                          <img src="{{ asset('images/cms/home/top-bg-5.png') }}" class="img-fluid" data-aos="fade-up" data-aos-duration="2000">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="home-banner-left">
+                          <h1 data-aos="fade-up" data-aos-duration="1000">不想亲自动手？</h1>
+                          <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">私人订制
+                              <span class="text-primary">快速部署</span></p>
+                          <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1800">
+                              - 如果您不想亲自动手，或者不懂开发技术，不必担心！<br/>
+                              - SaaS托管，独立云服务器，一站式托管服务<br/>
+                              - 专人部署，避开繁杂，全程无忧，7*12小时服务<br/>
+                              - 备案、域名、解析、SSL、CDN...专业的事交给专业的人来做<br/>
+                              - 专业团队满足您个性功能需求定制开发<br>
+                          </p>
+                          <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
+                              <a href="#contactUsContent" type="button" class="btn btn-lg btn-primary">联系我们</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="bottom-bg">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none"><path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path></svg>
+      </div>
+  </div>
+
+  <div class="home-contact" id="contactUsContent">
+      <div class="container">
+          <div class="title" data-aos="fade-up">加入开源社区，共建共享</div>
+          <div class="contact-icon">
+              <img src="{{ asset('images/front/home/home-4.png') }}" class="img-fluid" data-aos="fade-up">
+          </div>
+          <div class="row">
+              <div class="col-12 col-lg-3">
+                  <div class="contact-item" data-aos="fade-up">
+                      <div class="icon"><i class="bi bi-github"></i></div>
+                      <div class="right">
+                          <div class="text-1">GITHUB 给个<i class="bi bi-heart-fill"></i>吧！</div>
+                          <div class="text-2">
+                              <a href="https://github.com/innocms/innocms"><i class="bi bi-github text-primary"></i> innocms/innocms</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-12 col-lg-3">
+                  <div class="contact-item wechat-box" data-aos="fade-up">
+                      <div class="icon"><i class="bi bi-journal-code"></i></div>
+                      <div class="right">
+                          <div class="text-1">开发手册</div>
+                          <a href="#" class="text-2"><i class="bi bi-journal-code text-primary"></i> docs</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-12 col-lg-3">
+                  <div class="contact-item wechat-box" data-aos="fade-up">
+                      <div class="icon"><i class="bi bi-filter-square"></i></div>
+                      <div class="right">
+                          <div class="text-1">开源协议</div>
+                          <a href="https://github.com/innocms/innocms/blob/master/LICENSE.txt" class="text-2"><i class="bi bi-filter-square text-primary"></i> OSL-3.0</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-12 col-lg-3">
+                  <div class="contact-item wechat-box" data-aos="fade-up">
+                      <div class="icon"><i class="bi bi-chat-left-heart"></i></div>
+                      <div class="right">
+                          <div class="text-1">吐槽建议</div>
+                          <a href="https://github.com/innocms/innocms/issues" class="text-2"><i class="bi bi-chat-left-heart text-primary"></i> 提交issue</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 @endsection
 
 @push('footer')
