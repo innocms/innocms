@@ -39,4 +39,27 @@ class PageController extends Controller
 
         return view('front::pages.show', $data);
     }
+
+    /**
+     * @param  Request  $request
+     * @return mixed
+     * @throws \Exception
+     */
+    public function showOfficialDemoPage(Request $request): mixed
+    {
+        $slug = $request->slug;
+        switch ($slug){
+            case 'services':
+                return view('front::official_static_pages.services',);
+                break;
+            case 'about':
+                return view('front::official_static_pages.about');
+                break;
+            case 'productions':
+                return view('front::official_static_pages.productions');
+                break;
+            default:
+                return redirect()->route('home.index');
+        }
+    }
 }

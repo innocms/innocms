@@ -30,3 +30,10 @@ Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->na
 
 // Pages, like product, service, about
 Route::get('/{slug}', [Controllers\PageController::class, 'show'])->name('pages.show');
+
+// Official service page
+Route::prefix('official_demo')
+    ->name('official.demo.')
+    ->group(function () {
+       Route::get('/{slug}','InnoCMS\Front\Controllers\PageController@showOfficialDemoPage')->name('pages.show');
+    });

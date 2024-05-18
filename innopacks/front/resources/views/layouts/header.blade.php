@@ -19,8 +19,8 @@
                href="{{ url('products') }}">产品</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ is_route_param('pages.show', ['slug'=>'services']) ? 'active' : '' }}"
-               href="{{ url('services') }}">服务</a>
+            <a class="nav-link {{ is_route_param('official.demo.pages.show', ['slug'=>'services']) ? 'active' : '' }}"
+               href="{{ route('official.demo.pages.show','services') }}">服务</a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ is_route_name('articles.index') ? 'active' : ''}}"
