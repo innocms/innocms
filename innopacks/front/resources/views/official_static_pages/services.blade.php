@@ -51,7 +51,7 @@
           <div class="row row-cols-1 row-cols-md-4 g-4">
               <div data-aos="fade-up" data-aos-duration="600" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-1.svg')}}" class="card-img-top w-75 mx-auto" alt="开源系统">
+                      <img src="{{asset('images/cms/services/icon-1.png')}}" class="card-img-top w-75 mx-auto" alt="开源系统">
                       <div class="card-body">
                           <h5 class="card-title text-center">代码开源</h5>
                           <p class="card-text">致力于提供高度灵活和可定制的解决方案。利用开放源代码的优势，我们帮助企业构建可扩展的系统，同时确保透明度和社区支持。</p>
@@ -60,7 +60,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1000" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-2.svg')}}" class="card-img-top w-75 mx-auto" alt="插件市场">
+                      <img src="{{asset('images/cms/services/icon-2.png')}}" class="card-img-top w-75 mx-auto" alt="插件市场">
                       <div class="card-body">
                           <h5 class="card-title text-center">插件市场</h5>
                           <p class="card-text">通过我们的插件市场，用户可以轻松扩展其系统功能。我们提供丰富的插件选择，以满足不同的业务需求，让定制化服务触手可及</p>
@@ -69,7 +69,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1400" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-3.svg')}}" class="card-img-top w-75 mx-auto" alt="定制开发">
+                      <img src="{{asset('images/cms/services/icon-3.png')}}" class="card-img-top w-75 mx-auto" alt="定制开发">
                       <div class="card-body">
                           <h5 class="card-title text-center">定制开发</h5>
                           <p class="card-text">专注于根据您的具体需求，打造独一无二的软件解决方案。从概念到实现，我们与您紧密合作，确保最终产品超出您的期望。</p>
@@ -78,7 +78,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1800" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-4.svg')}}" class="card-img-top w-75 mx-auto" alt="安装维护">
+                      <img src="{{asset('images/cms/services/icon-4.png')}}" class="card-img-top w-75 mx-auto" alt="安装维护">
                       <div class="card-body">
                           <h5 class="card-title text-center">安装维护</h5>
                           <p class="card-text">我们的安装维护服务确保您的系统运行平稳，通过定期更新和故障排除，我们提供无忧的技术支持，让您专注于核心业务。</p>
@@ -87,7 +87,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="600" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-5.svg')}}" class="card-img-top w-75 mx-auto" alt="快速建站">
+                      <img src="{{asset('images/cms/services/icon-5.png')}}" class="card-img-top w-75 mx-auto" alt="快速建站">
                       <div class="card-body">
                           <h5 class="card-title text-center">建站组件</h5>
                           <p class="card-text">InnoCMS 提供了一套完整的网站模板和定制选项，企业可以根据自己的品牌形象和需求，快速搭建起一个全新的官网。</p>
@@ -96,7 +96,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1000" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-6.svg')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <img src="{{asset('images/cms/services/icon-6.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
                       <div class="card-body">
                           <h5 class="card-title text-center">技术培训</h5>
                           <p class="card-text">通过我们的技术培训服务，您的团队将获得必要的技能和知识。我们的培训课程旨在提升效率，促进创新，并确保长期的技术自给自足。</p>
@@ -105,7 +105,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1400" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-7.svg')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <img src="{{asset('images/cms/services/icon-7.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
                       <div class="card-body">
                           <h5 class="card-title text-center">整站托管</h5>
                           <p class="card-text">我们提供一站式托管服务，从建站到部署上线，全部交由我们的专业人士完成，并提供后续的运维和升级，省时省力省心。</p>
@@ -114,7 +114,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1800" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-8.svg')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <img src="{{asset('images/cms/services/icon-8.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
                       <div class="card-body">
                           <h5 class="card-title text-center">主题设计</h5>
                           <p class="card-text d-inline">我们提供定制主题设计服务，根据您的业务需求和真实业务场景，为您设计专属的主题和配套UI以及页面布局。</p>
