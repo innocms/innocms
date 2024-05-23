@@ -169,7 +169,7 @@ return new class extends Migration
         Schema::create('page_translations', function (Blueprint $table) {
             $table->comment('Article Page');
             $table->bigIncrements('id')->comment('ID');
-            $table->integer('page_id')->index('at_article_id')->comment('Article ID');
+            $table->integer('page_id')->index('pt_page_id')->comment('Article ID');
             $table->string('locale')->comment('Locale Code');
             $table->string('title')->comment('Title');
             $table->text('content')->nullable()->comment('Content');
