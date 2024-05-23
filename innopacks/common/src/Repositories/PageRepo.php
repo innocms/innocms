@@ -25,6 +25,12 @@ class PageRepo extends BaseRepo
         return $this->builder($filters)->paginate();
     }
 
+    /**
+     * Get page builder.
+     *
+     * @param  array  $filters
+     * @return Builder
+     */
     public function builder(array $filters = []): Builder
     {
         $builder = Page::query()->with(['translation']);
@@ -32,6 +38,10 @@ class PageRepo extends BaseRepo
         $slug = $filters['slug'] ?? '';
         if ($slug) {
             $builder->where('slug', 'like', "%$slug%");
+        }
+
+        if (isset($filters['active'])) {
+            $builder->where('active', (bool) $filters['active']);
         }
 
         return $builder;

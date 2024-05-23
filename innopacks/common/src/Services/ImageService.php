@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
- * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @link       https://www.innoshop.com
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -20,6 +20,8 @@ class ImageService
 
     private string $imagePath;
 
+    private string $placeholderImage;
+
     const PLACEHOLDER_IMAGE = 'images/placeholder.png';
 
     /**
@@ -27,16 +29,55 @@ class ImageService
      */
     public function __construct($image)
     {
-        $this->image     = $image ?: self::PLACEHOLDER_IMAGE;
-        $this->imagePath = public_path($this->image);
+        $this->placeholderImage = system_setting('base.placeholder', self::PLACEHOLDER_IMAGE);
+        $this->image            = $image ?: $this->placeholderImage;
+        $this->imagePath        = public_path($this->image);
         if (! is_file($this->imagePath)) {
-            $this->image     = self::PLACEHOLDER_IMAGE;
-            $this->imagePath = public_path(self::PLACEHOLDER_IMAGE);
+            $this->image     = $this->placeholderImage;
+            $this->imagePath = public_path($this->placeholderImage);
         }
     }
 
     /**
-     * 生成并获取缩略图
+     * @param  $image
+     * @return static
+     * @throws Exception
+     */
+    public static function getInstance($image): self
+    {
+        return new self($image);
+    }
+
+    /**
+     * Set plugin directory name
+     *
+     * @param  $dirName
+     * @return $this
+     */
+    public function setPluginDirName($dirName): static
+    {
+        $originImage = $this->image;
+        if ($this->image == $this->placeholderImage) {
+            return $this;
+        }
+
+        $this->imagePath = plugin_path("{$dirName}/Static").$originImage;
+        if (file_exists($this->imagePath)) {
+            $this->image = strtolower('plugin/'.$dirName.$originImage);
+        } else {
+            $this->image     = $this->placeholderImage;
+            $this->imagePath = public_path($this->image);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Generate thumbnail image
+     *
+     * @param  int  $width
+     * @param  int  $height
+     * @return string
      */
     public function resize(int $width = 100, int $height = 100): string
     {
@@ -63,7 +104,9 @@ class ImageService
     }
 
     /**
-     * 获取原图地址
+     * Get original image url.
+     *
+     * @return string
      */
     public function originUrl(): string
     {

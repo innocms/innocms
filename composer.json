@@ -8,7 +8,9 @@
         "php": "^8.2",
         "intervention/image": "^3.5",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "tormjens/eventy": "^0.9.3",
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
@@ -24,14 +26,18 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Plugin\\": "plugins",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "InnoCMS\\Common\\": "innopacks/common/src",
             "InnoCMS\\Front\\": "innopacks/front/src",
-            "InnoCMS\\Panel\\": "innopacks/panel/src"
+            "InnoCMS\\Panel\\": "innopacks/panel/src",
+            "InnoShop\\Plugin\\": "innopacks/plugin/src"
         },
         "files": [
-            "innopacks/common/helpers.php"
+            "innopacks/common/helpers.php",
+            "innopacks/panel/helpers.php",
+            "innopacks/plugin/helpers.php"
         ]
     },
     "autoload-dev": {

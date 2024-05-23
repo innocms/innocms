@@ -7,6 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -18,6 +19,20 @@ use Illuminate\Support\Str;
 use InnoCMS\Common\Repositories\LocaleRepo;
 use InnoCMS\Common\Repositories\SettingRepo;
 use InnoCMS\Common\Services\ImageService;
+
+if (! function_exists('load_settings')) {
+    /**
+     * @return void
+     */
+    function load_settings(): void
+    {
+        if (! installed()) {
+            return;
+        }
+        $result = SettingRepo::getInstance()->groupedSettings();
+        config(['inno' => $result]);
+    }
+}
 
 if (! function_exists('setting')) {
     /**
@@ -47,47 +62,23 @@ if (! function_exists('system_setting')) {
     }
 }
 
-if (! function_exists('plugin_setting')) {
+if (! function_exists('installed')) {
     /**
-     * Get plugin setting
-     *
-     * @param  $key
-     * @param  null  $default
-     * @return mixed
+     * @return bool
      */
-    function plugin_setting($key, $default = null): mixed
+    function installed(): bool
     {
-        return setting("plugin.{$key}", $default);
-    }
-}
+        try {
+            if (Schema::hasTable('settings')) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
-/**
- * @return void
- */
-function load_settings(): void
-{
-    try {
-        if (! Schema::hasTable('settings')) {
-            return;
+            return false;
         }
-    } catch (\Exception $e) {
-        Log::error($e->getMessage());
 
-        return;
-    }
-    $result = SettingRepo::getInstance()->groupedSettings();
-    config(['inno' => $result]);
-}
-
-if (! function_exists('panel_name')) {
-    /**
-     * Admin panel name
-     *
-     * @return string
-     */
-    function panel_name(): string
-    {
-        return 'panel';
+        return false;
     }
 }
 
@@ -104,37 +95,13 @@ if (! function_exists('inno_path')) {
     }
 }
 
-if (! function_exists('current_user')) {
+if (! function_exists('current_customer')) {
     /**
      * get current admin user.
      */
-    function current_user(): ?Authenticatable
+    function current_customer(): ?Authenticatable
     {
         return auth('web')->user();
-    }
-}
-
-if (! function_exists('current_admin')) {
-    /**
-     * get current admin user.
-     */
-    function current_admin(): ?Authenticatable
-    {
-        return auth('admin')->user();
-    }
-}
-
-if (! function_exists('panel_languages')) {
-    /**
-     * Get all panel languages
-     *
-     * @return array
-     */
-    function panel_languages(): array
-    {
-        $languageDir = inno_path('panel/lang');
-
-        return array_values(array_diff(scandir($languageDir), ['..', '.', '.DS_Store']));
     }
 }
 
@@ -148,27 +115,10 @@ if (! function_exists('locale')) {
     {
         $configLocale = config('app.locale');
         if (is_admin()) {
-            return current_user()->locale ?? $configLocale;
+            return current_admin()->locale ?? $configLocale;
         }
 
         return Session::get('locale') ?? system_setting('base.locale', $configLocale);
-    }
-}
-
-if (! function_exists('is_admin')) {
-    /**
-     * Check if current is admin panel
-     * @return bool
-     */
-    function is_admin(): bool
-    {
-        $adminName = panel_name();
-        $uri       = request()->getRequestUri();
-        if (Str::startsWith($uri, "/{$adminName}")) {
-            return true;
-        }
-
-        return false;
     }
 }
 
@@ -217,28 +167,6 @@ if (! function_exists('json_fail')) {
     }
 }
 
-if (! function_exists('panel_route')) {
-    /**
-     * Get backend panel route
-     *
-     * @param  $name
-     * @param  mixed  $parameters
-     * @param  bool  $absolute
-     * @return string
-     */
-    function panel_route($name, mixed $parameters = [], bool $absolute = true): string
-    {
-        try {
-            $panelName = panel_name();
-
-            return route($panelName.'.'.$name, $parameters, $absolute);
-        } catch (\Exception $e) {
-            return route($panelName.'.home.index');
-        }
-
-    }
-}
-
 if (! function_exists('image_resize')) {
     /**
      * Resize image
@@ -284,6 +212,7 @@ if (! function_exists('sub_string')) {
      */
     function sub_string($string, int $length = 16, string $dot = '...'): string
     {
+        $string    = (string) $string;
         $strLength = mb_strlen($string);
         if ($length <= 0) {
             return $string;
@@ -315,14 +244,29 @@ if (! function_exists('create_directories')) {
     }
 }
 
-if (! function_exists('is_route_name')) {
+if (! function_exists('front_route')) {
+    /**
+     * Get backend panel route
+     *
+     * @param  $name
+     * @param  mixed  $parameters
+     * @param  bool  $absolute
+     * @return string
+     */
+    function front_route($name, mixed $parameters = [], bool $absolute = true): string
+    {
+        return route('front.'.$name, $parameters, $absolute);
+    }
+}
+
+if (! function_exists('equal_route_name')) {
     /**
      * Check route is current
      *
      * @param  $routeName
      * @return bool
      */
-    function is_route_name($routeName): bool
+    function equal_route_name($routeName): bool
     {
         $currentRouteName = Route::getCurrentRoute()->getName();
         if (is_string($routeName)) {
@@ -335,7 +279,7 @@ if (! function_exists('is_route_name')) {
     }
 }
 
-if (! function_exists('is_route_param')) {
+if (! function_exists('equal_route_param')) {
     /**
      * Check route is current
      *
@@ -343,7 +287,7 @@ if (! function_exists('is_route_param')) {
      * @param  array  $parameters
      * @return bool
      */
-    function is_route_param($routeName, array $parameters = []): bool
+    function equal_route_param($routeName, array $parameters = []): bool
     {
         $currentRouteName = Route::getCurrentRoute()->getName();
         if ($routeName != $currentRouteName) {
@@ -353,6 +297,19 @@ if (! function_exists('is_route_param')) {
         $currentRouteParameters = Route::getCurrentRoute()->parameters();
 
         return $parameters == $currentRouteParameters;
+    }
+}
+
+if (! function_exists('equal_url')) {
+    /**
+     * Check url equal current.
+     *
+     * @param  $url
+     * @return bool
+     */
+    function equal_url($url): bool
+    {
+        return url()->current() == $url;
     }
 }
 
@@ -366,5 +323,17 @@ if (! function_exists('locales')) {
     function locales(): mixed
     {
         return LocaleRepo::getInstance()->getActiveList();
+    }
+}
+
+if (! function_exists('has_debugbar')) {
+    /**
+     * Check debugbar installed or not
+     *
+     * @return bool
+     */
+    function has_debugbar(): bool
+    {
+        return class_exists(Debugbar::class);
     }
 }

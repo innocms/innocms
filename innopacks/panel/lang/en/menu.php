@@ -9,12 +9,14 @@
 
 return [
     'home'    => 'Home',
-    'catalog' => 'Catalog',
     'article' => 'Article',
+    'catalog' => 'Catalog',
     'tag'     => 'Tag',
-    'design'  => 'Design',
     'page'    => 'Page',
+    'design'  => 'Design',
+    'theme'   => 'Theme',
     'setting' => 'Setting',
+    'plugin'  => 'Plugin',
     'account' => 'Account',
     'locale'  => 'Locale',
 ];

@@ -232,6 +232,7 @@ class Sidebar extends Component
         return [
             ['route' => 'settings.index', 'title' => __('panel::menu.setting')],
             ['route' => 'account.index', 'title' => __('panel::menu.account')],
+            ['route' => 'plugins.index', 'title' => __('panel::menu.plugin')],
             ['route' => 'locales.index', 'title' => __('panel::menu.locale')],
         ];
     }

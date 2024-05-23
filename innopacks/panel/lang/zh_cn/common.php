@@ -25,6 +25,8 @@ return [
     'batch_delete' => '批量删除',
     'date_start'   => '开始时间',
     'date_end'     => '结束时间',
+    'install'      => '安装',
+    'uninstall'    => '卸载',
 
     'saved_success'   => '保存成功',
     'updated_success' => '更新成功',

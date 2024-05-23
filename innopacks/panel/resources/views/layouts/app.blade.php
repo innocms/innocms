@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base href="{{ route('home.index') }}">
+  <base href="{{ front_route('home.index') }}">
   <title>@yield('title', 'InnoCMS 后台管理')</title>
   <meta name="keywords"
         content="@yield('keywords', 'InnoCMS, 创新, 开源, CMS, Laravel 11, 多语言, 多货币, Hook, 插件架构, 灵活, 强大')">

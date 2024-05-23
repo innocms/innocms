@@ -24,6 +24,8 @@ return [
     'batch_delete' => 'Batch Delete',
     'date_start'   => 'Start',
     'date_end'     => 'End',
+    'install'      => 'Install',
+    'uninstall'    => 'Uninstall',
 
     'saved_success'   => 'Saved successfully',
     'updated_success' => 'Updated successfully',

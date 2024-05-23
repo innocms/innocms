@@ -71,8 +71,8 @@ return new class extends Migration
             $table->bigIncrements('id')->comment('ID');
             $table->integer('catalog_id')->nullable()->default(0)->index('a_catalog_id')->comment('Catalog ID');
             $table->string('slug')->nullable()->unique()->comment('URL Slug');
-            $table->integer('position')->comment('Sort order');
-            $table->integer('viewed')->comment('Viewed');
+            $table->integer('position')->default(0)->comment('Sort order');
+            $table->integer('viewed')->default(0)->comment('Viewed');
             $table->string('author')->nullable()->comment('Author');
             $table->boolean('active')->comment('Active');
             $table->timestamps();
@@ -106,9 +106,9 @@ return new class extends Migration
         Schema::create('catalogs', function (Blueprint $table) {
             $table->comment('Article Category');
             $table->bigIncrements('id')->comment('ID');
-            $table->integer('parent_id')->nullable()->index('c_parent_id')->comment('Parent ID');
+            $table->integer('parent_id')->default(0)->index('c_parent_id')->comment('Parent ID');
             $table->string('slug')->nullable()->unique()->comment('URL Slug');
-            $table->integer('position')->comment('Sort order');
+            $table->integer('position')->default(0)->comment('Sort order');
             $table->boolean('active')->comment('Active');
             $table->timestamps();
         });
@@ -152,7 +152,7 @@ return new class extends Migration
             $table->string('name', 64)->comment('Name');
             $table->string('code', 16)->comment('Code');
             $table->string('image')->comment('Country Icon');
-            $table->integer('position')->comment('Sort order');
+            $table->integer('position')->default(0)->comment('Sort order');
             $table->tinyInteger('active')->comment('Active');
             $table->timestamps();
         });
@@ -184,6 +184,7 @@ return new class extends Migration
             $table->comment('Page');
             $table->bigIncrements('id')->comment('ID');
             $table->string('slug')->nullable()->unique()->comment('URL Slug');
+            $table->integer('position')->default(0)->comment('Sort order');
             $table->integer('viewed')->comment('Viewed');
             $table->boolean('active')->comment('Active');
             $table->timestamps();
@@ -193,14 +194,6 @@ return new class extends Migration
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('plugins', function (Blueprint $table) {
-            $table->comment('Plugin');
-            $table->bigIncrements('id')->comment('ID');
-            $table->string('type')->comment('Type: shipping, payment');
-            $table->string('code')->comment('Code, Unique');
-            $table->timestamps();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -235,7 +228,7 @@ return new class extends Migration
             $table->comment('Article Tag');
             $table->bigIncrements('id')->comment('ID');
             $table->string('slug')->nullable()->unique()->comment('URL Slug');
-            $table->integer('position')->comment('Sort order');
+            $table->integer('position')->default(0)->comment('Sort order');
             $table->boolean('active')->comment('Active');
             $table->timestamps();
         });

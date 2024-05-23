@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c32e1d2be3970a040fb7723169a7e2ab",
+    "content-hash": "30e6ee9aaae8ca33f584536868f7d104",
     "packages": [
         {
             "name": "brick/math",
@@ -5613,6 +5613,76 @@
             "time": "2023-12-08T13:03:43+00:00"
         },
         {
+            "name": "tormjens/eventy",
+            "version": "0.9.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tormjens/eventy.git",
+                "reference": "b5327c71def04352ef1febf4797cef860f7e3789"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tormjens/eventy/zipball/b5327c71def04352ef1febf4797cef860f7e3789",
+                "reference": "b5327c71def04352ef1febf4797cef860f7e3789",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.3",
+                "laravel/serializable-closure": "^1.3",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TorMorten\\Eventy\\EventServiceProvider",
+                        "TorMorten\\Eventy\\EventBladeServiceProvider"
+                    ],
+                    "aliases": {
+                        "Eventy": "TorMorten\\Eventy\\Facades\\Events"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TorMorten\\Eventy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tor Morten Jensen",
+                    "homepage": "https://tormorten.no"
+                }
+            ],
+            "description": "The WordPress filter/action system in Laravel",
+            "homepage": "https://github.com/tormjens/eventy",
+            "keywords": [
+                "HOOK",
+                "action",
+                "actions",
+                "event",
+                "events",
+                "filter",
+                "filters",
+                "hooks",
+                "laravel",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/tormjens/eventy/issues",
+                "source": "https://github.com/tormjens/eventy/tree/0.9.3"
+            },
+            "time": "2023-08-29T08:43:45+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.0",
             "source": {
@@ -5827,6 +5897,69 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "zanysoft/laravel-zip",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zanysoft/laravel-zip.git",
+                "reference": "466663746c92154c48a2d490efc6724f9f6e9652"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zanysoft/laravel-zip/zipball/466663746c92154c48a2d490efc6724f9f6e9652",
+                "reference": "466663746c92154c48a2d490efc6724f9f6e9652",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0",
+                "scrutinizer/ocular": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ZanySoft\\Zip\\ZipServiceProvider"
+                    ],
+                    "aliases": {
+                        "Zip": "ZanySoft\\Zip\\ZipFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ZanySoft\\Zip\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zany Soft",
+                    "email": "info@zanysoft.co",
+                    "homepage": "http://www.zanysoft.co"
+                }
+            ],
+            "description": "ZipArchive toolbox",
+            "homepage": "http://www.zanysoft.co",
+            "keywords": [
+                "merge",
+                "multiple",
+                "unzip",
+                "zip",
+                "ziparchive"
+            ],
+            "support": {
+                "issues": "https://github.com/zanysoft/laravel-zip/issues",
+                "source": "https://github.com/zanysoft/laravel-zip/tree/1.0.3"
+            },
+            "time": "2017-10-10T03:22:41+00:00"
         }
     ],
     "packages-dev": [

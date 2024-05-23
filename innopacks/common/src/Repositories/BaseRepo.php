@@ -46,7 +46,8 @@ class BaseRepo implements RepoInterface
     }
 
     /**
-     * @throws Exception
+     * @param  array  $filters
+     * @return LengthAwarePaginator
      */
     public function list(array $filters = []): LengthAwarePaginator
     {
@@ -54,7 +55,8 @@ class BaseRepo implements RepoInterface
     }
 
     /**
-     * @throws Exception
+     * @param  array  $filters
+     * @return Collection
      */
     public function all(array $filters = []): Collection
     {
@@ -64,7 +66,6 @@ class BaseRepo implements RepoInterface
     /**
      * @param  int  $id
      * @return mixed
-     * @throws Exception
      */
     public function detail(int $id): mixed
     {
@@ -74,7 +75,6 @@ class BaseRepo implements RepoInterface
     /**
      * @param  $data
      * @return mixed
-     * @throws Exception
      */
     public function create($data): mixed
     {
@@ -85,7 +85,6 @@ class BaseRepo implements RepoInterface
      * @param  mixed  $item
      * @param  $data
      * @return mixed
-     * @throws Exception
      */
     public function update(mixed $item, $data): mixed
     {
@@ -101,7 +100,6 @@ class BaseRepo implements RepoInterface
 
     /**
      * @param  mixed  $item
-     * @throws Exception
      */
     public function destroy(mixed $item): void
     {
@@ -116,11 +114,21 @@ class BaseRepo implements RepoInterface
     /**
      * @param  array  $filters
      * @return Builder
-     * @throws Exception
      */
     public function builder(array $filters = []): Builder
     {
         return $this->modelQuery();
+    }
+
+    /**
+     * @param  array  $filters
+     * @return Builder
+     */
+    public function activeBuilder(array $filters = []): Builder
+    {
+        $filters = array_merge($filters, ['active' => true]);
+
+        return $this->builder($filters);
     }
 
     /**
@@ -135,7 +143,6 @@ class BaseRepo implements RepoInterface
 
     /**
      * @return Builder
-     * @throws Exception
      */
     private function modelQuery(): Builder
     {

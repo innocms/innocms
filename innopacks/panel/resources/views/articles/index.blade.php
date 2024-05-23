@@ -28,7 +28,7 @@
           <tr>
             <td>{{ $item->id }}</td>
             <td><img src="{{ image_resize($item->translation->image ?? '', 30, 30) }}" style="width: 30px; height: 30px" alt=""></td>
-            <td>{{ $item->translation->title ?? '' }}</td>
+            <td>{{ sub_string($item->translation->title ?? '', 30) }}</td>
             <td>{{ $item->catalog->translation->title ?? '-' }}</td>
             <td>{{ $item->tagNames ?? '' }}</td>
             <td>{{ $item->slug }}</td>

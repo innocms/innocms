@@ -8,6 +8,7 @@
  */
 
 use Illuminate\Support\Facades\Route;
+use InnoCMS\Common\Repositories\PageRepo;
 use InnoCMS\Front\Controllers;
 
 Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index');
@@ -29,4 +30,7 @@ Route::post('/upload/images', [Controllers\UploadController::class, 'images'])->
 Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->name('upload.files');
 
 // Pages, like product, service, about
-Route::get('/{slug}', [Controllers\PageController::class, 'show'])->name('pages.show');
+$pages = PageRepo::getInstance()->activeBuilder()->get();
+foreach ($pages as $page) {
+    Route::get($page->slug, [Controllers\PageController::class, 'show'])->name('pages.'.$page->slug);
+}

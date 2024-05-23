@@ -1,0 +1,18 @@
+{
+    "code": "custom",
+    "name": {
+        "zh_cn": "自定义插件",
+        "en": "Custom Plugin"
+    },
+    "description": {
+        "zh_cn": "自定义插件, 作为插件实例, 对系统进行一些改动, 比如顶部菜单",
+        "en": "Custom Plugin"
+    },
+    "type": "feature",
+    "version": "v1.0.0",
+    "icon": "/image/logo.png",
+    "author": {
+        "name": "InnoShop",
+        "email": "edward@innoshop.com"
+    }
+}

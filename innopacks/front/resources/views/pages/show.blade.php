@@ -6,7 +6,7 @@
       <div class="page-title">{{ $page->translation->title }}</div>
       <nav>
         <ol class="breadcrumb d-flex justify-content-center">
-          <li class="breadcrumb-item"><a href="{{ route('home.index') }}"><i class="bi bi-house-door-fill"></i> 首页</a></li>
+          <li class="breadcrumb-item"><a href="{{ front_route('home.index') }}"><i class="bi bi-house-door-fill"></i> 首页</a></li>
           <li class="breadcrumb-item active" aria-current="page">{{ $page->translation->title }}</li>
         </ol>
       </nav>

@@ -10,6 +10,7 @@
 namespace InnoCMS\Common\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use InnoCMS\Common\Traits\Translatable;
 
 class Catalog extends BaseModel
@@ -20,8 +21,33 @@ class Catalog extends BaseModel
         'parent_id', 'slug', 'position', 'active',
     ];
 
+    public $appends = [
+        'slug_url',
+    ];
+
+    /**
+     * @return BelongsTo
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Catalog::class, 'parent_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(Catalog::class, 'parent_id', 'id');
+    }
+
+    /**
+     * Get slug url link.
+     *
+     * @return string
+     */
+    public function getSlugUrlAttribute(): string
+    {
+        return front_route('catalogs.show', ['slug' => $this->slug]);
     }
 }

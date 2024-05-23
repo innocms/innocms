@@ -48,11 +48,24 @@ class CatalogRepo extends BaseRepo
         $builder = Catalog::query()->with([
             'translation',
             'parent.translation',
+            'children',
+            'children.translation',
         ]);
 
         $slug = $filters['slug'] ?? '';
         if ($slug) {
             $builder->where('slug', 'like', "%$slug%");
+        }
+
+        if (isset($filters['parent_id'])) {
+            $parentID = (int) $filters['parent_id'];
+            if ($parentID == 0) {
+                $builder->where(function (Builder $query) {
+                    $query->where('parent_id', 0)->orWhereNull('parent_id');
+                });
+            } else {
+                $builder->where('parent_id', $parentID);
+            }
         }
 
         if (isset($filters['active'])) {

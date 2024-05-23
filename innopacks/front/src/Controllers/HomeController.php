@@ -15,9 +15,12 @@ class HomeController extends Controller
 {
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function index(): mixed
     {
-        return view('front::home');
+        $data = fire_hook_filter('home.index.data', []);
+
+        return view('front::home', $data);
     }
 }

@@ -11,6 +11,9 @@ namespace InnoCMS\Front;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use InnoCMS\Common\Middleware\ContentFilterHook;
+use InnoCMS\Common\Middleware\EventActionHook;
+use InnoCMS\Front\Middleware\GlobalDataMiddleware;
 
 class FrontServiceProvider extends ServiceProvider
 {
@@ -36,7 +39,9 @@ class FrontServiceProvider extends ServiceProvider
      */
     protected function registerWebRoutes(): void
     {
-        Route::middleware('web')
+        $middlewares = ['web', EventActionHook::class, ContentFilterHook::class, GlobalDataMiddleware::class];
+        Route::middleware($middlewares)
+            ->name('front.')
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
             });
@@ -49,8 +54,9 @@ class FrontServiceProvider extends ServiceProvider
      */
     protected function registerApiRoutes(): void
     {
+        $middlewares = ['api', EventActionHook::class, ContentFilterHook::class];
         Route::prefix('api')
-            ->middleware('api')
+            ->middleware($middlewares)
             ->name('api.')
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/api.php'));

@@ -23,14 +23,18 @@ class PageController extends Controller
      */
     public function show(Request $request): mixed
     {
-        $slug = $request->slug;
-        $page = PageRepo::getInstance()->builder(['active' => true])->where('slug', $slug)->firstOrFail();
+        $slug    = str_replace('/', '', $request->getRequestUri());
+        $filters = [
+            'slug'   => $slug,
+            'active' => true,
+        ];
+        $page = PageRepo::getInstance()->builder($filters)->firstOrFail();
         $page->increment('viewed');
+
         $data = [
             'slug' => $slug,
             'page' => $page,
         ];
-
         $template = $page->translation->template ?? '';
         if ($template) {
             $result         = Blade::render($template, $data);

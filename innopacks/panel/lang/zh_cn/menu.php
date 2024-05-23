@@ -16,6 +16,7 @@ return [
     'design'  => '布局设计',
     'theme'   => '主题管理',
     'setting' => '系统设置',
-    'account' => '个人信息',
+    'plugin'  => '插件管理',
+    'account' => '个人中心',
     'locale'  => '语言管理',
 ];

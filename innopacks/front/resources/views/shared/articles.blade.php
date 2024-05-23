@@ -6,19 +6,19 @@
           @foreach($articles as $article)
           <div class="newest-item">
             <div class="item-img">
-              <a href="{{ route('articles.show', $article->slug) }}">
+              <a href="{{ front_route('articles.show', $article->slug) }}">
                 <img src="{{ image_resize($article->translation->image ?? '', 200, 150) }}" class="img-fluid">
               </a>
             </div>
             <div class="item-content d-flex flex-column justify-content-between">
               <div class="content-top">
-                <div class="item-title"><a href="{{ route('articles.show', $article->slug) }}">{{ $article->translation->title }}</a></div>
+                <div class="item-title"><a href="{{ front_route('articles.show', $article->slug) }}">{{ $article->translation->title }}</a></div>
                 @if ($article->tags->count())
                 <div class="newes-tags">
                   <i class="bi bi-tags me-1"></i>
                   <div class="d-flex">
                     @foreach($article->tags as $tag)
-                      <a href="{{ route('tags.show', $tag->slug) }}">{{ $tag->translation->name ?? '' }}</a>
+                      <a href="{{ front_route('tags.show', $tag->slug) }}">{{ $tag->translation->name ?? '' }}</a>
                     @endforeach
                   </div>
                 </div>
@@ -53,7 +53,7 @@
               <ul>
                 @foreach($catalogs as $catalog)
                   <li><a
-                        href="{{ route('catalogs.show', $catalog->slug ?? '') }}">{{ $catalog->translation->title ?? '' }}</a>
+                        href="{{ front_route('catalogs.show', $catalog->slug ?? '') }}">{{ $catalog->translation->title ?? '' }}</a>
                   </li>
                 @endforeach
               </ul>
@@ -67,7 +67,7 @@
             <div class="sidebar-list">
               <ul>
                 @foreach($tags as $tag)
-                  <li><a href="{{ route('tags.show', $tag->slug ?? '') }}">{{ $tag->translation->name ?? '' }}</a></li>
+                  <li><a href="{{ front_route('tags.show', $tag->slug ?? '') }}">{{ $tag->translation->name ?? '' }}</a></li>
                 @endforeach
               </ul>
             </div>

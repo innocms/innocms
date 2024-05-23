@@ -12,6 +12,8 @@ namespace InnoCMS\Panel;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use InnoCMS\Common\Middleware\ContentFilterHook;
+use InnoCMS\Common\Middleware\EventActionHook;
 use InnoCMS\Common\Models\Admin;
 use InnoCMS\Panel\Console\Commands\ChangeRootPassword;
 use InnoCMS\Panel\Middleware\AdminAuthenticate;
@@ -80,7 +82,7 @@ class PanelServiceProvider extends ServiceProvider
     {
         $adminName = panel_name();
         Route::prefix($adminName)
-            ->middleware('web')
+            ->middleware(['web', EventActionHook::class, ContentFilterHook::class])
             ->name("$adminName.")
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));

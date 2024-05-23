@@ -8,7 +8,7 @@
       <span class="ms-2">{{ current_admin()->name }} <i class="bi bi-chevron-down"></i></span>
 
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('home.index') }}" target="_blank">前台首页</a></li>
+        <li><a class="dropdown-item" href="{{ front_route('home.index') }}" target="_blank">前台首页</a></li>
         <li><a class="dropdown-item" href="{{ panel_route('account.index') }}">个人中心</a></li>
         <li><a class="dropdown-item" href="{{ panel_route('logout.index') }}">退出登录</a></li>
       </ul>

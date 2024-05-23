@@ -16,7 +16,7 @@ class CommonServiceProvider extends ServiceProvider
     /**
      * config path.
      */
-    private string $configPath = __DIR__.'/../config/innocms.php';
+    private string $basePath = __DIR__.'/../';
 
     /**
      * Boot front service provider.
@@ -26,13 +26,26 @@ class CommonServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerConfig();
+        $this->registerMigrations();
     }
 
     /**
+     * Register config.
+     *
      * @return void
      */
     private function registerConfig(): void
     {
-        $this->mergeConfigFrom($this->configPath, 'innocms');
+        $this->mergeConfigFrom($this->basePath.'config/innocms.php', 'innocms');
+    }
+
+    /**
+     * Register migrations.
+     *
+     * @return void
+     */
+    private function registerMigrations(): void
+    {
+        $this->loadMigrationsFrom($this->basePath.'database/migrations');
     }
 }

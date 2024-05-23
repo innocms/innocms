@@ -3,6 +3,7 @@
 /public/build
 /public/hot
 /public/storage
+/public/mix-manifest.json
 /storage/*.key
 /package-lock.json
 /vendor

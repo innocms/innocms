@@ -18,4 +18,18 @@ class Page extends BaseModel
     protected $fillable = [
         'slug', 'viewed', 'active',
     ];
+
+    public $appends = [
+        'slug_url',
+    ];
+
+    /**
+     * Get slug url link.
+     *
+     * @return string
+     */
+    public function getSlugUrlAttribute(): string
+    {
+        return front_route('pages.'.$this->slug);
+    }
 }

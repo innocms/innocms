@@ -15,7 +15,7 @@
             <i class="bi bi-tags me-1"></i>
             <div class="d-flex">
               @foreach($article->tags as $tag)
-                <a href="{{ route('tags.show', $tag->slug) }}">{{ $tag->translation->name }}</a>
+                <a href="{{ front_route('tags.show', $tag->slug) }}">{{ $tag->translation->name }}</a>
               @endforeach
             </div>
           </div>
@@ -43,7 +43,7 @@
           <div class="sidebar-list">
             <ul>
               @foreach($catalogs as $catalog)
-                <li><a href="{{ route('catalogs.show', $catalog->slug ?? '') }}">{{ $catalog->translation->title ?? '' }}</a></li>
+                <li><a href="{{ front_route('catalogs.show', $catalog->slug ?? '') }}">{{ $catalog->translation->title ?? '' }}</a></li>
               @endforeach
             </ul>
           </div>
