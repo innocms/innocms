@@ -4,10 +4,23 @@
 @section('title', __('panel::menu.account'))
 
 @section('content')
-  {{ $admin->name }}, 你好。 修改个人信息页面, 待完善。
+{{-- {{ $admin->name }}, 你好。 修改个人信息页面, 待完善。 --}}
+<div class="card h-min-600">
+  <div class="card-body">
+    <form class="needs-validation" novalidate action="{{ panel_route('account.update') }}" method="POST">
+      @csrf
+      @method('put')
+
+      <x-panel-form-input title="名称" name="name" value="{{ old('name', $admin->name) }}" required />
+      <x-panel-form-input title="密码" name="password" value="" type="password" description="密码留空则不修改" />
+
+      <x-panel::form.bottom-btns />
+    </form>
+  </div>
+</div>
 @endsection
 
 @push('footer')
-  <script>
-  </script>
+<script>
+</script>
 @endpush

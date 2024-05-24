@@ -56,6 +56,12 @@
   }
 }
 
+.help-text {
+  color: #B2B2B2;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
 img {
   max-height: 100%;
 }
@@ -180,7 +186,7 @@ img {
 
   #content {
     flex: 1;
-    padding: 0 1rem 4rem;
+    padding: 0 1rem 5rem;
     overflow-y: auto;
     position: relative;
     background-color: #f3f8fc;

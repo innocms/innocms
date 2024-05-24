@@ -80,11 +80,11 @@ class Sidebar extends Component
                 'prefixes' => ['pages'],
                 'children' => $this->getPageSubRoutes(),
             ],
-            [
-                'title'    => __('panel::menu.design'),
-                'icon'     => 'bi-brush',
-                'children' => $this->getDesignSubRoutes(),
-            ],
+            // [
+            //     'title'    => __('panel::menu.design'),
+            //     'icon'     => 'bi-brush',
+            //     'children' => $this->getDesignSubRoutes(),
+            // ],
             [
                 'title'    => __('panel::menu.setting'),
                 'icon'     => 'bi-gear',
