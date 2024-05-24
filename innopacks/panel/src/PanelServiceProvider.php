@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use InnoCMS\Common\Models\Admin;
+use InnoCMS\Panel\Console\Commands\ChangeRootPassword;
 use InnoCMS\Panel\Middleware\AdminAuthenticate;
 
 class PanelServiceProvider extends ServiceProvider
@@ -26,6 +27,7 @@ class PanelServiceProvider extends ServiceProvider
     {
         load_settings();
         $this->registerGuard();
+        $this->registerCommands();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
         $this->loadTranslations();
@@ -55,6 +57,18 @@ class PanelServiceProvider extends ServiceProvider
             'driver'   => 'session',
             'provider' => 'admins',
         ]);
+    }
+
+    /**
+     * @return void
+     */
+    private function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ChangeRootPassword::class,
+            ]);
+        }
     }
 
     /**
