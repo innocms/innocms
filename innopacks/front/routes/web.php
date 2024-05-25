@@ -30,7 +30,9 @@ Route::post('/upload/images', [Controllers\UploadController::class, 'images'])->
 Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->name('upload.files');
 
 // Pages, like product, service, about
-$pages = PageRepo::getInstance()->activeBuilder()->get();
-foreach ($pages as $page) {
-    Route::get($page->slug, [Controllers\PageController::class, 'show'])->name('pages.'.$page->slug);
+if (installed()) {
+    $pages = PageRepo::getInstance()->activeBuilder()->get();
+    foreach ($pages as $page) {
+        Route::get($page->slug, [Controllers\PageController::class, 'show'])->name('pages.' . $page->slug);
+    }
 }
