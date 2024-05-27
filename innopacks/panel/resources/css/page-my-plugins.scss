@@ -1,0 +1,41 @@
+body.page-my-plugins {
+  .plugin-item {
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    }
+    .image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    .plugin-info {
+      padding: 16px;
+      .title {
+        margin-bottom: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .form-switch {
+        .form-check-input {
+          height: 1.4rem;
+          width: 2.8rem;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}

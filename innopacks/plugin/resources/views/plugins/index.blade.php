@@ -67,7 +67,7 @@
         if (response.data.status === 'success') {
           window.location.reload();
         } else {
-          alert(response.data.message);
+          is.alert(response.data.message);
         }
       });
     });
@@ -80,7 +80,7 @@
         if (response.data.status === 'success') {
           window.location.reload();
         } else {
-          alert(response.data.message);
+          is.alert(response.data.message);
         }
       });
     }
