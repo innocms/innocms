@@ -85,6 +85,8 @@ class Hook
             Debugbar::log("HOOK === @hookinsert: $hook");
         }
 
+        $this->isUpdate = false;
+
         return $this->get($hook, $params, $callback, $htmlContent);
     }
 

@@ -69,89 +69,57 @@ class PluginController
     }
 
     /**
-     * @param  Request  $request
      * @param  $code
      * @return mixed
-     * @throws Exception
      */
-    public function edit(Request $request, $code): mixed
+    public function edit($code): mixed
     {
-        $data = [
-            'plugin'  => null,
-            'columns' => [
-                [
-                    'name'      => 'app_key',
-                    'label'     => 'dsadsad',
-                    'label_key' => 'common.app_key',
-                    'type'      => 'string',
-                    'required'  => true,
-                ],
-                [
-                    'name'      => 'app_key',
-                    'label'     => 'dsadsad',
-                    'label_key' => 'common.app_key',
-                    'type'      => 'checkbox',
-                    'required'  => true,
-                    'options'   => [
-                        ['value' => false, 'label' => 'common.no'],
-                        ['value' => true, 'label' => 'common.yes'],
-                    ],
-                ],
-                [
-                    'name'      => 'app_secret',
-                    'label'     => 'dsadsad',
-                    'label_key' => 'common.app_secret',
-                    'type'      => 'rich-text',
-                    'required'  => true,
-                ],
-                [
-                    'name'      => 'app_secret',
-                    'label'     => 'dsadsad',
-                    'label_key' => 'common.app_secret',
-                    'type'      => 'image',
-                    'required'  => true,
-                ],
-                [
-                    'name'      => 'app_secret',
-                    'label'     => 'dsadsad',
-                    'label_key' => 'common.app_secret',
-                    'type'      => 'textarea',
-                    'required'  => true,
-                ],
-                [
-                    'name'      => 'app_key',
-                    'label'     => 'dsadsad',
-                    'label_key' => 'common.app_key',
-                    'type'      => 'bool',
-                    'required'  => true,
-                ],
-                [
-                    'name'            => 'product_active',
-                    'label_key'       => 'common.product_active',
-                    'label'           => '89880809',
-                    'description_key' => 'common.sync_product_description',
-                    'type'            => 'select',
-                    'options'         => [
-                        ['value' => false, 'label' => 'common.no'],
-                        ['value' => true, 'label' => 'common.yes'],
-                    ],
-                    'required' => true,
-                ],
-            ],
-        ];
+        try {
+            $plugin = app('plugin')->getPluginOrFail($code);
+            $view   = 'plugin::plugins.form';
 
-        return view('plugin::plugins.form', $data);
+            $data = [
+                'view'    => $view,
+                'plugin'  => $plugin,
+                'columns' => $plugin->getColumns(),
+            ];
+            $data = fire_hook_filter('admin.plugin.edit.data', $data);
+
+            return view($view, $data);
+        } catch (\Exception $e) {
+            $plugin = app('plugin')->getPlugin($code);
+            $data   = [
+                'error'       => $e->getMessage(),
+                'plugin_code' => $code,
+                'plugin'      => $plugin,
+            ];
+
+            return view('plugin::plugins.error', $data);
+        }
     }
 
     /**
      * @param  Request  $request
      * @param  $code
-     * @return void
-     * @throws Exception
+     * @return mixed
+     * @throws Throwable
      */
-    public function update(Request $request, $code)
+    public function update(Request $request, $code): mixed
     {
+        $fields = $request->all();
+        $plugin = app('plugin')->getPluginOrFail($code);
+        if (method_exists($plugin, 'validate')) {
+            $validator = $plugin->validate($fields);
+            if ($validator->fails()) {
+                return back()->withErrors($validator)->withInput();
+            }
+        }
 
+        SettingRepo::getInstance()->updateValues($fields, $code);
+
+        $url = panel_route('plugins.edit', $code);
+
+        return redirect($url)->with('success', trans('panel::common.updated_success'));
     }
 
     /**

@@ -58,16 +58,17 @@ class SettingRepo extends BaseRepo
 
     /**
      * @param  $settings
+     * @param  string  $space
      * @return void
      * @throws \Throwable
      */
-    public function updateValues($settings): void
+    public function updateValues($settings, string $space = 'system'): void
     {
         foreach ($settings as $name => $value) {
             if (in_array($name, ['_method', '_token'])) {
                 continue;
             }
-            $this->updateValue($name, $value);
+            $this->updateValue($name, $value, $space);
         }
     }
 

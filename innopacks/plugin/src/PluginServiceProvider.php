@@ -187,12 +187,12 @@ class PluginServiceProvider extends ServiceProvider
     private function loadPanelRoutes($pluginCode): void
     {
         $pluginBasePath = $this->pluginBasePath;
-        $adminRoutePath = "$pluginBasePath/$pluginCode/Routes/admin.php";
+        $adminRoutePath = "$pluginBasePath/$pluginCode/Routes/panel.php";
         if (file_exists($adminRoutePath)) {
             $adminName = panel_name();
             Route::prefix($adminName)
                 ->name("$adminName.")
-                ->middleware(['admin', 'admin_auth:admin'])
+                ->middleware(['web', 'admin_auth:admin'])
                 ->group(function () use ($adminRoutePath) {
                     $this->loadRoutesFrom($adminRoutePath);
                 });

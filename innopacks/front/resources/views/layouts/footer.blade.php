@@ -1,3 +1,6 @@
+
+@hookinsert('layouts.footer.top')
+
 <div class="footer-box">
   <div class="top-bg"><img src="{{ asset('images/front/home/footer-bg.svg') }}" class="img-fluid"></div>
   <div class="container">
@@ -20,6 +23,8 @@
     </div>
   </div>
 </div>
+
+@hookinsert('layouts.footer.bottom')
 
 @if (system_setting('js_code'))
   {!! system_setting('js_code') !!}

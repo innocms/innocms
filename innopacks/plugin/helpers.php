@@ -57,10 +57,7 @@ if (! function_exists('plugin_resize')) {
             return $image;
         }
 
-        $plugin        = plugin($pluginCode);
-        $pluginDirName = $plugin->getDirname();
-
-        return ImageService::getInstance($image)->setPluginDirName($pluginDirName)->resize($width, $height);
+        return ImageService::getInstance($image)->setPluginCode($pluginCode)->resize($width, $height);
     }
 }
 

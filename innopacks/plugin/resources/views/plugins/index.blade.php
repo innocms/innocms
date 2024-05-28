@@ -64,7 +64,7 @@
       var code = $(this).parents('.plugin-item').data('code');
       var enabled = $(this).prop('checked') ? 1 : 0;
       axios.post('/panel/plugins/enabled', { code: code, enabled: enabled }).then(function(response) {
-        if (response.data.status === 'success') {
+        if (response.data.success) {
           window.location.reload();
         } else {
           is.alert(response.data.message);
@@ -77,7 +77,7 @@
       const method = type === 'install' ? 'post' : 'delete';
 
       axios[method](url, { code: code }).then(function(response) {
-        if (response.data.status === 'success') {
+        if (response.data.success) {
           window.location.reload();
         } else {
           is.alert(response.data.message);

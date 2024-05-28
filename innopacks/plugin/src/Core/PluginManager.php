@@ -54,7 +54,7 @@ class PluginManager
             $plugin->setType($package['type']);
             $plugin->setName($package['name']);
             $plugin->setDescription($package['description']);
-            $plugin->setAuthor($package['icon']);
+            $plugin->setAuthor($package['author']);
             $plugin->setIcon($package['icon']);
             $plugin->setVersion($package['version']);
             $plugin->setDirname($dirname);

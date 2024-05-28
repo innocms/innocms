@@ -34,7 +34,7 @@ final class Plugin
 
     protected string $icon;
 
-    protected string $author;
+    protected array $author = [];
 
     protected array|string $name;
 
@@ -132,10 +132,10 @@ final class Plugin
     }
 
     /**
-     * @param  string  $author
+     * @param  array  $author
      * @return $this
      */
-    public function setAuthor(string $author): self
+    public function setAuthor(array $author): self
     {
         $this->author = $author;
 
@@ -287,7 +287,7 @@ final class Plugin
         return $this->icon;
     }
 
-    public function getAuthor(): string
+    public function getAuthor(): array
     {
         return $this->author;
     }
@@ -340,7 +340,7 @@ final class Plugin
         foreach ($this->columns as $index => $column) {
             $dbColumn = $existValues[$column['name']] ?? null;
             $value    = $dbColumn ? $dbColumn->value : null;
-            if ($column['name'] == 'status') {
+            if ($column['name'] == 'active') {
                 $value = (int) $value;
             }
             $this->columns[$index]['value'] = $value;

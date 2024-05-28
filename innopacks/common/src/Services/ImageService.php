@@ -16,6 +16,8 @@ use Intervention\Image\ImageManager;
 
 class ImageService
 {
+    private string $originImage;
+
     private string $image;
 
     private string $imagePath;
@@ -29,6 +31,7 @@ class ImageService
      */
     public function __construct($image)
     {
+        $this->originImage      = $image;
         $this->placeholderImage = system_setting('placeholder', self::PLACEHOLDER_IMAGE);
         if (! is_file(public_path($this->placeholderImage))) {
             $this->placeholderImage = self::PLACEHOLDER_IMAGE;
@@ -54,16 +57,15 @@ class ImageService
     /**
      * Set plugin directory name
      *
-     * @param  $dirName
+     * @param  $pluginCode
      * @return $this
      */
-    public function setPluginDirName($dirName): static
+    public function setPluginCode($pluginCode): static
     {
-        $originImage = $this->image;
-        if ($this->image == $this->placeholderImage) {
-            return $this;
-        }
+        $plugin  = plugin($pluginCode);
+        $dirName = $plugin->getDirname();
 
+        $originImage     = $this->originImage;
         $this->imagePath = plugin_path("{$dirName}/Static").$originImage;
         if (file_exists($this->imagePath)) {
             $this->image = strtolower('plugin/'.$dirName.$originImage);

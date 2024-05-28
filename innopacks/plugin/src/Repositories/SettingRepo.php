@@ -22,8 +22,8 @@ class SettingRepo extends CommonSettingRepo
     public function getPluginActiveColumn(): array
     {
         return [
-            'name'     => 'status',
-            'label'    => trans('common.whether_open'),
+            'name'     => 'active',
+            'label'    => trans('panel::common.active'),
             'type'     => 'bool',
             'required' => true,
         ];
@@ -38,7 +38,6 @@ class SettingRepo extends CommonSettingRepo
     public static function getPluginColumns($pluginCode): mixed
     {
         return Setting::query()
-            ->where('type', 'plugin')
             ->where('space', $pluginCode)
             ->get()
             ->keyBy('name');

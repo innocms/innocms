@@ -90,6 +90,11 @@ class Sidebar extends Component
                 'icon'     => 'bi-gear',
                 'children' => $this->getSettingSubRoutes(),
             ],
+            [
+                'title'    => __('panel::menu.plugin'),
+                'icon'     => 'bi-gear',
+                'children' => $this->getPluginSubRoutes(),
+            ],
         ];
     }
 
@@ -232,8 +237,19 @@ class Sidebar extends Component
         return [
             ['route' => 'settings.index', 'title' => __('panel::menu.setting')],
             ['route' => 'account.index', 'title' => __('panel::menu.account')],
-            ['route' => 'plugins.index', 'title' => __('panel::menu.plugin')],
             ['route' => 'locales.index', 'title' => __('panel::menu.locale')],
         ];
+    }
+
+    /**
+     * Get setting sub routes.
+     */
+    public function getPluginSubRoutes(): array
+    {
+        $routes = [
+            ['route' => 'plugins.index', 'title' => __('panel::menu.plugin')],
+        ];
+
+        return fire_hook_filter('panel.sidebar.plugin.routes', $routes);
     }
 }
