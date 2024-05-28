@@ -20,7 +20,7 @@ class Page extends BaseModel
     ];
 
     public $appends = [
-        'slug_url',
+        'url',
     ];
 
     /**
@@ -28,7 +28,7 @@ class Page extends BaseModel
      *
      * @return string
      */
-    public function getSlugUrlAttribute(): string
+    public function getUrlAttribute(): string
     {
         return front_route('pages.'.$this->slug);
     }

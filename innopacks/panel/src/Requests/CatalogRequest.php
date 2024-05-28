@@ -30,14 +30,7 @@ class CatalogRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->catalog) {
-            $slugRule = 'required|alpha_dash|unique:articles,slug,'.$this->catalog->id;
-        } else {
-            $slugRule = 'required|alpha_dash|unique:articles,slug';
-        }
-
-        return [
-            'slug'     => $slugRule,
+        $rules = [
             'position' => 'integer',
             'active'   => 'bool',
 
@@ -45,5 +38,16 @@ class CatalogRequest extends FormRequest
             'descriptions.*.title'   => 'required',
             'descriptions.*.content' => 'required',
         ];
+
+        if ($this->slug) {
+            if ($this->catalog) {
+                $slugRule = 'required|alpha_dash|unique:articles,slug,'.$this->catalog->id;
+            } else {
+                $slugRule = 'required|alpha_dash|unique:articles,slug';
+            }
+            $rules['slug'] = $slugRule;
+        }
+
+        return $rules;
     }
 }

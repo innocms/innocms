@@ -30,15 +30,8 @@ class ArticleRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->article) {
-            $slugRule = 'alpha_dash|unique:articles,slug,'.$this->article->id;
-        } else {
-            $slugRule = 'alpha_dash|unique:articles,slug';
-        }
-
-        return [
+        $rules = [
             'catalog_id' => 'integer',
-            'slug'       => $slugRule,
             'position'   => 'integer',
             'viewed'     => 'integer',
             'active'     => 'bool',
@@ -47,5 +40,16 @@ class ArticleRequest extends FormRequest
             'descriptions.*.title'   => 'required',
             'descriptions.*.content' => 'required',
         ];
+
+        if ($this->slug) {
+            if ($this->article) {
+                $slugRule = 'alpha_dash|unique:articles,slug,'.$this->article->id;
+            } else {
+                $slugRule = 'alpha_dash|unique:articles,slug';
+            }
+            $rules['slug'] = $slugRule;
+        }
+
+        return $rules;
     }
 }

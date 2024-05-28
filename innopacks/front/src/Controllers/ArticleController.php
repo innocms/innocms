@@ -11,6 +11,7 @@ namespace InnoCMS\Front\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use InnoCMS\Common\Models\Article;
 use InnoCMS\Common\Repositories\ArticleRepo;
 use InnoCMS\Common\Repositories\CatalogRepo;
 use InnoCMS\Common\Repositories\TagRepo;
@@ -33,11 +34,27 @@ class ArticleController extends Controller
     }
 
     /**
+     * @param  Article  $article
+     * @return mixed
+     * @throws \Exception
+     */
+    public function show(Article $article): mixed
+    {
+        $article->increment('viewed');
+        $data = [
+            'article'  => $article,
+            'catalogs' => CatalogRepo::getInstance()->list(['active' => true]),
+        ];
+
+        return view('front::articles.show', $data);
+    }
+
+    /**
      * @param  Request  $request
      * @return mixed
      * @throws \Exception
      */
-    public function show(Request $request): mixed
+    public function slugShow(Request $request): mixed
     {
         $slug    = $request->slug;
         $article = ArticleRepo::getInstance()->builder(['active' => true])->where('slug', $slug)->firstOrFail();

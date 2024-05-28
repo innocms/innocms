@@ -25,7 +25,7 @@ class CatalogSimple extends JsonResource
         return [
             'id'       => $this->id,
             'name'     => $this->translation->title ?? '',
-            'url'      => $this->slug_url,
+            'url'      => $this->url,
             'children' => self::collection($this->children)->jsonSerialize(),
         ];
     }

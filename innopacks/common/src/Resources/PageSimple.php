@@ -25,7 +25,7 @@ class PageSimple extends JsonResource
         return [
             'id'   => $this->id,
             'name' => $this->translation->title ?? '',
-            'url'  => $this->slug_url,
+            'url'  => $this->url,
         ];
     }
 }

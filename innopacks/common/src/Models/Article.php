@@ -21,6 +21,10 @@ class Article extends BaseModel
         'catalog_id', 'slug', 'position', 'viewed', 'author', 'active',
     ];
 
+    public $appends = [
+        'url',
+    ];
+
     public function catalog(): BelongsTo
     {
         return $this->belongsTo(Catalog::class);
@@ -39,5 +43,19 @@ class Article extends BaseModel
     public function getTagNamesAttribute(): mixed
     {
         return $this->tags->pluck('translation.name')->implode(',');
+    }
+
+    /**
+     * Get slug url link.
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        if ($this->slug) {
+            return front_route('articles.slug_show', ['slug' => $this->slug]);
+        }
+
+        return front_route('articles.show', $this);
     }
 }

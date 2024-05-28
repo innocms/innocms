@@ -29,9 +29,12 @@ class ImageService
      */
     public function __construct($image)
     {
-        $this->placeholderImage = system_setting('base.placeholder', self::PLACEHOLDER_IMAGE);
-        $this->image            = $image ?: $this->placeholderImage;
-        $this->imagePath        = public_path($this->image);
+        $this->placeholderImage = system_setting('placeholder', self::PLACEHOLDER_IMAGE);
+        if (! is_file($this->placeholderImage)) {
+            $this->placeholderImage = self::PLACEHOLDER_IMAGE;
+        }
+        $this->image     = $image ?: $this->placeholderImage;
+        $this->imagePath = public_path($this->image);
         if (! is_file($this->imagePath)) {
             $this->image     = $this->placeholderImage;
             $this->imagePath = public_path($this->placeholderImage);

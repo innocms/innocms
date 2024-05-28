@@ -17,7 +17,7 @@ class Select extends Component
 
     public bool $required;
 
-    public string $value;
+    public ?string $value;
 
     public string $title;
 
@@ -27,7 +27,7 @@ class Select extends Component
 
     public string $label;
 
-    public function __construct(string $name, string $value, string $title, array $options, ?string $key = 'value', ?string $label = 'label', ?bool $required = false)
+    public function __construct(string $name, ?string $value, string $title, array $options, ?string $key = 'value', ?string $label = 'label', ?bool $required = false)
     {
         $this->name     = $name;
         $this->title    = $title;

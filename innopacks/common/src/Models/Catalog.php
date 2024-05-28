@@ -22,7 +22,7 @@ class Catalog extends BaseModel
     ];
 
     public $appends = [
-        'slug_url',
+        'url',
     ];
 
     /**
@@ -46,8 +46,12 @@ class Catalog extends BaseModel
      *
      * @return string
      */
-    public function getSlugUrlAttribute(): string
+    public function getUrlAttribute(): string
     {
-        return front_route('catalogs.show', ['slug' => $this->slug]);
+        if ($this->slug) {
+            return front_route('catalogs.slug_show', ['slug' => $this->slug]);
+        }
+
+        return front_route('catalogs.show', $this);
     }
 }

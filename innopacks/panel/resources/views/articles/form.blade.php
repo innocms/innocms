@@ -54,7 +54,7 @@
                                               required
                                               placeholder="内容"/>
 
-                      <x-panel-form-input title="摘要" name="translations[{{$localeCode}}][summary]"
+                      <x-panel-form-textarea title="摘要" name="translations[{{$localeCode}}][summary]"
                                           value="{{ old('translations.' . $localeCode . '.summary', $article->translate($localeCode, 'summary')) }}"
                                           placeholder="摘要"/>
 

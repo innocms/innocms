@@ -98,9 +98,12 @@ class CatalogController
             $data = $request->all();
             CatalogRepo::getInstance()->update($catalog, $data);
 
-            return redirect(panel_route('catalogs.index'))->with('success', trans('panel::common.updated_success'));
+            return redirect(panel_route('catalogs.index'))
+                ->with('success', trans('panel::common.updated_success'));
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+            return redirect(panel_route('catalogs.edit', $catalog))
+                ->withInput()
+                ->withErrors(['error' => $e->getMessage()]);
         }
     }
 

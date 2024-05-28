@@ -8,7 +8,7 @@
  */
 
 return [
-    'version' => '0.2.1',
-    'build'   => '20240525',
+    'version' => '0.2.2',
+    'build'   => '20240528',
     'api_url' => env('INNO_API_URL', 'https://www.innocms.com'),
 ];

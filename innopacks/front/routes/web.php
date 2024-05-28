@@ -15,11 +15,13 @@ Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index'
 
 // Catalogs
 Route::get('/catalogs', [Controllers\CatalogController::class, 'index'])->name('catalogs.index');
-Route::get('/catalog-{slug}', [Controllers\CatalogController::class, 'show'])->name('catalogs.show');
+Route::get('/catalogs/{catalog}', [Controllers\CatalogController::class, 'show'])->name('catalogs.show');
+Route::get('/catalog-{slug}', [Controllers\CatalogController::class, 'slugShow'])->name('catalogs.slug_show');
 
 // Articles
 Route::get('/articles', [Controllers\ArticleController::class, 'index'])->name('articles.index');
-Route::get('/article-{slug}', [Controllers\ArticleController::class, 'show'])->name('articles.show');
+Route::get('/articles/{article}', [Controllers\ArticleController::class, 'show'])->name('articles.show');
+Route::get('/article-{slug}', [Controllers\ArticleController::class, 'slugShow'])->name('articles.slug_show');
 
 // Tags
 Route::get('/tags', [Controllers\TagController::class, 'index'])->name('tags.index');
@@ -33,6 +35,6 @@ Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->na
 if (installed()) {
     $pages = PageRepo::getInstance()->activeBuilder()->get();
     foreach ($pages as $page) {
-        Route::get($page->slug, [Controllers\PageController::class, 'show'])->name('pages.' . $page->slug);
+        Route::get($page->slug, [Controllers\PageController::class, 'show'])->name('pages.'.$page->slug);
     }
 }
