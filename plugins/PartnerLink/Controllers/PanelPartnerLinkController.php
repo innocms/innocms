@@ -12,6 +12,7 @@ namespace Plugin\PartnerLink\Controllers;
 use Illuminate\Http\Request;
 use InnoCMS\Panel\Controllers\BaseController;
 use Plugin\PartnerLink\Models\PartnerLink;
+use Plugin\PartnerLink\Repositories\PartnerLinkRepo;
 
 class PanelPartnerLinkController extends BaseController
 {
@@ -40,20 +41,19 @@ class PanelPartnerLinkController extends BaseController
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return mixed
      */
     public function store(Request $request): mixed
     {
-        $data         = $request->all();
-        $data['logo'] = $request->get('logo', '') ?? '';
-        PartnerLink::query()->create($data);
+        $data = $request->all();
+        PartnerLinkRepo::getInstance()->create($data);
 
         return redirect(panel_route('partner_links.index'));
     }
 
     /**
-     * @param  PartnerLink  $partnerLink
+     * @param PartnerLink $partnerLink
      * @return mixed
      */
     public function edit(PartnerLink $partnerLink): mixed
@@ -66,19 +66,20 @@ class PanelPartnerLinkController extends BaseController
     }
 
     /**
-     * @param  Request  $request
-     * @param  PartnerLink  $partnerLink
+     * @param Request $request
+     * @param PartnerLink $partnerLink
      * @return mixed
      */
     public function update(Request $request, PartnerLink $partnerLink): mixed
     {
-        $partnerLink->update($request->all());
+        $data = $request->all();
+        PartnerLinkRepo::getInstance()->update($partnerLink, $data);
 
         return redirect(panel_route('partner_links.index'));
     }
 
     /**
-     * @param  PartnerLink  $partnerLink
+     * @param PartnerLink $partnerLink
      * @return mixed
      */
     public function destroy(PartnerLink $partnerLink): mixed

@@ -6,7 +6,13 @@
           <div>
             <span><i class="bi bi-diamond-fill"></i> 友情链接：</span>
             @foreach($links as $link)
-              <a href="{{ $link->url }}" target="_blank">{{ $link->name }}</a>
+              @if($link->logo)
+                <a href="{{ $link->url }}" target="_blank">
+                  <img src="{{ image_resize($link->logo) }}">
+                </a>
+              @else
+                <a href="{{ $link->url }}" target="_blank">{{ $link->name }}</a>
+              @endif
             @endforeach
           </div>
         </li>
