@@ -30,7 +30,7 @@ class ImageService
     public function __construct($image)
     {
         $this->placeholderImage = system_setting('placeholder', self::PLACEHOLDER_IMAGE);
-        if (! is_file($this->placeholderImage)) {
+        if (! is_file(public_path($this->placeholderImage))) {
             $this->placeholderImage = self::PLACEHOLDER_IMAGE;
         }
         $this->image     = $image ?: $this->placeholderImage;
