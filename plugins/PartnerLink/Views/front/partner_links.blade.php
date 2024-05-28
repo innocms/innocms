@@ -11,18 +11,14 @@
       });
     @endphp
 
-    @if ($linksNoLogo->count())
+    @if ($linksLogo->count())
     <ul class="inform-wrap mb-4 list-unstyled d-flex flex-wrap align-items-center">
       <li><span><i class="bi bi-link-45deg"></i> 友情链接：</span></li>
       @foreach($linksLogo as $link)
       <li class="me-2">
-        @if ($link->logo)
-          <a href="{{ $link->url }}" target="_blank">
-            <img src="{{ $link->logo }}" alt="{{ $link->name }}" title="{{ $link->name }}" class="img-fluid w-max-200 h-max-100">
-          </a>
-        @else
-          <a href="{{ $link->url }}" target="_blank">{{ $link->name }}</a>
-        @endif
+        <a href="{{ $link->url }}" target="_blank">
+          <img src="{{ $link->logo }}" alt="{{ $link->name }}" title="{{ $link->name }}" class="img-fluid w-max-200 h-max-100">
+        </a>
       </li>
       @endforeach
     </ul>
@@ -33,13 +29,7 @@
       <li><span><i class="bi bi-link-45deg"></i> 友情链接：</span></li>
       @foreach($linksNoLogo as $link)
       <li class="me-2">
-        @if ($link->logo)
-          <a href="{{ $link->url }}" target="_blank">
-            <img src="{{ $link->logo }}" alt="{{ $link->name }}" title="{{ $link->name }}" class="img-fluid w-max-200 h-max-100">
-          </a>
-        @else
-          <a href="{{ $link->url }}" target="_blank">{{ $link->name }}</a>
-        @endif
+        <a href="{{ $link->url }}" target="_blank">{{ $link->name }}</a>
       </li>
       @endforeach
     </ul>
