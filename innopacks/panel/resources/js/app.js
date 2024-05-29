@@ -9,6 +9,9 @@ const editor_language = document.querySelector('meta[name="editor_language"]')?.
 
 $(function () {
   tinymceInit();
+
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 })
 
 const tinymceInit = () => {
