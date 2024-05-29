@@ -30,6 +30,9 @@
                                value="{{ old('meta_description', system_setting('meta_description')) }}"
                                placeholder="Meta 描述"/>
 
+        <x-panel-form-switch-radio title="启用 html 后缀" name="has_suffix" :value="old('has_suffix', system_setting('has_suffix', 0))"
+                                   placeholder="启用 html 后缀"/>
+
         <x-panel-form-input title="ICP备案号" name="icp_number" value="{{ old('icp_number', system_setting('icp_number')) }}"/>
 
         <x-panel-form-textarea title="第三方JS代码" name="js_code"

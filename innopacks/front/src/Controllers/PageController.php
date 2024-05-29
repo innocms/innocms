@@ -23,7 +23,7 @@ class PageController extends Controller
      */
     public function show(Request $request): mixed
     {
-        $slug    = str_replace('/', '', $request->getRequestUri());
+        $slug    = str_replace(['/', '.html'], '', $request->getRequestUri());
         $filters = [
             'slug'   => $slug,
             'active' => true,

@@ -15,10 +15,10 @@ class Boot
     {
         listen_hook_filter('global.header.menus', function ($data) {
             return [
-                ['name' => '产品', 'url' => url('products')],
-                ['name' => '服务', 'url' => url('services')],
-                ['name' => '新闻', 'url' => url('articles')],
-                ['name' => '关于', 'url' => url('about')],
+                ['name' => '产品', 'url' => front_route('pages.products')],
+                ['name' => '服务', 'url' => front_route('pages.services')],
+                ['name' => '新闻', 'url' => front_route('articles.index')],
+                ['name' => '关于', 'url' => front_route('pages.about')],
             ];
         });
     }
