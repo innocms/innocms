@@ -42,14 +42,14 @@ class CatalogSeeder extends Seeder
         return [
             [
                 'id'        => 1,
-                'parent_id' => 1,
+                'parent_id' => 0,
                 'slug'      => 'product',
                 'position'  => 0,
                 'active'    => 1,
             ],
             [
                 'id'        => 2,
-                'parent_id' => 1,
+                'parent_id' => 0,
                 'slug'      => 'industry',
                 'position'  => 0,
                 'active'    => 1,

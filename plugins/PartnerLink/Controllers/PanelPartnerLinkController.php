@@ -41,7 +41,7 @@ class PanelPartnerLinkController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function store(Request $request): mixed
@@ -53,7 +53,7 @@ class PanelPartnerLinkController extends BaseController
     }
 
     /**
-     * @param PartnerLink $partnerLink
+     * @param  PartnerLink  $partnerLink
      * @return mixed
      */
     public function edit(PartnerLink $partnerLink): mixed
@@ -66,8 +66,8 @@ class PanelPartnerLinkController extends BaseController
     }
 
     /**
-     * @param Request $request
-     * @param PartnerLink $partnerLink
+     * @param  Request  $request
+     * @param  PartnerLink  $partnerLink
      * @return mixed
      */
     public function update(Request $request, PartnerLink $partnerLink): mixed
@@ -79,7 +79,7 @@ class PanelPartnerLinkController extends BaseController
     }
 
     /**
-     * @param PartnerLink $partnerLink
+     * @param  PartnerLink  $partnerLink
      * @return mixed
      */
     public function destroy(PartnerLink $partnerLink): mixed

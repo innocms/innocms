@@ -89,7 +89,7 @@ class CatalogRepo extends BaseRepo
      */
     public function create($data): Catalog
     {
-        $item = new Catalog($data);
+        $item = new Catalog($this->handleData($data));
         $item->saveOrFail();
         $item->translations()->createMany($data['translations']);
 
@@ -103,7 +103,7 @@ class CatalogRepo extends BaseRepo
      */
     public function update($item, $data): mixed
     {
-        $item->fill($data);
+        $item->fill($this->handleData($data));
         $item->saveOrFail();
         $item->translations()->delete();
         $item->translations()->createMany($data['translations']);
@@ -119,5 +119,19 @@ class CatalogRepo extends BaseRepo
     {
         $item->translations()->delete();
         $item->delete();
+    }
+
+    /**
+     * @param  $requestData
+     * @return array
+     */
+    private function handleData($requestData): array
+    {
+        return [
+            'parent_id' => $requestData['parent_id'] ?? 0,
+            'slug'      => $requestData['slug']           ?? '',
+            'position'  => $requestData['position']   ?? 0,
+            'active'    => $requestData['active']       ?? true,
+        ];
     }
 }

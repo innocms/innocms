@@ -6,13 +6,13 @@
           @foreach($articles as $article)
           <div class="newest-item">
             <div class="item-img">
-              <a href="{{ front_route('articles.show', $article->slug) }}">
+              <a href="{{ $article->url }}">
                 <img src="{{ image_resize($article->translation->image ?? '', 200, 150) }}" class="img-fluid">
               </a>
             </div>
             <div class="item-content d-flex flex-column justify-content-between">
               <div class="content-top">
-                <div class="item-title"><a href="{{ front_route('articles.show', $article->slug) }}">{{ $article->translation->title }}</a></div>
+                <div class="item-title"><a href="{{ $article->url }}">{{ $article->translation->title }}</a></div>
                 @if ($article->tags->count())
                 <div class="newes-tags">
                   <i class="bi bi-tags me-1"></i>
@@ -53,7 +53,7 @@
               <ul>
                 @foreach($catalogs as $catalog)
                   <li><a
-                        href="{{ front_route('catalogs.show', $catalog->slug ?? '') }}">{{ $catalog->translation->title ?? '' }}</a>
+                        href="{{ $catalog->url }}">{{ $catalog->translation->title ?? '' }}</a>
                   </li>
                 @endforeach
               </ul>

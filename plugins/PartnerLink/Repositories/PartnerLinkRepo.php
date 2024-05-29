@@ -15,39 +15,41 @@ use Plugin\PartnerLink\Models\PartnerLink;
 class PartnerLinkRepo extends BaseRepo
 {
     /**
-     * @param $data
+     * @param  $data
      * @return mixed
      */
     public function create($data): mixed
     {
         $data = $this->handleData($data);
+
         return PartnerLink::query()->create($data);
     }
 
     /**
-     * @param mixed $item
-     * @param $data
+     * @param  mixed  $item
+     * @param  $data
      * @return mixed
      */
     public function update(mixed $item, $data): mixed
     {
         $data = $this->handleData($data);
         $item->update($data);
+
         return $item;
     }
 
     /**
-     * @param $data
+     * @param  $data
      * @return array
      */
     private function handleData($data): array
     {
         return [
-            'name' => $data['name'],
-            'url' => $data['url'],
-            'logo' => $data['logo'] ?? '',
+            'name'     => $data['name'],
+            'url'      => $data['url'],
+            'logo'     => $data['logo']         ?? '',
             'position' => $data['position'] ?? 0,
-            'active' => $data['active'] ?? false,
+            'active'   => $data['active']     ?? false,
         ];
     }
 }
