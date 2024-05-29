@@ -49,6 +49,7 @@
     </div>
   </div>
 </div>
+<img src="https://www.innocms.com/install/dashboard.jpg?version={{ config('innocms.version') }}&build_date={{ config('innocms.build') }}" class="d-none" alt=""/>
 @endsection
 
 @push('footer')
