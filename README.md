@@ -32,7 +32,7 @@ You can choose from integrated environments such as Xiaopi, Baota, XAMPP, etc., 
 Version requirements: PHP: `8.2` or above, MySQL: `5.7` or `8.0`
 
 ### 2. Set the Website Root Directory:
-Next, let's point your website's root directory to the current project's `public` folder and configure the pseudo-static settings so that when you visit the website, you can directly see our content.
+Next, let's point your website's root directory to the current project's `public` folder and configure the pseudo-static settings.
 
 ### 3. Install Third-Party Dependencies:
 Open the command-line tool, navigate to your current project directory, and then enter `composer install`. This will help us install the required third-party packages.
@@ -103,7 +103,11 @@ Now, you can boldly develop and customize in this safe environment without worry
 If you accidentally make a wrong modification, don't worry! Just delete those modified files, and the system will automatically restore to its original state.
 
 ### 6. Backend Development:
-A plugin development mechanism based on `hook` will be launched soon, allowing you to enjoy a free and flexible customized development experience without touching the core code of the system.
+Our system offers a plugin development mechanism based on `hooks`, which allows you to customize your development experience flexibly without the need to touch the core code of the system. 
+You can refer to the `PartnerLink` plugin located in the `/plugins` directory to understand how to develop plugins, so that you can enjoy the convenience and fun of free customization.
+
+We advise that all secondary development features be implemented using a plugin model. This approach not only facilitates future official system upgrades but also helps to better organize your code, 
+preventing the chaotic accumulation known colloquially as "code mountains."
 
 ### Please look forward to the innovation and convenience we bring!
 - If you find `InnoCMS` helpful to you, please do not hesitate to give us a star.
