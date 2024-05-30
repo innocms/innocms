@@ -24,6 +24,10 @@ const tinymceInit = () => {
     language: editor_language,
     branding: false,
     height: 500,
+    table_class_list: [
+      {title: 'Default', value: ''},
+      {title: 'Bootstrap Table', value: 'table table-bordered'}
+    ],
     convert_urls: false,
     // document_base_url: 'ssssss',
     inline: false,
@@ -62,6 +66,13 @@ const tinymceInit = () => {
                 layer.closeAll('loading');
             });
           });
+        }
+      });
+
+      ed.on('NodeChange', function(e) {
+        let table = ed.dom.getParent(e.element, 'table');
+        if (table) {
+          ed.dom.addClass(table, 'table table-bordered');
         }
       });
     }
