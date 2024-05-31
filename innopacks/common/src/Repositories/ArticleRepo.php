@@ -47,6 +47,15 @@ class ArticleRepo extends BaseRepo
             $builder->where('catalog_id', $catalogId);
         }
 
+        $keyword = $filters['keyword'] ?? '';
+        if ($keyword) {
+            $builder->whereHas('translation', function (Builder $query) use ($keyword) {
+                $query->where('title', 'like', "%$keyword%")
+                    ->orWhere('summary', 'like', "%$keyword%")
+                    ->orWhere('content', 'like', "%$keyword%");
+            });
+        }
+
         $tagId = $filters['tag_id'] ?? 0;
         if ($tagId) {
             $builder->whereHas('tags', function (Builder $query) use ($tagId) {
