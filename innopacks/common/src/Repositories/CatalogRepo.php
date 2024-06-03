@@ -129,9 +129,9 @@ class CatalogRepo extends BaseRepo
     {
         return [
             'parent_id' => $requestData['parent_id'] ?? 0,
-            'slug'      => $requestData['slug']           ?? '',
-            'position'  => $requestData['position']   ?? 0,
-            'active'    => $requestData['active']       ?? true,
+            'slug'      => $requestData['slug']      ?? '',
+            'position'  => $requestData['position']  ?? 0,
+            'active'    => $requestData['active']    ?? true,
         ];
     }
 }

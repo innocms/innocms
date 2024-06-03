@@ -62,6 +62,30 @@ if (! function_exists('system_setting')) {
     }
 }
 
+if (! function_exists('is_secure')) {
+    /**
+     * Check if current env is https
+     *
+     * @return bool
+     */
+    function is_secure(): bool
+    {
+        if (! empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+            return true;
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
+            return true;
+        } elseif (! empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
+            return true;
+        } elseif (isset($_SERVER['SERVER_PORT']) && intval($_SERVER['SERVER_PORT']) === 443) {
+            return true;
+        } elseif (isset($_SERVER['REQUEST_SCHEME']) && strtolower($_SERVER['REQUEST_SCHEME']) === 'https') {
+            return true;
+        }
+
+        return false;
+    }
+}
+
 if (! function_exists('installed')) {
     /**
      * @return bool
@@ -69,7 +93,7 @@ if (! function_exists('installed')) {
     function installed(): bool
     {
         try {
-            if (Schema::hasTable('settings')) {
+            if (Schema::hasTable('settings') && file_exists(storage_path('installed'))) {
                 return true;
             }
         } catch (\Exception $e) {

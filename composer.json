@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-pdo": "*",
         "intervention/image": "^3.5",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
@@ -29,6 +30,7 @@
             "Plugin\\": "plugins",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
+            "InnoCMS\\Install\\": "innopacks/install/src",
             "InnoCMS\\Common\\": "innopacks/common/src",
             "InnoCMS\\Front\\": "innopacks/front/src",
             "InnoCMS\\Panel\\": "innopacks/panel/src",

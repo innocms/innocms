@@ -47,9 +47,9 @@ class PartnerLinkRepo extends BaseRepo
         return [
             'name'     => $data['name'],
             'url'      => $data['url'],
-            'logo'     => $data['logo']         ?? '',
+            'logo'     => $data['logo']     ?? '',
             'position' => $data['position'] ?? 0,
-            'active'   => $data['active']     ?? false,
+            'active'   => $data['active']   ?? false,
         ];
     }
 }

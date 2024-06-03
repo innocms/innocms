@@ -11,6 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
+// install
+mix.sass('innopacks/install/resources/css/app.scss', 'public/build/install/css/app.css');
+
+// front
 mix.sass('innopacks/front/resources/css/bootstrap/bootstrap.scss', 'public/build/css/bootstrap.css');
 mix.sass('innopacks/front/resources/css/app.scss', 'public/build/css/app.css');
 mix.js('innopacks/front/resources/js/app.js', 'public/build/js/app.js');
