@@ -9,7 +9,10 @@
 
 namespace InnoCMS\Install\Libraries;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
+use PDO;
+use PDOException;
 
 class Checker
 {
@@ -97,7 +100,7 @@ class Checker
                         'username' => $data['db_username'],
                         'password' => $data['db_password'],
                         'options'  => [
-                            \PDO::ATTR_TIMEOUT => 1,
+                            PDO::ATTR_TIMEOUT => 1,
                         ],
                     ]),
                 ],
@@ -107,7 +110,7 @@ class Checker
         $result = [];
         try {
             $pdo     = DB::connection()->getPdo();
-            $version = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
+            $version = $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
             if (version_compare($version, '5.7', '<')) {
                 $result['db_version'] = trans('install::common.invalid_version');
 
@@ -117,7 +120,7 @@ class Checker
             (new Creator())->saveEnv($data);
 
             return $result;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             switch ($e->getCode()) {
                 case 1115:
                     $result['db_version'] = trans('install::common.invalid_version');
@@ -137,7 +140,7 @@ class Checker
                     $result['db_other'] = $e->getMessage();
             }
             $result['db_success'] = false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result['env_other'] = $e->getMessage();
         }
 
