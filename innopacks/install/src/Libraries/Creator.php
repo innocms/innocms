@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InnoCMS\Common\Models\Admin;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Throwable;
 
 class Creator
 {
@@ -38,7 +39,7 @@ class Creator
     /**
      * @param  $data
      * @return Creator
-     * @throws Exception|\Throwable
+     * @throws Exception|Throwable
      */
     public function setup($data): static
     {
@@ -123,7 +124,7 @@ class Creator
     /**
      * @param  $data
      * @return void
-     * @throws \Throwable
+     * @throws Throwable
      */
     private function setAdmin($data): void
     {

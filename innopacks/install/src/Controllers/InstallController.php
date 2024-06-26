@@ -10,11 +10,13 @@
 namespace InnoCMS\Install\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use InnoCMS\Install\Libraries\Checker;
 use InnoCMS\Install\Libraries\Creator;
+use Throwable;
 
 class InstallController extends Controller
 {
@@ -49,16 +51,16 @@ class InstallController extends Controller
     /**
      * @param  Request  $request
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception|Throwable
      */
     public function complete(Request $request): JsonResponse
     {
         try {
             $data      = $request->all();
-            $outputLog = (new Creator())->setup($data)->getOutputLog();
+            $outputLog = Creator::getInstance()->setup($data)->getOutputLog();
 
             return json_success($outputLog->fetch());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return json_fail($e->getMessage());
         }
     }
