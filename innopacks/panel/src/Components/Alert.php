@@ -17,10 +17,18 @@ class Alert extends Component
 
     public string $msg;
 
-    public function __construct(?string $type, string $msg)
+    public bool $close;
+
+    /**
+     * @param  string  $msg
+     * @param  string|null  $type
+     * @param  bool  $close
+     */
+    public function __construct(string $msg, ?string $type = 'success', bool $close = false)
     {
-        $this->type = $type ?? 'success';
-        $this->msg  = $msg;
+        $this->type  = $type;
+        $this->msg   = $msg;
+        $this->close = $close;
     }
 
     /**
