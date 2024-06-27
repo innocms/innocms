@@ -16,7 +16,7 @@ return [
     'design'  => 'Design',
     'theme'   => 'Theme',
     'setting' => 'Setting',
-    'plugin'  => 'Plugin',
+    'plugins' => 'Plugin',
     'account' => 'Account',
     'locale'  => 'Locale',
 ];

@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -17,7 +17,7 @@ use InnoShop\Plugin\Repositories\SettingRepo;
 final class Plugin
 {
     public const TYPES = [
-        'payment',
+        'billing',
         'shipping',
         'theme',
         'feature',
@@ -34,7 +34,7 @@ final class Plugin
 
     protected string $icon;
 
-    protected array $author = [];
+    protected string $author;
 
     protected array|string $name;
 
@@ -52,7 +52,7 @@ final class Plugin
 
     protected string $version;
 
-    protected array $columns = [];
+    protected array $fields = [];
 
     public function __construct(string $path, array $packageInfo)
     {
@@ -132,10 +132,10 @@ final class Plugin
     }
 
     /**
-     * @param  array  $author
+     * @param  string  $author
      * @return $this
      */
-    public function setAuthor(array $author): self
+    public function setAuthor(string $author): self
     {
         $this->author = $author;
 
@@ -187,17 +187,17 @@ final class Plugin
     }
 
     /**
-     * Set plugin columns.
+     * Set plugin fields.
      *
      * @return $this
      */
-    public function setColumns(): self
+    public function setFields(): self
     {
-        $columnsPath = $this->path.DIRECTORY_SEPARATOR.'columns.php';
-        if (! file_exists($columnsPath)) {
+        $fieldsPath = $this->path.DIRECTORY_SEPARATOR.'fields.php';
+        if (! file_exists($fieldsPath)) {
             return $this;
         }
-        $this->columns = require_once $columnsPath;
+        $this->fields = require_once $fieldsPath;
 
         return $this;
     }
@@ -219,7 +219,7 @@ final class Plugin
      */
     public function getLocaleName(): string
     {
-        $currentLocale = panel_locale();
+        $currentLocale = locale_code();
 
         if (is_array($this->name)) {
             if ($this->name[$currentLocale] ?? '') {
@@ -249,7 +249,7 @@ final class Plugin
      */
     public function getLocaleDescription(): string
     {
-        $currentLocale = panel_locale();
+        $currentLocale = locale_code();
 
         if (is_array($this->description)) {
             if ($this->description[$currentLocale] ?? '') {
@@ -287,7 +287,7 @@ final class Plugin
         return $this->icon;
     }
 
-    public function getAuthor(): array
+    public function getAuthor(): string
     {
         return $this->author;
     }
@@ -333,20 +333,20 @@ final class Plugin
      *
      * @return array
      */
-    public function getColumns(): array
+    public function getFields(): array
     {
-        $this->columns[] = SettingRepo::getInstance()->getPluginActiveColumn();
-        $existValues     = SettingRepo::getInstance()->getPluginColumns($this->code);
-        foreach ($this->columns as $index => $column) {
-            $dbColumn = $existValues[$column['name']] ?? null;
-            $value    = $dbColumn ? $dbColumn->value : null;
-            if ($column['name'] == 'active') {
+        $this->fields[] = SettingRepo::getInstance()->getPluginActiveField();
+        $existValues    = SettingRepo::getInstance()->getPluginFields($this->code);
+        foreach ($this->fields as $index => $field) {
+            $dbField = $existValues[$field['name']] ?? null;
+            $value   = $dbField ? $dbField->value : null;
+            if ($field['name'] == 'active') {
                 $value = (int) $value;
             }
-            $this->columns[$index]['value'] = $value;
+            $this->fields[$index]['value'] = $value;
         }
 
-        return $this->columns;
+        return $this->fields;
     }
 
     /**
@@ -355,7 +355,7 @@ final class Plugin
      */
     public function handleLabel(): void
     {
-        $this->columns = collect($this->columns)->map(function ($item) {
+        $this->fields = collect($this->fields)->map(function ($item) {
             $item = $this->transLabel($item);
             if (isset($item['options'])) {
                 $item['options'] = collect($item['options'])->map(function ($option) {
@@ -365,6 +365,21 @@ final class Plugin
 
             return $item;
         })->toArray();
+    }
+
+    /**
+     * Retrieve the custom editing template of the plugin.
+     *
+     * @return string
+     */
+    public function getFieldView(): string
+    {
+        $viewFile = $this->getPath().'/Views/panel/config.blade.php';
+        if (file_exists($viewFile)) {
+            return "{$this->dirName}::panel.config";
+        }
+
+        return '';
     }
 
     /**
@@ -378,7 +393,7 @@ final class Plugin
     }
 
     /**
-     * Column validation
+     * Field validation
      */
     public function validateConfig(): void
     {
@@ -392,14 +407,14 @@ final class Plugin
     }
 
     /**
-     * Column validation
+     * Field validation
      *
      * @param  $requestData
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return \Illuminate\Validation\Validator
      */
-    public function validateColumns($requestData): \Illuminate\Contracts\Validation\Validator
+    public function validateFields($requestData): \Illuminate\Validation\Validator
     {
-        $rules = array_column($this->columns, 'rules', 'name');
+        $rules = array_column($this->fields, 'rules', 'name');
 
         return Validator::make($requestData, $rules);
     }

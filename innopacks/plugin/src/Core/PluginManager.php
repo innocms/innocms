@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -54,14 +54,14 @@ class PluginManager
             $plugin->setType($package['type']);
             $plugin->setName($package['name']);
             $plugin->setDescription($package['description']);
-            $plugin->setAuthor($package['author']);
+            $plugin->setAuthor($package['icon']);
             $plugin->setIcon($package['icon']);
             $plugin->setVersion($package['version']);
             $plugin->setDirname($dirname);
             $plugin->setInstalled(true);
             $plugin->setEnabled($plugin->checkActive());
             $plugin->setPriority($plugin->checkPriority());
-            $plugin->setColumns();
+            $plugin->setFields();
 
             $code = $plugin->getCode();
             if ($plugins->has($code)) {

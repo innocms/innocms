@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\Install\Libraries;
+namespace InnoShop\Install\Libraries;
 
 use Exception;
 use Illuminate\Database\SQLiteConnection;
@@ -75,7 +75,7 @@ class Creator
             'APP_DEBUG=false'."\n".
             'APP_TIMEZONE=UTC'."\n".
             'APP_URL='.$appUrl."\n\n".
-            'APP_LOCALE=en'."\n\n".
+            'APP_LOCALE=zh_cn'."\n\n".
             'INNOCMS_API_URL=https://www.innocms.com'."\n\n";
         if ($dbType == 'mysql') {
             $envFileData .= 'DB_CONNECTION='.$data['type']."\n".

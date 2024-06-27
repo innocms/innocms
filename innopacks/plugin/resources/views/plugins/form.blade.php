@@ -1,127 +1,158 @@
 @extends('panel::layouts.app')
 
-@section('title', '插件详情')
+@section('title', __('panel::menu.plugins'))
+
+<x-panel::form.right-btns />
 
 @section('content')
 <div class="card h-min-600">
   <div class="card-body">
     <h6 class="border-bottom pb-3 mb-4">{{ $plugin->getLocaleName() }}</h6>
 
-    <form class="needs-validation" novalidate action="{{ panel_route('plugins.update', $plugin->getCode()) }}" method="POST">
+    <form class="needs-validation" id="app-form" novalidate action="{{ panel_route('plugins.update', [$plugin->getCode()]) }}" method="POST">
       @csrf
       {{ method_field('put') }}
-
-      @foreach ($columns as $column)
-        @if ($column['type'] == 'image')
-          <x-panel-form-image
-            :name="$column['name']"
-            :title="$column['label']"
-            :description="$column['description'] ?? ''"
-            :error="$errors->first($column['name'])"
-            :required="$column['required'] ? true : false"
-            :value="old($column['name'], $column['value'] ?? '')">
-            @if ($column['recommend_size'] ?? false)
-            <div class="help-text font-size-12 lh-base">{{ __('common.recommend_size') }} {{ $column['recommend_size'] }}</div>
+      <div class="row">
+        <div class="col-12 col-md-7">
+          @foreach ($fields as $field)
+            @if ($field['type'] == 'image')
+              <x-common-form-image
+                :name="$field['name']"
+                :title="$field['label']"
+                :description="$field['description'] ?? ''"
+                :error="$errors->first($field['name'])"
+                :required="(bool)$field['required']"
+                :value="old($field['name'], $field['value'] ?? '')">
+                @if ($field['recommend_size'] ?? false)
+                <div class="help-text font-size-12 lh-base">{{ __('common.recommend_size') }} {{ $field['recommend_size'] }}</div>
+                @endif
+              </x-common-form-image>
             @endif
-          </x-panel-form-image>
-        @endif
 
-        @if ($column['type'] == 'string')
-          <x-panel-form-input
-            :name="$column['name']"
-            :title="$column['label']"
-            :placeholder="$column['placeholder'] ?? ''"
-            :description="$column['description'] ?? ''"
-            :error="$errors->first($column['name'])"
-            :required="$column['required'] ? true : false"
-            :value="old($column['name'], $column['value'] ?? '')" />
-        @endif
-
-        {{-- @if ($column['type'] == 'string-multiple')
-          <x-panel-form-input-locale
-            :name="$column['name'].'.*'"
-            :title="$column['label']"
-            :placeholder="$column['placeholder'] ?? ''"
-            :error="$errors->first($column['name'])"
-            :required="$column['required'] ? true : false"
-            :value="old($column['name'], $column['value'] ?? '')" />
-        @endif --}}
-
-        @if ($column['type'] == 'select')
-          <x-panel-form-select
-            :name="$column['name']"
-            :title="$column['label']"
-            :value="old($column['name'], $column['value'] ?? '')"
-            :options="$column['options']">
-            @if (isset($column['description']))
-              <div class="help-text font-size-12 lh-base">{{ $column['description'] }}</div>
+            @if ($field['type'] == 'string')
+              <x-common-form-input
+                :name="$field['name']"
+                :title="$field['label']"
+                :placeholder="$field['placeholder'] ?? ''"
+                :description="$field['description'] ?? ''"
+                :error="$errors->first($field['name'])"
+                :required="(bool)$field['required']"
+                :value="old($field['name'], $field['value'] ?? '')" />
             @endif
-          </x-panel-form-select>
-        @endif
 
-        @if ($column['type'] == 'bool')
-          <x-panel-form-switch-radio
-            :name="$column['name']"
-            :title="$column['label']"
-            :value="old($column['name'], $column['value'] ?? '')">
-            @if (isset($column['description']))
-              <div class="help-text font-size-12 lh-base">{{ $column['description'] }}</div>
+            @if ($field['type'] == 'multi-string')
+              <x-common-form-input
+                :name="$field['name']"
+                :title="$field['label']"
+                :placeholder="$field['placeholder'] ?? ''"
+                :description="$field['description'] ?? ''"
+                :error="$errors->first($field['name'])"
+                :required="(bool)$field['required']"
+                :is-locales="true"
+                :value="old($field['name'], $field['value'] ?? '')" />
             @endif
-          </x-panel-form-switch-radio>
-        @endif
 
-        @if ($column['type'] == 'textarea')
-          <x-panel-form-textarea
-            :name="$column['name']"
-            :title="$column['label']"
-            :required="$column['required'] ? true : false"
-            :value="old($column['name'], $column['value'] ?? '')">
-            @if (isset($column['description']))
-              <div class="help-text font-size-12 lh-base">{{ $column['description'] }}</div>
+            @if ($field['type'] == 'select')
+              <x-common-form-select
+                :name="$field['name']"
+                :title="$field['label']"
+                :value="old($field['name'], $field['value'] ?? '')"
+                :options="$field['options']">
+                @if (isset($field['description']))
+                  <div class="help-text font-size-12 lh-base">{{ $field['description'] }}</div>
+                @endif
+              </x-common-form-select>
             @endif
-          </x-panel-form-textarea>
-        @endif
 
-        @if ($column['type'] == 'rich-text')
-          <x-panel-form-rich-text
-            :name="$column['name']"
-            :title="$column['label']"
-            :value="old($column['name'], $column['value'] ?? '')"
-            :required="$column['required'] ? true : false"
-            :multiple="$column['multiple'] ?? false"
-            >
-            @if (isset($column['description']))
-              <div class="help-text font-size-12 lh-base">{{ $column['description'] }}</div>
+            @if ($field['type'] == 'bool')
+              <x-common-form-switch-radio
+                :name="$field['name']"
+                :title="$field['label']"
+                :value="old($field['name'], $field['value'] ?? '')">
+                @if (isset($field['description']))
+                  <div class="help-text font-size-12 lh-base">{{ $field['description'] }}</div>
+                @endif
+              </x-common-form-switch-radio>
             @endif
-          </x-panel-form-rich-text>
-        @endif
 
-        @if ($column['type'] == 'checkbox')
-          <x-panel::form.row :title="$column['label']" :required="$column['required'] ? true : false">
-            <div class="form-checkbox">
-              @foreach ($column['options'] as $item)
-              <div class="form-check d-inline-block mt-2 me-3">
-                <input
-                  class="form-check-input"
-                  name="{{ $column['name'] }}[]"
-                  type="checkbox"
-                  value="{{ old($column['name'], $item['value']) }}"
-                  {{ in_array($item['value'], old($column['name'], json_decode($column['value'] ?? '[]', true))) ? 'checked' : '' }}
-                  id="flexCheck-{{ $column['name'] }}-{{ $loop->index }}">
-                <label class="form-check-label" for="flexCheck-{{ $column['name'] }}-{{ $loop->index }}">
-                  {{ $item['label'] }}
-                </label>
-              </div>
-              @endforeach
-            </div>
-            @if (isset($column['description']))
-              <div class="help-text font-size-12 lh-base">{{ $column['description'] }}</div>
+            @if ($field['type'] == 'textarea')
+              <x-common-form-textarea
+                :name="$field['name']"
+                :title="$field['label']"
+                :required="(bool)$field['required']"
+                :value="old($field['name'], $field['value'] ?? '')">
+                @if (isset($field['description']))
+                  <div class="help-text font-size-12 lh-base">{{ $field['description'] }}</div>
+                @endif
+              </x-common-form-textarea>
             @endif
-          </x-panel::form.row>
-        @endif
-      @endforeach
 
-      <x-panel::form.bottom-btns/>
+            @if ($field['type'] == 'multi-textarea')
+              <x-common-form-textarea
+                :name="$field['name']"
+                :title="$field['label']"
+                :required="(bool)$field['required']"
+                :is-locales="true"
+                :value="old($field['name'], $field['value'] ?? '')">
+                @if (isset($field['description']))
+                  <div class="help-text font-size-12 lh-base">{{ $field['description'] }}</div>
+                @endif
+              </x-common-form-textarea>
+            @endif
+
+            @if ($field['type'] == 'rich-text')
+              <x-common-form-rich-text
+                :name="$field['name']"
+                :title="$field['label']"
+                :value="old($field['name'], $field['value'] ?? '')"
+                :required="(bool)$field['required']"
+                >
+                @if (isset($field['description']))
+                  <div class="help-text font-size-12 lh-base">{{ $field['description'] }}</div>
+                @endif
+              </x-common-form-rich-text>
+            @endif
+
+            @if ($field['type'] == 'multi-rich-text')
+              <x-common-form-rich-text
+                :name="$field['name']"
+                :title="$field['label']"
+                :value="old($field['name'], $field['value'] ?? '')"
+                :required="(bool)$field['required']"
+                :is-locales="true"
+                >
+                @if (isset($field['description']))
+                  <div class="help-text font-size-12 lh-base">{{ $field['description'] }}</div>
+                @endif
+              </x-common-form-rich-text>
+            @endif
+
+            @if ($field['type'] == 'checkbox')
+              <x-panel::form.row :title="$field['label']" :required="(bool)$field['required']">
+                <div class="form-checkbox">
+                  @foreach ($field['options'] as $item)
+                  <div class="form-check d-inline-block mt-2 me-3">
+                    <input
+                      class="form-check-input"
+                      name="{{ $field['name'] }}[]"
+                      type="checkbox"
+                      value="{{ old($field['name'], $item['value']) }}"
+                      {{ in_array($item['value'], old($field['name'], json_decode($field['value'] ?? '[]', true))) ? 'checked' : '' }}
+                      id="flexCheck-{{ $field['name'] }}-{{ $loop->index }}">
+                    <label class="form-check-label" for="flexCheck-{{ $field['name'] }}-{{ $loop->index }}">
+                      {{ $item['label'] }}
+                    </label>
+                  </div>
+                  @endforeach
+                </div>
+                @if (isset($field['description']))
+                  <div class="help-text font-size-12 lh-base">{{ $field['description'] }}</div>
+                @endif
+              </x-panel::form.row>
+            @endif
+          @endforeach
+        </div>
+      </div>
     </form>
   </div>
 </div>

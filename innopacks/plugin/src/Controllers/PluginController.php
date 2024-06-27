@@ -1,20 +1,21 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
- * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @link       https://www.innoshop.com
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
 namespace InnoShop\Plugin\Controllers;
 
 use Exception;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use InnoShop\Plugin\Repositories\PluginRepo;
 use InnoShop\Plugin\Repositories\SettingRepo;
 use InnoShop\Plugin\Resources\PluginResource;
+use InnoShop\Plugin\Services\PluginService;
 use Throwable;
 
 class PluginController
@@ -44,7 +45,7 @@ class PluginController
         try {
             $code   = $request->get('code');
             $plugin = app('plugin')->getPluginOrFail($code);
-            PluginRepo::getInstance()->installPlugin($plugin);
+            PluginService::getInstance()->installPlugin($plugin);
 
             return json_success(trans('panel::common.saved_success'));
         } catch (Exception $e) {
@@ -60,7 +61,7 @@ class PluginController
     {
         try {
             $plugin = app('plugin')->getPluginOrFail($code);
-            PluginRepo::getInstance()->uninstallPlugin($plugin);
+            PluginService::getInstance()->uninstallPlugin($plugin);
 
             return json_success(trans('panel::common.deleted_success'));
         } catch (Exception $e) {
@@ -69,21 +70,21 @@ class PluginController
     }
 
     /**
+     * @param  Request  $request
      * @param  $code
-     * @return mixed
+     * @return View
+     * @throws Exception
      */
-    public function edit($code): mixed
+    public function edit(Request $request, $code): View
     {
         try {
             $plugin = app('plugin')->getPluginOrFail($code);
-            $view   = 'plugin::plugins.form';
-
-            $data = [
-                'view'    => $view,
-                'plugin'  => $plugin,
-                'columns' => $plugin->getColumns(),
+            $view   = $plugin->getFieldView() ?: 'plugin::plugins.form';
+            $data   = [
+                'view'   => $view,
+                'plugin' => $plugin,
+                'fields' => $plugin->getFields(),
             ];
-            $data = fire_hook_filter('admin.plugin.edit.data', $data);
 
             return view($view, $data);
         } catch (\Exception $e) {
@@ -100,26 +101,24 @@ class PluginController
 
     /**
      * @param  Request  $request
-     * @param  $code
+     * @param  string  $code
      * @return mixed
      * @throws Throwable
      */
-    public function update(Request $request, $code): mixed
+    public function update(Request $request, string $code): mixed
     {
         $fields = $request->all();
         $plugin = app('plugin')->getPluginOrFail($code);
-        if (method_exists($plugin, 'validate')) {
-            $validator = $plugin->validate($fields);
+        if (method_exists($plugin, 'validateFields')) {
+            $validator = $plugin->validateFields($fields);
             if ($validator->fails()) {
                 return back()->withErrors($validator)->withInput();
             }
         }
-
         SettingRepo::getInstance()->updateValues($fields, $code);
+        $currentUrl = panel_route('plugins.edit', [$code]);
 
-        $url = panel_route('plugins.edit', $code);
-
-        return redirect($url)->with('success', trans('panel::common.updated_success'));
+        return redirect($currentUrl)->with('success', trans('panel::common.updated_success'));
     }
 
     /**
@@ -132,7 +131,7 @@ class PluginController
             $code    = $request->get('code');
             $enabled = $request->get('enabled');
             app('plugin')->getPluginOrFail($code);
-            SettingRepo::getInstance()->updateValue('active', $enabled, $code);
+            SettingRepo::getInstance()->updatePluginValue($code, 'active', $enabled);
 
             return json_success(trans('panel::common.updated_success'));
         } catch (Exception $e) {

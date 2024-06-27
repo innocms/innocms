@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -47,7 +47,7 @@ return [
     'admin_account'    => '管理员账号',
     'admin_password'   => '管理员密码',
     'install_complete' => '安装完成',
-    'congratulations'  => '恭喜您，InnoCMS 安装成功！',
+    'congratulations'  => '恭喜您，系统安装成功！',
     'visit_frontend'   => '访问前台',
     'visit_backend'    => '访问后台',
     'check_system'     => '请检测系统环境',

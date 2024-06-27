@@ -94,8 +94,8 @@
       formData.append('type', _self.parents('.is-up-file').data('type'));
       _self.find('.img-loading').removeClass('d-none');
       axios.post('{{ config('app.url') }}/upload/images', formData, {}).then(function (res) {
-          let val = res.data.data.value;
-          let url = res.data.data.url;
+          let val = res.data.value;
+          let url = res.data.url;
           _self.find('input').val(val);
           _self.find('.tool-wrap').removeClass('d-none');
           _self.find('.img-info').html('<img src="' + url + '" class="img-fluid" data-origin-img="' + url + '">');

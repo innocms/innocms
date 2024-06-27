@@ -5,7 +5,7 @@
  * Inspired by https://github.com/esemve/Hook
  *
  * @link       https://www.innoshop.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -84,8 +84,6 @@ class Hook
         if (config('app.debug') && has_debugbar()) {
             Debugbar::log("HOOK === @hookinsert: $hook");
         }
-
-        $this->isUpdate = false;
 
         return $this->get($hook, $params, $callback, $htmlContent);
     }

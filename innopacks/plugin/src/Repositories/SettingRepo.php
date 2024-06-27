@@ -15,27 +15,27 @@ use InnoShop\Plugin\Models\Setting;
 class SettingRepo extends CommonSettingRepo
 {
     /**
-     * Get plugin active column.
+     * Get plugin active field.
      *
      * @return array
      */
-    public function getPluginActiveColumn(): array
+    public function getPluginActiveField(): array
     {
         return [
             'name'     => 'active',
-            'label'    => trans('panel::common.active'),
+            'label'    => trans('panel::common.status'),
             'type'     => 'bool',
             'required' => true,
         ];
     }
 
     /**
-     * Get all columns by plugin code.
+     * Get all fields by plugin code.
      *
      * @param  $pluginCode
      * @return mixed
      */
-    public static function getPluginColumns($pluginCode): mixed
+    public function getPluginFields($pluginCode): mixed
     {
         return Setting::query()
             ->where('space', $pluginCode)

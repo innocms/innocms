@@ -1,14 +1,15 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
- * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @link       https://www.innoshop.com
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
+use InnoCMS\Panel\Repositories\LocaleRepo;
 
 if (! function_exists('panel_name')) {
     /**
@@ -22,33 +23,74 @@ if (! function_exists('panel_name')) {
     }
 }
 
-if (! function_exists('panel_locale')) {
+if (! function_exists('panel_locales')) {
+    /**
+     * Get available locales
+     *
+     * @return array
+     * @throws Exception
+     */
+    function panel_locales(): array
+    {
+        return LocaleRepo::getInstance()->getPanelLanguages();
+    }
+}
+
+if (! function_exists('panel_locale_code')) {
     /**
      * Get panel locale code
      *
      * @return string
+     * @throws Exception
      */
-    function panel_locale(): string
+    function panel_locale_code(): string
     {
-        if (is_admin()) {
-            return current_admin()->locale;
-        }
-
-        return locale();
+        return current_admin()->locale ?? locale_code();
     }
 }
 
-if (! function_exists('panel_languages')) {
+if (! function_exists('current_panel_locale')) {
+    /**
+     * Get current locale code.
+     *
+     * @return array
+     * @throws Exception
+     */
+    function current_panel_locale(): array
+    {
+        return LocaleRepo::getInstance()->getLocaleByCode(panel_locale_code());
+    }
+}
+
+if (! function_exists('panel_lang_path_codes')) {
     /**
      * Get all panel languages
      *
      * @return array
      */
-    function panel_languages(): array
+    function panel_lang_path_codes(): array
     {
-        $languageDir = inno_path('panel/lang');
+        $languageDir = panel_lang_dir();
 
         return array_values(array_diff(scandir($languageDir), ['..', '.', '.DS_Store']));
+    }
+}
+
+if (! function_exists('panel_lang_dir')) {
+    /**
+     * Get all panel languages
+     *
+     * @return string
+     */
+    function panel_lang_dir(): string
+    {
+        if (is_dir(lang_path('vendor/panel'))) {
+            $languageDir = lang_path('vendor/panel');
+        } else {
+            $languageDir = inno_path('panel/lang');
+        }
+
+        return $languageDir;
     }
 }
 
@@ -68,7 +110,7 @@ if (! function_exists('panel_route')) {
 
             return route($panelName.'.'.$name, $parameters, $absolute);
         } catch (\Exception $e) {
-            return route($panelName.'.home.index');
+            return route($panelName.'.dashboard.index');
         }
 
     }

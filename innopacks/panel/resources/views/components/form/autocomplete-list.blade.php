@@ -17,7 +17,7 @@
     $('.input-autocomplete').autocomplete({
       'source': function(request, response) {
         axios.get('{{ $api }}/autocomplete?keyword=' + encodeURIComponent(request)).then(function(res) {
-          response($.map(res.data.data, function(item) {
+          response($.map(res.data, function(item) {
             return {
               label: item['name'],
               value: item['id']
@@ -48,7 +48,7 @@
 <script>
   var values = @json($value);
   axios.get('{{ $api }}?tag_ids=' + values.join(',')).then(function(res) {
-    var data = res.data.data;
+    var data = res.data;
     var list = $('.autocomplete-list-{{ $id }} ul');
     for (var i = 0; i < values.length; i++) {
       var value = values[i];

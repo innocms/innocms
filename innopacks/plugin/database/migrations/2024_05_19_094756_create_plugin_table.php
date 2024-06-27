@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plugins', function (Blueprint $table) {
-            $table->comment('Plugin');
-            $table->bigIncrements('id')->comment('ID');
-            $table->string('type')->comment('Type: shipping, payment');
-            $table->string('code')->comment('Code, Unique');
-            $table->integer('priority')->comment('Plugin Priority');
-            $table->timestamps();
-        });
+        if (! Schema::hasTable('plugins')) {
+            Schema::create('plugins', function (Blueprint $table) {
+                $table->comment('Plugin');
+                $table->bigIncrements('id')->comment('ID');
+                $table->string('type')->comment('Type: shipping, payment');
+                $table->string('code')->comment('Code, Unique');
+                $table->integer('priority')->comment('Plugin Priority');
+                $table->timestamps();
+            });
+        }
 
         if (! Schema::hasTable('settings')) {
             Schema::create('settings', function (Blueprint $table) {

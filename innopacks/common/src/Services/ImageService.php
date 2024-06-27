@@ -57,13 +57,14 @@ class ImageService
     /**
      * Set plugin directory name
      *
-     * @param  $pluginCode
+     * @param  $dirName
      * @return $this
      */
-    public function setPluginCode($pluginCode): static
+    public function setPluginDirName($dirName): static
     {
-        $plugin  = plugin($pluginCode);
-        $dirName = $plugin->getDirname();
+        if ($this->image == $this->placeholderImage) {
+            return $this;
+        }
 
         $originImage     = $this->originImage;
         $this->imagePath = plugin_path("{$dirName}/Static").$originImage;
@@ -92,7 +93,7 @@ class ImageService
 
             $newImagePath = public_path($newImage);
             if (! is_file($newImagePath) || (filemtime($this->imagePath) > filemtime($newImagePath))) {
-                create_directories(dirname($newImage));
+                create_directories(dirname($newImagePath));
 
                 $manager = new ImageManager(new Driver());
                 $image   = $manager->read($this->imagePath);

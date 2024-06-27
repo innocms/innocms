@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -47,7 +47,7 @@ return [
     'admin_account'    => 'Administrator Account',
     'admin_password'   => 'Administrator Password',
     'install_complete' => 'Installation Complete',
-    'congratulations'  => 'Congratulations, the installation of InnoCMS is successful!',
+    'congratulations'  => 'Congratulations, installed successful!',
     'visit_frontend'   => 'Visit Shop',
     'visit_backend'    => 'Visit Panel',
     'check_system'     => 'Please check the system environment',

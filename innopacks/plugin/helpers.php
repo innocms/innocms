@@ -14,19 +14,6 @@ use InnoCMS\Common\Services\ImageService;
 use InnoShop\Plugin\Core\Blade\Hook;
 use InnoShop\Plugin\Core\Plugin;
 
-if (! function_exists('plugin_path')) {
-    /**
-     * Get plugin path
-     *
-     * @param  string  $path
-     * @return string
-     */
-    function plugin_path(string $path = ''): string
-    {
-        return base_path('plugins').($path ? '/'.ltrim($path, '/') : $path);
-    }
-}
-
 if (! function_exists('plugin')) {
     /**
      * Get plugin object.
@@ -37,6 +24,36 @@ if (! function_exists('plugin')) {
     function plugin($code): ?Plugin
     {
         return app('plugin')->getPlugin($code);
+    }
+}
+
+if (! function_exists('plugin_setting')) {
+    /**
+     * @param  $code
+     * @param  string  $key
+     * @param  null  $default
+     * @return mixed
+     */
+    function plugin_setting($code, string $key = '', $default = null): mixed
+    {
+        if ($key) {
+            return setting("{$code}.{$key}", $default);
+        }
+
+        return setting("{$code}", $default);
+    }
+}
+
+if (! function_exists('plugin_path')) {
+    /**
+     * Get plugin path
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function plugin_path(string $path = ''): string
+    {
+        return base_path('plugins').($path ? '/'.ltrim($path, '/') : $path);
     }
 }
 
@@ -57,7 +74,10 @@ if (! function_exists('plugin_resize')) {
             return $image;
         }
 
-        return ImageService::getInstance($image)->setPluginCode($pluginCode)->resize($width, $height);
+        $plugin        = plugin($pluginCode);
+        $pluginDirName = $plugin->getDirname();
+
+        return ImageService::getInstance($image)->setPluginDirName($pluginDirName)->resize($width, $height);
     }
 }
 

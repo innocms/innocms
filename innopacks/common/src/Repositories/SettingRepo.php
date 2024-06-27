@@ -75,17 +75,41 @@ class SettingRepo extends BaseRepo
     /**
      * @param  $name
      * @param  $value
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function updateSystemValue($name, $value): mixed
+    {
+        return $this->updateValue($name, $value, 'system');
+    }
+
+    /**
+     * @param  $code
+     * @param  $name
+     * @param  $value
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function updatePluginValue($code, $name, $value): mixed
+    {
+        return $this->updateValue($name, $value, $code);
+    }
+
+    /**
+     * @param  $name
+     * @param  $value
      * @param  string  $space
      * @return mixed
      * @throws \Throwable
      */
-    public function updateValue($name, $value, string $space = 'system'): mixed
+    private function updateValue($name, $value, string $space): mixed
     {
         if ($value === null) {
             $value = '';
         }
 
-        $setting     = $this->builder(['space' => $space, 'name' => $name])->first();
+        $setting = $this->builder(['space' => $space, 'name' => $name])->first();
+
         $settingData = [
             'space' => $space,
             'name'  => $name,

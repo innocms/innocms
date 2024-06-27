@@ -129,20 +129,120 @@ if (! function_exists('current_customer')) {
     }
 }
 
-if (! function_exists('locale')) {
+if (! function_exists('current_customer_id')) {
+    /**
+     * Get current customer ID
+     *
+     * @return int
+     */
+    function current_customer_id(): int
+    {
+        $customer = current_customer();
+
+        return $customer->id ?? 0;
+    }
+}
+
+if (! function_exists('current_guest_id')) {
+    /**
+     * Get guest ID from session ID
+     *
+     * @return string
+     */
+    function current_guest_id(): string
+    {
+        return session()->getId();
+    }
+}
+
+if (! function_exists('locales')) {
+    /**
+     * Get available locales
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    function locales(): mixed
+    {
+        return LocaleRepo::getInstance()->getActiveList();
+    }
+}
+
+if (! function_exists('front_locale_code')) {
     /**
      * Get current locale code.
      *
      * @return string
      */
-    function locale(): string
+    function front_locale_code(): string
+    {
+        return \session('locale') ?? system_setting('front_locale', config('app.locale'));
+    }
+}
+
+if (! function_exists('locale_code')) {
+    /**
+     * Get current locale code.
+     *
+     * @return string
+     * @throws Exception
+     */
+    function locale_code(): string
     {
         $configLocale = config('app.locale');
         if (is_admin()) {
-            return current_admin()->locale ?? $configLocale;
+            $locale = current_admin()->locale ?? $configLocale;
+            if (locales()->contains('code', $locale)) {
+                return $locale;
+            }
         }
 
-        return Session::get('locale') ?? system_setting('base.locale', $configLocale);
+        return \session('locale') ?? system_setting('front_locale', $configLocale);
+    }
+}
+
+if (! function_exists('current_locale')) {
+    /**
+     * Get current locale code.
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    function current_locale(): mixed
+    {
+        return LocaleRepo::getInstance()->builder(['code' => front_locale_code()])->first();
+    }
+}
+
+if (! function_exists('front_lang_path_codes')) {
+    /**
+     * Get all panel languages
+     *
+     * @return array
+     */
+    function front_lang_path_codes(): array
+    {
+        $languageDir = front_lang_dir();
+
+        return array_values(array_diff(scandir($languageDir), ['..', '.', '.DS_Store']));
+    }
+}
+
+if (! function_exists('front_lang_dir')) {
+    /**
+     * Get all panel languages
+     *
+     * @return string
+     */
+    function front_lang_dir(): string
+    {
+        if (is_dir(lang_path('vendor/front'))) {
+            $languageDir = lang_path('vendor/front');
+        } else {
+            $languageDir = inno_path('panel/lang');
+        }
+
+        return $languageDir;
     }
 }
 

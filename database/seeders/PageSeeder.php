@@ -306,6 +306,34 @@ class PageSeeder extends Seeder
                 'created_at'       => '2024-05-11 08:23:05',
                 'updated_at'       => '2024-05-11 08:23:05',
             ],
+
+            [
+                'page_id'          => 1,
+                'locale'           => 'en',
+                'title'            => 'Creations',
+                'content'          => 'This is Creations page for English',
+                'meta_title'       => 'Creations',
+                'meta_description' => 'Creations',
+                'meta_keywords'    => 'Creations',
+            ],
+            [
+                'page_id'          => 2,
+                'locale'           => 'en',
+                'title'            => 'Services',
+                'content'          => 'This is Services page for English',
+                'meta_title'       => 'Services',
+                'meta_description' => 'Services',
+                'meta_keywords'    => 'Services',
+            ],
+            [
+                'page_id'          => 3,
+                'locale'           => 'en',
+                'title'            => 'About',
+                'content'          => 'This is About page for English',
+                'meta_title'       => 'About Us',
+                'meta_description' => 'About Us',
+                'meta_keywords'    => 'About Us',
+            ],
         ];
     }
 }

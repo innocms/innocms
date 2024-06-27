@@ -1,19 +1,16 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
- * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @link       https://www.innoshop.com
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
 namespace InnoShop\Plugin\Repositories;
 
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Artisan;
-use InnoShop\Plugin\Core\Plugin as CPlugin;
 use InnoShop\Plugin\Models\Plugin;
 
 class PluginRepo
@@ -126,88 +123,36 @@ class PluginRepo
     }
 
     /**
-     * Install plugin.
-     *
-     * @param  CPlugin  $CPlugin
-     * @throws Exception
+     * Get all shipping methods.
      */
-    public function installPlugin(CPlugin $CPlugin): void
+    public function getShippingMethods(): Collection
     {
-        $this->migrateDatabase($CPlugin);
-        $type = $CPlugin->getType();
-        $code = $CPlugin->getCode();
+        $allPlugins = $this->allPlugins();
 
-        $params = [
-            'type'     => $type,
-            'code'     => $code,
-            'priority' => 0,
-        ];
-        $plugin = $this->getBuilder($params)->first();
-        if (empty($plugin)) {
-            Plugin::query()->create($params);
-        }
-    }
-
-    /**
-     * Migrate plugin database.
-     *
-     * @param  CPlugin  $CPlugin
-     * @return void
-     */
-    public function migrateDatabase(CPlugin $CPlugin): void
-    {
-        $migrationPath = "{$CPlugin->getPath()}/Migrations";
-        if (is_dir($migrationPath)) {
-            $files = glob($migrationPath.'/*');
-            asort($files);
-
-            foreach ($files as $file) {
-                $file = str_replace(base_path(), '', $file);
-                Artisan::call('migrate', [
-                    '--force' => true,
-                    '--step'  => 1,
-                    '--path'  => $file,
-                ]);
+        return $allPlugins->where('type', 'shipping')->filter(function ($item) {
+            $plugin = plugin($item->code);
+            if ($plugin) {
+                $item->plugin = $plugin;
             }
-        }
+
+            return $plugin && $plugin->getEnabled();
+        });
     }
 
     /**
-     * Uninstall plugin
-     *
-     * @param  CPlugin  $CPlugin
-     * @return void
+     * Get all billing methods.
      */
-    public function uninstallPlugin(CPlugin $CPlugin): void
+    public function getBillingMethods(): Collection
     {
-        $this->rollbackDatabase($CPlugin);
-        $filters = [
-            'type' => $CPlugin->getType(),
-            'code' => $CPlugin->getCode(),
-        ];
-        $this->getBuilder($filters)->delete();
-    }
+        $allPlugins = $this->allPlugins();
 
-    /**
-     * @param  CPlugin  $CPlugin
-     * @return void
-     */
-    public function rollbackDatabase(CPlugin $CPlugin): void
-    {
-        $migrationPath = "{$CPlugin->getPath()}/Migrations";
-        if (! is_dir($migrationPath)) {
-            return;
-        }
+        return $allPlugins->where('type', 'billing')->filter(function ($item) {
+            $plugin = plugin($item->code);
+            if ($plugin) {
+                $item->plugin = $plugin;
+            }
 
-        $files = glob($migrationPath.'/*');
-        arsort($files);
-        foreach ($files as $file) {
-            $file = str_replace(base_path(), '', $file);
-            Artisan::call('migrate:rollback', [
-                '--force' => true,
-                '--step'  => 1,
-                '--path'  => $file,
-            ]);
-        }
+            return $plugin && $plugin->getEnabled();
+        });
     }
 }

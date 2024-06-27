@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use InnoCMS\Panel\Middleware\SetPanelLocale;
 use InnoShop\Plugin\Core\PluginManager;
 
 class PluginServiceProvider extends ServiceProvider
@@ -49,11 +50,12 @@ class PluginServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerMigrations();
+
         if (! installed()) {
             return;
         }
 
-        $this->registerMigrations();
         $this->registerBladeInsertDirectives();
         $this->registerBladeUpdateDirectives();
 
@@ -78,7 +80,7 @@ class PluginServiceProvider extends ServiceProvider
     {
         $adminName = panel_name();
         Route::prefix($adminName)
-            ->middleware(['web', 'admin_auth:admin'])
+            ->middleware(['web', 'admin_auth:admin', SetPanelLocale::class])
             ->name("$adminName.")
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
@@ -192,7 +194,7 @@ class PluginServiceProvider extends ServiceProvider
             $adminName = panel_name();
             Route::prefix($adminName)
                 ->name("$adminName.")
-                ->middleware(['web', 'admin_auth:admin'])
+                ->middleware(['web', 'admin_auth:admin', SetPanelLocale::class])
                 ->group(function () use ($adminRoutePath) {
                     $this->loadRoutesFrom($adminRoutePath);
                 });
@@ -236,8 +238,10 @@ class PluginServiceProvider extends ServiceProvider
      */
     private function loadPluginViews($pluginCode): void
     {
-        $pluginBasePath = $this->pluginBasePath;
-        $this->loadViewsFrom("$pluginBasePath/$pluginCode/Views", $pluginCode);
+        $pluginViewPath = $this->pluginBasePath."/$pluginCode/Views";
+        if (file_exists($pluginViewPath)) {
+            $this->loadViewsFrom($pluginViewPath, $pluginCode);
+        }
     }
 
     /**
