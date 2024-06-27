@@ -1,6 +1,13 @@
 <pre>
 Copyright (c) Since 2024 InnoCMS.
 
+This system is open source and free for commercial use. The open-source license is based on the Open Software License version 3.0 (OSL-3.0) available at https://opensource.org/license/osl-3-0. Users of this system must adhere to the following conditions:
+
+1) The open-source license file LICENSE.txt in the root directory must be preserved and shall not be altered.
+2) The original copyright notices in the code comments must be retained and shall not be modified.
+3) The built-in official plugin marketplace of the system must be preserved and shall not be removed, concealed, or altered.
+4) In the event of a legitimate need to alter any of the aforementioned three provisions, it is mandatory to obtain individual and explicit authorization from the official body.
+
 Open Software License v. 3.0 (OSL-3.0)
 
 This Open Software License (the "License") applies to any original work of authorship (the "Original Work") whose owner (the "Licensor") has placed the following licensing notice adjacent to the copyright notice for the Original Work:
@@ -42,5 +49,5 @@ e) to display the Original Work publicly.
 
 15) Right to Use. You may use the Original Work in all ways not otherwise restricted or conditioned by this License or by law, and Licensor promises not to interfere with or be responsible for such uses by You.
 
-16) Modification of This License. This License is Copyright © 2005 Lawrence Rosen. Permission is granted to copy, distribute, or communicate this License without modification. Nothing in this License permits You to modify this License as applied to the Original Work or to Derivative Works. However, You may modify the text of this License and copy, distribute or communicate your modified version (the "Modified License") and apply it to other original works of authorship subject to the following conditions: (i) You may not indicate in any way that your Modified License is the "Open Software License" or "OSL" and you may not use those names in the name of your Modified License; (ii) You must replace the notice specified in the first paragraph above with the notice "Licensed under <insert your license name here>" or with a notice of your own that is not confusingly similar to the notice in this License; and (iii) You may not claim that your original works are open source software unless your Modified License has been approved by Open Source Initiative (OSI) and You comply with its license review and certification process.
+16) Modification of This License. This License is Copyright © 2005 Lawrence Rosen. Permission is granted to copy, distribute, or communicate this License without modification. Nothing in this License permits You to modify this License as applied to the Original Work or to Derivative Works. However, You may modify the text of this License and copy, distribute or communicate your modified version (the "Modified License") and apply it to other original works of authorship subject to the following conditions: (i) You may not indicate in any way that your Modified License is the "Open Software License" or "OSL" and you may not use those names in the name of your Modified License; (ii) You must replace the notice specified in the first paragraph above with the notice "Licensed under < insert your license name here >" or with a notice of your own that is not confusingly similar to the notice in this License; and (iii) You may not claim that your original works are open source software unless your Modified License has been approved by Open Source Initiative (OSI) and You comply with its license review and certification process.
 </pre>

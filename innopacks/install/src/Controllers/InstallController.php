@@ -2,7 +2,7 @@
 /**
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innocms.com
+ * @link       https://www.innoshop.com
  * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
@@ -32,9 +32,12 @@ class InstallController extends Controller
 
         $defaultLocale = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         $defaultLocale = ($defaultLocale == 'zh' ? 'zh_cn' : $defaultLocale);
-        App::setLocale($request->get('locale', $defaultLocale));
+        $locale        = $request->get('locale', $defaultLocale);
+        App::setLocale($locale);
 
-        $data = (new Checker())->checkEnvironment();
+        $data = Checker::getInstance()->getEnvironment();
+
+        $data['locale'] = $locale;
 
         return view('install::installer.index', $data);
     }
@@ -51,7 +54,7 @@ class InstallController extends Controller
     /**
      * @param  Request  $request
      * @return JsonResponse
-     * @throws Exception|Throwable
+     * @throws Throwable
      */
     public function complete(Request $request): JsonResponse
     {

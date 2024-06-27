@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -17,7 +17,7 @@ use PDOException;
 class Checker
 {
     /**
-     * @return Checker
+     * @return self
      */
     public static function getInstance(): Checker
     {
@@ -25,33 +25,9 @@ class Checker
     }
 
     /**
-     * @param  $folder
-     * @param  $permission
-     * @return bool
-     */
-    public function checkPermission($folder, $permission): bool
-    {
-        if (! ($this->getPermission($folder) >= $permission) && php_uname('s') != 'Windows NT') {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param  $folder
-     * @return string
-     */
-    private function getPermission($folder): string
-    {
-        return substr(sprintf('%o', fileperms(base_path($folder))), -4);
-    }
-
-    /**
-     * Check environment.
      * @return array
      */
-    public function checkEnvironment(): array
+    public function getEnvironment(): array
     {
         $phpVersion = phpversion();
 
@@ -79,6 +55,29 @@ class Checker
     }
 
     /**
+     * @param  $folder
+     * @param  $permission
+     * @return bool
+     */
+    public function checkPermission($folder, $permission): bool
+    {
+        if (! ($this->getPermission($folder) >= $permission) && php_uname('s') != 'Windows NT') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  $folder
+     * @return string
+     */
+    private function getPermission($folder): string
+    {
+        return substr(sprintf('%o', fileperms(base_path($folder))), -4);
+    }
+
+    /**
      * Check database connected.
      *
      * @param  $data
@@ -86,38 +85,25 @@ class Checker
      */
     public function checkConnection($data): array
     {
-        $connection = strtolower($data['type']);
-        $settings   = config("database.connections.$connection");
-        config([
-            'database' => [
-                'default'     => $connection,
-                'connections' => [
-                    $connection => array_merge($settings, [
-                        'driver'   => $connection,
-                        'host'     => $data['db_hostname'],
-                        'port'     => $data['db_port'],
-                        'database' => $data['db_name'],
-                        'username' => $data['db_username'],
-                        'password' => $data['db_password'],
-                        'options'  => [
-                            PDO::ATTR_TIMEOUT => 1,
-                        ],
-                    ]),
-                ],
-            ],
-        ]);
+        $type = strtolower($data['type']);
+        if ($type == 'mysql') {
+            $this->configMySQL($data);
+        } elseif ($type == 'sqlite') {
+            $this->configSQLite();
+        }
+
         DB::purge();
         $result = [];
         try {
             $pdo     = DB::connection()->getPdo();
             $version = $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
-            if (version_compare($version, '5.7', '<')) {
+            if ($type == 'mysql' && version_compare($version, '5.7', '<')) {
                 $result['db_version'] = trans('install::common.invalid_version');
 
                 return $result;
             }
             $result['db_success'] = true;
-            (new Creator())->saveEnv($data);
+            Creator::getInstance()->saveEnv($data);
 
             return $result;
         } catch (PDOException $e) {
@@ -145,5 +131,57 @@ class Checker
         }
 
         return $result;
+    }
+
+    /**
+     * @param  $data
+     * @return void
+     */
+    private function configMySQL($data): void
+    {
+        $settings = config('database.connections.mysql');
+        config([
+            'database' => [
+                'default'     => 'mysql',
+                'connections' => [
+                    'mysql' => array_merge($settings, [
+                        'driver'   => 'mysql',
+                        'host'     => $data['db_hostname'],
+                        'port'     => $data['db_port'],
+                        'database' => $data['db_name'],
+                        'username' => $data['db_username'],
+                        'password' => $data['db_password'],
+                        'options'  => [
+                            PDO::ATTR_TIMEOUT => 1,
+                        ],
+                    ]),
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    private function configSQLite(): void
+    {
+        $databasePath = database_path('database.sqlite');
+        if (! file_exists($databasePath)) {
+            touch($databasePath);
+        }
+
+        $settings = config('database.connections.sqlite');
+        config([
+            'database' => [
+                'default'     => 'sqlite',
+                'connections' => [
+                    'sqlite' => array_merge($settings, [
+                        'driver'   => 'sqlite',
+                        'url'      => null,
+                        'database' => $databasePath,
+                    ]),
+                ],
+            ],
+        ]);
     }
 }

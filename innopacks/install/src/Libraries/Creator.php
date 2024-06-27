@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innoshop.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InnoCMS\Common\Models\Admin;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Throwable;
 
 class Creator
 {
@@ -39,7 +38,7 @@ class Creator
     /**
      * @param  $data
      * @return Creator
-     * @throws Exception|Throwable
+     * @throws Exception|\Throwable
      */
     public function setup($data): static
     {
@@ -68,6 +67,7 @@ class Creator
     {
         $scheme = is_secure() ? 'https' : 'http';
         $appUrl = $scheme.'://'.$_SERVER['HTTP_HOST'];
+        $dbType = strtolower($data['type']);
 
         $envFileData = 'APP_NAME='.($data['app_name'] ?? 'InnoCMS')."\n".
             'APP_ENV='.($data['environment'] ?? 'local')."\n".
@@ -75,18 +75,22 @@ class Creator
             'APP_DEBUG=false'."\n".
             'APP_TIMEZONE=UTC'."\n".
             'APP_URL='.$appUrl."\n\n".
-            'APP_LOCALE=zh_cn'."\n\n".
-            'INNOCMS_API_URL=https://www.innocms.com'."\n\n".
-            'DB_CONNECTION='.$data['type']."\n".
-            'DB_PREFIX='.($data['db_prefix'] ?: 'icms_')."\n".
-            'DB_HOST='.$data['db_hostname']."\n".
-            'DB_PORT='.$data['db_port']."\n".
-            'DB_DATABASE='.$data['db_name']."\n".
-            'DB_USERNAME='.$data['db_username']."\n".
-            'DB_PASSWORD=\''.$data['db_password']."'\n";
+            'APP_LOCALE=en'."\n\n".
+            'INNOCMS_API_URL=https://www.innoshop.com'."\n\n";
+        if ($dbType == 'mysql') {
+            $envFileData .= 'DB_CONNECTION='.$data['type']."\n".
+                'DB_PREFIX='.($data['db_prefix'] ?: 'inno_')."\n".
+                'DB_HOST='.$data['db_hostname']."\n".
+                'DB_PORT='.$data['db_port']."\n".
+                'DB_DATABASE='.$data['db_name']."\n".
+                'DB_USERNAME='.$data['db_username']."\n".
+                'DB_PASSWORD=\''.$data['db_password']."'\n";
+        } elseif ($dbType == 'sqlite') {
+            $envFileData .= 'DB_CONNECTION='.$data['type']."\n".
+                'DB_PREFIX='.($data['db_prefix'] ?: 'inno_')."\n";
+        }
 
         file_put_contents(base_path('.env'), $envFileData);
-        sleep(1);
     }
 
     /**
@@ -124,13 +128,17 @@ class Creator
     /**
      * @param  $data
      * @return void
-     * @throws Throwable
+     * @throws \Throwable
      */
     private function setAdmin($data): void
     {
         $email    = $data['admin_email'];
         $password = $data['admin_password'];
         $admin    = Admin::query()->first();
+        if (empty($admin)) {
+            $admin = new Admin();
+        }
+
         $admin->fill([
             'email'    => $email,
             'password' => bcrypt($password),
