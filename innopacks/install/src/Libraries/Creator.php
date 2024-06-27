@@ -76,10 +76,10 @@ class Creator
             'APP_TIMEZONE=UTC'."\n".
             'APP_URL='.$appUrl."\n\n".
             'APP_LOCALE=en'."\n\n".
-            'INNOCMS_API_URL=https://www.innoshop.com'."\n\n";
+            'INNOCMS_API_URL=https://www.innocms.com'."\n\n";
         if ($dbType == 'mysql') {
             $envFileData .= 'DB_CONNECTION='.$data['type']."\n".
-                'DB_PREFIX='.($data['db_prefix'] ?: 'inno_')."\n".
+                'DB_PREFIX='.($data['db_prefix'] ?: 'icms_')."\n".
                 'DB_HOST='.$data['db_hostname']."\n".
                 'DB_PORT='.$data['db_port']."\n".
                 'DB_DATABASE='.$data['db_name']."\n".
