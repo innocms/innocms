@@ -2,6 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
 
     InnoCMS\Common\CommonServiceProvider::class,
     InnoCMS\Panel\PanelServiceProvider::class,
