@@ -67,6 +67,8 @@ class AdminRepo extends BaseRepo
             $data['roles'] = collect($roles)->map(function ($item) {
                 return (int) $item;
             });
+        } else {
+            $data['roles'] = [];
         }
 
         return $data;

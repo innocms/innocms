@@ -216,6 +216,7 @@ final class Plugin
      * Get current locale name
      *
      * @return string
+     * @throws Exception
      */
     public function getLocaleName(): string
     {
@@ -246,6 +247,7 @@ final class Plugin
      * Get current local description
      *
      * @return string
+     * @throws Exception
      */
     public function getLocaleDescription(): string
     {

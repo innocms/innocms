@@ -10,7 +10,6 @@
 namespace InnoCMS\Panel\Controllers;
 
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Admin;
@@ -57,18 +56,20 @@ class AdminController extends BaseController
 
     /**
      * @param  Request  $request
-     * @return JsonResponse
+     * @return mixed
      * @throws Throwable
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): mixed
     {
         try {
             $data = $request->all();
             AdminRepo::getInstance()->create($data);
 
-            return json_success(trans('panel::common.created_success'));
+            return redirect(panel_route('admins.index'))
+                ->with('success', trans('panel::common.created_success'));
         } catch (Exception $e) {
-            return json_fail($e->getMessage());
+            return redirect(panel_route('admins.index'))
+                ->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -100,20 +101,19 @@ class AdminController extends BaseController
     /**
      * @param  Request  $request
      * @param  Admin  $admin
+     * @return mixed
      */
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request, Admin $admin): mixed
     {
         try {
             $data = $request->all();
             AdminRepo::getInstance()->update($admin, $data);
 
             return redirect(panel_route('admins.index'))
-                ->with('success', trans('panel::common.deleted_success'));
-            //            return json_success(trans('panel::common.updated_success'));
+                ->with('success', trans('panel::common.updated_success'));
         } catch (Exception $e) {
             return redirect(panel_route('admins.index'))
                 ->withErrors(['error' => $e->getMessage()]);
-            //            return json_fail($e->getMessage());
         }
     }
 
