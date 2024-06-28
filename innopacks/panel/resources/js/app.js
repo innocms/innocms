@@ -61,10 +61,10 @@ const tinymceInit = () => {
             formData.append('type', 'common');
             layer.load(2, {shade: [0.3,'#fff'] })
             axios.post('/upload/images', formData, {}).then(function (res) {
-                let url = res.data.data.url;
+                let url = res.data.url;
                 ed.insertContent('<img src="' + url + '" class="img-fluid" />');
             }).catch(function (err) {
-                layer.msg(err.response.data.message, {icon: 2});
+                layer.msg(err.message);
             }).finally(function () {
                 layer.closeAll('loading');
             });
