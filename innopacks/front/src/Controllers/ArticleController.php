@@ -19,13 +19,15 @@ use InnoCMS\Common\Repositories\TagRepo;
 class ArticleController extends Controller
 {
     /**
+     * @param  Request  $request
      * @return mixed
      * @throws \Exception
      */
-    public function index(): mixed
+    public function index(Request $request): mixed
     {
-        $data = [
-            'articles' => ArticleRepo::getInstance()->list(['active' => true]),
+        $keyword = $request->get('keyword');
+        $data    = [
+            'articles' => ArticleRepo::getInstance()->list(['active' => true, 'keyword' => $keyword]),
             'catalogs' => CatalogRepo::getInstance()->list(['active' => true]),
             'tags'     => TagRepo::getInstance()->list(['active' => true]),
         ];
