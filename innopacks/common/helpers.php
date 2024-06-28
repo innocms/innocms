@@ -9,8 +9,10 @@
 
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -361,8 +363,8 @@ if (! function_exists('create_directories')) {
         $directories = explode('/', $directoryPath);
         foreach ($directories as $directory) {
             $path = $path.'/'.$directory;
-            if (! is_dir(public_path($path))) {
-                @mkdir(public_path($path), 0755);
+            if (! is_dir($path)) {
+                @mkdir($path, 0755);
             }
         }
     }
@@ -459,5 +461,107 @@ if (! function_exists('has_debugbar')) {
     function has_debugbar(): bool
     {
         return class_exists(Debugbar::class);
+    }
+}
+
+if (! function_exists('currencies')) {
+    /**
+     * @return mixed
+     */
+    function currencies(): mixed
+    {
+        return CurrencyRepo::getInstance()->enabledList();
+    }
+}
+
+if (! function_exists('current_currency')) {
+    /**
+     * @return mixed
+     */
+    function current_currency(): mixed
+    {
+        return currencies()->where('code', current_currency_code())->first();
+    }
+}
+
+if (! function_exists('current_currency_code')) {
+    /**
+     * @return string
+     */
+    function current_currency_code(): string
+    {
+        return Session::get('currency') ?? system_setting('currency', 'usd');
+    }
+}
+
+if (! function_exists('theme_path')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function theme_path(string $path): string
+    {
+        return base_path('themes/'.$path);
+    }
+}
+
+if (! function_exists('theme_asset')) {
+    /**
+     * Generate asset path for the theme, demo code like below:
+     * <link rel="stylesheet" href="{{ theme_asset('default','swiper-bundle.min.css') }}">,
+     * swiper-bundle.min.css is in /themes/default/public
+     *
+     * @param  string  $theme
+     * @param  string  $path
+     * @param  bool|null  $secure
+     * @return string
+     */
+    function theme_asset(string $theme, string $path, ?bool $secure = null): string
+    {
+        $originThemePath = "$theme/public/$path";
+        $destThemePath   = "themes/$theme/$path";
+        if (! file_exists(public_path($destThemePath))) {
+            create_directories(dirname(public_path($destThemePath)));
+            copy(theme_path($originThemePath), public_path($destThemePath));
+        }
+
+        return app('url')->asset($destThemePath, $secure);
+    }
+}
+
+if (! function_exists('innoshop_version')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @return string
+     */
+    function innocms_version(): string
+    {
+        return 'v'.config('innocms.version').'('.config('innocms.build').')';
+    }
+}
+
+if (! function_exists('to_sql')) {
+    /**
+     * Render SQL by builder object
+     * @param  mixed  $builder
+     * @return string
+     */
+    function to_sql(Builder $builder): string
+    {
+        $sql    = $builder->toSql();
+        $driver = DB::getDriverName();
+        if ($driver == 'mysql') {
+            $sql = str_replace('"', '`', $sql);
+        }
+
+        foreach ($builder->getBindings() as $binding) {
+            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $sql   = preg_replace('/\?/', $value, $sql, 1);
+        }
+
+        return $sql;
     }
 }

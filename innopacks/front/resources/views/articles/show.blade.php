@@ -1,9 +1,9 @@
-@extends('front::layouts.app')
+@extends('layouts.app')
 
 @section('body-class', 'page-news-details')
 
 @section('content')
-  @include('front::shared.page-head', ['title' => '新闻详情'])
+  @include('shared.page-head', ['title' => '新闻详情'])
 
   <div class="container mt-3 mt-md-5">
     <div class="row">

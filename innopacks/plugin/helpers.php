@@ -133,10 +133,7 @@ if (! function_exists('listen_hook_action')) {
     function listen_hook_action($hookName, $callback, int $priority = 20, int $arguments = 1): void
     {
         if ($priority === 0) {
-            $trace      = debug_backtrace();
-            $pluginCode = str_replace(['Plugin\\', '\Boot'], '', $trace[1]['class']);
-            $plugin     = app('plugin')->getPlugin($pluginCode);
-            $priority   = $plugin->getPriority();
+            $priority = plugin_caller_priority();
         }
         app('eventy')->addAction($hookName, $callback, $priority, $arguments);
     }

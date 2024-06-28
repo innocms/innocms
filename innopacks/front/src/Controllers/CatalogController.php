@@ -42,7 +42,7 @@ class CatalogController extends Controller
             'articles' => $articles,
         ];
 
-        return view('front::catalogs.show', $data);
+        return view('catalogs.show', $data);
     }
 
     /**
@@ -64,6 +64,6 @@ class CatalogController extends Controller
             'articles' => $articles,
         ];
 
-        return view('front::catalogs.show', $data);
+        return view('catalogs.show', $data);
     }
 }

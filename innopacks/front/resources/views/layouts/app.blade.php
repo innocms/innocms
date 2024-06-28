@@ -18,11 +18,11 @@
 </head>
 
 <body class="@yield('body-class')">
-  @include('front::layouts.header')
+  @include('layouts.header')
 
   @yield('content')
 
-  @include('front::layouts.footer')
+  @include('layouts.footer')
 
   @stack('footer')
 </body>

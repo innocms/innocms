@@ -35,6 +35,8 @@ class PageRepo extends BaseRepo
     {
         $builder = Page::query()->with(['translation']);
 
+        $filters = array_merge($this->filters, $filters);
+
         $slug = $filters['slug'] ?? '';
         if ($slug) {
             $builder->where('slug', 'like', "%$slug%");

@@ -16,7 +16,7 @@ use Illuminate\Support\Arr;
 
 class Hook
 {
-    private static $instance;
+    private static ?Hook $instance = null;
 
     protected array $watch = [];
 
@@ -25,6 +25,8 @@ class Hook
     protected array $mock = [];
 
     protected bool $isUpdate = false;
+
+    protected bool $withCallback = false;
 
     protected bool $testing = false;
 
@@ -84,6 +86,8 @@ class Hook
         if (config('app.debug') && has_debugbar()) {
             Debugbar::log("HOOK === @hookinsert: $hook");
         }
+
+        $this->isUpdate = false;
 
         return $this->get($hook, $params, $callback, $htmlContent);
     }
@@ -244,7 +248,10 @@ class Hook
     {
         if ($this->isUpdate) {
             array_unshift($params, $output);
-            //array_unshift($params, $callback);
+        }
+
+        if ($this->withCallback) {
+            array_unshift($params, $callback);
         }
 
         if (array_key_exists($hook, $this->watch)) {

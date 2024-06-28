@@ -21,6 +21,10 @@ class BaseRepo implements RepoInterface
 
     protected string $table;
 
+    protected array $filters = [];
+
+    protected array $relations = [];
+
     /**
      * @throws Exception
      */
@@ -121,14 +125,13 @@ class BaseRepo implements RepoInterface
     }
 
     /**
-     * @param  array  $filters
-     * @return Builder
+     * @return $this
      */
-    public function activeBuilder(array $filters = []): Builder
+    public function withActive(): static
     {
-        $filters = array_merge($filters, ['active' => true]);
+        $this->filters['active'] = true;
 
-        return $this->builder($filters);
+        return $this;
     }
 
     /**

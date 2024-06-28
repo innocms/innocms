@@ -36,7 +36,7 @@ if ($hasSuffix) {
 
     // Pages, like product, service, about
     if (installed()) {
-        $pages = PageRepo::getInstance()->activeBuilder()->get();
+        $pages = PageRepo::getInstance()->withActive()->builder()->get();
         foreach ($pages as $page) {
             Route::get($page->slug.'.html', [Controllers\PageController::class, 'show'])->name('pages.'.$page->slug);
         }
@@ -58,7 +58,7 @@ if ($hasSuffix) {
 
     // Pages, like product, service, about
     if (installed()) {
-        $pages = PageRepo::getInstance()->activeBuilder()->get();
+        $pages = PageRepo::getInstance()->withActive()->builder()->get();
         foreach ($pages as $page) {
             Route::get($page->slug, [Controllers\PageController::class, 'show'])->name('pages.'.$page->slug);
         }

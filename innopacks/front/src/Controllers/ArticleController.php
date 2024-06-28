@@ -32,7 +32,7 @@ class ArticleController extends Controller
             'tags'     => TagRepo::getInstance()->list(['active' => true]),
         ];
 
-        return view('front::articles.index', $data);
+        return view('articles.index', $data);
     }
 
     /**
@@ -48,7 +48,7 @@ class ArticleController extends Controller
             'catalogs' => CatalogRepo::getInstance()->list(['active' => true]),
         ];
 
-        return view('front::articles.show', $data);
+        return view('articles.show', $data);
     }
 
     /**
@@ -67,6 +67,6 @@ class ArticleController extends Controller
             'catalogs' => CatalogRepo::getInstance()->list(['active' => true]),
         ];
 
-        return view('front::articles.show', $data);
+        return view('articles.show', $data);
     }
 }

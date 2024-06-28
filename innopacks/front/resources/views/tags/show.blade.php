@@ -1,11 +1,11 @@
-@extends('front::layouts.app')
+@extends('layouts.app')
 
 @section('body-class', 'page-news')
 
 @section('content')
 
-@include('front::shared.page-head', ['title' => $tag->translation->name])
-@include('front::shared.articles')
+@include('shared.page-head', ['title' => $tag->translation->name])
+@include('shared.articles')
 
 @endsection
 

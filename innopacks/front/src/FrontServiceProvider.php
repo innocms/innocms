@@ -11,6 +11,7 @@ namespace InnoCMS\Front;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\FileViewFinder;
 use InnoCMS\Common\Middleware\ContentFilterHook;
 use InnoCMS\Common\Middleware\EventActionHook;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
@@ -24,11 +25,17 @@ class FrontServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadTranslations();
+
+        if (! installed()) {
+            return;
+        }
+
         load_settings();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
-        $this->loadTranslations();
-        $this->loadViewTemplates();
+        $this->publishViewTemplates();
+        $this->loadThemeViewPath();
         $this->loadViewComponents();
     }
 
@@ -73,6 +80,46 @@ class FrontServiceProvider extends ServiceProvider
     }
 
     /**
+     * Publish view as default theme.
+     * php artisan vendor:publish --provider='InnoCMS\Front\FrontServiceProvider' --tag=views
+     *
+     * @return void
+     */
+    protected function publishViewTemplates(): void
+    {
+        $originViewPath = __DIR__.'/../resources';
+        $customViewPath = base_path('themes/default');
+
+        $this->publishes([
+            $originViewPath => $customViewPath,
+        ], 'views');
+    }
+
+    /**
+     * Load theme view path.
+     *
+     * @return void
+     */
+    protected function loadThemeViewPath(): void
+    {
+        $this->app->singleton('view.finder', function ($app) {
+            $themePaths = [];
+            if ($theme = system_setting('theme')) {
+                $themeViewPath = base_path("themes/{$theme}/views");
+                if (is_dir($themeViewPath)) {
+                    $themePaths[] = $themeViewPath;
+                }
+            }
+            $themePaths[] = realpath(__DIR__.'/../resources/views');
+
+            $viewPaths = $app['config']['view.paths'];
+            $viewPaths = array_merge($themePaths, $viewPaths);
+
+            return new FileViewFinder($app['files'], $viewPaths);
+        });
+    }
+
+    /**
      * Load view components.
      *
      * @return void
@@ -82,23 +129,5 @@ class FrontServiceProvider extends ServiceProvider
         $this->loadViewComponentsAs('front', [
 
         ]);
-    }
-
-    /**
-     * Load templates
-     *
-     * @return void
-     */
-    private function loadViewTemplates(): void
-    {
-        $originViewPath = inno_path('front/resources/views');
-        $customViewPath = resource_path('views/vendor/innocms-front');
-
-        $this->publishes([
-            $originViewPath => $customViewPath,
-        ], 'views');
-
-        $this->loadViewsFrom($customViewPath, 'front');
-        $this->loadViewsFrom($originViewPath, 'front');
     }
 }

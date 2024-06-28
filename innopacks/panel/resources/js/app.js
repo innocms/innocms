@@ -4,6 +4,9 @@ import './bootstrap-validation';
 import './alert';
 import "./autocomplete";
 
+import common from "./common";
+window.inno = common;
+
 const base = document.querySelector('base').href;
 const editor_language = document.querySelector('meta[name="editor_language"]')?.content || 'zh_cn';
 

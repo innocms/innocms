@@ -41,6 +41,6 @@ class PageController extends Controller
             $data['result'] = $result;
         }
 
-        return view('front::pages.show', $data);
+        return view('pages.show', $data);
     }
 }

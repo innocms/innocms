@@ -44,6 +44,6 @@ class TagController extends Controller
             'articles' => $articles,
         ];
 
-        return view('front::tags.show', $data);
+        return view('tags.show', $data);
     }
 }

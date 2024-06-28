@@ -21,6 +21,6 @@ class HomeController extends Controller
     {
         $data = fire_hook_filter('home.index.data', []);
 
-        return view('front::home', $data);
+        return view('home', $data);
     }
 }

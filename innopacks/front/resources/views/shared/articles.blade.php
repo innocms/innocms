@@ -34,7 +34,7 @@
           @endforeach
         </div>
       @else
-        @include('front::shared.no-data', ['text' => '没有数据 ~'])
+        @include('shared.no-data', ['text' => '没有数据 ~'])
       @endif
     </div>
     <div class="col-12 col-md-3">

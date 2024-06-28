@@ -1,4 +1,4 @@
-@extends('front::layouts.app')
+@extends('layouts.app')
 @section('body-class', 'page-home')
 @section('content')
 
