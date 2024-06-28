@@ -22,7 +22,7 @@ class LocaleRepo extends BaseRepo
         $languages = Locale::all()->keyBy('code')->toArray();
 
         $result = [];
-        foreach (panel_languages() as $localeCode) {
+        foreach (front_lang_path_codes() as $localeCode) {
             $langFile = inno_path("panel/lang/$localeCode/base.php");
             if (! is_file($langFile)) {
                 throw new \Exception("File ($langFile) not exist!");
