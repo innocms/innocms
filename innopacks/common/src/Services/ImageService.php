@@ -62,10 +62,6 @@ class ImageService
      */
     public function setPluginDirName($dirName): static
     {
-        if ($this->image == $this->placeholderImage) {
-            return $this;
-        }
-
         $originImage     = $this->originImage;
         $this->imagePath = plugin_path("{$dirName}/Static").$originImage;
         if (file_exists($this->imagePath)) {

@@ -19,13 +19,12 @@
         <x-common-form-input title="姓名" name="name" value="{{ old('name', $admin->name) }}" required
                              placeholder="姓名"/>
 
-        <x-common-form-input title="密码" name="password" value="{{ old('email') }}"/>
+        <x-common-form-input title="密码" name="password" value="{{ old('email') }}" />
 
         <x-common-form-input title="Email" name="email" value="{{ old('email', $admin->email) }}" required/>
 
         <x-common-form-input title="系统语言" name="locale" value="{{ old('locale', $admin->locale) }}" required
                              placeholder="系统语言"/>
-
         <x-common-form-switch-radio title="是否启用" name="active" :value="old('active', $page->active ?? true)"
                                     placeholder="是否启用"/>
 
