@@ -3,10 +3,12 @@
 
 @section('title', '系统设置')
 
+<x-panel::form.right-btns />
+
 @section('content')
   <div class="card h-min-600">
     <div class="card-body">
-      <form class="needs-validation" novalidate action="{{ panel_route('settings.update') }}" method="POST">
+      <form class="needs-validation" id="app-form" novalidate action="{{ panel_route('settings.update') }}" method="POST">
         @csrf
         @method('put')
 
@@ -39,7 +41,7 @@
                                value="{{ old('js_code', system_setting('js_code')) }}"
                                placeholder="第三方JS代码"/>
 
-        <x-panel::form.bottom-btns/>
+        <button type="submit" class="d-none"></button>
       </form>
     </div>
   </div>

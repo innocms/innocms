@@ -384,3 +384,29 @@ img {
     }
   }
 }
+
+.settings-nav {
+  a.nav-link {
+    color: #333;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-radius: 6px;
+
+    &::after {
+      content: '\F135';
+      font-family: 'bootstrap-icons';
+    }
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.active {
+      background-color: #eee;
+      color: $primary;
+    }
+  }
+}
