@@ -10,7 +10,9 @@
         "intervention/image": "^3.5",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "spatie/laravel-permission": "^6.9",
         "tormjens/eventy": "^0.9.3",
+        "wikimedia/composer-merge-plugin": "^2.1",
         "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
@@ -70,6 +72,19 @@
     "extra": {
         "laravel": {
             "dont-discover": []
+        },
+        "merge-plugin": {
+            "include": [
+                "plugins/*/composer.json"
+            ],
+            "recurse": true,
+            "replace": false,
+            "ignore-duplicates": false,
+            "merge-dev": true,
+            "merge-extra": false,
+            "merge-extra-deep": false,
+            "merge-replace": true,
+            "merge-scripts": false
         }
     },
     "config": {
@@ -78,7 +93,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
         }
     },
     "minimum-stability": "stable",

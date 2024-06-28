@@ -9,6 +9,4 @@
 
 namespace InnoCMS\Common\Models;
 
-class AdminToken extends BaseModel
-{
-}
+class AdminToken extends BaseModel {}

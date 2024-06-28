@@ -11,6 +11,4 @@ namespace InnoCMS\Panel\Controllers;
 
 use App\Http\Controllers\Controller;
 
-class BaseController extends Controller
-{
-}
+class BaseController extends Controller {}

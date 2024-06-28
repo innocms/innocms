@@ -17,7 +17,7 @@ Route::middleware(['admin_auth:admin'])
     ->group(function () {
         Route::get('logout', [Controllers\LogoutController::class, 'index'])->name('logout.index');
 
-        Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index');
+        Route::get('/', [Controllers\DashboardController::class, 'index'])->name('dashboard.index');
         Route::resource('/articles', Controllers\ArticleController::class);
         Route::resource('/catalogs', Controllers\CatalogController::class);
         Route::resource('/pages', Controllers\PageController::class);

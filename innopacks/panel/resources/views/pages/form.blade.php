@@ -1,6 +1,6 @@
 @extends('panel::layouts.app')
 
-@section('title', __('panel::menu.page'))
+@section('title', __('panel::menu.pages'))
 
 @push('header')
 <script src="{{ asset('vendor/tinymce/5.9.1/tinymce.min.js') }}"></script>

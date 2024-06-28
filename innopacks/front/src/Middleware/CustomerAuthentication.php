@@ -9,6 +9,4 @@
 
 namespace InnoCMS\Front\Middleware;
 
-class CustomerAuthentication
-{
-}
+class CustomerAuthentication {}

@@ -11,7 +11,7 @@ namespace InnoCMS\Panel\Controllers;
 
 use InnoCMS\Panel\Repositories\DashboardRepo;
 
-class HomeController extends BaseController
+class DashboardController extends BaseController
 {
     /**
      * Dashboard for panel home page.

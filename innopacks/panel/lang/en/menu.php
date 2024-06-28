@@ -1,22 +1,57 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
- * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @link       https://www.innoshop.com
+ * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
 return [
-    'home'    => 'Home',
-    'article' => 'Article',
-    'catalog' => 'Catalog',
-    'tag'     => 'Tag',
-    'page'    => 'Page',
-    'design'  => 'Design',
-    'theme'   => 'Theme',
-    'setting' => 'Setting',
-    'plugins' => 'Plugin',
-    'account' => 'Account',
-    'locale'  => 'Locale',
+    'dashboard' => 'Dashboard',
+
+    'top_content' => 'Content',
+    'articles'    => 'Articles',
+    'catalogs'    => 'Catalogs',
+    'tags'        => 'Tags',
+    'pages'       => 'Pages',
+
+    'top_order' => 'Orders',
+    'orders'    => 'Orders',
+
+    'order_returns' => 'RMA',
+
+    'top_product'      => 'Product',
+    'products'         => 'Products',
+    'categories'       => 'Categories',
+    'brands'           => 'Brands',
+    'attributes'       => 'Attributes',
+    'attribute_groups' => 'Attr Groups',
+
+    'top_analytic' => 'Analytics',
+    'analytics'    => 'Reports',
+
+    'top_plugin' => 'Plugins',
+    'plugins'    => 'Plugins',
+
+    'top_customer'    => 'Customers',
+    'customers'       => 'Customers',
+    'customer_groups' => 'Groups',
+
+    'top_design'      => 'Design',
+    'themes'          => 'Themes',
+    'themes_settings' => 'Settings',
+
+    'top_setting' => 'Setting',
+    'settings'    => 'Settings',
+    'account'     => 'Account',
+    'admins'      => 'Users',
+    'roles'       => 'Roles',
+    'countries'   => 'Countries',
+    'states'      => 'States',
+    'regions'     => 'Regions',
+    'locales'     => 'Locales',
+    'currencies'  => 'Currencies',
+    'tax_classes' => 'Tax Classes',
+    'tax_rates'   => 'Tax Rates',
 ];

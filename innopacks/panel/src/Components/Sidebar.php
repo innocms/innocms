@@ -13,9 +13,13 @@ use Illuminate\View\Component;
 
 class Sidebar extends Component
 {
+    public mixed $adminUser;
+
     public array $menuLinks = [];
 
-    private string $currentRouteName;
+    private string $currentUri;
+
+    private string $currentRoute;
 
     private string $currentPrefix;
 
@@ -26,11 +30,17 @@ class Sidebar extends Component
      */
     public function __construct()
     {
-        $routeNameWithPrefix    = request()->route()->getName();
-        $this->currentRouteName = (string) str_replace(panel_name().'.', '', $routeNameWithPrefix);
+        $this->adminUser = current_admin();
 
-        $patterns            = explode('.', $this->currentRouteName);
+        $routeNameWithPrefix = request()->route()->getName();
+        $this->currentRoute  = (string) str_replace(panel_name().'.', '', $routeNameWithPrefix);
+
+        $patterns = explode('.', $this->currentRoute);
+
         $this->currentPrefix = $patterns[0];
+
+        $routeUriWithPrefix = request()->route()->uri();
+        $this->currentUri   = (string) str_replace(panel_name().'/', '', $routeUriWithPrefix);
     }
 
     /**
@@ -50,52 +60,42 @@ class Sidebar extends Component
      */
     private function getMenus(): array
     {
-        return [
+        $menus = [
             [
                 'route' => 'home.index',
-                'title' => __('panel::menu.home'),
+                'title' => __('panel::menu.dashboard'),
                 'icon'  => 'bi-house',
             ],
             [
-                'title'    => __('panel::menu.article'),
-                'icon'     => 'bi-files',
-                'prefixes' => ['articles'],
-                'children' => $this->getArticleSubRoutes(),
+                'title'    => __('panel::menu.top_content'),
+                'icon'     => 'bi-sticky',
+                'prefixes' => ['articles', 'catalogs', 'tags', 'pages'],
+                'children' => $this->getContentSubRoutes(),
             ],
             [
-                'title'    => __('panel::menu.catalog'),
-                'icon'     => 'bi-folder',
-                'prefixes' => ['catalogs'],
-                'children' => $this->getCatalogSubRoutes(),
+                'title'    => __('panel::menu.top_analytic'),
+                'icon'     => 'bi-bar-chart',
+                'prefixes' => ['analytics'],
+                'children' => $this->getAnalyticSubRoutes(),
             ],
             [
-                'title'    => __('panel::menu.tag'),
-                'icon'     => 'bi-tag',
-                'prefixes' => ['tags'],
-                'children' => $this->getTagSubRoutes(),
+                'title'    => __('panel::menu.top_design'),
+                'icon'     => 'bi-palette',
+                'children' => $this->getDesignSubRoutes(),
             ],
             [
-                'title'    => __('panel::menu.page'),
-                'icon'     => 'bi-file-text',
-                'prefixes' => ['pages'],
-                'children' => $this->getPageSubRoutes(),
+                'title'    => __('panel::menu.top_plugin'),
+                'icon'     => 'bi-puzzle',
+                'children' => $this->getPluginSubRoutes(),
             ],
-            // [
-            //     'title'    => __('panel::menu.design'),
-            //     'icon'     => 'bi-brush',
-            //     'children' => $this->getDesignSubRoutes(),
-            // ],
             [
-                'title'    => __('panel::menu.setting'),
+                'title'    => __('panel::menu.top_setting'),
                 'icon'     => 'bi-gear',
                 'children' => $this->getSettingSubRoutes(),
             ],
-            [
-                'title'    => __('panel::menu.plugin'),
-                'icon'     => 'bi-gear',
-                'children' => $this->getPluginSubRoutes(),
-            ],
         ];
+
+        return fire_hook_filter('component.sidebar.menus', $menus);
     }
 
     /**
@@ -121,6 +121,13 @@ class Sidebar extends Component
 
             $link['has_children'] = (bool) $children;
             foreach ($children as $key => $item) {
+                $code = str_replace('.', '_', $item['route']);
+                if (! $this->adminUser->can($code) && false) {
+                    unset($link['children'][$key]);
+
+                    continue;
+                }
+
                 $url = $item['url'] ?? '';
                 if (empty($url)) {
                     $item['url'] = panel_route($item['route']);
@@ -142,8 +149,14 @@ class Sidebar extends Component
                 $parentChecked = true;
             }
 
-            $result[$index]           = $link;
-            $result[$index]['active'] = $parentChecked;
+            if ($topRoute != 'home.index' && empty($link['children'])) {
+                unset($link);
+            }
+
+            if (isset($link) && $link) {
+                $result[$index]           = $link;
+                $result[$index]['active'] = $parentChecked;
+            }
         }
 
         return $result;
@@ -155,11 +168,17 @@ class Sidebar extends Component
      */
     private function checkChildActive($route): bool
     {
-        if ($route == $this->currentRouteName) {
+        if ($route == $this->currentRoute) {
             return true;
-        } else {
-            return false;
         }
+
+        $routePart   = substr($route, 0, strpos($route, '.'));
+        $currentPath = substr($this->currentRoute, 0, strpos($this->currentRoute, '.'));
+        if ($routePart == $currentPath) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -178,45 +197,28 @@ class Sidebar extends Component
     /**
      * Get article sub routes
      */
-    public function getArticleSubRoutes(): array
+    public function getAnalyticSubRoutes(): array
     {
-        return [
-            ['route' => 'articles.index', 'title' => __('panel::article.list')],
-            ['route' => 'articles.create', 'title' => __('panel::article.create')],
+        $routes = [
+            ['route' => 'analytics.index', 'title' => __('panel::menu.analytics')],
         ];
+
+        return fire_hook_filter('component.sidebar.analytic.routes', $routes);
     }
 
     /**
-     * Get catalog sub routes
+     * Get content sub routes
      */
-    public function getCatalogSubRoutes(): array
+    public function getContentSubRoutes(): array
     {
-        return [
-            ['route' => 'catalogs.index', 'title' => __('panel::catalog.list')],
-            ['route' => 'catalogs.create', 'title' => __('panel::catalog.create')],
+        $routes = [
+            ['route' => 'articles.index', 'title' => __('panel::menu.articles')],
+            ['route' => 'catalogs.index', 'title' => __('panel::menu.catalogs')],
+            ['route' => 'tags.index', 'title' => __('panel::menu.tags')],
+            ['route' => 'pages.index', 'title' => __('panel::menu.pages')],
         ];
-    }
 
-    /**
-     * Get tag sub routes.
-     */
-    public function getTagSubRoutes(): array
-    {
-        return [
-            ['route' => 'tags.index', 'title' => __('panel::tag.list')],
-            ['route' => 'tags.create', 'title' => __('panel::tag.create')],
-        ];
-    }
-
-    /**
-     * Get page sub routes.
-     */
-    public function getPageSubRoutes(): array
-    {
-        return [
-            ['route' => 'pages.index', 'title' => __('panel::page.list')],
-            ['route' => 'pages.create', 'title' => __('panel::page.create')],
-        ];
+        return fire_hook_filter('component.sidebar.content.routes', $routes);
     }
 
     /**
@@ -224,9 +226,24 @@ class Sidebar extends Component
      */
     public function getDesignSubRoutes(): array
     {
-        return [
-            ['route' => 'themes.index', 'title' => __('panel::menu.theme')],
+        $routes = [
+            ['route' => 'themes_settings.index', 'title' => __('panel::menu.themes_settings')],
+            ['route' => 'themes.index', 'title' => __('panel::menu.themes')],
         ];
+
+        return fire_hook_filter('component.sidebar.design.routes', $routes);
+    }
+
+    /**
+     * Get design sub routes.
+     */
+    public function getPluginSubRoutes(): array
+    {
+        $routes = [
+            ['route' => 'plugins.index', 'title' => __('panel::menu.plugins')],
+        ];
+
+        return fire_hook_filter('component.sidebar.plugin.routes', $routes);
     }
 
     /**
@@ -234,22 +251,20 @@ class Sidebar extends Component
      */
     public function getSettingSubRoutes(): array
     {
-        return [
-            ['route' => 'settings.index', 'title' => __('panel::menu.setting')],
-            ['route' => 'account.index', 'title' => __('panel::menu.account')],
-            ['route' => 'locales.index', 'title' => __('panel::menu.locale')],
-        ];
-    }
-
-    /**
-     * Get setting sub routes.
-     */
-    public function getPluginSubRoutes(): array
-    {
         $routes = [
-            ['route' => 'plugins.index', 'title' => __('panel::menu.plugin')],
+            ['route' => 'settings.index', 'title' => __('panel::menu.settings')],
+            ['route' => 'account.index', 'title' => __('panel::menu.account')],
+            ['route' => 'admins.index', 'title' => __('panel::menu.admins')],
+            ['route' => 'roles.index', 'title' => __('panel::menu.roles')],
+            ['route' => 'countries.index', 'title' => __('panel::menu.countries')],
+            ['route' => 'states.index', 'title' => __('panel::menu.states')],
+            ['route' => 'regions.index', 'title' => __('panel::menu.regions')],
+            ['route' => 'locales.index', 'title' => __('panel::menu.locales')],
+            ['route' => 'currencies.index', 'title' => __('panel::menu.currencies')],
+            ['route' => 'tax_rates.index', 'title' => __('panel::menu.tax_rates')],
+            ['route' => 'tax_classes.index', 'title' => __('panel::menu.tax_classes')],
         ];
 
-        return fire_hook_filter('panel.sidebar.plugin.routes', $routes);
+        return fire_hook_filter('component.sidebar.setting.routes', $routes);
     }
 }

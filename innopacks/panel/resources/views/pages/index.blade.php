@@ -1,7 +1,7 @@
 @extends('panel::layouts.app')
 @section('body-class', 'page-page')
 
-@section('title', __('panel::menu.page'))
+@section('title', __('panel::menu.pages'))
 
 @section('content')
   <div class="card h-min-600">

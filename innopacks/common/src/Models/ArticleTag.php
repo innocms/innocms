@@ -9,6 +9,4 @@
 
 namespace InnoCMS\Common\Models;
 
-class ArticleTag extends BaseModel
-{
-}
+class ArticleTag extends BaseModel {}

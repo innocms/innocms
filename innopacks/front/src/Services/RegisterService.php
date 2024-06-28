@@ -9,6 +9,4 @@
 
 namespace InnoCMS\Front\Services;
 
-class RegisterService extends BaseService
-{
-}
+class RegisterService extends BaseService {}

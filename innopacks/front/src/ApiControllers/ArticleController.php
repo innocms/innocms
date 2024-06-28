@@ -11,6 +11,4 @@ namespace InnoCMS\Front\ApiControllers;
 
 use App\Http\Controllers\Controller;
 
-class ArticleController extends Controller
-{
-}
+class ArticleController extends Controller {}
