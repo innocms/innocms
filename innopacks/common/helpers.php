@@ -297,13 +297,13 @@ if (! function_exists('image_resize')) {
     /**
      * Resize image
      *
-     * @param  string  $image
+     * @param  string|null  $image
      * @param  int  $width
      * @param  int  $height
      * @return string
      * @throws Exception
      */
-    function image_resize(string $image = '', int $width = 100, int $height = 100): string
+    function image_resize(?string $image = '', int $width = 100, int $height = 100): string
     {
         if (Str::startsWith($image, 'http')) {
             return $image;

@@ -122,7 +122,7 @@ class Sidebar extends Component
             $link['has_children'] = (bool) $children;
             foreach ($children as $key => $item) {
                 $code = str_replace('.', '_', $item['route']);
-                if (! $this->adminUser->can($code) && false) {
+                if (! $this->adminUser->can($code)) {
                     unset($link['children'][$key]);
 
                     continue;
@@ -256,13 +256,7 @@ class Sidebar extends Component
             ['route' => 'account.index', 'title' => __('panel::menu.account')],
             ['route' => 'admins.index', 'title' => __('panel::menu.admins')],
             ['route' => 'roles.index', 'title' => __('panel::menu.roles')],
-            ['route' => 'countries.index', 'title' => __('panel::menu.countries')],
-            ['route' => 'states.index', 'title' => __('panel::menu.states')],
-            ['route' => 'regions.index', 'title' => __('panel::menu.regions')],
             ['route' => 'locales.index', 'title' => __('panel::menu.locales')],
-            ['route' => 'currencies.index', 'title' => __('panel::menu.currencies')],
-            ['route' => 'tax_rates.index', 'title' => __('panel::menu.tax_rates')],
-            ['route' => 'tax_classes.index', 'title' => __('panel::menu.tax_classes')],
         ];
 
         return fire_hook_filter('component.sidebar.setting.routes', $routes);

@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innoshop.com
- * @author     InnoShop <team@innoshop.com>
+ * @link       https://www.innocms.com
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -49,6 +49,7 @@ return [
     'up_image_text'    => 'Click to upload, or drag the file in',
     'no_data'          => 'No data',
 
+    'created_success' => 'Created successfully',
     'saved_success'   => 'Saved successfully',
     'updated_success' => 'Updated successfully',
     'deleted_success' => 'Deleted successfully',

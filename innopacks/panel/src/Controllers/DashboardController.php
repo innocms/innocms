@@ -9,6 +9,8 @@
 
 namespace InnoCMS\Panel\Controllers;
 
+use Exception;
+use InnoCMS\Panel\Repositories\Dashboard\ArticleRepo;
 use InnoCMS\Panel\Repositories\DashboardRepo;
 
 class DashboardController extends BaseController
@@ -17,6 +19,7 @@ class DashboardController extends BaseController
      * Dashboard for panel home page.
      *
      * @return mixed
+     * @throws Exception
      */
     public function index(): mixed
     {
@@ -25,10 +28,10 @@ class DashboardController extends BaseController
             'cards'   => $dashboard->getCards(),
             'article' => [
                 'latest_week' => $dashboard->getArticleTotalLatestWeek(),
-                'top_viewed'  => $dashboard->getArticleViewedLatestWeek(),
             ],
+            'top_viewed_articles' => ArticleRepo::getInstance()->getTopViewedArticles(),
         ];
 
-        return view('panel::home', $data);
+        return view('panel::dashboard', $data);
     }
 }

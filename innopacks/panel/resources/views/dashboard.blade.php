@@ -34,17 +34,42 @@
 <div class="row">
   <div class="col-12 col-md-6">
     <div class="card">
-      <div class="card-header">文章发布数量</div>
+      <div class="card-header">{{ __('panel::dashboard.article_trends') }}</div>
       <div class="card-body">
         <canvas id="chart-new-quantity" height="380"></canvas>
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6">
-    <div class="card">
-      <div class="card-header">文章浏览量</div>
-      <div class="card-body">
-        <canvas id="chart-new-view" height="380"></canvas>
+  <div class="col-12 col-md-6 mb-3">
+    <div class="card top-sale-products">
+      <div class="card-header">{{ __('panel::dashboard.top_articles') }}</div>
+      <div class="card-body pb-0">
+        @if ($top_viewed_articles)
+          <table class="table table-last-no-border align-middle mt-n3 mb-0">
+            <tbody>
+            @foreach($top_viewed_articles as $item)
+              <tr>
+                <td class="text-center">
+                  @if ($loop->iteration <= 3)
+                    <img src="{{ asset('icon/grade-'. $loop->iteration .'.svg') }}" alt="{{ $item['name'] }}" class="img-fluid wh-30">
+                  @else
+                    <span class="badge bg-secondary">{{ $loop->iteration }}</span>
+                  @endif
+                </td>
+                <td>
+                  <a class="d-flex align-items-center text-dark text-decoration-none" href="{{ panel_route('articles.edit', $item['id']) }}">
+                    <div class="wh-30 rounded-circle overflow-hidden border border-1 me-2"><img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="img-fluid"></div>
+                    {{ $item['summary'] }}
+                  </a>
+                </td>
+                <td class="text-center">{{ $item['viewed'] }}</td>
+              </tr>
+            @endforeach
+            </tbody>
+          </table>
+        @else
+          <x-common-no-data :width="240" />
+        @endif
       </div>
     </div>
   </div>
@@ -55,7 +80,6 @@
 @push('footer')
 <script>
   const ctx1 = document.getElementById('chart-new-quantity').getContext('2d');
-  const ctx2 = document.getElementById('chart-new-view').getContext('2d');
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -108,35 +132,6 @@
       }]
     },
     options: options
-  });
-
-  const chart2 = new Chart(ctx2, {
-    type: 'pie',
-    data: {
-      labels: @json($article['top_viewed']['period']),
-      datasets: [{
-        label: '浏览量',
-        data: @json($article['top_viewed']['totals']),
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
-          ],
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-    },
   });
 </script>
 @endpush

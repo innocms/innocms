@@ -1,6 +1,24 @@
 $(function () {
   const forms = document.querySelectorAll(".needs-validation");
 
+  // 触发表单提交
+  $(document).on('click', '.submit-form', function(event) {
+    const form = $(this).attr('form');
+
+    if ($(`form#${form}`).find('button[type="submit"]').length > 0) {
+      $(`form#${form}`).find('button[type="submit"]')[0].click();
+    } else {
+      $(`form#${form}`).submit();
+    }
+  });
+
+  // 表单保存统一添加加载动画
+  $(document).on('submit', 'form', function(event) {
+    if (!$(this).hasClass('no-load')) {
+      layer.load(2, { shade: [0.2, '#fff'] });
+    }
+  });
+
   Array.prototype.slice.call(forms).forEach(function (form) {
     form.addEventListener(
       "submit",

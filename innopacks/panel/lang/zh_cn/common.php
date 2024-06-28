@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innoshop.com
- * @author     InnoShop <team@innoshop.com>
+ * @link       https://www.innocms.com
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -49,6 +49,7 @@ return [
     'up_image_text'    => '点击上传，或将文件拖入进来',
     'no_data'          => '没有数据',
 
+    'created_success' => '创建成功',
     'saved_success'   => '保存成功',
     'updated_success' => '更新成功',
     'deleted_success' => '删除成功',

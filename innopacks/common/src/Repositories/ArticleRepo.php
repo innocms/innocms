@@ -11,6 +11,7 @@ namespace InnoCMS\Common\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use InnoCMS\Common\Models\Article;
 
 class ArticleRepo extends BaseRepo
@@ -31,6 +32,7 @@ class ArticleRepo extends BaseRepo
      */
     public function builder(array $filters = []): Builder
     {
+        $filters = array_merge($this->filters, $filters);
         $builder = Article::query()->with([
             'translation',
             'catalog.translation',
@@ -119,5 +121,18 @@ class ArticleRepo extends BaseRepo
     {
         $item->translations()->delete();
         $item->delete();
+    }
+
+    /**
+     * @param  int  $limit
+     * @return Collection
+     */
+    public function getTopViewedArticles(int $limit = 8): Collection
+    {
+        return $this->withActive()
+            ->builder()
+            ->orderByDesc('viewed')
+            ->limit($limit)
+            ->get();
     }
 }

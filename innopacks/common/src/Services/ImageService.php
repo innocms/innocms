@@ -2,7 +2,7 @@
 /**
  * Copyright (c) Since 2024 InnoShop - All Rights Reserved
  *
- * @link       https://www.innoshop.com
+ * @link       https://www.innocms.com
  * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
@@ -31,7 +31,7 @@ class ImageService
      */
     public function __construct($image)
     {
-        $this->originImage      = $image;
+        $this->originImage      = (string) $image;
         $this->placeholderImage = system_setting('placeholder', self::PLACEHOLDER_IMAGE);
         if (! is_file(public_path($this->placeholderImage))) {
             $this->placeholderImage = self::PLACEHOLDER_IMAGE;
