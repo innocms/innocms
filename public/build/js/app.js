@@ -10,13 +10,11 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./innopacks/front/resources/js/bootstrap.js");
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "./innopacks/front/resources/js/common.js");
-/* harmony import */ var _header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./header */ "./innopacks/front/resources/js/header.js");
-/* harmony import */ var _header__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_header__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./header */ "./innopacks/front/resources/js/header.js");
+/* harmony import */ var _header__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_header__WEBPACK_IMPORTED_MODULE_1__);
 
 
-window.is = _common__WEBPACK_IMPORTED_MODULE_1__["default"];
-
+// require('./bootstrap');
 
 /***/ }),
 
@@ -36,43 +34,6 @@ window.axios = axios__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 window.$ = window.jquery = (jquery__WEBPACK_IMPORTED_MODULE_1___default());
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-/***/ }),
-
-/***/ "./innopacks/front/resources/js/common.js":
-/*!************************************************!*\
-  !*** ./innopacks/front/resources/js/common.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  // 通过正则表达式匹配url中的参数，如果匹配到了，就替换掉原来的参数，如果没有匹配到，就添加参数
-  updateQueryStringParameter: function updateQueryStringParameter(uri, key, value) {
-    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-    if (uri.match(re)) {
-      return uri.replace(re, '$1' + key + "=" + value + '$2');
-    } else {
-      return uri + separator + key + "=" + value;
-    }
-  },
-  // 通过正则表达式匹配url中的参数，如果匹配到了，就删除掉原来的参数
-  removeURLParameters: function removeURLParameters(url) {
-    var parsed = new URL(url);
-    for (var _len = arguments.length, parameters = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      parameters[_key - 1] = arguments[_key];
-    }
-    parameters.forEach(function (e) {
-      return parsed.searchParams["delete"](e);
-    });
-    return parsed.toString();
-  }
-});
 
 /***/ }),
 
