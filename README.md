@@ -82,7 +82,7 @@ Therefore, we recommend that you avoid directly editing the files in that direct
 If you are developing the frontend for the second time, you can publish the required view files by executing the following command:
 
 ```
-php artisan vendor:publish --provider="InnoCMS\Front\FrontServiceProvider" --tag=views
+php artisan inno:publish-theme
 ```
 
 After this operation, the system will automatically generate the corresponding template files for you in the `/resources/views/vendor` directory.
