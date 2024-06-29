@@ -135,7 +135,7 @@ class PanelServiceProvider extends ServiceProvider
             'form-autocomplete-list' => Components\Forms\AutocompleteList::class,
             'form-switch-radio'      => Components\Forms\SwitchRadio::class,
             'no-data'                => Components\NoData::class,
-            'form-date'                   => Components\Forms\Date::class,
+            'form-date'              => Components\Forms\Date::class,
         ]);
     }
 

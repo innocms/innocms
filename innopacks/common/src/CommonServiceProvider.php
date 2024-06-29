@@ -10,6 +10,7 @@
 namespace InnoCMS\Common;
 
 use Illuminate\Support\ServiceProvider;
+use InnoCMS\Common\Console\Commands;
 
 class CommonServiceProvider extends ServiceProvider
 {
@@ -27,7 +28,9 @@ class CommonServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
         $this->registerMigrations();
+        $this->registerCommands();
         $this->loadViewComponents();
+        $this->loadViewTemplates();
     }
 
     /**
@@ -51,6 +54,32 @@ class CommonServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register common languages.
+     *
+     * @return void
+     */
+    protected function loadTranslations(): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'common');
+    }
+
+    /**
+     * Register common commands.
+     *
+     * @return void
+     */
+    private function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Commands\UpdateCountries::class,
+                Commands\UpdateStates::class,
+                Commands\PublishFrontTheme::class,
+            ]);
+        }
+    }
+
+    /**
      * Load view components.
      *
      * @return void
@@ -68,5 +97,22 @@ class CommonServiceProvider extends ServiceProvider
             'form-textarea'     => Components\Forms\Textarea::class,
             'no-data'           => Components\NoData::class,
         ]);
+    }
+
+    /**
+     * Load templates
+     *
+     * @return void
+     */
+    private function loadViewTemplates(): void
+    {
+        $originViewPath = inno_path('common/resources/views');
+        $customViewPath = resource_path('views/vendor/common');
+
+        $this->publishes([
+            $originViewPath => $customViewPath,
+        ], 'views');
+
+        $this->loadViewsFrom($originViewPath, 'common');
     }
 }
