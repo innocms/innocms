@@ -16,8 +16,11 @@ use Plugin\Carousel\Models\Page;
 class Boot
 {
     private $topCarousel;
+
     private $bottomCarousel;
+
     private $agent;
+
     public function init(): void
     {
         listen_hook_filter('component.sidebar.plugin.routes', function ($data) {
@@ -29,31 +32,33 @@ class Boot
             return $data;
         });
 
-        $pageSlug=str_replace('/','',request()->getPathInfo());
-        if ($pageSlug==""){
-            $page = new Page();
-            $page->id=0;
-        }else{
-            $page=Page::where('slug',$pageSlug)->first();
+        $pageSlug = str_replace('/', '', request()->getPathInfo());
+        if ($pageSlug == '') {
+            $page     = new Page();
+            $page->id = 0;
+        } else {
+            $page = Page::where('slug', $pageSlug)->first();
         }
 
-        if ($page){
-            $this->topCarousel= Carousel::where('page_id',$page->id)->where('position','top')->orderBy('position','asc')->get();
-            $this->bottomCarousel= Carousel::where('page_id',$page->id)->where('position','bottom')->orderBy('position','asc')->get();
-            $this->agent=new Agent();
+        if ($page) {
+            $this->topCarousel    = Carousel::where('page_id', $page->id)->where('position', 'top')->orderBy('position', 'asc')->get();
+            $this->bottomCarousel = Carousel::where('page_id', $page->id)->where('position', 'bottom')->orderBy('position', 'asc')->get();
+            $this->agent          = new Agent();
 
-            if ( $this->topCarousel->count() ) {
-                listen_blade_insert("page.content.top", function ($data) {
+            if ($this->topCarousel->count()) {
+                listen_blade_insert('page.content.top', function ($data) {
                     $data['carousels'] = $this->topCarousel;
-                    $data['agent'] = $this->agent;
-                    return view('Carousel::front.carousels',$data);
+                    $data['agent']     = $this->agent;
+
+                    return view('Carousel::front.carousels', $data);
                 });
             }
-            if ( $this->bottomCarousel->count() ) {
-                listen_blade_insert("page.content.bottom", function ($data) {
+            if ($this->bottomCarousel->count()) {
+                listen_blade_insert('page.content.bottom', function ($data) {
                     $data['carousels'] = $this->bottomCarousel;
-                    $data['agent'] = $this->agent;
-                    return view('Carousel::front.carousels',$data);
+                    $data['agent']     = $this->agent;
+
+                    return view('Carousel::front.carousels', $data);
                 });
             }
         }

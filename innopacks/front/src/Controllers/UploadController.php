@@ -24,8 +24,8 @@ class UploadController
     public function images(UploadImageRequest $request): JsonResponse
     {
         $image    = $request->file('image');
-        $type     = $request->get('type','common');
-        $event    = $request->get('event','');
+        $type     = $request->get('type', 'common');
+        $event    = $request->get('event', '');
         $filePath = $image->store("/{$type}/{$event}", 'public');
         $realPath = "/storage/$filePath";
 
@@ -33,7 +33,7 @@ class UploadController
             'url'   => asset($realPath),
             'value' => $realPath,
             'type'  => $type,
-            'event' => $event
+            'event' => $event,
         ];
 
         return json_success('上传成功', $data);

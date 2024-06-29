@@ -12,7 +12,6 @@ namespace Plugin\Carousel\Controllers;
 use Illuminate\Http\Request;
 use InnoCMS\Panel\Controllers\BaseController;
 use Plugin\Carousel\Models\Carousel;
-use Plugin\Carousel\Models\CarouselImage;
 use Plugin\Carousel\Repositories\CarouselRepo;
 
 class PanelCarouselController extends BaseController
@@ -77,10 +76,10 @@ class PanelCarouselController extends BaseController
      */
     public function store(Request $request): mixed
     {
-        $data = $request->all();
-        $carousel=CarouselRepo::getInstance()->create($data);
+        $data     = $request->all();
+        $carousel = CarouselRepo::getInstance()->create($data);
 
-        return redirect(panel_route('carousels.edit',$carousel))->with('success','创建成功，可以在下方配置轮播图图片');
+        return redirect(panel_route('carousels.edit', $carousel))->with('success', '创建成功，可以在下方配置轮播图图片');
     }
 
     /**
@@ -95,7 +94,7 @@ class PanelCarouselController extends BaseController
             'pages'          => $pages,
             'positions'      => $this->positions,
             'styles'         => $this->styles,
-            'carouselImages' => $carousel->images()->orderBy('position','asc')->get(),
+            'carouselImages' => $carousel->images()->orderBy('position', 'asc')->get(),
         ];
 
         return view('Carousel::panel.form', $data);
@@ -111,7 +110,7 @@ class PanelCarouselController extends BaseController
         $data = $request->all();
         CarouselRepo::getInstance()->update($carousel, $data);
 
-        return redirect()->back()->with('success','更新成功');
+        return redirect()->back()->with('success', '更新成功');
     }
 
     /**
@@ -122,7 +121,7 @@ class PanelCarouselController extends BaseController
     {
         $carousel->delete();
 
-        return redirect(panel_route('carousel.index'))->with('success','删除成功');
+        return redirect(panel_route('carousel.index'))->with('success', '删除成功');
     }
 
     /**

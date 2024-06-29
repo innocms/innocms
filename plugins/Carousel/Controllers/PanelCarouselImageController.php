@@ -67,35 +67,35 @@ class PanelCarouselImageController extends BaseController
     }
 
     /**
-     * @param Request $request
-     * @param Carousel $carousel
-     * @param $carouselImageId
+     * @param  Request  $request
+     * @param  Carousel  $carousel
+     * @param  $carouselImageId
      * @return mixed
      */
-    public function update(Request $request, Carousel $carousel,$carouselImageId): mixed
+    public function update(Request $request, Carousel $carousel, $carouselImageId): mixed
     {
-        $carouselImage=CarouselImage::find($carouselImageId);
-        $data = $request->all();
+        $carouselImage = CarouselImage::find($carouselImageId);
+        $data          = $request->all();
         CarouselImageRepo::getInstance()->update($carouselImage, $data);
 
-//        return redirect(panel_route('carousel_image.index'));
-        return redirect()->back()->with('success','更新成功');
+        //        return redirect(panel_route('carousel_image.index'));
+        return redirect()->back()->with('success', '更新成功');
     }
 
     /**
-     * @param Carousel $carousel
-     * @param $carouselImageId
+     * @param  Carousel  $carousel
+     * @param  $carouselImageId
      * @return mixed
      */
-    public function destroy(Carousel $carousel,$carouselImageId): mixed
+    public function destroy(Carousel $carousel, $carouselImageId): mixed
     {
-        $carouselImage=CarouselImage::find($carouselImageId);
+        $carouselImage = CarouselImage::find($carouselImageId);
         $carouselImage->delete();
 
         return response()->json([
-            'msg' => '删除成功',
+            'msg'    => '删除成功',
             'status' => '200',
-            'code' => 0
-        ],200);
+            'code'   => 0,
+        ], 200);
     }
 }

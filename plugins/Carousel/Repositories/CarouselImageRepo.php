@@ -46,14 +46,14 @@ class CarouselImageRepo extends BaseRepo
     private function handleData($data): array
     {
         return [
-            'carousel_id'     => $data['carousel_id'],
-            'title'      => $data['title'] ?? '',
-            'description'     => $data['description']   ?? '',
-            'image_url' => $data['image_url'] ?? '',
-            'target_url'   => $data['target_url']   ?? '',
-            'position'  => $data['position'] ?? 0,
-            'active'    => $data['active'] ?? true,
-            'item_interval' => $data['item_interval'] ?? 5000
+            'carousel_id'   => $data['carousel_id'],
+            'title'         => $data['title']         ?? '',
+            'description'   => $data['description']   ?? '',
+            'image_url'     => $data['image_url']     ?? '',
+            'target_url'    => $data['target_url']    ?? '',
+            'position'      => $data['position']      ?? 0,
+            'active'        => $data['active']        ?? true,
+            'item_interval' => $data['item_interval'] ?? 5000,
         ];
     }
 }
