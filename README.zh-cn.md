@@ -89,9 +89,9 @@
 ### 2. 前台开发指南：
 如果您正在进行前台的二次开发，可以通过执行以下命令来发布所需的视图文件：
 ```
-php artisan vendor:publish --provider="InnoCMS\Front\FrontServiceProvider" --tag=views
+php artisan inno:publish-theme
 ```
-这样操作后，系统会自动在 `/resources/views/vendor` 目录下为您生成相应的模板文件。
+这样操作后，系统会自动在 `/themes/default` 目录下为您生成相应的模板文件。你可以在该目录下针对性调整。
 
 ### 3. 后台开发指南：
 类似地，后台的二次开发也可以通过以下命令来获取模板文件：
