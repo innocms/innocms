@@ -80,6 +80,13 @@ class SettingSeeder extends Seeder
                 'value' => 'images/favicon.png',
                 'json'  => 0,
             ],
+            [
+                'id'    => 8,
+                'space' => 'system',
+                'name'  => 'theme',
+                'value' => 'default',
+                'json'  => 0,
+            ],
         ];
     }
 }

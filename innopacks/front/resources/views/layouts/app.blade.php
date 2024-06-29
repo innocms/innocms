@@ -10,9 +10,9 @@
   <meta name="description" content="@yield('description', system_setting('meta_description', 'innoshop是一款创新的开源电子商务平台，基于Laravel 11开发，具有多语言和多货币支持的特性。它采用了基于Hook的强大而灵活的插件架构，为用户提供了丰富的定制和扩展功能。欢迎体验innoshop，打造属于您自己的电子商务平台！'))">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="shortcut icon" href="{{ image_origin(system_setting('favicon', 'images/favicon.png')) }}">
-  <link rel="stylesheet" href="{{ mix('build/css/bootstrap.css') }}">
-  <link rel="stylesheet" href="{{ mix('build/css/app.css') }}">
-  <script src="{{ mix('build/js/app.js') }}"></script>
+  <link rel="stylesheet" href="{{ mix('themes/default/css/bootstrap.css') }}">
+  <link rel="stylesheet" href="{{ mix('themes/default/css/app.css') }}">
+  <script src="{{ mix('themes/default/js/app.js') }}"></script>
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   @stack('header')
 </head>

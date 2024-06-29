@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             TagSeeder::class,
         ]);
+
+        touch(storage_path('installed'));
     }
 }
