@@ -342,6 +342,12 @@
   flex: 0 0 100px;
 }
 
+.help-text {
+  color: #B2B2B2;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
 img {
   max-height: 100%;
 }
@@ -421,7 +427,7 @@ img {
 }
 .main-content #content {
   flex: 1;
-  padding: 0 1rem 4rem;
+  padding: 0 1rem 5rem;
   overflow-y: auto;
   position: relative;
   background-color: #f3f8fc;
@@ -583,6 +589,27 @@ img {
   font-size: 12px;
 }
 
+.settings-nav a.nav-link {
+  color: #333;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+.settings-nav a.nav-link::after {
+  content: "\f135";
+  font-family: "bootstrap-icons";
+}
+.settings-nav a.nav-link:hover {
+  background-color: #eee;
+}
+.settings-nav a.nav-link.active {
+  background-color: #eee;
+  color: #1165ff;
+}
+
 body.page-home .dashboard-top-card .dashboard-item {
   border: none;
 }
@@ -643,4 +670,57 @@ body.page-home .dashboard-top-card .col-6:nth-child(4) .dashboard-item .icon {
 }
 .page-login .login-content .card-body {
   padding: 30px 30px 0;
+}
+.page-login .form-floating label {
+  font-size: 1rem;
+}
+
+body.page-my-plugins .plugin-item {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.3s ease-in-out;
+}
+body.page-my-plugins .plugin-item:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+body.page-my-plugins .plugin-item .image-wrap {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+body.page-my-plugins .plugin-item .image-wrap .image {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+  background-color: #eee;
+  border-radius: 50%;
+  margin-right: 10px;
+  overflow: hidden;
+}
+body.page-my-plugins .plugin-item .image-wrap .image img {
+  width: 100%;
+  max-height: 100%;
+}
+body.page-my-plugins .plugin-item .image-wrap .title {
+  font-size: 16px;
+  font-weight: bold;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+body.page-my-plugins .plugin-item .plugin-info .description {
+  color: #555;
+  height: 41px;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+body.page-my-plugins .plugin-item .plugin-info .form-switch .form-check-input {
+  height: 1.4rem;
+  width: 2.8rem;
+  margin-top: 0;
 }

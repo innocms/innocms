@@ -52,9 +52,9 @@ class PageController extends Controller
     public function showOfficialDemoPage(Request $request): mixed
     {
         $slug = $request->slug;
-        switch ($slug){
+        switch ($slug) {
             case 'services':
-                return view('front::pages._sample_services',);
+                return view('front::pages._sample_services');
                 break;
             case 'about':
                 return view('front::pages._sample_about');

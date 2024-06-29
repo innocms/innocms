@@ -1,0 +1,78 @@
+{
+    "code": "carousel",
+    "name": {
+        "zh_cn": "轮播图",
+        "en": "Carousel"
+    },
+    "description": {
+        "zh_cn": "轮播图",
+        "en": "Carousel images"
+    },
+    "type": "feature",
+    "version": "v0.6.0",
+    "icon": "/image/logo.png",
+    "author": {
+        "name": "XING GUI YU",
+        "email": "xingguiyu@foxmail.com"
+    },
+    "content-hash": "",
+    "packages": [
+        {
+            "name": "qxsclass/inno-serials-carousel",
+            "version": "0.6.0",
+            "source": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/qxsclass/inno-serials-carousel.git",
+                    "reference": ""
+
+                },
+                {
+                    "type": "gitee",
+                    "url": "https://gitee.com/qxsclass/inno-serials-carousel.git",
+                    "reference": ""
+
+                }
+            ],
+            "dist": {
+                "type": "zip",
+                "url": "",
+                "reference": "",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Math\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "",
+            "keywords": [
+                "innocms-carousel",
+                "innoshop-carousel",
+                "carousel"
+            ],
+            "support": {
+                "issues": "https://github.com/qxsclass/inno-serials-carousel/issues",
+                "source": "https://github.com/qxsclass/inno-serials-carousel/tree/0.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/qxsclass",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-06-29T23:19:16+08:00"
+        }
+    ]
+}

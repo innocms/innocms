@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/aos/aos.css') }}">
   @endpush
 
+      @hookinsert('page.content.top')
+
   <div class="home-banner">
     <div class="home-banner-info">
       <div class="container">
@@ -229,6 +231,9 @@
           </div>
       </div>
   </div>
+
+  @hookinsert('page.content.bottom')
+
 @endsection
 
 @push('footer')

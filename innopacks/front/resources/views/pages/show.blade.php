@@ -16,6 +16,9 @@
   @if(isset($result))
     {!! $result !!}
   @else
+
+      @hookinsert('page.content.top')
+
     <div class="page-service-content">
       <div class="container">
         <div class="row">
@@ -24,5 +27,7 @@
       </div>
     </div>
   @endif
+
+    @hookinsert('page.content.bottom')
 
 @endsection
