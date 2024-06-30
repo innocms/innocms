@@ -8,6 +8,7 @@
         "php": "^8.2",
         "ext-pdo": "*",
         "intervention/image": "^3.5",
+        "jenssegers/agent": "^2.6",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "spatie/laravel-permission": "^6.9",

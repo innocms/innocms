@@ -1,0 +1,42 @@
+
+.services-info{
+    row > div{
+        &:nth-child(1) {
+            .business-item .icon {
+                background-color: #e0f0fd;
+                img {
+                    color: #2e93f8;
+                }
+            }
+        }
+
+        &:nth-child(2) {
+            .business-item .icon {
+                background-color: #fce3eb;
+                img {
+                    color: #f66a6f;
+                }
+            }
+        }
+
+        &:nth-child(3) {
+            .business-item .icon {
+                background-color: #f0e4fb;
+                img {
+                    color: #8a4ef8;
+                }
+            }
+        }
+
+        &:nth-child(4) {
+            .business-item .icon {
+                background-color: #fde2cd;
+                img {
+                    fill: #f8a54e;
+                }
+            }
+        }
+    }
+
+}
+

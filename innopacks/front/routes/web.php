@@ -64,3 +64,10 @@ if ($hasSuffix) {
         }
     }
 }
+
+// Official service demo pages
+Route::prefix('official_demo')
+    ->name('official.demo.')
+    ->group(function () {
+        Route::get('/{slug}', 'InnoCMS\Front\Controllers\PageController@showOfficialDemoPage')->name('pages.show');
+    });

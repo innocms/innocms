@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('front::layouts.app')
 @section('body-class', 'page-home')
 @section('content')
 
@@ -7,30 +7,28 @@
     <link rel="stylesheet" href="{{ asset('vendor/aos/aos.css') }}">
   @endpush
 
-      @hookinsert('page.content.top')
-
   <div class="home-banner">
     <div class="home-banner-info">
       <div class="container">
         <div class="row">
+            <div class="col-md-6">
+                <div class="home-banner-right">
+                    <img src="{{ asset('images/cms/services/top-bg-1.png') }}" class="img-fluid" data-aos="fade-left" data-aos-duration="2000">
+                </div>
+            </div>
           <div class="col-md-6">
             <div class="home-banner-left">
               <h1 data-aos="fade-up" data-aos-duration="1000">InnoCMS</h1>
-              <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">轻量级
-                <span class="text-primary">企业官网CMS</span></p>
+              <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">小体量
+                <span class="text-primary">大服务</span></p>
               <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1800">
-                - 打造企业官网，从未如此简单！<br/>
-                - 轻量级CMS，专为快速开发和上线设计，从构想到现实，仅需几步!<br/>
-                - 易用性与高效性并存，让您的团队轻松上手，快速掌握。<br>
+                - 我们提供丰富的服务以满足您的定制需求！<br/>
+                - 插件、二次开发、专属定制、托管部署、页面设计，一应俱全!<br/>
+                - 专业团队，为您的业务保驾护航。<br>
               </p>
               <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
                 <button type="button" class="btn btn-lg btn-primary">立即探索</button>
               </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="home-banner-right">
-              <img src="{{ asset('images/cms/home/top-bg-4.png') }}" class="img-fluid" data-aos="fade-up" data-aos-duration="2000">
             </div>
           </div>
         </div>
@@ -44,50 +42,86 @@
   <div class="home-business">
     <div class="container home-business-container">
       <div class="business-top">
-        <div class="module-title" data-aos="fade-up">我们的产品</div>
+        <div class="module-title" data-aos="fade-up">我们的服务</div>
         <div class="module-sub-title" data-aos="fade-up">
-          InnoCMS 是一款专为企业官网快速建站而设计的轻量级内容管理系统（CMS）。它以其简洁、高效、易用的特性，帮助企业快速搭建起专业、美观且功能齐全的官方网站。InnoCMS 旨在提供一个稳定而灵活的平台，让企业能够轻松管理网站内容，同时保持网站界面的现代化和用户友好性。
+            我们不仅提供定制化的解决方案，还以专业的技术知识、创新的思维方式和全方位的支持，确保您能够享受到卓越而高效的服务体验。我们承诺，无论您的需求如何变化，我们都能为您提供最匹配的专业服务。
         </div>
       </div>
-      <div class="business-info">
-        <div class="row">
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item">
-              <div class="icon"><i class="bi bi-boxes"></i></div>
-              <div class="title">快速建站</div>
-              <div class="sub-title">
-                InnoCMS 提供了一套完整的网站模板和定制选项，企业可以根据自己的品牌形象和需求，快速搭建起一个全新的官网。
+      <div class="services-info">
+          <div class="row row-cols-1 row-cols-md-4 g-4">
+              <div data-aos="fade-up" data-aos-duration="600" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-1.png')}}" class="card-img-top w-75 mx-auto" alt="开源系统">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">代码开源</h5>
+                          <p class="card-text">致力于提供高度灵活和可定制的解决方案。利用开放源代码的优势，我们帮助企业构建可扩展的系统，同时确保透明度和社区支持。</p>
+                      </div>
+                  </div>
               </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item" data-aos-duration="600">
-              <div class="icon"><i class="bi bi-bounding-box-circles"></i></div>
-              <div class="title">轻量级架构</div>
-              <div class="sub-title">
-                系统设计注重性能优化，确保网站加载速度快，用户体验流畅，尤其适合对速度和性能有较高要求的企业。
+              <div data-aos="fade-up" data-aos-duration="1000" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-2.png')}}" class="card-img-top w-75 mx-auto" alt="插件市场">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">插件市场</h5>
+                          <p class="card-text">通过我们的插件市场，用户可以轻松扩展其系统功能。我们提供丰富的插件选择，以满足不同的业务需求，让定制化服务触手可及</p>
+                      </div>
+                  </div>
               </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item" data-aos-duration="1200">
-              <div class="icon"><i class="bi bi-graph-up-arrow"></i></div>
-              <div class="title">易于管理</div>
-              <div class="sub-title">
-                直观的后台管理界面，让非技术人员也能轻松上手，进行内容更新和管理。
+              <div data-aos="fade-up" data-aos-duration="1400" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-3.png')}}" class="card-img-top w-75 mx-auto" alt="定制开发">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">定制开发</h5>
+                          <p class="card-text">专注于根据您的具体需求，打造独一无二的软件解决方案。从概念到实现，我们与您紧密合作，确保最终产品超出您的期望。</p>
+                      </div>
+                  </div>
               </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item" data-aos-duration="1800">
-              <div class="icon"><i class="bi bi-pencil-square"></i></div>
-              <div class="title">高度可定制</div>
-              <div class="sub-title">
-                提供丰富的插件和扩展，企业可以根据业务发展需要，灵活添加或调整网站功能。
+              <div data-aos="fade-up" data-aos-duration="1800" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-4.png')}}" class="card-img-top w-75 mx-auto" alt="安装维护">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">安装维护</h5>
+                          <p class="card-text">我们的安装维护服务确保您的系统运行平稳，通过定期更新和故障排除，我们提供无忧的技术支持，让您专注于核心业务。</p>
+                      </div>
+                  </div>
               </div>
-            </div>
+              <div data-aos="fade-up" data-aos-duration="600" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-5.png')}}" class="card-img-top w-75 mx-auto" alt="快速建站">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">建站组件</h5>
+                          <p class="card-text">InnoCMS 提供了一套完整的网站模板和定制选项，企业可以根据自己的品牌形象和需求，快速搭建起一个全新的官网。</p>
+                      </div>
+                  </div>
+              </div>
+              <div data-aos="fade-up" data-aos-duration="1000" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-6.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">技术培训</h5>
+                          <p class="card-text">通过我们的技术培训服务，您的团队将获得必要的技能和知识。我们的培训课程旨在提升效率，促进创新，并确保长期的技术自给自足。</p>
+                      </div>
+                  </div>
+              </div>
+              <div data-aos="fade-up" data-aos-duration="1400" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-7.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">整站托管</h5>
+                          <p class="card-text">我们提供一站式托管服务，从建站到部署上线，全部交由我们的专业人士完成，并提供后续的运维和升级，省时省力省心。</p>
+                      </div>
+                  </div>
+              </div>
+              <div data-aos="fade-up" data-aos-duration="1800" class="col">
+                  <div class="card h-100 border-0 shadow-sm">
+                      <img src="{{asset('images/cms/services/icon-8.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">主题设计</h5>
+                          <p class="card-text d-inline">我们提供定制主题设计服务，根据您的业务需求和真实业务场景，为您设计专属的主题和配套UI以及页面布局。</p>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -231,9 +265,6 @@
           </div>
       </div>
   </div>
-
-  @hookinsert('page.content.bottom')
-
 @endsection
 
 @push('footer')
@@ -241,8 +272,8 @@
     AOS.init({
       duration: 300,
       easing: 'ease-in-out',
-      once: true,
-      mirror: false
+      once: false, // whether animation should happen only once - while scrolling down
+      mirror: true, // whether elements should animate out while scrolling past them
     });
 
     $(".home-banner .left-btn button").click(function () {
