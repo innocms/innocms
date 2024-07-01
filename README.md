@@ -4,9 +4,7 @@
 [![Language](https://img.shields.io/badge/Language-php-blue.svg)](https://www.php.net/)
 [![Leaderboard](https://img.shields.io/badge/InnoCMS%20-orange)](https://www.innocms.com/)
 
-## Open Source E-commerce InnoShop Has Been Released:
-
-[InnoShop](https://github.com/innocommerce/innoshop)
+## Open Source E-commerce InnoShop Has Been Released: [InnoShop](https://github.com/innocommerce/innoshop)
 
 # InnoCMS
 Lightweight Enterprise Official Website CMS
