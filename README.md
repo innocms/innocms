@@ -22,10 +22,18 @@ Join us now to experience unprecedented development speed and convenience, and l
 - Password: 123456
 
 ### Demo Frontend Screenshot
-<p align="center"> <a href="https://www.innocms.com" target="_blank"> <img src="https://www.innoshop.cn/images/readme/front.jpg?" alt="Front"> </a> </p>
+<p align="center">
+    <a href="https://www.innocms.com" target="_blank">
+        <img src="https://www.innocms.com/images/readme/front.jpg?" alt="Front">
+    </a>
+</p>
 
 ### Demo Backend Screenshot
-<p align="center"> <a href="https://www.innocms.com" target="_blank"> <img src="https://www.innoshop.cn/images/readme/panel.jpg?" alt="Panel"> </a> </p>
+<p align="center">
+    <a href="https://www.innocms.com" target="_blank">
+        <img src="https://www.innocms.com/images/readme/panel.jpg?" alt="Panel">
+    </a>
+</p>
 
 ## Installation Instructions
 ### 1. Choose a PHP Environment:
