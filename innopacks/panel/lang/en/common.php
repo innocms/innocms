@@ -54,4 +54,6 @@ return [
     'updated_success' => 'Updated successfully',
     'deleted_success' => 'Deleted successfully',
     'verify_required' => 'Please fill out',
+
+    'enable_breadcrumb' => 'Enable Breadcrumb',
 ];

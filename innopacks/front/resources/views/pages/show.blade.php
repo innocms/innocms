@@ -1,17 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="page-head">
-    <div class="container">
-      <div class="page-title">{{ $page->translation->title }}</div>
-      <nav>
-        <ol class="breadcrumb d-flex justify-content-center">
-          <li class="breadcrumb-item"><a href="{{ front_route('home.index') }}"><i class="bi bi-house-door-fill"></i> 首页</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ $page->translation->title }}</li>
-        </ol>
-      </nav>
-    </div>
-  </div>
+    @if($page->show_breadcrumb)
+      <div class="page-head">
+        <div class="container">
+          <div class="page-title">{{ $page->translation->title }}</div>
+          <nav>
+            <ol class="breadcrumb d-flex justify-content-center">
+              <li class="breadcrumb-item"><a href="{{ front_route('home.index') }}"><i class="bi bi-house-door-fill"></i> 首页</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ $page->translation->title }}</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    @endif
 
   @if(isset($result))
     {!! $result !!}
