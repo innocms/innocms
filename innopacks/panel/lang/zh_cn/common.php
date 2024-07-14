@@ -54,4 +54,6 @@ return [
     'updated_success' => '更新成功',
     'deleted_success' => '删除成功',
     'verify_required' => '请填写',
+
+    'enable_breadcrumb' => '启用面包屑',
 ];

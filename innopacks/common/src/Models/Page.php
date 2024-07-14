@@ -16,7 +16,7 @@ class Page extends BaseModel
     use Translatable;
 
     protected $fillable = [
-        'slug', 'viewed', 'active',
+        'slug', 'viewed', 'show_breadcrumb', 'active',
     ];
 
     public $appends = [
