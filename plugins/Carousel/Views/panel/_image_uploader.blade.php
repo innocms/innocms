@@ -104,9 +104,9 @@
             formData.append('type', _self.parents('.is-up-file').data('type'));
             formData.append('event', _self.parents('.is-up-file').data('event'));
             _self.find('.img-loading').removeClass('d-none');
-            axios.post('{{ config('app.url') }}/upload/images', formData, {}).then(function (res) {
-                let val = res.data.data.value;
-                let url = res.data.data.url;
+            axios.post('{{route('front.upload.images')}}', formData, {}).then(function (res) {
+                let url = res.data.url;
+                let val = res.data.value;
                 _self.find('#imageVal').val(val);
                 _self.find('.tool-wrap').removeClass('d-none');
                 $('#btnAddImage').removeClass('disabled');

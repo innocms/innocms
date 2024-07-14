@@ -41,8 +41,8 @@ class Boot
         }
 
         if ($page) {
-            $this->topCarousel    = Carousel::where('page_id', $page->id)->where('position', 'top')->orderBy('position', 'asc')->get();
-            $this->bottomCarousel = Carousel::where('page_id', $page->id)->where('position', 'bottom')->orderBy('position', 'asc')->get();
+            $this->topCarousel    = Carousel::where('page_id', $page->id)->where('position', 'top')->where('active', true)->orderBy('position', 'asc')->get();
+            $this->bottomCarousel = Carousel::where('page_id', $page->id)->where('position', 'bottom')->where('active', true)->orderBy('position', 'asc')->get();
             $this->agent          = new Agent();
 
             if ($this->topCarousel->count()) {
