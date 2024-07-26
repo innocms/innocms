@@ -173,7 +173,7 @@
               <div class="col-6 mysql-item">
                 <div class="mb-3">
                   <label for="database" class="form-label">{{ __('install::common.table_prefix') }}</label>
-                  <input type="text" class="form-control" id="db_prefix" name="db_prefix" value="inno_" required
+                  <input type="text" class="form-control" id="db_prefix" name="db_prefix" value="icms_" required
                          placeholder="{{ __('install::common.table_prefix') }}">
                   <div class="invalid-feedback">{{ __('install::common.table_prefix') }}</div>
                 </div>
