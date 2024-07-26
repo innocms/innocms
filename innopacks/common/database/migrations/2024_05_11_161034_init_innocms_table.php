@@ -37,10 +37,10 @@ return new class extends Migration
             $table->comment('Admin User');
             $table->bigIncrements('id')->comment('ID');
             $table->string('name')->comment('Name');
-            $table->string('email')->unique()->comment('Email');
+            $table->string('email', 64)->unique()->comment('Email');
             $table->string('password')->comment('Password');
-            $table->boolean('active')->comment('Active');
             $table->string('locale')->default('')->comment('Locale Code');
+            $table->boolean('active')->comment('Active');
             $table->timestamps();
         });
 
@@ -70,7 +70,7 @@ return new class extends Migration
             $table->comment('Article');
             $table->bigIncrements('id')->comment('ID');
             $table->integer('catalog_id')->nullable()->default(0)->index('a_catalog_id')->comment('Catalog ID');
-            $table->string('slug')->nullable()->unique()->comment('URL Slug');
+            $table->string('slug', 128)->nullable()->unique()->comment('URL Slug');
             $table->integer('position')->default(0)->comment('Sort order');
             $table->integer('viewed')->default(0)->comment('Viewed');
             $table->string('author')->nullable()->comment('Author');
@@ -107,7 +107,7 @@ return new class extends Migration
             $table->comment('Article Category');
             $table->bigIncrements('id')->comment('ID');
             $table->integer('parent_id')->default(0)->index('c_parent_id')->comment('Parent ID');
-            $table->string('slug')->nullable()->unique()->comment('URL Slug');
+            $table->string('slug', 128)->nullable()->unique()->comment('URL Slug');
             $table->integer('position')->default(0)->comment('Sort order');
             $table->boolean('active')->comment('Active');
             $table->timestamps();
@@ -115,7 +115,7 @@ return new class extends Migration
 
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uuid')->unique();
+            $table->string('uuid', 128)->unique();
             $table->text('connection');
             $table->text('queue');
             $table->longText('payload');
@@ -183,9 +183,9 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->comment('Page');
             $table->bigIncrements('id')->comment('ID');
-            $table->string('slug')->nullable()->unique()->comment('URL Slug');
+            $table->string('slug', 128)->nullable()->unique()->comment('URL Slug');
             $table->integer('position')->default(0)->comment('Sort order');
-            $table->integer('viewed')->comment('Viewed');
+            $table->integer('viewed')->default(0)->comment('Viewed');
             $table->boolean('active')->comment('Active');
             $table->timestamps();
         });
@@ -227,7 +227,7 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->comment('Article Tag');
             $table->bigIncrements('id')->comment('ID');
-            $table->string('slug')->nullable()->unique()->comment('URL Slug');
+            $table->string('slug', 128)->nullable()->unique()->comment('URL Slug');
             $table->integer('position')->default(0)->comment('Sort order');
             $table->boolean('active')->comment('Active');
             $table->timestamps();
