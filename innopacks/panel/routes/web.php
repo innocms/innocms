@@ -18,6 +18,9 @@ Route::middleware(['admin_auth:admin'])
         Route::get('logout', [Controllers\LogoutController::class, 'index'])->name('logout.index');
 
         Route::get('/', [Controllers\DashboardController::class, 'index'])->name('dashboard.index');
+
+        Route::get('/locale/{code}', [Controllers\LocaleController::class, 'switch'])->name('locale.switch');
+
         Route::resource('/articles', Controllers\ArticleController::class);
         Route::resource('/catalogs', Controllers\CatalogController::class);
         Route::resource('/pages', Controllers\PageController::class);

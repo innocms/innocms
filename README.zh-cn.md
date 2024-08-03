@@ -24,14 +24,14 @@
 ### Demo 前台截图
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
-        <img src="https://www.innoshop.cn/images/readme/front.jpg?" alt="Front">
+        <img src="https://www.innocms.com/images/readme/front.jpg?" alt="Front">
     </a>
 </p>
 
 ### Demo 后台截图
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
-        <img src="https://www.innoshop.cn/images/readme/panel.jpg?" alt="Panel">
+        <img src="https://www.innocms.com/images/readme/panel.jpg?" alt="Panel">
     </a>
 </p>
 

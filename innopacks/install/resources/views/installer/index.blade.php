@@ -29,6 +29,7 @@
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="{{ route('install.install.index', ['locale' => 'zh_cn']) }}">中文</a></li>
         <li><a class="dropdown-item" href="{{ route('install.install.index', ['locale' => 'en']) }}">English</a></li>
+        <li><a class="dropdown-item" href="{{ route('install.install.index', ['locale' => 'es']) }}">Español</a></li>
       </ul>
     </div>
   </div>
@@ -172,7 +173,7 @@
               <div class="col-6 mysql-item">
                 <div class="mb-3">
                   <label for="database" class="form-label">{{ __('install::common.table_prefix') }}</label>
-                  <input type="text" class="form-control" id="db_prefix" name="db_prefix" value="inno_" required
+                  <input type="text" class="form-control" id="db_prefix" name="db_prefix" value="icms_" required
                          placeholder="{{ __('install::common.table_prefix') }}">
                   <div class="invalid-feedback">{{ __('install::common.table_prefix') }}</div>
                 </div>
@@ -356,6 +357,7 @@
 
   function checkComplete(data, callback) {
     layer.load(2, {shade: [0.3,'#fff'] })
+    $('.is-invalid').removeClass('is-invalid').next('.invalid-feedback').text('');
     $.ajax({
       url: '/install/complete',
       type: 'POST',
@@ -363,9 +365,14 @@
       success: function(res) {
         if (res.success) {
           callback(res);
-        } else {
-          alert(res.message);
         }
+      },
+      error: function(res) {
+        const errors = res.responseJSON.errors;
+        Object.keys(errors).forEach(function(key) {
+          $('input[name="' + key + '"]').addClass('is-invalid').next('.invalid-feedback').text(errors[key][0]);
+        });
+        layer.msg(res.responseJSON.message);
       },
       complete: function() {
         layer.closeAll('loading');

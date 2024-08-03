@@ -11,6 +11,7 @@ namespace InnoCMS\Panel\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use InnoCMS\Common\Models\Locale;
 use InnoCMS\Common\Repositories\LocaleRepo;
 use InnoCMS\Panel\Requests\LocaleRequest;
@@ -28,6 +29,22 @@ class LocaleController extends BaseController
         ];
 
         return view('panel::locales.index', $data);
+    }
+
+    /**
+     * @param  Request  $request
+     * @return RedirectResponse
+     */
+    public function switch(Request $request): RedirectResponse
+    {
+        $admin         = current_admin();
+        $destCode      = $request->code;
+        $refererUrl    = $request->headers->get('referer');
+        $admin->locale = $destCode;
+        $admin->save();
+        App::setLocale($destCode);
+
+        return redirect()->to($refererUrl);
     }
 
     /**

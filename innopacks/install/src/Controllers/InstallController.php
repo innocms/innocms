@@ -24,6 +24,7 @@ class InstallController extends Controller
     /**
      * @param  Request  $request
      * @return mixed
+     * @throws Exception
      */
     public function index(Request $request): mixed
     {
@@ -31,7 +32,7 @@ class InstallController extends Controller
             return redirect(front_route('home.index'));
         }
 
-        $defaultLocale = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        $defaultLocale = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en', 0, 2);
         $defaultLocale = ($defaultLocale == 'zh' ? 'zh_cn' : $defaultLocale);
         $locale        = $request->get('locale', $defaultLocale);
         App::setLocale($locale);

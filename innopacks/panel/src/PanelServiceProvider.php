@@ -17,6 +17,8 @@ use InnoCMS\Common\Middleware\EventActionHook;
 use InnoCMS\Common\Models\Admin;
 use InnoCMS\Panel\Console\Commands\ChangeRootPassword;
 use InnoCMS\Panel\Middleware\AdminAuthenticate;
+use InnoCMS\Panel\Middleware\GlobalPanelData;
+use InnoCMS\Panel\Middleware\SetPanelLocale;
 
 class PanelServiceProvider extends ServiceProvider
 {
@@ -80,9 +82,10 @@ class PanelServiceProvider extends ServiceProvider
      */
     private function registerWebRoutes(): void
     {
-        $adminName = panel_name();
+        $middlewares = ['web', EventActionHook::class, ContentFilterHook::class, GlobalPanelData::class, SetPanelLocale::class];
+        $adminName   = panel_name();
         Route::prefix($adminName)
-            ->middleware(['web', EventActionHook::class, ContentFilterHook::class])
+            ->middleware($middlewares)
             ->name("$adminName.")
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
@@ -97,9 +100,10 @@ class PanelServiceProvider extends ServiceProvider
      */
     private function registerApiRoutes(): void
     {
-        $adminName = panel_name();
+        $middlewares = ['api', 'web', 'admin_auth:admin', EventActionHook::class, ContentFilterHook::class];
+        $adminName   = panel_name();
         Route::prefix("api/$adminName")
-            ->middleware(['api', 'web', 'admin_auth:admin'])
+            ->middleware($middlewares)
             ->name("api.$adminName.")
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/api.php'));

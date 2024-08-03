@@ -86,7 +86,7 @@ class Creator
                 'DB_PASSWORD=\''.$data['db_password']."'\n";
         } elseif ($dbType == 'sqlite') {
             $envFileData .= 'DB_CONNECTION='.$data['type']."\n".
-                'DB_PREFIX='.($data['db_prefix'] ?: 'inno_')."\n";
+                'DB_PREFIX='.($data['db_prefix'] ?: 'icms_')."\n";
         }
 
         file_put_contents(base_path('.env'), $envFileData);
@@ -101,7 +101,7 @@ class Creator
         $this->sqlite();
 
         try {
-            Artisan::call('migrate', ['--force' => true], $this->outputLog);
+            Artisan::call('migrate:fresh', ['--force' => true], $this->outputLog);
         } catch (Exception $e) {
             $this->outputLog->write($e);
             throw $e;
