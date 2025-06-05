@@ -15,6 +15,9 @@ Ease of use and efficiency coexist, allowing your team to get started easily and
 
 Join us now to experience unprecedented development speed and convenience, and let your enterprise shine on the Internet!
 
+## Documentation
+For detailed documentation, please visit: [InnoCMS Documentation Center](http://docs.innoshop.cn/en)
+
 ## Demo Site
 - Frontend: https://demo.innocms.com/
 - Backend: https://demo.innocms.com/panel
