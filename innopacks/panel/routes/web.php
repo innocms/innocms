@@ -47,4 +47,11 @@ Route::middleware(['admin_auth:admin'])
         Route::put('/admins/{currency}/active', [Controllers\AdminController::class, 'active'])->name('admins.active');
 
         Route::resource('/roles', Controllers\RoleController::class);
+
+        Route::get('/analytics', [Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+        Route::get('/analytics/data', [Controllers\AnalyticsController::class, 'data'])->name('analytics.data');
+
+        Route::resource('/comments', Controllers\CommentController::class);
+        Route::put('/comments/{comment}/approve', [Controllers\CommentController::class, 'approve'])->name('comments.approve');
+        Route::put('/comments/{comment}/spam', [Controllers\CommentController::class, 'spam'])->name('comments.spam');
     });

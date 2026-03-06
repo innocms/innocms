@@ -35,3 +35,18 @@ Route::get('/tags/autocomplete', [ApiControllers\TagController::class, 'autocomp
 Route::post('/tags', [ApiControllers\TagController::class, 'store'])->name('tags.store');
 Route::put('/tags/{tag}', [ApiControllers\TagController::class, 'update'])->name('tags.update');
 Route::delete('/tags/{tag}', [ApiControllers\TagController::class, 'destroy'])->name('tags.destroy');
+
+// AI Content Generation
+Route::post('/ai/generate', [ApiControllers\ContentAIController::class, 'generate'])->name('ai.generate');
+Route::get('/ai/models', [ApiControllers\ContentAIController::class, 'getModels'])->name('ai.models');
+Route::post('/ai/test', [ApiControllers\ContentAIController::class, 'testModel'])->name('ai.test');
+
+// File Manager
+Route::get('/file-manager', [ApiControllers\FileManagerController::class, 'index'])->name('file_manager.index');
+Route::get('/file-manager/directories', [ApiControllers\FileManagerController::class, 'directories'])->name('file_manager.directories');
+Route::post('/file-manager/directory', [ApiControllers\FileManagerController::class, 'createDirectory'])->name('file_manager.create_directory');
+Route::post('/file-manager/upload', [ApiControllers\FileManagerController::class, 'upload'])->name('file_manager.upload');
+Route::post('/file-manager/move', [ApiControllers\FileManagerController::class, 'move'])->name('file_manager.move');
+Route::post('/file-manager/copy', [ApiControllers\FileManagerController::class, 'copy'])->name('file_manager.copy');
+Route::post('/file-manager/rename', [ApiControllers\FileManagerController::class, 'rename'])->name('file_manager.rename');
+Route::delete('/file-manager', [ApiControllers\FileManagerController::class, 'destroy'])->name('file_manager.destroy');

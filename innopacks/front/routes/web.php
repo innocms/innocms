@@ -15,9 +15,16 @@ $hasSuffix = installed() && system_setting('has_suffix');
 
 Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index');
 
+// Sitemap
+Route::get('/sitemap.xml', [Controllers\SitemapController::class, 'index'])->name('sitemap.index');
+
 // Upload
 Route::post('/upload/images', [Controllers\UploadController::class, 'images'])->name('upload.images');
 Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->name('upload.files');
+
+// Comments
+Route::post('/comments', [Controllers\CommentController::class, 'store'])->name('comments.store');
+Route::get('/comments/{type}/{id}', [Controllers\CommentController::class, 'list'])->name('comments.list');
 
 if ($hasSuffix) {
     // Catalogs

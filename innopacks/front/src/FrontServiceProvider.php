@@ -15,6 +15,8 @@ use Illuminate\View\FileViewFinder;
 use InnoCMS\Common\Middleware\ContentFilterHook;
 use InnoCMS\Common\Middleware\EventActionHook;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
+use InnoCMS\Front\Middleware\MaintenanceMode;
+use InnoCMS\Front\Middleware\TrackVisit;
 
 class FrontServiceProvider extends ServiceProvider
 {
@@ -46,7 +48,7 @@ class FrontServiceProvider extends ServiceProvider
      */
     protected function registerWebRoutes(): void
     {
-        $middlewares = ['web', EventActionHook::class, ContentFilterHook::class, GlobalDataMiddleware::class];
+        $middlewares = ['web', MaintenanceMode::class, TrackVisit::class, EventActionHook::class, ContentFilterHook::class, GlobalDataMiddleware::class];
         Route::middleware($middlewares)
             ->name('front.')
             ->group(function () {

@@ -7,11 +7,15 @@
     "require": {
         "php": "^8.2",
         "ext-pdo": "*",
+        "geoip2/geoip2": "^3.3",
         "intervention/image": "^3.5",
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "mobiledetect/mobiledetectlib": "^2.8",
+        "openai-php/client": "^0.19.0",
         "spatie/laravel-permission": "^6.9",
+        "spatie/laravel-sitemap": "^7.4",
         "tormjens/eventy": "^0.9.3",
         "wikimedia/composer-merge-plugin": "^2.1",
         "zanysoft/laravel-zip": "^1.0"
