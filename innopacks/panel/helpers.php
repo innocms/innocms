@@ -45,7 +45,7 @@ if (! function_exists('panel_locale_code')) {
      */
     function panel_locale_code(): string
     {
-        return current_admin()->locale ?? locale_code();
+        return current_admin()->locale ?? session('panel_locale', setting_locale_code());
     }
 }
 
