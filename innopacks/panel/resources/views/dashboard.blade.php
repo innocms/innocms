@@ -7,68 +7,70 @@
 
 @section('content')
 
-<div class="mb-4 mt-n3">
-  <div class="card dashboard-top-card">
-    <div class="card-body">
-      <div class="row">
-        @foreach ($cards as $card)
-        <div class="col-6 col-md-3">
-          <div class="card dashboard-item">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="left">
-                  <div class="quantity">{{ $card['quantity'] }}</div>
-                  <span class="title">{{ $card['title'] }}</span>
-                </div>
-                <div class="right"><i class="{{ $card['icon'] }} icon"></i></div>
-              </div>
+<div class="mb-4 mt-n2">
+  <div class="dashboard-top-card">
+    <div class="row g-3">
+      @foreach ($cards as $card)
+      <div class="col-6 col-md-3">
+        <div class="dashboard-item">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="left">
+              <div class="quantity">{{ $card['quantity'] }}</div>
+              <span class="title">{{ $card['title'] }}</span>
+            </div>
+            <div class="right">
+              <div class="icon-wrap"><i class="{{ $card['icon'] }} icon"></i></div>
             </div>
           </div>
         </div>
-        @endforeach
       </div>
+      @endforeach
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-12 col-md-6">
-    <div class="card">
-      <div class="card-header">{{ __('panel::dashboard.article_trends') }}</div>
+<div class="row g-3">
+  <div class="col-12 col-md-7">
+    <div class="card dashboard-chart-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold">{{ __('panel::dashboard.article_trends') }}</h6>
+      </div>
       <div class="card-body">
-        <canvas id="chart-new-quantity" height="380"></canvas>
+        <canvas id="chart-new-quantity" height="320"></canvas>
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6 mb-3">
-    <div class="card top-sale-products">
-      <div class="card-header">{{ __('panel::dashboard.top_articles') }}</div>
-      <div class="card-body pb-0">
+  <div class="col-12 col-md-5">
+    <div class="card dashboard-top-card-list">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold">{{ __('panel::dashboard.top_articles') }}</h6>
+      </div>
+      <div class="card-body">
         @if ($top_viewed_articles)
-          <table class="table table-last-no-border align-middle mt-n3 mb-0">
-            <tbody>
-            @foreach($top_viewed_articles as $item)
-              <tr>
-                <td class="text-center">
-                  @if ($loop->iteration <= 3)
-                    <img src="{{ asset('icon/grade-'. $loop->iteration .'.svg') }}" alt="{{ $item['name'] }}" class="img-fluid wh-30">
-                  @else
-                    <span class="badge bg-secondary">{{ $loop->iteration }}</span>
-                  @endif
-                </td>
-                <td>
-                  <a class="d-flex align-items-center text-dark text-decoration-none" href="{{ panel_route('articles.edit', $item['id']) }}">
-                    <div class="wh-30 rounded-circle overflow-hidden border border-1 me-2"><img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="img-fluid"></div>
-                    {{ $item['summary'] }}
-                  </a>
-                </td>
-                <td class="text-center">{{ $item['viewed'] }}</td>
-              </tr>
-            @endforeach
-            </tbody>
-          </table>
+          <div class="top-articles-list">
+          @foreach($top_viewed_articles as $item)
+            <a class="article-row d-flex align-items-center text-decoration-none" href="{{ panel_route('articles.edit', $item['id']) }}">
+              <div class="rank">
+                @if ($loop->iteration <= 3)
+                  <span class="rank-badge rank-{{ $loop->iteration }}">{{ $loop->iteration }}</span>
+                @else
+                  <span class="rank-badge rank-default">{{ $loop->iteration }}</span>
+                @endif
+              </div>
+              <div class="article-thumb rounded overflow-hidden flex-shrink-0">
+                <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}">
+              </div>
+              <div class="article-info flex-grow-1 mx-3">
+                <div class="article-title">{{ $item['summary'] }}</div>
+              </div>
+              <div class="article-views text-end">
+                <i class="bi bi-eye me-1"></i>{{ $item['viewed'] }}
+              </div>
+            </a>
+          @endforeach
+          </div>
         @else
-          <x-common-no-data :width="240" />
+          <x-common-no-data :width="200" />
         @endif
       </div>
     </div>
@@ -84,7 +86,15 @@
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-        legend: false // Hide legend
+      legend: false,
+      tooltip: {
+        backgroundColor: '#0F172A',
+        titleFont: { size: 13, weight: '500' },
+        bodyFont: { size: 12 },
+        padding: 12,
+        cornerRadius: 8,
+        displayColors: false,
+      }
     },
     interaction: {
       mode: 'index',
@@ -95,22 +105,34 @@
         beginAtZero: true,
         grid: {
           drawBorder: false,
-          borderDash: [3],
+          borderDash: [4, 4],
+          color: '#E2E8F0',
         },
+        ticks: {
+          color: '#94A3B8',
+          font: { size: 12 },
+          padding: 8,
+        },
+        border: { display: false }
       },
       x: {
-        beginAtZero: true,
         grid: {
           drawBorder: false,
-          display: false
+          display: false,
         },
+        ticks: {
+          color: '#94A3B8',
+          font: { size: 12 },
+          padding: 8,
+        },
+        border: { display: false }
       }
     },
   };
 
-  const orderGradient = ctx1.createLinearGradient(0, 0, 0, 380);
-  orderGradient.addColorStop(0, 'rgba(76,122,247,0.5)');
-  orderGradient.addColorStop(1, 'rgba(76,122,247,0)');
+  const orderGradient = ctx1.createLinearGradient(0, 0, 0, 320);
+  orderGradient.addColorStop(0, 'rgba(37,99,235,0.2)');
+  orderGradient.addColorStop(1, 'rgba(37,99,235,0)');
 
   const chart1 = new Chart(ctx1, {
     type: 'line',
@@ -120,15 +142,17 @@
         label: '发布数量',
         data: @json($article['latest_week']['totals']),
         responsive: true,
-        backgroundColor : orderGradient,
-        borderColor : "#3c7af7",
+        backgroundColor: orderGradient,
+        borderColor: '#2563EB',
+        borderWidth: 2.5,
         fill: true,
-        lineTension: 0.4,
-        datasetStrokeWidth: 3,
-        pointBackgroundColor: '#3c7af7',
-        pointDotStrokeWidth: 4,
-        pointHoverBorderWidth: 8,
-        tension: 0.1
+        pointBackgroundColor: '#fff',
+        pointBorderColor: '#2563EB',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointHoverBorderWidth: 3,
+        tension: 0.4
       }]
     },
     options: options

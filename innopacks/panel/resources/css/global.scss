@@ -57,7 +57,7 @@
 }
 
 .help-text {
-  color: #94A3B8;
+  color: $text-light;
   margin-top: 4px;
   font-size: 12px;
 }
@@ -72,7 +72,7 @@ img {
 
   .sidebar-box {
     background-color: $sidebar-bg;
-    color: #CBD5E1;
+    color: $border-dark;
     width: 230px;
     transition: all 0.2s ease;
 
@@ -111,7 +111,7 @@ img {
       .nav {
         border: none;
         a {
-          color: #94A3B8;
+          color: $text-light;
           padding: .75rem 1.25rem .75rem 2.85rem;
           font-size: 0.875rem;
           transition: all 0.15s ease;
@@ -138,7 +138,7 @@ img {
       }
 
       .accordion-button {
-        color: #CBD5E1;
+        color: $border-dark;
         text-decoration: none;
         font-size: 0.875rem;
         font-weight: 500;
@@ -188,7 +188,7 @@ img {
       height: 60px;
       background-color: #fff;
       box-shadow: $header-shadow;
-      border-bottom: 1px solid #F1F5F9;
+      border-bottom: 1px solid $border-light;
 
       .header-item {
         cursor: pointer;
@@ -205,7 +205,7 @@ img {
             inset: -2px 0px auto auto;
             margin: 0px;
             transform: translate3d(0px, 62px, 0px);
-            border: 1px solid #E2E8F0;
+            border: 1px solid $border;
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
           }
         }
@@ -216,13 +216,13 @@ img {
 
 // Card styling
 .card {
-  border: 1px solid #E2E8F0;
+  border: 1px solid $border;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
   border-radius: 8px;
 
   .card-header {
     background-color: #fff;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid $border;
     padding: 1rem 1.25rem;
   }
 }
@@ -263,12 +263,12 @@ img {
     tr {
       td, th {
         font-weight: 600;
-        color: #475569;
+        color: $text-body;
         font-size: 0.8125rem;
         text-transform: uppercase;
         letter-spacing: 0.025em;
-        background-color: #F8FAFC;
-        border-bottom: 2px solid #E2E8F0;
+        background-color: $content-bg;
+        border-bottom: 2px solid $border;
       }
     }
   }
@@ -296,7 +296,7 @@ img {
 }
 
 .form-control {
-  border-color: #CBD5E1;
+  border-color: $border-dark;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
   &:focus {
@@ -319,7 +319,7 @@ img {
     }
 
     &:active {
-      background-color: #DBEAFE !important;
+      background-color: $primary-border !important;
     }
 
     .tool-wrap > div:first-of-type {
@@ -337,7 +337,7 @@ img {
     font-size: 14px;
     padding: var(--bs-nav-link-padding-y) 1.5rem;
     font-weight: 500;
-    color: #64748B;
+    color: $text-muted;
     transition: color 0.15s ease;
     border-bottom: 2px solid transparent;
 
@@ -353,13 +353,13 @@ img {
 }
 
 .locales-accordion {
-  border: 1px solid #E2E8F0;
+  border: 1px solid $border;
   border-radius: 8px;
-  --bs-accordion-border-color: #E2E8F0;
+  --bs-accordion-border-color: #{$border};
   overflow: hidden;
 
   .accordion-body {
-    border-top: 1px solid #E2E8F0;
+    border-top: 1px solid $border;
   }
 
   .accordion-button {
@@ -381,7 +381,7 @@ img {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
-  border: 1px solid #E2E8F0;
+  border: 1px solid $border;
   z-index: 10;
   padding: 14px 1.25rem;
   display: flex;
@@ -396,8 +396,8 @@ img {
 
     &.btn-back {
       background-color: #fff;
-      border: 1px solid #CBD5E1;
-      color: #475569;
+      border: 1px solid $border-dark;
+      color: $text-body;
 
       &:hover {
         color: #fff;
@@ -449,8 +449,8 @@ img {
 .autocomplete-list {
   height: 180px;
   overflow-y: auto;
-  background-color: #F8FAFC;
-  border: 1px solid #E2E8F0;
+  background-color: $content-bg;
+  border: 1px solid $border;
   border-radius: 0 0 4px 4px;
   padding: 0;
   list-style: none;
@@ -464,7 +464,7 @@ img {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 4px;
-    border-bottom: 1px solid #F1F5F9;
+    border-bottom: 1px solid $border-light;
     transition: background-color 0.1s ease;
 
     &:hover {
@@ -479,7 +479,7 @@ img {
 
 .settings-nav {
   a.nav-link {
-    color: #334155;
+    color: $text-dark;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -511,7 +511,7 @@ img {
 .page-header {
   h4 {
     font-weight: 600;
-    color: #0F172A;
+    color: $text-heading;
   }
 }
 
@@ -519,7 +519,7 @@ img {
 .breadcrumb {
   font-size: 0.8125rem;
   a {
-    color: #64748B;
+    color: $text-muted;
     &:hover {
       color: $primary;
     }

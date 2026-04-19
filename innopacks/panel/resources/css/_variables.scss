@@ -1,11 +1,54 @@
+// Primary
 $primary: #2563EB;
 $primary-dark: #1E40AF;
 $primary-light: #3B82F6;
 $primary-bg: #EFF6FF;
 $primary-border: #BFDBFE;
+
+// Text
+$text-heading: #0F172A;
+$text-dark: #334155;
+$text-body: #475569;
+$text-muted: #64748B;
+$text-light: #94A3B8;
+
+// Border
+$border-light: #F1F5F9;
+$border: #E2E8F0;
+$border-dark: #CBD5E1;
+
+// Background
+$content-bg: #F8FAFC;
+
+// Sidebar
 $sidebar-bg: #0F172A;
 $sidebar-header: #1E293B;
 $sidebar-hover: #1E3A5F;
 $sidebar-active: #1D4ED8;
-$content-bg: #F8FAFC;
+
+// Header
 $header-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.08);
+
+// Success (Green)
+$success: #16A34A;
+$success-bg: #F0FDF4;
+$success-bg-dark: #DCFCE7;
+
+// Warning (Amber)
+$warning: #D97706;
+$warning-bg: #FFFBEB;
+$warning-bg-dark: #FEF3C7;
+$warning-text: #B45309;
+
+// Danger (Red)
+$danger: #DC2626;
+$danger-bg: #FEF2F2;
+$danger-bg-dark: #FEE2E2;
+
+// Rank badges
+$rank-gold-bg: #FEF3C7;
+$rank-gold-text: #B45309;
+$rank-silver-bg: #F1F5F9;
+$rank-silver-text: #475569;
+$rank-bronze-bg: #FFF7ED;
+$rank-bronze-text: #C2410C;

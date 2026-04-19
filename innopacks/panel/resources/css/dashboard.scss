@@ -1,34 +1,46 @@
 body.page-home {
   .dashboard-top-card {
     .dashboard-item {
-      border: none;
       border-radius: 10px;
-      padding: 1.25rem;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      padding: 1.25rem 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: default;
 
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
       }
 
       .left {
         .quantity {
-          font-size: 1.75rem;
+          font-size: 2rem;
           font-weight: 700;
-          color: #0F172A;
-          margin-bottom: 4px;
+          color: $text-heading;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
         }
 
         .title {
           font-size: 0.8125rem;
-          color: #64748B;
+          color: $text-muted;
           font-weight: 500;
+          margin-top: 2px;
         }
       }
 
       .right {
-        .icon {
-          font-size: 1.75rem;
+        .icon-wrap {
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 10px;
+          background-color: rgba(255, 255, 255, 0.6);
+
+          .icon {
+            font-size: 1.25rem;
+          }
         }
       }
     }
@@ -36,36 +48,128 @@ body.page-home {
     .col-6 {
       &:nth-child(1) {
         .dashboard-item {
-          background-color: #EFF6FF;
-          .icon {
-            color: #2563EB;
-          }
+          background: linear-gradient(135deg, $primary-bg 0%, $primary-border 100%);
+          .icon-wrap .icon { color: $primary; }
         }
       }
 
       &:nth-child(2) {
         .dashboard-item {
-          background-color: #F0FDF4;
-          .icon {
-            color: #16A34A;
-          }
+          background: linear-gradient(135deg, $success-bg 0%, $success-bg-dark 100%);
+          .icon-wrap .icon { color: $success; }
         }
       }
 
       &:nth-child(3) {
         .dashboard-item {
-          background-color: #FFFBEB;
-          .icon {
-            color: #D97706;
-          }
+          background: linear-gradient(135deg, $warning-bg 0%, $warning-bg-dark 100%);
+          .icon-wrap .icon { color: $warning; }
         }
       }
 
       &:nth-child(4) {
         .dashboard-item {
-          background-color: #FEF2F2;
-          .icon {
-            color: #DC2626;
+          background: linear-gradient(135deg, $danger-bg 0%, $danger-bg-dark 100%);
+          .icon-wrap .icon { color: $danger; }
+        }
+      }
+    }
+  }
+
+  .dashboard-chart-card {
+    .card-body {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+  }
+
+  .dashboard-top-card-list {
+    .card-body {
+      padding: 0.5rem 0;
+    }
+
+    .top-articles-list {
+      .article-row {
+        padding: 0.75rem 1.25rem;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: $content-bg;
+
+          .article-title {
+            color: $primary;
+          }
+        }
+
+        .rank {
+          width: 24px;
+          flex-shrink: 0;
+
+          .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+          }
+
+          .rank-1 {
+            background-color: $rank-gold-bg;
+            color: $rank-gold-text;
+          }
+
+          .rank-2 {
+            background-color: $rank-silver-bg;
+            color: $rank-silver-text;
+          }
+
+          .rank-3 {
+            background-color: $rank-bronze-bg;
+            color: $rank-bronze-text;
+          }
+
+          .rank-default {
+            background-color: $rank-silver-bg;
+            color: $text-light;
+          }
+        }
+
+        .article-thumb {
+          width: 36px;
+          height: 36px;
+          flex-shrink: 0;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .article-info {
+          min-width: 0;
+
+          .article-title {
+            font-size: 0.875rem;
+            color: $text-dark;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: color 0.15s ease;
+          }
+        }
+
+        .article-views {
+          font-size: 0.8125rem;
+          color: $text-light;
+          white-space: nowrap;
+          flex-shrink: 0;
+
+          i {
+            font-size: 0.75rem;
           }
         }
       }
