@@ -1,9 +1,6 @@
 .page-login {
-  background-color: #f3f8fc;
-  background-image: url('/images/panel/login-bg.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #1E40AF 100%);
+  min-height: 100vh;
 
   .container {
     position: relative;
@@ -14,20 +11,44 @@
 
   .locale-wrap {
     position: absolute;
-    top: 30px;
-    right: 10px;
+    top: 24px;
+    right: 24px;
 
     .locale {
       cursor: pointer;
       padding-bottom: 10px;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.875rem;
+
+      span {
+        transition: color 0.15s ease;
+      }
 
       &:hover {
+        color: #fff;
+
         .dropdown-menu {
           display: block;
           position: absolute;
           inset: -2px 0px auto auto;
           margin: 0px;
           transform: translate3d(0px, 30px, 0px);
+          border: none;
+          border-radius: 8px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+          overflow: hidden;
+        }
+      }
+
+      .dropdown-menu {
+        a {
+          padding: 10px 16px;
+          font-size: 0.875rem;
+          transition: background-color 0.1s ease;
+
+          &:hover {
+            background-color: #EFF6FF;
+          }
         }
       }
     }
@@ -38,29 +59,96 @@
   }
 
   .login-content {
-    max-width: 550px;
+    max-width: 420px;
     margin: auto;
-    box-shadow: 4px 7px 20px rgba(3, 49, 133, .17);
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 30px 20px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+    overflow: hidden;
 
     .card-header {
       border: none;
       padding-bottom: 0;
+      background-color: transparent;
+      padding: 2rem 2rem 0.5rem;
+
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #0F172A;
+      }
     }
 
     .card-body {
-      padding: 30px 30px 0;
+      padding: 1.5rem 2rem 2rem;
 
       @media (max-width: 768px) {
-        padding: 15px 0 0;
+        padding: 1.25rem 1.5rem 1.5rem;
       }
     }
 
     .form-floating {
       label {
-        font-size: 1rem;
+        font-size: 0.875rem;
+        color: #64748B;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        border-color: #E2E8F0;
+        padding: 1rem 0.75rem;
+        font-size: 0.9375rem;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+        &:focus {
+          border-color: #3B82F6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+      }
+    }
+
+    .btn-primary {
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      letter-spacing: 0.025em;
+      background-color: #2563EB;
+      border-color: #2563EB;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background-color: #1D4ED8;
+        border-color: #1D4ED8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    .alert-danger {
+      border-radius: 8px;
+      font-size: 0.875rem;
+      border: none;
+      background-color: #FEF2F2;
+      color: #991B1B;
+    }
+  }
+
+  .text-secondary {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.8125rem;
+
+    a {
+      color: rgba(255, 255, 255, 0.8) !important;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: #fff !important;
       }
     }
   }

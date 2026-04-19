@@ -3,7 +3,7 @@
     <div class="logo">
       <h1 class="mb-0">
         <a href="{{ front_route('home.index') }}">
-          <img src="{{ image_origin(system_setting('front_logo', 'images/logo.svg')) }}" class="img-fluid">
+          <img src="{{ image_origin(system_setting('front_logo', 'images/logo.png')) }}" class="img-fluid">
         </a>
       </h1>
     </div>
@@ -41,7 +41,7 @@
 
       <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-menu-offcanvas">
         <div class="offcanvas-header">
-          <div class="mb-logo"><img src="{{ asset('images/logo.svg') }}" class="img-fluid"></div>
+          <div class="mb-logo"><img src="{{ asset('images/logo.png') }}" class="img-fluid"></div>
         </div>
         <div class="close-offcanvas" data-bs-dismiss="offcanvas"><i class="bi bi-chevron-compact-left"></i></div>
         <ul class="navbar-nav">

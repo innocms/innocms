@@ -2,21 +2,33 @@ body.page-home {
   .dashboard-top-card {
     .dashboard-item {
       border: none;
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      }
+
       .left {
         .quantity {
-          font-size: 30px;
-          margin-bottom: 10px;
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: #0F172A;
+          margin-bottom: 4px;
         }
 
         .title {
-          font-size: 14px;
-          // font-weight: bold;
+          font-size: 0.8125rem;
+          color: #64748B;
+          font-weight: 500;
         }
       }
 
       .right {
         .icon {
-          font-size: 30px;
+          font-size: 1.75rem;
         }
       }
     }
@@ -24,36 +36,36 @@ body.page-home {
     .col-6 {
       &:nth-child(1) {
         .dashboard-item {
-          background-color: #e1f3ff;
+          background-color: #EFF6FF;
           .icon {
-            color: #3279ff;
+            color: #2563EB;
           }
         }
       }
 
       &:nth-child(2) {
         .dashboard-item {
-          background-color: #ddf9eb;
+          background-color: #F0FDF4;
           .icon {
-            color: #00ce26;
+            color: #16A34A;
           }
         }
       }
 
       &:nth-child(3) {
         .dashboard-item {
-          background-color: #fff0df;
+          background-color: #FFFBEB;
           .icon {
-            color: #ff9800;
+            color: #D97706;
           }
         }
       }
 
       &:nth-child(4) {
         .dashboard-item {
-          background-color: #ffe8e7;
+          background-color: #FEF2F2;
           .icon {
-            color: #ff655b;
+            color: #DC2626;
           }
         }
       }
