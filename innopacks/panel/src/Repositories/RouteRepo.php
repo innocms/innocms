@@ -111,7 +111,7 @@ class RouteRepo
     private function getPluginNamespace($controller): string
     {
         if (Str::startsWith($controller, 'InnoCMS\\Panel')
-            || Str::startsWith($controller, 'InnoShop\\Plugin')) {
+            || Str::startsWith($controller, 'InnoCMS\\Plugin')) {
             return '';
         }
         $parts = explode('\\', $controller);

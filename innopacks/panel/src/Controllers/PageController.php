@@ -26,7 +26,9 @@ class PageController extends BaseController
     {
         $filters = $request->all();
         $data    = [
-            'pages' => PageRepo::getInstance()->list($filters),
+            'searchFields'  => PageRepo::getSearchFieldOptions(),
+            'filterButtons' => PageRepo::getFilterButtonOptions(),
+            'pages'         => PageRepo::getInstance()->list($filters),
         ];
 
         return view('panel::pages.index', $data);
@@ -40,7 +42,7 @@ class PageController extends BaseController
     public function create(): mixed
     {
         $data = [
-            'page' => new Page(),
+            'page' => new Page,
         ];
 
         return view('panel::pages.form', $data);

@@ -17,6 +17,37 @@ use InnoCMS\Common\Models\Tag;
 class TagRepo extends BaseRepo
 {
     /**
+     * @return array
+     */
+    public static function getSearchFieldOptions(): array
+    {
+        return [
+            ['value' => '', 'label' => trans('panel::common.all_fields')],
+            ['value' => 'name', 'label' => trans('panel::common.name')],
+            ['value' => 'slug', 'label' => trans('panel::common.slug')],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getFilterButtonOptions(): array
+    {
+        return [
+            [
+                'name'    => 'active',
+                'label'   => trans('panel::common.status'),
+                'type'    => 'button',
+                'options' => [
+                    ['value' => '', 'label' => trans('panel::common.all')],
+                    ['value' => '1', 'label' => trans('panel::common.active')],
+                    ['value' => '0', 'label' => trans('panel::common.inactive')],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @param  $filters
      * @return LengthAwarePaginator
      * @throws \Exception
@@ -63,11 +94,16 @@ class TagRepo extends BaseRepo
             $builder->where('active', (bool) $filters['active']);
         }
 
-        $name = $filters['name'] ?? '';
-        if ($name) {
-            $builder->whereHas('translation', function ($query) use ($name) {
-                $query->where('name', 'like', "%$name%");
-            });
+        $searchField = $filters['search_field'] ?? '';
+        $keyword     = $filters['keyword'] ?? '';
+        if ($keyword) {
+            if ($searchField === 'slug') {
+                $builder->where('slug', 'like', "%$keyword%");
+            } else {
+                $builder->whereHas('translation', function ($query) use ($keyword) {
+                    $query->where('name', 'like', "%$keyword%");
+                });
+            }
         }
 
         return $builder;

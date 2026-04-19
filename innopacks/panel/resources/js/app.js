@@ -5,7 +5,10 @@ import './alert';
 import "./autocomplete";
 
 import common from "./common";
+import fileManager from "./panel-file-manager";
+
 window.inno = common;
+window.inno.fileManagerIframe = fileManager.init;
 
 const base = document.querySelector('base').href;
 const editor_language = document.querySelector('meta[name="editor_language"]')?.content || 'zh_cn';
@@ -64,23 +67,12 @@ const tinymceInit = () => {
       ed.ui.registry.addButton('toolbarImageButton',{
         icon: 'image',
         onAction:function() {
-          $('#form-upload').remove();
-          $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
-          $('#form-upload input[name=\'file\']').trigger('click');
-          $('#form-upload input[name=\'file\']').on('change', function() {
-            let file = this.files[0];
-            let formData = new FormData();
-            formData.append('image', file);
-            formData.append('type', 'common');
-            layer.load(2, {shade: [0.3,'#fff'] })
-            axios.post('/upload/images', formData, {}).then(function (res) {
-                let url = res.data.url;
-                ed.insertContent('<img src="' + url + '" class="img-fluid" />');
-            }).catch(function (err) {
-                layer.msg(err.message);
-            }).finally(function () {
-                layer.closeAll('loading');
-            });
+          window.inno.fileManagerIframe((file) => {
+            let url = file.url || file.origin_url;
+            ed.insertContent('<img src="' + url + '" class="img-fluid" />');
+          }, {
+            multiple: false,
+            type: 'image'
           });
         }
       });

@@ -6,10 +6,17 @@
             "syntax": "short"
         },
         "binary_operator_spaces": {
-            "default": "align_single_space_minimal"
+            "default": "single_space",
+            "operators": {
+                "=": "align_single_space_minimal",
+                "=>": "align_single_space_minimal"
+            }
         },
+        "blank_line_after_opening_tag": false,
+        "no_extra_blank_lines": true,
         "no_superfluous_phpdoc_tags": false,
-        "phpdoc_separation": false
+        "phpdoc_separation": false,
+        "single_blank_line_at_eof": true
     },
     "exclude": [
         "app",

@@ -14,6 +14,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\FileViewFinder;
 use InnoCMS\Common\Middleware\ContentFilterHook;
 use InnoCMS\Common\Middleware\EventActionHook;
+use InnoCMS\Common\Middleware\VisitTrackingMiddleware;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
 
 class FrontServiceProvider extends ServiceProvider
@@ -46,12 +47,51 @@ class FrontServiceProvider extends ServiceProvider
      */
     protected function registerWebRoutes(): void
     {
-        $middlewares = ['web', EventActionHook::class, ContentFilterHook::class, GlobalDataMiddleware::class];
-        Route::middleware($middlewares)
+        $router      = $this->app['router'];
+        $middlewares = [
+            EventActionHook::class,
+            ContentFilterHook::class,
+            GlobalDataMiddleware::class,
+            VisitTrackingMiddleware::class,
+        ];
+
+        foreach ($middlewares as $middleware) {
+            $router->pushMiddlewareToGroup('front', $middleware);
+        }
+
+        // Root routes (no locale prefix)
+        Route::middleware('front')
             ->name('front.')
             ->group(function () {
-                $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
+                $path = __DIR__.'/../routes/root.php';
+                if (is_file($path)) {
+                    $this->loadRoutesFrom($path);
+                }
             });
+
+        // Locale-prefixed routes
+        $locales   = locales();
+        $webRoutes = __DIR__.'/../routes/web.php';
+        if (hide_url_locale() || $locales->isEmpty()) {
+            Route::middleware('front')
+                ->name('front.')
+                ->group(function () use ($webRoutes) {
+                    if (is_file($webRoutes)) {
+                        $this->loadRoutesFrom($webRoutes);
+                    }
+                });
+        } else {
+            foreach ($locales as $locale) {
+                Route::middleware('front')
+                    ->prefix($locale->code)
+                    ->name($locale->code.'.front.')
+                    ->group(function () use ($webRoutes) {
+                        if (is_file($webRoutes)) {
+                            $this->loadRoutesFrom($webRoutes);
+                        }
+                    });
+            }
+        }
     }
 
     /**
@@ -96,27 +136,32 @@ class FrontServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load theme view path.
+     * Load theme view path (same idea as InnoShop Factory).
+     *
+     * `view.finder` is a container bind: new instance per `make('view.finder')`, but the View
+     * factory keeps the finder from when `view` was first resolved. Prepend paths on that finder
+     * so package + theme views work without rebinding or forgetting `view`.
      *
      * @return void
      */
     protected function loadThemeViewPath(): void
     {
-        $this->app->singleton('view.finder', function ($app) {
-            $themePaths = [];
-            if ($theme = system_setting('theme')) {
-                $themeViewPath = base_path("themes/{$theme}/views");
-                if (is_dir($themeViewPath)) {
-                    $themePaths[] = $themeViewPath;
-                }
+        $finder = $this->app->make('view')->getFinder();
+        if (! $finder instanceof FileViewFinder) {
+            return;
+        }
+
+        $packViews = realpath(__DIR__.'/../resources/views') ?: (__DIR__.'/../resources/views');
+        if (is_dir($packViews)) {
+            $finder->prependLocation($packViews);
+        }
+
+        if ($theme = system_setting('theme')) {
+            $themeViewPath = base_path("themes/{$theme}/views");
+            if (is_dir($themeViewPath)) {
+                $finder->prependLocation($themeViewPath);
             }
-            $themePaths[] = realpath(__DIR__.'/../resources/views');
-
-            $viewPaths = $app['config']['view.paths'];
-            $viewPaths = array_merge($themePaths, $viewPaths);
-
-            return new FileViewFinder($app['files'], $viewPaths);
-        });
+        }
     }
 
     /**

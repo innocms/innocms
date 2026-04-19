@@ -11,8 +11,8 @@ namespace InnoCMS\Common\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use InnoShop\Common\Models\Country;
-use InnoShop\Common\Repositories\CountryRepo;
+use InnoCMS\Common\Models\Country;
+use InnoCMS\Common\Repositories\CountryRepo;
 
 class UpdateCountries extends Command
 {

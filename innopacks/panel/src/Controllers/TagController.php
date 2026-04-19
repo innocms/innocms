@@ -26,7 +26,9 @@ class TagController extends BaseController
     {
         $filters = $request->all();
         $data    = [
-            'tags' => TagRepo::getInstance()->list($filters),
+            'searchFields'  => TagRepo::getSearchFieldOptions(),
+            'filterButtons' => TagRepo::getFilterButtonOptions(),
+            'tags'          => TagRepo::getInstance()->list($filters),
         ];
 
         return view('panel::tags.index', $data);
@@ -40,7 +42,7 @@ class TagController extends BaseController
     public function create(): mixed
     {
         $data = [
-            'tag' => new Tag(),
+            'tag' => new Tag,
         ];
 
         return view('panel::tags.form', $data);

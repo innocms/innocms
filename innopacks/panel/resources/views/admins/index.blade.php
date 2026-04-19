@@ -3,7 +3,7 @@
 
 @section('title', __('panel::menu.admins'))
 @section('page-title-right')
-  <a href="{{ panel_route('admins.create') }}" class="btn btn-primary"><i class="bi bi-plus-square"></i> {{ __('panel::common.create') }}</a>
+  <a href="{{ panel_route('admins.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-square"></i> {{ __('panel::common.create') }}</a>
 @endsection
 
 @section('content')

@@ -1,0 +1,93 @@
+<?php
+/**
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ *
+ * @link       https://www.innocms.com
+ * @author     InnoCMS <team@innoshop.com>
+ * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+
+namespace InnoCMS\DevTools\Tests\Console;
+
+use Illuminate\Console\Command;
+use InnoCMS\DevTools\Console\Commands\MakeModel;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Unit tests for MakeModel command.
+ * Tests command signature, description, and handle method.
+ */
+class MakeModelTest extends TestCase
+{
+    #[Test]
+    public function test_command_class_exists(): void
+    {
+        $this->assertTrue(class_exists(MakeModel::class));
+    }
+
+    #[Test]
+    public function test_command_extends_illuminate_command(): void
+    {
+        $reflection = new \ReflectionClass(MakeModel::class);
+        $this->assertTrue($reflection->isSubclassOf(Command::class));
+    }
+
+    #[Test]
+    public function test_command_has_signature(): void
+    {
+        $reflection = new \ReflectionClass(MakeModel::class);
+        $property   = $reflection->getProperty('signature');
+        $property->setAccessible(true);
+
+        $command   = new MakeModel;
+        $signature = $property->getValue($command);
+
+        $this->assertNotEmpty($signature);
+        $this->assertStringContainsString('dev:make-model', $signature);
+        $this->assertStringContainsString('{name', $signature);
+    }
+
+    #[Test]
+    public function test_command_has_description(): void
+    {
+        $reflection = new \ReflectionClass(MakeModel::class);
+        $property   = $reflection->getProperty('description');
+        $property->setAccessible(true);
+
+        $command     = new MakeModel;
+        $description = $property->getValue($command);
+
+        $this->assertNotEmpty($description);
+        $this->assertStringContainsString('model', strtolower($description));
+    }
+
+    #[Test]
+    public function test_command_has_handle_method(): void
+    {
+        $this->assertTrue(method_exists(MakeModel::class, 'handle'));
+    }
+
+    #[Test]
+    public function test_handle_method_returns_int(): void
+    {
+        $reflection = new \ReflectionMethod(MakeModel::class, 'handle');
+        $returnType = $reflection->getReturnType();
+
+        $this->assertNotNull($returnType);
+        $this->assertEquals('int', $returnType->getName());
+    }
+
+    #[Test]
+    public function test_command_signature_has_plugin_option(): void
+    {
+        $reflection = new \ReflectionClass(MakeModel::class);
+        $property   = $reflection->getProperty('signature');
+        $property->setAccessible(true);
+
+        $command   = new MakeModel;
+        $signature = $property->getValue($command);
+
+        $this->assertStringContainsString('--plugin', $signature);
+    }
+}

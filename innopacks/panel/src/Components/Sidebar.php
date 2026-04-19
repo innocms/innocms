@@ -62,7 +62,7 @@ class Sidebar extends Component
     {
         $menus = [
             [
-                'route' => 'home.index',
+                'route' => 'dashboard.index',
                 'title' => __('panel::menu.dashboard'),
                 'icon'  => 'bi-house',
             ],
@@ -105,7 +105,7 @@ class Sidebar extends Component
     {
         $result = [];
         foreach ($links as $index => $link) {
-            $topUrl   = $link['url']   ?? '';
+            $topUrl   = $link['url'] ?? '';
             $topRoute = $link['route'] ?? '';
             if (empty($topUrl) && $topRoute) {
                 $link['url'] = panel_route($topRoute);
@@ -149,7 +149,7 @@ class Sidebar extends Component
                 $parentChecked = true;
             }
 
-            if ($topRoute != 'home.index' && empty($link['children'])) {
+            if ($topRoute != 'dashboard.index' && empty($link['children'])) {
                 unset($link);
             }
 

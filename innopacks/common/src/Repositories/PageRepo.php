@@ -16,6 +16,36 @@ use InnoCMS\Common\Models\Page;
 class PageRepo extends BaseRepo
 {
     /**
+     * @return array
+     */
+    public static function getSearchFieldOptions(): array
+    {
+        return [
+            ['value' => '', 'label' => trans('panel::common.all_fields')],
+            ['value' => 'slug', 'label' => trans('panel::common.slug')],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getFilterButtonOptions(): array
+    {
+        return [
+            [
+                'name'    => 'active',
+                'label'   => trans('panel::common.status'),
+                'type'    => 'button',
+                'options' => [
+                    ['value' => '', 'label' => trans('panel::common.all')],
+                    ['value' => '1', 'label' => trans('panel::common.active')],
+                    ['value' => '0', 'label' => trans('panel::common.inactive')],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @param  $filters
      * @return LengthAwarePaginator
      * @throws \Exception
@@ -36,6 +66,16 @@ class PageRepo extends BaseRepo
         $builder = Page::query()->with(['translation']);
 
         $filters = array_merge($this->filters, $filters);
+
+        $searchField = $filters['search_field'] ?? '';
+        $keyword     = $filters['keyword'] ?? '';
+        if ($keyword) {
+            if ($searchField === 'slug') {
+                $builder->where('slug', 'like', "%$keyword%");
+            } else {
+                $builder->where('slug', 'like', "%$keyword%");
+            }
+        }
 
         $slug = $filters['slug'] ?? '';
         if ($slug) {

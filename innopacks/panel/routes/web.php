@@ -19,12 +19,17 @@ Route::middleware(['admin_auth:admin'])
 
         Route::get('/', [Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
+        Route::get('/analytics', [Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+
         Route::get('/locale/{code}', [Controllers\LocaleController::class, 'switch'])->name('locale.switch');
 
         Route::resource('/articles', Controllers\ArticleController::class);
         Route::resource('/catalogs', Controllers\CatalogController::class);
         Route::resource('/pages', Controllers\PageController::class);
         Route::resource('/tags', Controllers\TagController::class);
+
+        Route::get('/file_manager', [Controllers\FileManagerController::class, 'index'])->name('file_manager.index');
+        Route::get('/file_manager/iframe', [Controllers\FileManagerController::class, 'iframe'])->name('file_manager.iframe');
 
         Route::get('/locales', [Controllers\LocaleController::class, 'index'])->name('locales.index');
         Route::post('/locales/install', [Controllers\LocaleController::class, 'install'])->name('locales.install');
@@ -33,7 +38,8 @@ Route::middleware(['admin_auth:admin'])
         Route::post('/locales/{code}/uninstall', [Controllers\LocaleController::class, 'uninstall'])->name('locales.uninstall');
 
         Route::get('/themes', [Controllers\ThemeController::class, 'index'])->name('themes.index');
-        Route::put('/themes/{country}/active', [Controllers\ThemeController::class, 'enable'])->name('themes.active');
+        Route::post('/themes/{code}/import-demo', [Controllers\ThemeController::class, 'importDemo'])->name('themes.import_demo');
+        Route::put('/themes/{code}/active', [Controllers\ThemeController::class, 'enable'])->name('themes.active');
         Route::get('/themes/settings', [Controllers\ThemeController::class, 'settings'])->name('themes_settings.index');
         Route::put('/themes/settings', [Controllers\ThemeController::class, 'updateSettings'])->name('themes_settings.update');
 
@@ -44,7 +50,7 @@ Route::middleware(['admin_auth:admin'])
         Route::put('/settings', [Controllers\SettingController::class, 'update'])->name('settings.update');
 
         Route::resource('/admins', Controllers\AdminController::class);
-        Route::put('/admins/{currency}/active', [Controllers\AdminController::class, 'active'])->name('admins.active');
+        Route::put('/admins/{admin}/active', [Controllers\AdminController::class, 'active'])->name('admins.active');
 
         Route::resource('/roles', Controllers\RoleController::class);
     });

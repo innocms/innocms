@@ -9,8 +9,6 @@
 
 namespace InnoCMS\Panel\Repositories;
 
-use Illuminate\Support\Str;
-
 class ThemeRepo
 {
     /**
@@ -22,25 +20,45 @@ class ThemeRepo
     }
 
     /**
-     * Get theme list from themes path.
+     * Absolute paths of installed theme directories.
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getListFromPath(): array
+    public function getThemeDirs(): array
     {
-        $path       = base_path('themes');
-        $themePaths = glob($path.'/*');
+        $path = base_path('themes');
 
-        $themes = [];
-        foreach ($themePaths as $themePath) {
-            $theme    = trim(str_replace($path, '', $themePath), '/');
-            $themes[] = [
-                'code'  => $theme,
-                'name'  => Str::studly($theme),
-                'value' => system_setting('theme') == $theme,
-            ];
+        return glob($path.'/*', GLOB_ONLYDIR) ?: [];
+    }
+
+    /**
+     * Absolute path for an installed theme folder (directory name must equal code).
+     */
+    public function getThemeDirectory(string $code): ?string
+    {
+        $path = base_path('themes/'.$code);
+
+        return is_dir($path) ? realpath($path) : null;
+    }
+
+    /**
+     * Read theme package metadata.
+     *
+     * @return array<string, mixed>
+     *
+     * @throws \Exception
+     */
+    public function readConfig(string $dir): array
+    {
+        $configFile = $dir.'/config.json';
+        if (! file_exists($configFile)) {
+            throw new \Exception(trans('panel::themes.error_config_not_found', ['file' => $configFile]));
+        }
+        $config = json_decode((string) file_get_contents($configFile), true);
+        if (json_last_error() !== JSON_ERROR_NONE || ! is_array($config)) {
+            throw new \Exception(trans('panel::themes.error_config_invalid', ['file' => $configFile]));
         }
 
-        return $themes;
+        return $config;
     }
 }

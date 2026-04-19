@@ -1,9 +1,9 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innoshop.com
- * @author     InnoShop <team@innoshop.com>
+ * @link       https://www.innocms.com
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -106,10 +106,10 @@ return [
     'locales_update'           => 'Update Locale',
     'locales_uninstall'        => 'Uninstall Locale',
     'locales_active'           => 'Activate Locale',
-    'themes_index'             => 'Themes Index',
+    'themes_index'             => 'Theme Switch',
     'themes_active'            => 'Activate Theme',
-    'themes_settings_index'    => 'Theme Settings Index',
-    'themes_settings_update'   => 'Update Theme Settings',
+    'themes_settings_index'    => 'Homepage Settings',
+    'themes_settings_update'   => 'Update Homepage Settings',
     'account_index'            => 'Account Index',
     'account_update'           => 'Update Account',
     'settings_index'           => 'Settings Index',
@@ -129,14 +129,6 @@ return [
     'roles_edit'               => 'Edit Role',
     'roles_update'             => 'Update Role',
     'roles_destroy'            => 'Destroy Role',
-    'currencies_index'         => 'Currencies Index',
-    'currencies_create'        => 'Create Currency',
-    'currencies_store'         => 'Store Currency',
-    'currencies_show'          => 'Show Currency',
-    'currencies_edit'          => 'Edit Currency',
-    'currencies_update'        => 'Update Currency',
-    'currencies_destroy'       => 'Destroy Currency',
-    'currencies_active'        => 'Activate Currency',
     'countries_index'          => 'Countries Index',
     'countries_create'         => 'Create Country',
     'countries_store'          => 'Store Country',

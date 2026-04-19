@@ -1,0 +1,7 @@
+*
+!.gitignore
+!/js/.gitkeep
+!/media/.gitkeep
+!/plugins/.gitkeep
+!/themes/.gitkeep
+!/uploads/.gitkeep

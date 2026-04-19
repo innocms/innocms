@@ -91,7 +91,7 @@ class ImageService
             if (! is_file($newImagePath) || (filemtime($this->imagePath) > filemtime($newImagePath))) {
                 create_directories(dirname($newImagePath));
 
-                $manager = new ImageManager(new Driver());
+                $manager = new ImageManager(new Driver);
                 $image   = $manager->read($this->imagePath);
                 $image->scale($width, $height);
                 $image->save($newImagePath);

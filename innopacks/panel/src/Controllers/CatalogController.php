@@ -27,7 +27,9 @@ class CatalogController
     {
         $filters = $request->all();
         $data    = [
-            'catalogs' => CatalogRepo::getInstance()->list($filters),
+            'searchFields'  => CatalogRepo::getSearchFieldOptions(),
+            'filterButtons' => CatalogRepo::getFilterButtonOptions(),
+            'catalogs'      => CatalogRepo::getInstance()->list($filters),
         ];
 
         return view('panel::catalogs.index', $data);

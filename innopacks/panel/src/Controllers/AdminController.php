@@ -10,6 +10,7 @@
 namespace InnoCMS\Panel\Controllers;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Admin;
@@ -131,6 +132,21 @@ class AdminController extends BaseController
         } catch (Exception $e) {
             return redirect(panel_route('admins.index'))
                 ->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Toggle admin active state (list switch).
+     */
+    public function active(Request $request, Admin $admin): JsonResponse
+    {
+        try {
+            $admin->active = $request->get('status');
+            $admin->saveOrFail();
+
+            return json_success(trans('panel::common.updated_success'));
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
         }
     }
 }

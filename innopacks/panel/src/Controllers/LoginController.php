@@ -9,6 +9,7 @@
 
 namespace InnoCMS\Panel\Controllers;
 
+use Illuminate\Http\Request;
 use InnoCMS\Panel\Requests\LoginRequest;
 
 class LoginController extends BaseController
@@ -16,10 +17,16 @@ class LoginController extends BaseController
     /**
      * @return mixed
      */
-    public function index(): mixed
+    public function index(Request $request): mixed
     {
         if (auth('admin')->check()) {
             return redirect()->back();
+        }
+
+        if ($request->has('locale')) {
+            session(['panel_locale' => $request->get('locale')]);
+
+            return redirect(panel_route('login.index'));
         }
 
         return view('panel::login');

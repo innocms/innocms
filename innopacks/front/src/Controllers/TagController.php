@@ -44,6 +44,6 @@ class TagController extends Controller
             'articles' => $articles,
         ];
 
-        return view('tags.show', $data);
+        return inno_view('tags.show', $data);
     }
 }

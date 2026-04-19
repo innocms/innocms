@@ -19,6 +19,9 @@ use InnoCMS\Panel\Console\Commands\ChangeRootPassword;
 use InnoCMS\Panel\Middleware\AdminAuthenticate;
 use InnoCMS\Panel\Middleware\GlobalPanelData;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
+use InnoCMS\Panel\Services\ThemeService;
+use InnoCMS\RestAPI\Services\FileManagerInterface;
+use InnoCMS\RestAPI\Services\FileManagerService;
 
 class PanelServiceProvider extends ServiceProvider
 {
@@ -34,6 +37,7 @@ class PanelServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
+        $this->registerFileManagerService();
         $this->loadTranslations();
         $this->loadViewTemplates();
         $this->loadViewComponents();
@@ -45,6 +49,7 @@ class PanelServiceProvider extends ServiceProvider
     public function register(): void
     {
         app('router')->aliasMiddleware('admin_auth', AdminAuthenticate::class);
+        $this->app->singleton(ThemeService::class);
     }
 
     /**
@@ -111,6 +116,16 @@ class PanelServiceProvider extends ServiceProvider
     }
 
     /**
+     * Bind FileManagerInterface to the appropriate implementation.
+     */
+    protected function registerFileManagerService(): void
+    {
+        $this->app->singleton(FileManagerInterface::class, function () {
+            return new FileManagerService;
+        });
+    }
+
+    /**
      * Register panel language
      * @return void
      */
@@ -140,6 +155,7 @@ class PanelServiceProvider extends ServiceProvider
             'form-switch-radio'      => Components\Forms\SwitchRadio::class,
             'no-data'                => Components\NoData::class,
             'form-date'              => Components\Forms\Date::class,
+            'data-search'            => Components\Data\DataSearch::class,
         ]);
     }
 

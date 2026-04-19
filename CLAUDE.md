@@ -130,6 +130,20 @@ image_resize($image, $w, $h) // Resize image
 
 ## Secondary Development
 
+### Theme & demo images (picsum.photos)
+
+Whenever the codebase needs **placeholder or illustrative images** — theme Blade examples, hero or card backgrounds, demo seeders, CMS sample content, `data-bg-image`, documentation screenshots in templates, and similar — use **[Lorem Picsum](https://picsum.photos/)** rather than ad-hoc file paths, other placeholder hosts, or random external CDNs.
+
+**URL pattern (stable per seed, good for layout work):**
+
+```text
+https://picsum.photos/seed/{unique-seed}/{width}/{height}
+```
+
+Example: `https://picsum.photos/seed/funnlink-p1/1400/900`
+
+**Exceptions:** Keep real bundled files for **brand identity** where appropriate (e.g. `theme_asset('images/logo.png')`, favicon from settings). Those are not “placeholder” imagery. Everything else that is decorative or demo-only should default to picsum as above.
+
 ### Frontend Customization
 ```bash
 php artisan inno:publish-theme

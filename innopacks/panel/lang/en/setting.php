@@ -36,7 +36,6 @@ return [
     'default_province'         => 'Default Province',
     'please_select_province'   => 'Please Select Province',
     'front_default_language'   => 'Default Language',
-    'default_currency'         => 'Default Currency',
     'enable_tax'               => 'Enable Tax',
     'backstage_menu_expansion' => 'Backstage menu expanded by default',
 ];
