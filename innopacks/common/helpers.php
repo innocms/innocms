@@ -782,6 +782,24 @@ if (! function_exists('innocms_version')) {
     }
 }
 
+if (! function_exists('innocms_brand_link')) {
+    /**
+     * Get brand link html.
+     *
+     * @return string
+     */
+    function innocms_brand_link(): string
+    {
+        if (is_admin()) {
+            $default = '<a href="https://www.innocms.com" class="ms-2" target="_blank">InnoCMS</a>';
+        } else {
+            $default = 'Powered By <a href="https://www.innocms.com" class="ms-2" target="_blank">InnoCMS</a>';
+        }
+
+        return fire_hook_filter('innocms.brand.link.display', $default);
+    }
+}
+
 if (! function_exists('to_sql')) {
     /**
      * Render SQL by builder object

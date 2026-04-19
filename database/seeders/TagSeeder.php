@@ -72,19 +72,19 @@ class TagSeeder extends Seeder
                 [
                     'id'     => 1,
                     'tag_id' => 1,
-                    'locale' => 'zh_cn',
+                    'locale' => 'zh-cn',
                     'name'   => '电商',
                 ],
                 [
                     'id'     => 2,
                     'tag_id' => 2,
-                    'locale' => 'zh_cn',
+                    'locale' => 'zh-cn',
                     'name'   => '开源',
                 ],
                 [
                     'id'     => 3,
                     'tag_id' => 3,
-                    'locale' => 'zh_cn',
+                    'locale' => 'zh-cn',
                     'name'   => '外贸',
                 ],
             ];

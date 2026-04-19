@@ -31,8 +31,8 @@ class LocaleSeeder extends Seeder
             [
                 'id'       => 1,
                 'name'     => '简体中文',
-                'code'     => 'zh_cn',
-                'image'    => 'images/flag/zh_cn.png',
+                'code'     => 'zh-cn',
+                'image'    => 'images/flag/zh-cn.png',
                 'position' => 1,
                 'active'   => 1,
             ],
