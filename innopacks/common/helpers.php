@@ -586,7 +586,12 @@ if (! function_exists('front_route')) {
             return route('front.'.$name, $parameters, $absolute);
         }
 
-        return route(front_locale_code().'.front.'.$name, $parameters, $absolute);
+        $localeRoute = front_locale_code().'.front.'.$name;
+        if (Route::has($localeRoute)) {
+            return route($localeRoute, $parameters, $absolute);
+        }
+
+        return route('front.'.$name, $parameters, $absolute);
     }
 }
 

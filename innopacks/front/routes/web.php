@@ -13,12 +13,6 @@ use InnoCMS\Front\Controllers;
 
 $hasSuffix = installed() && system_setting('has_suffix');
 
-Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index');
-
-// Upload
-Route::post('/upload/images', [Controllers\UploadController::class, 'images'])->name('upload.images');
-Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->name('upload.files');
-
 if ($hasSuffix) {
     // Catalogs
     Route::get('/catalogs.html', [Controllers\CatalogController::class, 'index'])->name('catalogs.index');
