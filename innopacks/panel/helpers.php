@@ -109,7 +109,7 @@ if (! function_exists('panel_route')) {
             $panelName = panel_name();
 
             return route($panelName.'.'.$name, $parameters, $absolute);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return route($panelName.'.dashboard.index');
         }
 

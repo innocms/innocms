@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innoshop.com
+ * @link       https://www.innocms.com
  * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
@@ -22,7 +22,7 @@ class PluginManager
 
     public function __construct()
     {
-        $this->plugins = new Collection();
+        $this->plugins = new Collection;
     }
 
     /**
@@ -38,13 +38,13 @@ class PluginManager
         }
 
         $existed = $this->getPluginsConfig();
-        $plugins = new Collection();
+        $plugins = new Collection;
         foreach ($existed as $dirname => $package) {
             $pluginPath = $this->getPluginsDir().DIRECTORY_SEPARATOR.$dirname;
 
             try {
                 $plugin = new Plugin($pluginPath, $package);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error('The Plugin: '.$dirname.' - '.$e->getMessage());
 
                 continue;

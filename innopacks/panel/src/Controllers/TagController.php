@@ -40,7 +40,7 @@ class TagController extends BaseController
     public function create(): mixed
     {
         $data = [
-            'tag' => new Tag(),
+            'tag' => new Tag,
         ];
 
         return view('panel::tags.form', $data);

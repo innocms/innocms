@@ -1,0 +1,62 @@
+<?php
+/**
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ *
+ * @link       https://www.innocms.com
+ * @author     InnoShop <team@innoshop.com>
+ * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+
+namespace InnoCMS\RestAPI\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class FileRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'name'      => 'required|string',
+            'parent_id' => 'nullable|string',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => trans('panel/file_manager.name'),
+        ];
+    }
+
+    /**
+     * @return array<string, array{description?: string, example?: mixed}>
+     */
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => [
+                'description' => 'Directory or file name for file manager operations.',
+                'example'     => 'uploads',
+            ],
+            'parent_id' => [
+                'description' => 'Parent directory identifier (nullable for root).',
+                'example'     => 'root',
+            ],
+        ];
+    }
+}

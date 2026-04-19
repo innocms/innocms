@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innoshop.com
+ * @link       https://www.innocms.com
  * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
@@ -39,7 +39,7 @@ class PluginServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('plugin', function () {
-            return new PluginManager();
+            return new PluginManager;
         });
     }
 

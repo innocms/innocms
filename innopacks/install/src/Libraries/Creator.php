@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innoshop.com
+ * @link       https://www.innocms.com
  * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
@@ -24,7 +24,7 @@ class Creator
 
     public function __construct()
     {
-        $this->outputLog = new BufferedOutput();
+        $this->outputLog = new BufferedOutput;
     }
 
     /**
@@ -135,7 +135,7 @@ class Creator
         $password = $data['admin_password'];
         $admin    = Admin::query()->first();
         if (empty($admin)) {
-            $admin = new Admin();
+            $admin = new Admin;
         }
 
         $admin->fill([

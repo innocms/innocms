@@ -75,6 +75,9 @@ class CommonServiceProvider extends ServiceProvider
                 Commands\UpdateCountries::class,
                 Commands\UpdateStates::class,
                 Commands\PublishFrontTheme::class,
+                Commands\NormalizeLocales::class,
+                Commands\MigrateImagePaths::class,
+                Commands\AggregateVisitStatistics::class,
             ]);
         }
     }

@@ -1,10 +1,10 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * Inspired by https://github.com/esemve/Hook
  *
- * @link       https://www.innoshop.com
+ * @link       https://www.innocms.com
  * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
@@ -38,7 +38,7 @@ class Hook
     public static function getSingleton(): Hook
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;

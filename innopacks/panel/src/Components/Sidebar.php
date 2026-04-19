@@ -105,7 +105,7 @@ class Sidebar extends Component
     {
         $result = [];
         foreach ($links as $index => $link) {
-            $topUrl   = $link['url']   ?? '';
+            $topUrl   = $link['url'] ?? '';
             $topRoute = $link['route'] ?? '';
             if (empty($topUrl) && $topRoute) {
                 $link['url'] = panel_route($topRoute);

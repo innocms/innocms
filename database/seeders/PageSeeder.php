@@ -84,10 +84,10 @@ class PageSeeder extends Seeder
           <div class="product-item">
             <div class="top">
               <div class="left"><i class="bi bi-box-seam-fill"></i></div>
-              <div class="name">InnoShop</div>
+              <div class="name">InnoCMS</div>
             </div>
             <div class="content">
-              InnoShop是一款面向中小企业的电子商务平台，提供一站式在线商店解决方案。它以用户友好的界面和强大的后台管理功能著称，帮助商家轻松管理商品、订单和客户关系。InnoShop支持多种支付方式，并集成了社交媒体营销工具，助力商家扩大市场影响力。
+              InnoCMS是一款面向中小企业的电子商务平台，提供一站式在线商店解决方案。它以用户友好的界面和强大的后台管理功能著称，帮助商家轻松管理商品、订单和客户关系。InnoCMS支持多种支付方式，并集成了社交媒体营销工具，助力商家扩大市场影响力。
             </div>
           </div>
         </div>
@@ -95,10 +95,10 @@ class PageSeeder extends Seeder
           <div class="product-item">
             <div class="top">
               <div class="left"><i class="bi bi-box-seam-fill"></i></div>
-              <div class="name">InnoShop Pro</div>
+              <div class="name">InnoCMS Pro</div>
             </div>
             <div class="content">
-              InnoShop Pro是InnoShop的高级版本，专为需要更高级功能和定制服务的企业设计。除了基础版所有功能外，Pro版本提供高级数据分析、个性化推荐引擎和API集成，以满足更复杂的业务需求。它还包含专业的客户支持和优先更新服务，确保商家能够充分利用平台潜力。
+              InnoCMS Pro是InnoCMS的高级版本，专为需要更高级功能和定制服务的企业设计。除了基础版所有功能外，Pro版本提供高级数据分析、个性化推荐引擎和API集成，以满足更复杂的业务需求。它还包含专业的客户支持和优先更新服务，确保商家能够充分利用平台潜力。
             </div>
           </div>
         </div>

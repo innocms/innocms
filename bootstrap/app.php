@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,8 +13,64 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $webMiddlewares = [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+        ];
+        $middleware->group('front', $webMiddlewares);
+        $middleware->group('panel', $webMiddlewares);
+
+        $apiMiddlewares = [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Routing\Middleware\ThrottleRequests::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ];
+        $middleware->group('front_api', $apiMiddlewares);
+        $middleware->group('panel_api', $apiMiddlewares);
+
+        $middleware->redirectGuestsTo(function (Request $request) {
+            if (\Illuminate\Support\Str::startsWith($request->route()->uri(), 'api')) {
+                return front_route('home.index');
+            }
+
+            return panel_route('login.index');
+        });
+
+        $middleware->validateCsrfTokens(except: [
+            '*callback*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->dontReportDuplicates();
+
+        // Handle API exceptions
+        $exceptions->render(function (Exception $e, Request $request) {
+            if ($request->is('api/*')) {
+                return json_fail($e->getMessage());
+            }
+
+            return null;
+        });
+
+        // Handle 404 errors for frontend
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('panel/*') || $request->is('admin/*')) {
+                return null;
+            }
+
+            if (! $request->is('api/*')) {
+                try {
+                    return response()->view('errors.404', [], 404);
+                } catch (Exception $exception) {
+                    return null;
+                }
+            }
+
+            return null;
+        });
     })->create();

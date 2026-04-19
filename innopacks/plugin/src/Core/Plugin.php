@@ -1,8 +1,8 @@
 <?php
 /**
- * Copyright (c) Since 2024 InnoShop - All Rights Reserved
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
- * @link       https://www.innoshop.com
+ * @link       https://www.innocms.com
  * @author     InnoShop <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
@@ -24,6 +24,8 @@ final class Plugin
         'fee',
         'social',
         'language',
+        'marketing',
+        'service',
     ];
 
     protected string $type;
@@ -441,14 +443,14 @@ final class Plugin
     private function transLabel($item): mixed
     {
         $labelKey = $item['label_key'] ?? '';
-        $label    = $item['label']     ?? '';
+        $label    = $item['label'] ?? '';
         if (empty($label) && $labelKey) {
             $languageKey   = "$this->dirName::$labelKey";
             $item['label'] = trans($languageKey);
         }
 
         $descriptionKey = $item['description_key'] ?? '';
-        $description    = $item['description']     ?? '';
+        $description    = $item['description'] ?? '';
         if (empty($description) && $descriptionKey) {
             $languageKey         = "$this->dirName::$descriptionKey";
             $item['description'] = trans($languageKey);

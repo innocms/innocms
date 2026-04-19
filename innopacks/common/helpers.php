@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use InnoCMS\Common\Repositories\LocaleRepo;
 use InnoCMS\Common\Repositories\SettingRepo;
 use InnoCMS\Common\Services\ImageService;
+use InnoCMS\Common\Services\StorageService;
 
 if (! function_exists('load_settings')) {
     /**
@@ -31,6 +32,11 @@ if (! function_exists('load_settings')) {
         if (! installed()) {
             return;
         }
+
+        if (config('inno')) {
+            return;
+        }
+
         $result = SettingRepo::getInstance()->groupedSettings();
         config(['inno' => $result]);
     }
@@ -61,6 +67,162 @@ if (! function_exists('system_setting')) {
     function system_setting($key, $default = null): mixed
     {
         return setting("system.{$key}", $default);
+    }
+}
+
+if (! function_exists('system_setting_locale')) {
+    /**
+     * Get system setting for current locale
+     *
+     * @param  $key
+     * @param  null  $default
+     * @return mixed
+     */
+    function system_setting_locale($key, $default = null): mixed
+    {
+        $localeCode = front_locale_code();
+
+        return setting("system.{$key}.$localeCode", $default);
+    }
+}
+
+if (! function_exists('enabled_locale_codes')) {
+    /**
+     * Get available locale codes
+     *
+     * @return array
+     */
+    function enabled_locale_codes(): array
+    {
+        return locales()->pluck('code')->toArray();
+    }
+}
+
+if (! function_exists('setting_locale_code')) {
+    /**
+     * Get setting locale code.
+     *
+     * @return string
+     */
+    function setting_locale_code(): string
+    {
+        return system_setting('front_locale', config('app.locale', 'en'));
+    }
+}
+
+if (! function_exists('hide_url_locale')) {
+    /**
+     * @return bool
+     */
+    function hide_url_locale(): bool
+    {
+        return count(locales()) == 1 && system_setting('hide_url_locale');
+    }
+}
+
+if (! function_exists('is_mobile')) {
+    /**
+     * Check if current request is from mobile device.
+     *
+     * @return bool
+     */
+    function is_mobile(): bool
+    {
+        $userAgent = request()->userAgent();
+        if (empty($userAgent)) {
+            return false;
+        }
+        $mobileKeywords = ['Mobile', 'Android', 'iPhone', 'iPad', 'iPod', 'Windows Phone', 'BlackBerry'];
+
+        foreach ($mobileKeywords as $keyword) {
+            if (stripos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (! function_exists('cache_key')) {
+    /**
+     * Generate cache key with locale context
+     *
+     * @param  string  $name
+     * @param  array  $params
+     * @return string
+     */
+    function cache_key(string $name, array $params = []): string
+    {
+        $params['locale_code'] = front_locale_code();
+
+        return $name.'-'.md5(json_encode($params));
+    }
+}
+
+if (! function_exists('ini_size_to_bytes')) {
+    /**
+     * Convert PHP ini size value to bytes
+     *
+     * @param  string  $size  PHP ini size value (e.g. "8M", "2G")
+     * @return int
+     */
+    function ini_size_to_bytes(string $size): int
+    {
+        $unit  = strtoupper(substr($size, -1));
+        $value = (int) substr($size, 0, -1);
+
+        switch ($unit) {
+            case 'K':
+                return $value * 1024;
+            case 'M':
+                return $value * 1024 * 1024;
+            case 'G':
+                return $value * 1024 * 1024 * 1024;
+            default:
+                return (int) $size;
+        }
+    }
+}
+
+if (! function_exists('smart_log')) {
+    /**
+     * Smart logging function that respects debug mode and log levels
+     *
+     * @param  string  $level
+     * @param  string  $message
+     * @param  array  $context
+     * @param  bool|null  $force
+     * @return void
+     */
+    function smart_log(string $level, string $message, array $context = [], ?bool $force = null): void
+    {
+        $level       = strtolower($level);
+        $validLevels = ['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
+
+        if (! in_array($level, $validLevels)) {
+            $level = 'info';
+        }
+
+        $isDebug        = config('app.debug', false);
+        $criticalLevels = ['error', 'critical', 'alert', 'emergency'];
+        $shouldLog      = false;
+
+        if ($force === true) {
+            $shouldLog = true;
+        } elseif ($force === false) {
+            $shouldLog = false;
+        } elseif (in_array($level, $criticalLevels)) {
+            $shouldLog = true;
+        } elseif ($isDebug) {
+            $shouldLog = true;
+        }
+
+        if (! $shouldLog) {
+            return;
+        }
+
+        Log::{$level}($message, $context);
     }
 }
 
@@ -98,7 +260,7 @@ if (! function_exists('installed')) {
             if (Schema::hasTable('settings') && file_exists(storage_path('installed'))) {
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e->getMessage());
 
             return false;
@@ -178,7 +340,7 @@ if (! function_exists('front_locale_code')) {
      */
     function front_locale_code(): string
     {
-        return \session('locale') ?? system_setting('front_locale', config('app.locale'));
+        return session('locale') ?? setting_locale_code();
     }
 }
 
@@ -293,6 +455,26 @@ if (! function_exists('json_fail')) {
     }
 }
 
+if (! function_exists('storage_url')) {
+    /**
+     * Generate file URL based on current storage driver configuration.
+     *
+     * @param  ?string  $path
+     * @return string
+     */
+    function storage_url(?string $path): string
+    {
+        if (empty($path)) {
+            return '';
+        }
+        if (Str::startsWith($path, 'http')) {
+            return $path;
+        }
+
+        return StorageService::getInstance()->url($path);
+    }
+}
+
 if (! function_exists('image_resize')) {
     /**
      * Resize image
@@ -300,10 +482,11 @@ if (! function_exists('image_resize')) {
      * @param  string|null  $image
      * @param  int  $width
      * @param  int  $height
+     * @param  string|null  $mode
      * @return string
      * @throws Exception
      */
-    function image_resize(?string $image = '', int $width = 100, int $height = 100): string
+    function image_resize(?string $image = '', int $width = 100, int $height = 100, ?string $mode = null): string
     {
         if (Str::startsWith($image, 'http')) {
             return $image;
@@ -381,7 +564,7 @@ if (! function_exists('create_directories')) {
 
             if (! is_dir($path)) {
                 if (! @mkdir($path, 0755, true) && ! is_dir($path)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+                    throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
                 }
             }
         }
@@ -390,7 +573,7 @@ if (! function_exists('create_directories')) {
 
 if (! function_exists('front_route')) {
     /**
-     * Get backend panel route
+     * Get frontend route with locale support
      *
      * @param  $name
      * @param  mixed  $parameters
@@ -399,7 +582,45 @@ if (! function_exists('front_route')) {
      */
     function front_route($name, mixed $parameters = [], bool $absolute = true): string
     {
+        if (hide_url_locale() || locales()->isEmpty()) {
+            return route('front.'.$name, $parameters, $absolute);
+        }
+
+        return route(front_locale_code().'.front.'.$name, $parameters, $absolute);
+    }
+}
+
+if (! function_exists('front_root_route')) {
+    /**
+     * Get frontend root route (always without locale prefix)
+     *
+     * @param  $name
+     * @param  mixed  $parameters
+     * @param  bool  $absolute
+     * @return string
+     */
+    function front_root_route($name, mixed $parameters = [], bool $absolute = true): string
+    {
         return route('front.'.$name, $parameters, $absolute);
+    }
+}
+
+if (! function_exists('has_front_route')) {
+    /**
+     * Check if frontend route exists
+     *
+     * @param  $name
+     * @return bool
+     */
+    function has_front_route($name): bool
+    {
+        if (hide_url_locale() || locales()->isEmpty()) {
+            $route = 'front.'.$name;
+        } else {
+            $route = front_locale_code().'.front.'.$name;
+        }
+
+        return Route::has($route);
     }
 }
 
@@ -549,7 +770,7 @@ if (! function_exists('theme_asset')) {
     }
 }
 
-if (! function_exists('innoshop_version')) {
+if (! function_exists('innocms_version')) {
     /**
      * Generate an asset path for the application.
      *

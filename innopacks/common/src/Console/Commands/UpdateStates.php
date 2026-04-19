@@ -11,8 +11,8 @@ namespace InnoCMS\Common\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use InnoShop\Common\Models\State;
-use InnoShop\Common\Repositories\StateRepo;
+use InnoCMS\Common\Models\State;
+use InnoCMS\Common\Repositories\StateRepo;
 
 class UpdateStates extends Command
 {

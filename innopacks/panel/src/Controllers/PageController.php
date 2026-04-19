@@ -40,7 +40,7 @@ class PageController extends BaseController
     public function create(): mixed
     {
         $data = [
-            'page' => new Page(),
+            'page' => new Page,
         ];
 
         return view('panel::pages.form', $data);
