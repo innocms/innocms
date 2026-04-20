@@ -127,6 +127,7 @@ img {
             color: #fff;
             background-color: $sidebar-hover;
             border-left-color: $primary-light;
+            font-weight: 500;
           }
         }
       }
@@ -144,6 +145,12 @@ img {
         font-weight: 500;
         transition: all 0.15s ease;
 
+        &.sidebar-link-active {
+          color: #fff;
+          background-color: $sidebar-hover;
+          border-left: 3px solid $primary-light;
+        }
+
         &::after {
           content: '\F282';
           display: flex;
@@ -159,13 +166,13 @@ img {
         }
 
         &:not(.collapsed) {
-          color: #fff;
-          background-color: $sidebar-hover;
+          color: rgba(255, 255, 255, 0.7);
+          background-color: rgba(255, 255, 255, 0.05);
         }
 
         &:hover {
           color: #fff;
-          background-color: $sidebar-hover;
+          background-color: rgba(255, 255, 255, 0.08);
         }
 
         .icon {

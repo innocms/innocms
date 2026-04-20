@@ -2,7 +2,7 @@
   @foreach($menuLinks as $index => $menuLink)
     <div class="accordion-item">
       @if(!$menuLink['has_children'])
-        <a class="accordion-button {{ $menuLink['active'] ? '' : 'collapsed' }}" href="{{ $menuLink['url'] }}">
+        <a class="accordion-button {{ $menuLink['active'] ? 'sidebar-link-active' : 'collapsed' }}" href="{{ $menuLink['url'] }}">
           <span class="icon"><i class="bi {{ $menuLink['icon'] ?? 'bi-house' }}"></i></span> {{ $menuLink['title'] }}
         </a>
       @else
