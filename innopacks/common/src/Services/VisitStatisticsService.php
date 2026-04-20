@@ -54,14 +54,14 @@ class VisitStatisticsService
         $eventsTable = $prefix.$eventsTableName;
         $visitsTable = $prefix.$visitsTableName;
 
-        // Get page views (product_view events)
+        // Get page views (page_view events)
         $pvData = DB::table($eventsTableName)
             ->select(
                 DB::raw('COUNT(*) as pv'),
                 DB::raw('COUNT(DISTINCT session_id) as uv'),
                 DB::raw('COUNT(DISTINCT ip_address) as ip')
             )
-            ->where('event_type', VisitEvent::TYPE_PRODUCT_VIEW)
+            ->where('event_type', VisitEvent::TYPE_PAGE_VIEW)
             ->whereBetween('created_at', [$dateStart, $dateEnd])
             ->first();
 
@@ -72,7 +72,7 @@ class VisitStatisticsService
                 'v.device_type',
                 DB::raw('COUNT(*) as pv')
             )
-            ->where('ve.event_type', VisitEvent::TYPE_PRODUCT_VIEW)
+            ->where('ve.event_type', VisitEvent::TYPE_PAGE_VIEW)
             ->whereBetween('ve.created_at', [$dateStart, $dateEnd])
             ->groupBy('v.device_type')
             ->pluck('pv', 'device_type');
@@ -92,7 +92,7 @@ class VisitStatisticsService
         // Calculate bounces (sessions with only one page view)
         $bounces = DB::table($eventsTableName)
             ->select('session_id', DB::raw('COUNT(*) as event_count'))
-            ->where('event_type', VisitEvent::TYPE_PRODUCT_VIEW)
+            ->where('event_type', VisitEvent::TYPE_PAGE_VIEW)
             ->whereBetween('created_at', [$dateStart, $dateEnd])
             ->groupBy('session_id')
             ->having('event_count', '=', 1)
@@ -156,56 +156,19 @@ class VisitStatisticsService
             ->groupBy('event_type')
             ->pluck('count', 'event_type');
 
-        $productViews     = $eventCounts->get(VisitEvent::TYPE_PRODUCT_VIEW, 0);
-        $addToCarts       = $eventCounts->get(VisitEvent::TYPE_ADD_TO_CART, 0);
-        $checkoutStarts   = $eventCounts->get(VisitEvent::TYPE_CHECKOUT_START, 0);
-        $orderPlaced      = $eventCounts->get(VisitEvent::TYPE_ORDER_PLACED, 0);
-        $paymentCompleted = $eventCounts->get(VisitEvent::TYPE_PAYMENT_COMPLETED, 0);
-        $registers        = $eventCounts->get(VisitEvent::TYPE_REGISTER, 0);
-
-        // New event types
-        $homeViews      = $eventCounts->get(VisitEvent::TYPE_HOME_VIEW, 0);
-        $categoryViews  = $eventCounts->get(VisitEvent::TYPE_CATEGORY_VIEW, 0);
-        $searches       = $eventCounts->get(VisitEvent::TYPE_SEARCH, 0);
-        $cartViews      = $eventCounts->get(VisitEvent::TYPE_CART_VIEW, 0);
-        $orderCancelled = $eventCounts->get(VisitEvent::TYPE_ORDER_CANCELLED, 0);
-
-        // Calculate conversion rates (x100 for precision)
-        $cartToCheckoutRate = $addToCarts > 0
-            ? (int) round(($checkoutStarts / $addToCarts) * 10000)
-            : 0;
-
-        $checkoutToOrderRate = $checkoutStarts > 0
-            ? (int) round(($orderPlaced / $checkoutStarts) * 10000)
-            : 0;
-
-        $orderToPaymentRate = $orderPlaced > 0
-            ? (int) round(($paymentCompleted / $orderPlaced) * 10000)
-            : 0;
-
-        $overallConversionRate = $productViews > 0
-            ? (int) round(($paymentCompleted / $productViews) * 10000)
-            : 0;
+        $homeViews    = $eventCounts->get(VisitEvent::TYPE_HOME_VIEW, 0);
+        $catalogViews = $eventCounts->get(VisitEvent::TYPE_CATALOG_VIEW, 0);
+        $articleViews = $eventCounts->get(VisitEvent::TYPE_ARTICLE_VIEW, 0);
+        $searches     = $eventCounts->get(VisitEvent::TYPE_SEARCH, 0);
 
         // Upsert daily conversion statistics
         ConversionDaily::updateOrCreate(
             ['date' => $date->toDateString()],
             [
-                'home_views'              => $homeViews,
-                'category_views'          => $categoryViews,
-                'product_views'           => $productViews,
-                'add_to_carts'            => $addToCarts,
-                'checkout_starts'         => $checkoutStarts,
-                'order_placed'            => $orderPlaced,
-                'payment_completed'       => $paymentCompleted,
-                'registers'               => $registers,
-                'searches'                => $searches,
-                'cart_views'              => $cartViews,
-                'order_cancelled'         => $orderCancelled,
-                'cart_to_checkout_rate'   => $cartToCheckoutRate,
-                'checkout_to_order_rate'  => $checkoutToOrderRate,
-                'order_to_payment_rate'   => $orderToPaymentRate,
-                'overall_conversion_rate' => $overallConversionRate,
+                'home_views'    => $homeViews,
+                'catalog_views' => $catalogViews,
+                'article_views' => $articleViews,
+                'searches'      => $searches,
             ]
         );
     }

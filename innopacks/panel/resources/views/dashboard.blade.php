@@ -33,10 +33,10 @@
   <div class="col-12 col-md-7">
     <div class="card dashboard-chart-card">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-semibold">{{ __('panel::dashboard.article_trends') }}</h6>
+        <h6 class="mb-0 fw-semibold">流量趋势</h6>
       </div>
       <div class="card-body">
-        <canvas id="chart-new-quantity" height="320"></canvas>
+        <canvas id="chart-visit-trend" height="320"></canvas>
       </div>
     </div>
   </div>
@@ -81,19 +81,32 @@
 
 @push('footer')
 <script>
-  const ctx1 = document.getElementById('chart-new-quantity').getContext('2d');
+  const ctx1 = document.getElementById('chart-visit-trend').getContext('2d');
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: false,
+      legend: {
+        display: true,
+        position: 'top',
+        align: 'end',
+        labels: {
+          boxWidth: 12,
+          boxHeight: 12,
+          borderRadius: 3,
+          useBorderRadius: true,
+          padding: 16,
+          font: { size: 12, weight: '500' },
+          color: '#64748B',
+        }
+      },
       tooltip: {
         backgroundColor: '#0F172A',
         titleFont: { size: 13, weight: '500' },
         bodyFont: { size: 12 },
         padding: 12,
         cornerRadius: 8,
-        displayColors: false,
+        displayColors: true,
       }
     },
     interaction: {
@@ -124,36 +137,58 @@
           color: '#94A3B8',
           font: { size: 12 },
           padding: 8,
+          callback: function(value, index) {
+            const label = this.getLabelForValue(value);
+            return label ? label.substring(5) : label;
+          }
         },
         border: { display: false }
       }
     },
   };
 
-  const orderGradient = ctx1.createLinearGradient(0, 0, 0, 320);
-  orderGradient.addColorStop(0, 'rgba(37,99,235,0.2)');
-  orderGradient.addColorStop(1, 'rgba(37,99,235,0)');
+  const pvGradient = ctx1.createLinearGradient(0, 0, 0, 320);
+  pvGradient.addColorStop(0, 'rgba(37,99,235,0.15)');
+  pvGradient.addColorStop(1, 'rgba(37,99,235,0)');
+
+  const uvGradient = ctx1.createLinearGradient(0, 0, 0, 320);
+  uvGradient.addColorStop(0, 'rgba(16,185,129,0.15)');
+  uvGradient.addColorStop(1, 'rgba(16,185,129,0)');
 
   const chart1 = new Chart(ctx1, {
     type: 'line',
     data: {
-      labels: @json($article['latest_week']['period']),
-      datasets: [{
-        label: '发布数量',
-        data: @json($article['latest_week']['totals']),
-        responsive: true,
-        backgroundColor: orderGradient,
-        borderColor: '#2563EB',
-        borderWidth: 2.5,
-        fill: true,
-        pointBackgroundColor: '#fff',
-        pointBorderColor: '#2563EB',
-        pointBorderWidth: 2,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        pointHoverBorderWidth: 3,
-        tension: 0.4
-      }]
+      labels: @json($visit_trend['period']),
+      datasets: [
+        {
+          label: 'PV',
+          data: @json($visit_trend['pv']),
+          backgroundColor: pvGradient,
+          borderColor: '#2563EB',
+          borderWidth: 2.5,
+          fill: true,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#2563EB',
+          pointBorderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          tension: 0.4
+        },
+        {
+          label: 'UV',
+          data: @json($visit_trend['uv']),
+          backgroundColor: uvGradient,
+          borderColor: '#10B981',
+          borderWidth: 2.5,
+          fill: true,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: '#10B981',
+          pointBorderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          tension: 0.4
+        }
+      ]
     },
     options: options
   });

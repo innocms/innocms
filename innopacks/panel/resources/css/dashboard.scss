@@ -76,6 +76,11 @@ body.page-home {
     }
   }
 
+  .dashboard-chart-card,
+  .dashboard-top-card-list {
+    min-height: 400px;
+  }
+
   .dashboard-chart-card {
     .card-body {
       padding: 1rem 1.25rem 1.25rem;

@@ -98,6 +98,49 @@ class EventTrackingService
     }
 
     /**
+     * Track page view event (generic CMS page view)
+     *
+     * @param  Request|null  $request
+     * @return VisitEvent|null
+     */
+    public function trackPageView(?Request $request = null): ?VisitEvent
+    {
+        return $this->track(VisitEvent::TYPE_PAGE_VIEW, [
+            'url' => $request ? $request->fullUrl() : null,
+        ], $request);
+    }
+
+    /**
+     * Track article view event
+     *
+     * @param  int  $articleId
+     * @param  Request|null  $request
+     * @return VisitEvent|null
+     */
+    public function trackArticleView(int $articleId, ?Request $request = null): ?VisitEvent
+    {
+        return $this->track(VisitEvent::TYPE_ARTICLE_VIEW, [
+            'article_id' => $articleId,
+        ], $request);
+    }
+
+    /**
+     * Track catalog view event
+     *
+     * @param  int  $catalogId
+     * @param  string  $catalogName
+     * @param  Request|null  $request
+     * @return VisitEvent|null
+     */
+    public function trackCatalogView(int $catalogId, string $catalogName, ?Request $request = null): ?VisitEvent
+    {
+        return $this->track(VisitEvent::TYPE_CATALOG_VIEW, [
+            'catalog_id'   => $catalogId,
+            'catalog_name' => $catalogName,
+        ], $request);
+    }
+
+    /**
      * Track product view event
      *
      * @param  int  $productId

@@ -14,6 +14,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\FileViewFinder;
 use InnoCMS\Common\Middleware\ContentFilterHook;
 use InnoCMS\Common\Middleware\EventActionHook;
+use InnoCMS\Common\Middleware\VisitTrackingMiddleware;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
 
 class FrontServiceProvider extends ServiceProvider
@@ -51,6 +52,7 @@ class FrontServiceProvider extends ServiceProvider
             EventActionHook::class,
             ContentFilterHook::class,
             GlobalDataMiddleware::class,
+            VisitTrackingMiddleware::class,
         ];
 
         foreach ($middlewares as $middleware) {

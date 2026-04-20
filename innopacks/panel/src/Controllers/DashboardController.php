@@ -29,6 +29,7 @@ class DashboardController extends BaseController
             'article' => [
                 'latest_week' => $dashboard->getArticleTotalLatestWeek(),
             ],
+            'visit_trend'         => $dashboard->getVisitTrendLatestMonth(),
             'top_viewed_articles' => ArticleRepo::getInstance()->getTopViewedArticles(),
         ];
 

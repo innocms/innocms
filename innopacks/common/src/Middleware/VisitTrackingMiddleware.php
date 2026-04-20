@@ -11,6 +11,7 @@ namespace InnoCMS\Common\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use InnoCMS\Common\Services\EventTrackingService;
 use InnoCMS\Common\Services\VisitTrackingService;
 
 class VisitTrackingMiddleware
@@ -47,6 +48,10 @@ class VisitTrackingMiddleware
 
         // Track visit
         $this->visitTrackingService->trackVisit($request, $sessionId, $customerId);
+
+        // Track page view event
+        $eventTrackingService = new EventTrackingService;
+        $eventTrackingService->trackPageView($request);
 
         // Process request
         return $next($request);
