@@ -88,8 +88,8 @@
         <el-col :xs="16" :sm="18" :md="19" :lg="20"
           :xl="21">
           <div class="file-list">
-            <div class="file-list-content">
-              <div v-loading="loading" element-loading-text="{{ __('panel/file_manager.loading') }}">
+            <div class="file-list-content" v-loading="loading" element-loading-text="{{ __('panel/file_manager.loading') }}">
+              <template v-if="files.length > 0">
                 <el-row :gutter="20">
                   <el-col :xs="12" :sm="8" :md="6" :lg="4"
                     :xl="4" :xl="3" v-for="file in files" :key="file.id || file.path">
@@ -145,7 +145,6 @@
                     </div>
                   </el-col>
                 </el-row>
-                <!-- 分页 -->
                 <div class="pagination-container">
                   <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                     :current-page="pagination.page" :page-sizes="[18, 36, 54, 72]" :page-size="pagination.per_page"
@@ -153,9 +152,8 @@
                     layout="total, sizes, prev, pager, next, jumper" :total="pagination.total">
                   </el-pagination>
                 </div>
-                <!-- 添加空状态 -->
-                <el-empty v-else :description="'{{ __('panel/file_manager.empty') }}'" :image-size="120"></el-empty>
-              </div>
+              </template>
+              <el-empty v-else :description="'{{ __('panel/file_manager.empty') }}'" :image-size="120"></el-empty>
             </div>
           </div>
         </el-col>

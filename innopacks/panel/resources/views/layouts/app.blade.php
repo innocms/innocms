@@ -10,13 +10,22 @@
         content="@yield('keywords', 'InnoCMS, 创新, 开源, CMS, Laravel 11, 多语言, 多货币, Hook, 插件架构, 灵活, 强大')">
   <meta name="description" content="@yield('description', 'InnoCMS')">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="api-token" content="{{ session('panel_api_token') }}">
+  <meta name="storage-base-url" content="{{ storage_url('') }}">
   <link rel="shortcut icon" href="{{ image_origin(system_setting('favicon', 'images/favicon.png')) }}">
   <link rel="stylesheet" href="{{ mix('build/panel/css/bootstrap.css') }}">
   <link rel="stylesheet" href="{{ mix('build/panel/css/app.css') }}">
   <script src="{{ asset('vendor/jquery/jquery-3.7.1.min.js') }}"></script>
+  <script src="{{ asset('vendor/layer/3.5.1/layer.js') }}"></script>
   <script src="{{ mix('build/panel/js/app.js') }}"></script>
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('vendor/layer/3.5.1/layer.js') }}"></script>
+  <script>
+    let urls = {
+      panel_base: '{{ panel_route('home.index') }}',
+      upload_images: '{{ panel_route('upload.images') }}',
+      file_manager_title: '{{ __("panel/menu.file_manager") }}',
+    }
+  </script>
   @stack('header')
 </head>
 

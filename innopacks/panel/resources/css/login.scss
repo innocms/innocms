@@ -1,5 +1,5 @@
 .page-login {
-  background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #1E40AF 100%);
+  background: linear-gradient(135deg, $sidebar-bg 0%, $sidebar-hover 50%, $primary-dark 100%);
   min-height: 100vh;
 
   .container {
@@ -47,7 +47,7 @@
           transition: background-color 0.1s ease;
 
           &:hover {
-            background-color: #EFF6FF;
+            background-color: $primary-bg;
           }
         }
       }
@@ -76,7 +76,7 @@
       h3 {
         font-size: 1.25rem;
         font-weight: 600;
-        color: #0F172A;
+        color: $text-heading;
       }
     }
 
@@ -91,18 +91,18 @@
     .form-floating {
       label {
         font-size: 0.875rem;
-        color: #64748B;
+        color: $text-muted;
       }
 
       .form-control {
         border-radius: 8px;
-        border-color: #E2E8F0;
+        border-color: $border;
         padding: 1rem 0.75rem;
         font-size: 0.9375rem;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
         &:focus {
-          border-color: #3B82F6;
+          border-color: $primary-light;
           box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
       }
@@ -114,13 +114,13 @@
       font-weight: 600;
       font-size: 0.9375rem;
       letter-spacing: 0.025em;
-      background-color: #2563EB;
-      border-color: #2563EB;
+      background-color: $primary;
+      border-color: $primary;
       transition: all 0.15s ease;
 
       &:hover {
-        background-color: #1D4ED8;
-        border-color: #1D4ED8;
+        background-color: $primary-dark;
+        border-color: $primary-dark;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
       }
@@ -134,7 +134,7 @@
       border-radius: 8px;
       font-size: 0.875rem;
       border: none;
-      background-color: #FEF2F2;
+      background-color: $danger-bg;
       color: #991B1B;
     }
   }

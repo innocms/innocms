@@ -3,7 +3,7 @@
 @section('title', __('panel/menu.file_manager'))
 
 @prepend('header')
-  <meta name="api-token" content="{{ auth()->user()->api_token }}">
+  <meta name="api-token" content="{{ auth()->user()->api_token ?? '' }}">
   @php($enabledDrivers = $enabled_drivers ?? ['local'])
   <script>
     window.fileManagerConfig = Object.freeze({

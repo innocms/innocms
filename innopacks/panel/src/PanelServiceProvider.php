@@ -19,6 +19,8 @@ use InnoCMS\Panel\Console\Commands\ChangeRootPassword;
 use InnoCMS\Panel\Middleware\AdminAuthenticate;
 use InnoCMS\Panel\Middleware\GlobalPanelData;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
+use InnoCMS\RestAPI\Services\FileManagerInterface;
+use InnoCMS\RestAPI\Services\FileManagerService;
 
 class PanelServiceProvider extends ServiceProvider
 {
@@ -34,6 +36,7 @@ class PanelServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
+        $this->registerFileManagerService();
         $this->loadTranslations();
         $this->loadViewTemplates();
         $this->loadViewComponents();
@@ -108,6 +111,16 @@ class PanelServiceProvider extends ServiceProvider
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/api.php'));
             });
+    }
+
+    /**
+     * Bind FileManagerInterface to the appropriate implementation.
+     */
+    protected function registerFileManagerService(): void
+    {
+        $this->app->singleton(FileManagerInterface::class, function () {
+            return new FileManagerService;
+        });
     }
 
     /**

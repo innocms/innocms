@@ -27,6 +27,7 @@ if (theme === '') {
 // panel
 mix.sass('innopacks/panel/resources/css/bootstrap/bootstrap.scss', 'public/build/panel/css/bootstrap.css');
 mix.sass('innopacks/panel/resources/css/app.scss', 'public/build/panel/css/app.css');
+mix.sass('innopacks/panel/resources/css/file-manager.scss', 'public/build/panel/css/file-manager.css');
 mix.js('innopacks/panel/resources/js/app.js', 'public/build/panel/js/app.js');
 
 // install

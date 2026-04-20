@@ -532,3 +532,18 @@ img {
   font-size: 0.75rem;
   padding: 0.35em 0.65em;
 }
+
+// File manager toolbar
+.file-toolbar-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding: 8px 0;
+}

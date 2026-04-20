@@ -31,6 +31,8 @@ return [
     'top_analytic' => 'Analytics',
     'analytics'    => 'Reports',
 
+    'file_manager' => 'File Manager',
+
     'top_plugin' => 'Plugins',
     'plugins'    => 'Plugins',
 

@@ -26,6 +26,9 @@ Route::middleware(['admin_auth:admin'])
         Route::resource('/pages', Controllers\PageController::class);
         Route::resource('/tags', Controllers\TagController::class);
 
+        Route::get('/file_manager', [Controllers\FileManagerController::class, 'index'])->name('file_manager.index');
+        Route::get('/file_manager/iframe', [Controllers\FileManagerController::class, 'iframe'])->name('file_manager.iframe');
+
         Route::get('/locales', [Controllers\LocaleController::class, 'index'])->name('locales.index');
         Route::post('/locales/install', [Controllers\LocaleController::class, 'install'])->name('locales.install');
         Route::get('/locales/{locale}/edit', [Controllers\LocaleController::class, 'edit'])->name('locales.edit');

@@ -9,6 +9,7 @@
 
 use Illuminate\Support\Facades\Route;
 use InnoCMS\Panel\ApiControllers;
+use InnoCMS\RestAPI\PanelApiControllers\FileManagerController;
 
 // Article
 Route::get('/articles', [ApiControllers\ArticleController::class, 'index'])->name('articles.index');
@@ -35,3 +36,18 @@ Route::get('/tags/autocomplete', [ApiControllers\TagController::class, 'autocomp
 Route::post('/tags', [ApiControllers\TagController::class, 'store'])->name('tags.store');
 Route::put('/tags/{tag}', [ApiControllers\TagController::class, 'update'])->name('tags.update');
 Route::delete('/tags/{tag}', [ApiControllers\TagController::class, 'destroy'])->name('tags.destroy');
+
+// File Manager
+Route::get('/file_manager/files', [FileManagerController::class, 'getFiles'])->name('file_manager.get_files');
+Route::get('/file_manager/directories', [FileManagerController::class, 'getDirectories'])->name('file_manager.get_directories');
+Route::post('/file_manager/directories', [FileManagerController::class, 'createDirectory'])->name('file_manager.create_directory');
+Route::post('/file_manager/upload', [FileManagerController::class, 'uploadFiles'])->name('file_manager.upload');
+Route::post('/file_manager/rename', [FileManagerController::class, 'rename'])->name('file_manager.rename');
+Route::delete('/file_manager/files', [FileManagerController::class, 'destroyFiles'])->name('file_manager.delete_files');
+Route::delete('/file_manager/directories', [FileManagerController::class, 'destroyDirectories'])->name('file_manager.delete_directories');
+Route::post('/file_manager/move_directories', [FileManagerController::class, 'moveDirectories'])->name('file_manager.move_directories');
+Route::post('/file_manager/move_files', [FileManagerController::class, 'moveFiles'])->name('file_manager.move_files');
+Route::post('/file_manager/copy_files', [FileManagerController::class, 'copyFiles'])->name('file_manager.copy_files');
+Route::post('/file_manager/download_remote', [FileManagerController::class, 'downloadRemoteFile'])->name('file_manager.download_remote');
+Route::get('/file_manager/storage_config', [FileManagerController::class, 'getStorageConfig']);
+Route::post('/file_manager/storage_config', [FileManagerController::class, 'saveStorageConfig']);

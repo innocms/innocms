@@ -31,11 +31,6 @@ use Knuckles\Scribe\Attributes\QueryParam;
 #[Group('Panel - File Manager')]
 class FileManagerController extends BaseController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function getService(): FileManagerInterface
     {
         $service = app(FileManagerInterface::class);
