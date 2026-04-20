@@ -3,17 +3,17 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoShop\Plugin\Services;
+namespace InnoCMS\Plugin\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Artisan;
-use InnoShop\Plugin\Core\Plugin as CPlugin;
-use InnoShop\Plugin\Models\Plugin;
-use InnoShop\Plugin\Repositories\PluginRepo;
+use InnoCMS\Plugin\Core\Plugin as CPlugin;
+use InnoCMS\Plugin\Models\Plugin;
+use InnoCMS\Plugin\Repositories\PluginRepo;
 
 class PluginService
 {

@@ -3,20 +3,20 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoShop\Install\Controllers;
+namespace InnoCMS\Install\Controllers;
 
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use InnoShop\Install\Libraries\Checker;
-use InnoShop\Install\Libraries\Creator;
-use InnoShop\Install\Requests\CompleteRequest;
+use InnoCMS\Install\Libraries\Checker;
+use InnoCMS\Install\Libraries\Creator;
+use InnoCMS\Install\Requests\CompleteRequest;
 use Throwable;
 
 class InstallController extends Controller

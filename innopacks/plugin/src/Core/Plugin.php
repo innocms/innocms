@@ -3,16 +3,16 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoShop\Plugin\Core;
+namespace InnoCMS\Plugin\Core;
 
 use Exception;
 use Illuminate\Support\Facades\Validator;
-use InnoShop\Plugin\Repositories\PluginRepo;
-use InnoShop\Plugin\Repositories\SettingRepo;
+use InnoCMS\Plugin\Repositories\PluginRepo;
+use InnoCMS\Plugin\Repositories\SettingRepo;
 
 final class Plugin
 {

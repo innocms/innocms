@@ -19,6 +19,8 @@ Route::middleware(['admin_auth:admin'])
 
         Route::get('/', [Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
+        Route::get('/analytics', [Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+
         Route::get('/locale/{code}', [Controllers\LocaleController::class, 'switch'])->name('locale.switch');
 
         Route::resource('/articles', Controllers\ArticleController::class);

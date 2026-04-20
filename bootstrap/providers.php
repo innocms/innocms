@@ -9,6 +9,6 @@ return [
     InnoCMS\RestAPI\RestAPIServiceProvider::class,
     InnoCMS\Panel\PanelServiceProvider::class,
     InnoCMS\Front\FrontServiceProvider::class,
-    InnoShop\Install\InstallServiceProvider::class,
-    InnoShop\Plugin\PluginServiceProvider::class,
+    InnoCMS\Install\InstallServiceProvider::class,
+    InnoCMS\Plugin\PluginServiceProvider::class,
 ];

@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -128,7 +128,7 @@ class VisitRepo extends BaseRepo
         $startDate = $filters['start_date'] ?? Carbon::now()->subDays(30);
         $endDate   = $filters['end_date'] ?? Carbon::now();
 
-        return $this->modelQuery()
+        return Visit::query()
             ->selectRaw('country_code, country_name, COUNT(*) as visits, COUNT(DISTINCT ip_address) as unique_visitors')
             ->whereBetween('first_visited_at', [$startDate, $endDate])
             ->whereNotNull('country_code')
@@ -242,7 +242,7 @@ class VisitRepo extends BaseRepo
         $startDate = $filters['start_date'] ?? Carbon::now()->subDays(30);
         $endDate   = $filters['end_date'] ?? Carbon::now();
 
-        return $this->modelQuery()
+        return Visit::query()
             ->selectRaw('browser, COUNT(*) as visits, COUNT(DISTINCT ip_address) as unique_visitors')
             ->whereBetween('first_visited_at', [$startDate, $endDate])
             ->whereNotNull('browser')
@@ -264,7 +264,7 @@ class VisitRepo extends BaseRepo
         $startDate = $filters['start_date'] ?? Carbon::now()->subDays(30);
         $endDate   = $filters['end_date'] ?? Carbon::now();
 
-        return $this->modelQuery()
+        return Visit::query()
             ->selectRaw('os, COUNT(*) as visits, COUNT(DISTINCT ip_address) as unique_visitors')
             ->whereBetween('first_visited_at', [$startDate, $endDate])
             ->whereNotNull('os')
@@ -323,6 +323,11 @@ class VisitRepo extends BaseRepo
      */
     protected function ensureDailyAggregated(Carbon $startDate, Carbon $endDate): void
     {
+        // Quick check: if there are no visit_events at all, skip aggregation
+        if (VisitEvent::query()->doesntExist()) {
+            return;
+        }
+
         $existingDates = VisitDaily::query()
             ->whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
             ->pluck('date')
@@ -365,7 +370,7 @@ class VisitRepo extends BaseRepo
         $startDate = $filters['start_date'] ?? Carbon::now()->subDays(7);
         $endDate   = $filters['end_date'] ?? Carbon::now();
 
-        return $this->modelQuery()
+        return Visit::query()
             ->selectRaw('HOUR(first_visited_at) as hour, COUNT(*) as visits, COUNT(DISTINCT ip_address) as unique_visitors')
             ->whereBetween('first_visited_at', [$startDate, $endDate])
             ->groupBy('hour')
@@ -386,7 +391,7 @@ class VisitRepo extends BaseRepo
         $startDate = $filters['start_date'] ?? Carbon::now()->subDays(30);
         $endDate   = $filters['end_date'] ?? Carbon::now();
 
-        return $this->modelQuery()
+        return Visit::query()
             ->selectRaw('referrer, COUNT(*) as visits, COUNT(DISTINCT ip_address) as unique_visitors')
             ->whereBetween('first_visited_at', [$startDate, $endDate])
             ->whereNotNull('referrer')
@@ -470,7 +475,7 @@ class VisitRepo extends BaseRepo
      */
     public function builder(array $filters = []): Builder
     {
-        $query = $this->modelQuery();
+        $query = Visit::query();
 
         if (isset($filters['session_id'])) {
             $query->where('session_id', $filters['session_id']);

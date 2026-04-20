@@ -5,11 +5,11 @@
  * Inspired by https://github.com/esemve/Hook
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoShop\Plugin\Core\Blade;
+namespace InnoCMS\Plugin\Core\Blade;
 
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Arr;

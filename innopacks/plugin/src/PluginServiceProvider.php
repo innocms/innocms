@@ -3,11 +3,11 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoShop\Plugin;
+namespace InnoCMS\Plugin;
 
 use Exception;
 use Illuminate\Support\Facades\Blade;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
-use InnoShop\Plugin\Core\PluginManager;
+use InnoCMS\Plugin\Core\PluginManager;
 
 class PluginServiceProvider extends ServiceProvider
 {
@@ -316,7 +316,7 @@ class PluginServiceProvider extends ServiceProvider
                     $__definedVars = [];
                 }
                 '.$definedVars.'
-                $output = \InnoShop\Plugin\Core\Blade\Hook::getSingleton()->getHook("'.$name.'",["data"=>$__definedVars],function($data) { return null; });
+                $output = \InnoCMS\Plugin\Core\Blade\Hook::getSingleton()->getHook("'.$name.'",["data"=>$__definedVars],function($data) { return null; });
                 if ($output)
                 echo $output;
                 ?>';
@@ -348,7 +348,7 @@ class PluginServiceProvider extends ServiceProvider
                     $__definedVars = [];
                 }
                 $__hook_content = ob_get_clean();
-                $output = \InnoShop\Plugin\Core\Blade\Hook::getSingleton()->getWrapper("$__hook_name",["data"=>$__definedVars],function($data) { return null; },$__hook_content);
+                $output = \InnoCMS\Plugin\Core\Blade\Hook::getSingleton()->getWrapper("$__hook_name",["data"=>$__definedVars],function($data) { return null; },$__hook_content);
                 unset($__hook_name);
                 unset($__hook_content);
                 if ($output)

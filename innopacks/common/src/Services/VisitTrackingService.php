@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -19,15 +19,11 @@ class VisitTrackingService
 {
     /**
      * GeoLocation service instance
-     *
-     * @var GeoLocationService
      */
     private GeoLocationService $geoLocationService;
 
     /**
-     * User agent parser
-     *
-     * @var MobileDetect
+     * MobileDetect instance
      */
     private MobileDetect $detect;
 
@@ -70,13 +66,11 @@ class VisitTrackingService
                 // Update existing visit: update last visited time
                 $visit->update([
                     'last_visited_at' => now(),
-                    'customer_id'     => $customerId ?: $visit->customer_id,
                 ]);
             } else {
                 // Create new visit record (first visit of the session)
                 $visit = Visit::create([
                     'session_id'       => $sessionId,
-                    'customer_id'      => $customerId,
                     'ip_address'       => $ip,
                     'user_agent'       => $request->userAgent(),
                     'country_code'     => $location['country_code'],

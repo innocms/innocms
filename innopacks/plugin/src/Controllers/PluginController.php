@@ -3,19 +3,19 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoShop <team@innoshop.com>
+ * @author     InnoCMS <team@innoshop.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoShop\Plugin\Controllers;
+namespace InnoCMS\Plugin\Controllers;
 
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use InnoShop\Plugin\Repositories\SettingRepo;
-use InnoShop\Plugin\Resources\PluginResource;
-use InnoShop\Plugin\Services\PluginService;
+use InnoCMS\Plugin\Repositories\SettingRepo;
+use InnoCMS\Plugin\Resources\PluginResource;
+use InnoCMS\Plugin\Services\PluginService;
 use Throwable;
 
 class PluginController
