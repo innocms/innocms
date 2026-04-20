@@ -79,6 +79,7 @@ body.page-home {
   .dashboard-chart-card,
   .dashboard-top-card-list {
     min-height: 400px;
+    height: 100%;
   }
 
   .dashboard-chart-card {
@@ -145,6 +146,7 @@ body.page-home {
           width: 36px;
           height: 36px;
           flex-shrink: 0;
+          margin-left: 12px;
 
           img {
             width: 100%;

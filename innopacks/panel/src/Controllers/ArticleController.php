@@ -28,7 +28,9 @@ class ArticleController extends BaseController
     {
         $filters = $request->all();
         $data    = [
-            'articles' => ArticleRepo::getInstance()->list($filters),
+            'searchFields'  => ArticleRepo::getSearchFieldOptions(),
+            'filterButtons' => ArticleRepo::getFilterButtonOptions(),
+            'articles'      => ArticleRepo::getInstance()->list($filters),
         ];
 
         return view('panel::articles.index', $data);

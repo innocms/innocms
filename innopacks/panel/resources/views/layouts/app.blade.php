@@ -46,7 +46,7 @@
   <div id="content">
     @include('panel::layouts.header')
 
-    <div class="page-title-box py-1 d-flex align-items-center justify-content-between">
+    <div class="page-title-box py-1 mt-3 d-flex align-items-center justify-content-between">
       <div class="d-flex">
         <h5 class="page-title mb-0">@yield('title')</h5>
         <div class="ms-4 text-danger">@yield('page-title-after')</div>

@@ -49,6 +49,17 @@ return [
     'up_image_text'    => 'Click to upload, or drag the file in',
     'no_data'          => 'No data',
 
+    'enter_keyword'    => 'Enter keyword',
+    'all_fields'       => 'All Fields',
+    'all'              => 'All',
+    'selected_filters' => 'Active Filters',
+    'clear_all'        => 'Clear All',
+    'more'             => 'More',
+    'collapse'         => 'Collapse',
+    'min'              => 'Min',
+    'max'              => 'Max',
+    'total_records'    => 'Total :total, Page :current/:last',
+
     'created_success' => 'Created successfully',
     'saved_success'   => 'Saved successfully',
     'updated_success' => 'Updated successfully',

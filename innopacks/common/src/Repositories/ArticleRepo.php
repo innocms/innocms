@@ -17,6 +17,37 @@ use InnoCMS\Common\Models\Article;
 class ArticleRepo extends BaseRepo
 {
     /**
+     * @return array
+     */
+    public static function getSearchFieldOptions(): array
+    {
+        return [
+            ['value' => '', 'label' => trans('panel::common.all_fields')],
+            ['value' => 'keyword', 'label' => trans('panel::common.name')],
+            ['value' => 'slug', 'label' => trans('panel::common.slug')],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getFilterButtonOptions(): array
+    {
+        return [
+            [
+                'name'    => 'active',
+                'label'   => trans('panel::common.status'),
+                'type'    => 'button',
+                'options' => [
+                    ['value' => '', 'label' => trans('panel::common.all')],
+                    ['value' => '1', 'label' => trans('panel::common.active')],
+                    ['value' => '0', 'label' => trans('panel::common.inactive')],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @param  $filters
      * @return LengthAwarePaginator
      * @throws \Exception
@@ -49,13 +80,18 @@ class ArticleRepo extends BaseRepo
             $builder->where('catalog_id', $catalogId);
         }
 
-        $keyword = $filters['keyword'] ?? '';
+        $searchField = $filters['search_field'] ?? '';
+        $keyword     = $filters['keyword'] ?? '';
         if ($keyword) {
-            $builder->whereHas('translation', function (Builder $query) use ($keyword) {
-                $query->where('title', 'like', "%$keyword%")
-                    ->orWhere('summary', 'like', "%$keyword%")
-                    ->orWhere('content', 'like', "%$keyword%");
-            });
+            if ($searchField === 'slug') {
+                $builder->where('slug', 'like', "%$keyword%");
+            } else {
+                $builder->whereHas('translation', function (Builder $query) use ($keyword) {
+                    $query->where('title', 'like', "%$keyword%")
+                        ->orWhere('summary', 'like', "%$keyword%")
+                        ->orWhere('content', 'like', "%$keyword%");
+                });
+            }
         }
 
         $tagId = $filters['tag_id'] ?? 0;

@@ -554,3 +554,37 @@ img {
   margin-top: 16px;
   padding: 8px 0;
 }
+
+// Data search component
+.data-search-container {
+  .search-filters-section {
+    .filter-label {
+      min-width: 60px;
+      font-size: 0.8125rem;
+      color: $text-body;
+    }
+    .btn-filter.btn-all {
+      border-radius: 4px;
+    }
+    .custom-date-inputs {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+  .selected-filter-tag {
+    font-size: 0.8125rem;
+    .btn-close-xs {
+      background: none;
+      border: none;
+      color: $text-muted;
+      cursor: pointer;
+      padding: 0;
+      font-size: 0.875rem;
+      line-height: 1;
+      &:hover {
+        color: $danger;
+      }
+    }
+  }
+}

@@ -49,6 +49,17 @@ return [
     'up_image_text'    => '点击上传，或将文件拖入进来',
     'no_data'          => '没有数据',
 
+    'enter_keyword'    => '请输入关键词',
+    'all_fields'       => '全部字段',
+    'all'              => '全部',
+    'selected_filters' => '已选条件',
+    'clear_all'        => '清空',
+    'more'             => '更多',
+    'collapse'         => '收起',
+    'min'              => '最小',
+    'max'              => '最大',
+    'total_records'    => '共 :total 条，第 :current/:last 页',
+
     'created_success' => '创建成功',
     'saved_success'   => '保存成功',
     'updated_success' => '更新成功',

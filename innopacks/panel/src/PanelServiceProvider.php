@@ -153,6 +153,7 @@ class PanelServiceProvider extends ServiceProvider
             'form-switch-radio'      => Components\Forms\SwitchRadio::class,
             'no-data'                => Components\NoData::class,
             'form-date'              => Components\Forms\Date::class,
+            'data-search'            => Components\Data\DataSearch::class,
         ]);
     }
 
