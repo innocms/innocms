@@ -43,6 +43,8 @@
                                      placeholder="Meta 描述"/>
               <x-panel-form-switch-radio title="启用 html 后缀" name="has_suffix" :value="old('has_suffix', system_setting('has_suffix', 0))"
                                          placeholder="启用 html 后缀"/>
+              <x-panel-form-switch-radio title="隐藏 URL 语言标识" name="hide_url_locale" :value="old('hide_url_locale', system_setting('hide_url_locale', 0))"
+                                         placeholder="仅一种语言时，URL 中不包含语言代码"/>
               <x-panel-form-input title="ICP备案号" name="icp_number" value="{{ old('icp_number', system_setting('icp_number')) }}"/>
               <x-panel-form-textarea title="第三方JS代码" name="js_code"
                                      value="{{ old('js_code', system_setting('js_code')) }}"

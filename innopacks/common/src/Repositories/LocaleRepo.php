@@ -10,10 +10,13 @@
 namespace InnoCMS\Common\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use InnoCMS\Common\Models\Locale;
 
 class LocaleRepo extends BaseRepo
 {
+    public static ?Collection $enabledLocales = null;
+
     /**
      * @throws \Exception
      */
@@ -71,6 +74,10 @@ class LocaleRepo extends BaseRepo
      */
     public function getActiveList(): mixed
     {
-        return $this->builder(['active' => true])->get();
+        if (self::$enabledLocales !== null && self::$enabledLocales->isNotEmpty()) {
+            return self::$enabledLocales;
+        }
+
+        return self::$enabledLocales = $this->builder(['active' => true])->orderBy('position')->get();
     }
 }
