@@ -9,7 +9,7 @@
 
 return [
     'install_wizard'       => 'Asistente de instalación',
-    'zh_cn'                => 'Chino',
+    'zh-cn'                => 'Chino',
     'en'                   => 'Inglés',
     'es'                   => 'Español',
     'license'              => 'Licencia',

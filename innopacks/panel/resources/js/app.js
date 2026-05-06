@@ -11,7 +11,7 @@ window.inno = common;
 window.inno.fileManagerIframe = fileManager.init;
 
 const base = document.querySelector('base').href;
-const editor_language = document.querySelector('meta[name="editor_language"]')?.content || 'zh_cn';
+const editor_language = document.querySelector('meta[name="editor_language"]')?.content || 'zh-cn';
 
 $(function () {
   tinymceInit();

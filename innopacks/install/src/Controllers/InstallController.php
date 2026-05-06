@@ -33,7 +33,7 @@ class InstallController extends Controller
         }
 
         $defaultLocale = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en', 0, 2);
-        $defaultLocale = ($defaultLocale == 'zh' ? 'zh_cn' : $defaultLocale);
+        $defaultLocale = ($defaultLocale == 'zh' ? 'zh-cn' : $defaultLocale);
         $locale        = $request->get('locale', $defaultLocale);
         App::setLocale($locale);
 

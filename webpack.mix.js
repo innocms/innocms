@@ -34,9 +34,14 @@ mix.webpackConfig({
           : path.resolve(__dirname, `${config.paths.themes}/default`),
     },
   },
-  plugins: [
-    { apply(compiler) { compiler.options.plugins = (compiler.options.plugins || []).filter(p => !p || p.constructor.name !== 'ProgressPlugin'); } },
-  ],
+});
+
+// WebpackBar 5.x creates a ProgressPlugin with options incompatible with webpack >= 5.100.
+// Remove it before the build starts.
+mix.override((webpackConfig) => {
+  webpackConfig.plugins = (webpackConfig.plugins || []).filter(
+    (p) => !p || p.constructor.name !== 'WebpackBarPlugin',
+  );
 });
 
 const utils = {

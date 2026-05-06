@@ -75,7 +75,7 @@ class Creator
             'APP_DEBUG=false'."\n".
             'APP_TIMEZONE=UTC'."\n".
             'APP_URL='.$appUrl."\n\n".
-            'APP_LOCALE=zh_cn'."\n\n";
+            'APP_LOCALE=zh-cn'."\n\n";
         if ($dbType == 'mysql') {
             $envFileData .= 'DB_CONNECTION='.$data['type']."\n".
                 'DB_PREFIX='.($data['db_prefix'] ?: 'icms_')."\n".

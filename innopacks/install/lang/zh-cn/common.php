@@ -9,7 +9,7 @@
 
 return [
     'install_wizard' => '安装引导',
-    'zh_cn'          => '中文',
+    'zh-cn'          => '中文',
     'en'             => '英文',
     'es'             => 'Español',
     'license'        => '许可协议',
