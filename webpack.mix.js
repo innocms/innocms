@@ -34,6 +34,9 @@ mix.webpackConfig({
           : path.resolve(__dirname, `${config.paths.themes}/default`),
     },
   },
+  plugins: [
+    { apply(compiler) { compiler.options.plugins = (compiler.options.plugins || []).filter(p => !p || p.constructor.name !== 'ProgressPlugin'); } },
+  ],
 });
 
 const utils = {
