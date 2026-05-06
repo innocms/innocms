@@ -8,7 +8,6 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use InnoCMS\Common\Repositories\PageRepo;
 use InnoCMS\Front\Controllers;
 
 $hasSuffix = installed() && system_setting('has_suffix');
@@ -34,13 +33,9 @@ if ($hasSuffix) {
     Route::get('/tags.html', [Controllers\TagController::class, 'index'])->name('tags.index');
     Route::get('/tags-{slug}.html', [Controllers\TagController::class, 'show'])->name('tags.show');
 
-    // Pages, like product, service, about
-    if (installed()) {
-        $pages = PageRepo::getInstance()->withActive()->builder()->get();
-        foreach ($pages as $page) {
-            Route::get($page->slug.'.html', [Controllers\PageController::class, 'show'])->name('pages.'.$page->slug);
-        }
-    }
+    // Pages - Use page-{slug} pattern consistent with other resources
+    Route::get('/pages.html', [Controllers\PageController::class, 'index'])->name('pages.index');
+    Route::get('/page-{slug}.html', [Controllers\PageController::class, 'slugShow'])->name('pages.slug_show');
 } else {
     // Catalogs
     Route::get('/catalogs', [Controllers\CatalogController::class, 'index'])->name('catalogs.index');
@@ -56,13 +51,9 @@ if ($hasSuffix) {
     Route::get('/tags', [Controllers\TagController::class, 'index'])->name('tags.index');
     Route::get('/tags-{slug}', [Controllers\TagController::class, 'show'])->name('tags.show');
 
-    // Pages, like product, service, about
-    if (installed()) {
-        $pages = PageRepo::getInstance()->withActive()->builder()->get();
-        foreach ($pages as $page) {
-            Route::get($page->slug, [Controllers\PageController::class, 'show'])->name('pages.'.$page->slug);
-        }
-    }
+    // Pages - Use page-{slug} pattern consistent with other resources
+    Route::get('/pages', [Controllers\PageController::class, 'index'])->name('pages.index');
+    Route::get('/page-{slug}', [Controllers\PageController::class, 'slugShow'])->name('pages.slug_show');
 }
 
 // Official service demo pages
