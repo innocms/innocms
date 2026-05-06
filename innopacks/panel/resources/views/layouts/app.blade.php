@@ -34,7 +34,7 @@
   <aside class="sidebar-box navbar-expand-xs border-radius-xl">
     <div class="sidebar-header">
       <a href="{{ panel_route('home.index') }}" class="sidebar-logo">
-        <img src="{{ image_origin(system_setting('panel_logo', 'images/logo-panel.png')) }}" class="img-fluid">
+        <img src="{{ image_origin(system_setting('panel_logo') ?: 'images/logo-panel.png') }}" class="img-fluid">
       </a>
     </div>
 

@@ -18,6 +18,7 @@ use InnoCMS\Common\Models\Admin;
 use InnoCMS\Panel\Console\Commands\ChangeRootPassword;
 use InnoCMS\Panel\Middleware\AdminAuthenticate;
 use InnoCMS\Panel\Middleware\GlobalPanelData;
+use InnoCMS\Common\Services\StorageService;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
 use InnoCMS\Panel\Services\ThemeService;
 use InnoCMS\RestAPI\Services\FileManagerInterface;
@@ -34,6 +35,7 @@ class PanelServiceProvider extends ServiceProvider
     {
         load_settings();
         $this->registerGuard();
+        $this->registerUploadFileSystem();
         $this->registerCommands();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
@@ -76,6 +78,53 @@ class PanelServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ChangeRootPassword::class,
+            ]);
+        }
+    }
+
+    /**
+     * Register the media filesystem disk.
+     *
+     * @return void
+     */
+    protected function registerUploadFileSystem(): void
+    {
+        $driver    = system_setting('file_manager_driver', 'local');
+        $s3Drivers = ['oss', 'cos', 'qiniu', 's3', 'obs', 'r2', 'minio'];
+
+        if (in_array($driver, $s3Drivers)) {
+            $prefix   = "storage_{$driver}_";
+            $s3Config = [
+                'driver'                  => 's3',
+                'key'                     => system_setting($prefix.'key', system_setting('storage_key', '')),
+                'secret'                  => system_setting($prefix.'secret', system_setting('storage_secret', '')),
+                'region'                  => system_setting($prefix.'region', system_setting('storage_region', '')),
+                'bucket'                  => system_setting($prefix.'bucket', system_setting('storage_bucket', '')),
+                'endpoint'                => system_setting($prefix.'endpoint', system_setting('storage_endpoint', '')),
+                'url'                     => system_setting($prefix.'cdn_domain', system_setting('storage_cdn_domain', '')) ?: null,
+                'use_path_style_endpoint' => false,
+                'visibility'              => 'public',
+                'options'                 => ['ACL' => 'public-read'],
+                'throw'                   => true,
+            ];
+            Config::set('filesystems.disks.media', $s3Config);
+        } else {
+            Config::set('filesystems.disks.media', [
+                'driver'      => 'local',
+                'root'        => public_path(rtrim(StorageService::STORAGE_PREFIX, '/')),
+                'url'         => env('APP_URL').'/'.ltrim(StorageService::STORAGE_PREFIX, '/'),
+                'visibility'  => 'public',
+                'throw'       => true,
+                'permissions' => [
+                    'file' => [
+                        'public'  => 0755,
+                        'private' => 0755,
+                    ],
+                    'dir' => [
+                        'public'  => 0755,
+                        'private' => 0755,
+                    ],
+                ],
             ]);
         }
     }
