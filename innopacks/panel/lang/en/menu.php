@@ -14,7 +14,8 @@ return [
     'articles'    => 'Articles',
     'catalogs'    => 'Catalogs',
     'tags'        => 'Tags',
-    'pages'       => 'Pages',
+    'pages'         => 'Pages',
+    'consultations' => 'Consultations',
 
     'top_order' => 'Orders',
     'orders'    => 'Orders',

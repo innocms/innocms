@@ -28,6 +28,10 @@ Route::middleware(['admin_auth:admin'])
         Route::resource('/pages', Controllers\PageController::class);
         Route::resource('/tags', Controllers\TagController::class);
 
+        Route::get('/consultations', [Controllers\ConsultationController::class, 'index'])->name('consultations.index');
+        Route::get('/consultations/{consultation}', [Controllers\ConsultationController::class, 'show'])->name('consultations.show');
+        Route::delete('/consultations/{consultation}', [Controllers\ConsultationController::class, 'destroy'])->name('consultations.destroy');
+
         Route::get('/file_manager', [Controllers\FileManagerController::class, 'index'])->name('file_manager.index');
         Route::get('/file_manager/iframe', [Controllers\FileManagerController::class, 'iframe'])->name('file_manager.iframe');
 

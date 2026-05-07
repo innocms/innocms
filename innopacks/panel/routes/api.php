@@ -37,6 +37,12 @@ Route::post('/tags', [ApiControllers\TagController::class, 'store'])->name('tags
 Route::put('/tags/{tag}', [ApiControllers\TagController::class, 'update'])->name('tags.update');
 Route::delete('/tags/{tag}', [ApiControllers\TagController::class, 'destroy'])->name('tags.destroy');
 
+// Consultation
+Route::get('/consultations', [ApiControllers\ConsultationController::class, 'index'])->name('consultations.index');
+Route::put('/consultations/read-all', [ApiControllers\ConsultationController::class, 'markAllRead'])->name('consultations.mark_all_read');
+Route::put('/consultations/{consultation}/read', [ApiControllers\ConsultationController::class, 'markRead'])->name('consultations.mark_read');
+Route::delete('/consultations/{consultation}', [ApiControllers\ConsultationController::class, 'destroy'])->name('consultations.destroy');
+
 // File Manager
 Route::get('/file_manager/files', [FileManagerController::class, 'getFiles'])->name('file_manager.get_files');
 Route::get('/file_manager/directories', [FileManagerController::class, 'getDirectories'])->name('file_manager.get_directories');
