@@ -53,4 +53,10 @@ Route::middleware($middlewares)->group(function () {
     Route::put('/tags/{tag}', [PanelApiControllers\TagController::class, 'update'])->name('tags.update');
     Route::patch('/tags/{tag}', [PanelApiControllers\TagController::class, 'patch'])->name('tags.patch');
     Route::delete('/tags/{tag}', [PanelApiControllers\TagController::class, 'destroy'])->name('tags.destroy');
+
+    // Consultations
+    Route::get('/consultations', [PanelApiControllers\ConsultationController::class, 'index'])->name('consultations.index');
+    Route::put('/consultations/read-all', [PanelApiControllers\ConsultationController::class, 'markAllRead'])->name('consultations.mark_all_read');
+    Route::put('/consultations/{consultation}/read', [PanelApiControllers\ConsultationController::class, 'markRead'])->name('consultations.mark_read');
+    Route::delete('/consultations/{consultation}', [PanelApiControllers\ConsultationController::class, 'destroy'])->name('consultations.destroy');
 });

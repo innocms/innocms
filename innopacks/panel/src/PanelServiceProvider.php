@@ -38,7 +38,6 @@ class PanelServiceProvider extends ServiceProvider
         $this->registerUploadFileSystem();
         $this->registerCommands();
         $this->registerWebRoutes();
-        $this->registerApiRoutes();
         $this->registerFileManagerService();
         $this->loadTranslations();
         $this->loadViewTemplates();
@@ -143,24 +142,6 @@ class PanelServiceProvider extends ServiceProvider
             ->name("$adminName.")
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
-            });
-    }
-
-    /**
-     * Register admin api routes.
-     * @todo This middleware should be instead of token-based authentication, not admin_auth
-     *
-     * @return void
-     */
-    private function registerApiRoutes(): void
-    {
-        $middlewares = ['api', 'web', 'admin_auth:admin', EventActionHook::class, ContentFilterHook::class];
-        $adminName   = panel_name();
-        Route::prefix("api/$adminName")
-            ->middleware($middlewares)
-            ->name("api.$adminName.")
-            ->group(function () {
-                $this->loadRoutesFrom(realpath(__DIR__.'/../routes/api.php'));
             });
     }
 
