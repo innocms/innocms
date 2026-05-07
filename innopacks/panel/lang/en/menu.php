@@ -10,10 +10,10 @@
 return [
     'dashboard' => 'Dashboard',
 
-    'top_content' => 'Content',
-    'articles'    => 'Articles',
-    'catalogs'    => 'Catalogs',
-    'tags'        => 'Tags',
+    'top_content'   => 'Content',
+    'articles'      => 'Articles',
+    'catalogs'      => 'Catalogs',
+    'tags'          => 'Tags',
     'pages'         => 'Pages',
     'consultations' => 'Consultations',
 
@@ -31,6 +31,7 @@ return [
 
     'top_analytic' => 'Analytics',
     'analytics'    => 'Reports',
+    'visits'       => 'Visit Logs',
 
     'file_manager' => 'File Manager',
 

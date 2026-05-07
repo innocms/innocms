@@ -100,6 +100,7 @@ return [
     'analytics_edit'           => '编辑分析',
     'analytics_update'         => '更新分析',
     'analytics_destroy'        => '删除分析',
+    'visits_index'             => '访问记录列表',
     'locales_index'            => '本地化列表',
     'locales_install'          => '安装本地化',
     'locales_edit'             => '编辑本地化',

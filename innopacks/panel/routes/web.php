@@ -13,6 +13,9 @@ use InnoCMS\Panel\Controllers;
 Route::get('login', [Controllers\LoginController::class, 'index'])->name('login.index');
 Route::post('login', [Controllers\LoginController::class, 'store'])->name('login.store');
 
+Route::get('cli-login', [Controllers\CliLoginController::class, 'index'])->name('cli-login.index');
+Route::post('cli-login', [Controllers\CliLoginController::class, 'store'])->name('cli-login.store');
+
 Route::middleware(['admin_auth:admin'])
     ->group(function () {
         Route::get('logout', [Controllers\LogoutController::class, 'index'])->name('logout.index');
@@ -20,6 +23,8 @@ Route::middleware(['admin_auth:admin'])
         Route::get('/', [Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
         Route::get('/analytics', [Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+
+        Route::get('/visits', [Controllers\VisitController::class, 'index'])->name('visits.index');
 
         Route::get('/locale/{code}', [Controllers\LocaleController::class, 'switch'])->name('locale.switch');
 

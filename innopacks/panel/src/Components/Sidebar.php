@@ -75,7 +75,7 @@ class Sidebar extends Component
             [
                 'title'    => __('panel::menu.top_analytic'),
                 'icon'     => 'bi-bar-chart',
-                'prefixes' => ['analytics'],
+                'prefixes' => ['analytics', 'visits'],
                 'children' => $this->getAnalyticSubRoutes(),
             ],
             [
@@ -201,6 +201,7 @@ class Sidebar extends Component
     {
         $routes = [
             ['route' => 'analytics.index', 'title' => __('panel::menu.analytics')],
+            ['route' => 'visits.index', 'title' => __('panel::menu.visits')],
         ];
 
         return fire_hook_filter('component.sidebar.analytic.routes', $routes);
