@@ -33,11 +33,22 @@ class FrontServiceProvider extends ServiceProvider
         }
 
         load_settings();
+        $this->registerSitemapRoute();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
         $this->publishViewTemplates();
         $this->loadThemeViewPath();
         $this->loadViewComponents();
+    }
+
+    /**
+     * Register sitemap.xml route without content-filter middleware.
+     *
+     * @return void
+     */
+    protected function registerSitemapRoute(): void
+    {
+        Route::get('/sitemap.xml', [Controllers\SitemapController::class, 'index'])->name('front.sitemap.index');
     }
 
     /**
