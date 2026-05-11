@@ -105,7 +105,7 @@ class ThemeService
         $required = ['code', 'name', 'version'];
         foreach ($required as $field) {
             if (! isset($config[$field])) {
-                throw new Exception(trans('panel::themes.error_config_missing', ['field' => $field]));
+                throw new Exception(trans('panel/themes.error_config_missing', ['field' => $field]));
             }
         }
     }
@@ -113,14 +113,14 @@ class ThemeService
     protected function validateCode(array $config, string $folderCode): void
     {
         if (($config['code'] ?? '') !== $folderCode) {
-            throw new Exception(trans('panel::themes.error_code_mismatch', [
+            throw new Exception(trans('panel/themes.error_code_mismatch', [
                 'folder' => $folderCode,
                 'code'   => $config['code'] ?? '',
             ]));
         }
 
         if (($config['code'] ?? '') !== strtolower((string) $config['code'])) {
-            throw new Exception(trans('panel::themes.error_code_not_lowercase', [
+            throw new Exception(trans('panel/themes.error_code_not_lowercase', [
                 'code' => $config['code'],
             ]));
         }

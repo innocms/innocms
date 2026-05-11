@@ -57,7 +57,7 @@ class CatalogController
             $data = $request->all();
             CatalogRepo::getInstance()->create($data);
 
-            return redirect(panel_route('catalogs.index'))->with('success', trans('panel::common.updated_success'));
+            return redirect(panel_route('catalogs.index'))->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
@@ -101,7 +101,7 @@ class CatalogController
             CatalogRepo::getInstance()->update($catalog, $data);
 
             return redirect(panel_route('catalogs.index'))
-                ->with('success', trans('panel::common.updated_success'));
+                ->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return redirect(panel_route('catalogs.edit', $catalog))
                 ->withInput()
@@ -118,7 +118,7 @@ class CatalogController
         try {
             CatalogRepo::getInstance()->destroy($catalog);
 
-            return back()->with('success', trans('panel::common.deleted_success'));
+            return back()->with('success', trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }

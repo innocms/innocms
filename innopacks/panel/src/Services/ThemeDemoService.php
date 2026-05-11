@@ -38,7 +38,7 @@ class ThemeDemoService
     {
         $seederFile = $this->resolveDemoSeederPath($themeDirectory);
         if ($seederFile === null) {
-            throw new Exception(trans('panel::themes.error_demo_not_found'));
+            throw new Exception(trans('panel/themes.error_demo_not_found'));
         }
 
         smart_log('info', 'Starting theme demo import', [
@@ -55,7 +55,7 @@ class ThemeDemoService
 
         $loaded = require $seederFile;
         if (! is_callable($loaded)) {
-            throw new Exception(trans('panel::themes.error_demo_invalid_seeder'));
+            throw new Exception(trans('panel/themes.error_demo_invalid_seeder'));
         }
 
         $loaded($themeDirectory);

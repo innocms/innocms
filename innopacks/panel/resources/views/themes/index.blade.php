@@ -1,24 +1,24 @@
 @extends('panel::layouts.app')
 @section('body-class', 'theme')
 
-@section('title', __('panel::menu.themes'))
+@section('title', __('panel/menu.themes'))
 
 @section('content')
   <div class="card h-min-600">
     <div class="card-body p-4">
       <div class="d-flex flex-wrap align-items-center gap-2 text-muted small mb-3 pb-3 border-bottom">
-        <span><i class="bi bi-palette me-1"></i>{{ __('panel::themes.available_themes_count', ['count' => $themes_count ?? 0]) }}</span>
+        <span><i class="bi bi-palette me-1"></i>{{ __('panel/themes.available_themes_count', ['count' => $themes_count ?? 0]) }}</span>
         <span class="text-secondary">·</span>
-        <span><i class="bi bi-collection-play me-1"></i>{{ __('panel::themes.themes_stat_demo', ['count' => $themes_with_demo_count ?? 0]) }}</span>
+        <span><i class="bi bi-collection-play me-1"></i>{{ __('panel/themes.themes_stat_demo', ['count' => $themes_with_demo_count ?? 0]) }}</span>
         <span class="text-secondary">·</span>
-        <span>{{ __('panel::themes.themes_stat_current') }}: {{ $selected_theme_name ?? __('panel::themes.themes_stat_none') }}</span>
+        <span>{{ __('panel/themes.themes_stat_current') }}: {{ $selected_theme_name ?? __('panel/themes.themes_stat_none') }}</span>
       </div>
 
       @if(!empty($errors))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
           <h6 class="alert-heading mb-2">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            {{ __('panel::themes.error_theme_validation') }}
+            {{ __('panel/themes.error_theme_validation') }}
           </h6>
           <ul class="mb-0 ps-3">
             @foreach($errors as $error)
@@ -50,7 +50,7 @@
                     @endif
                     @if(!empty($theme['has_demo']))
                       <div class="mb-2">
-                        <span class="badge rounded-pill text-bg-info">{{ __('panel::themes.theme_badge_demo') }}</span>
+                        <span class="badge rounded-pill text-bg-info">{{ __('panel/themes.theme_badge_demo') }}</span>
                       </div>
                     @endif
                     <div class="text-muted small mb-2">{{ $theme['code'] ?? '' }}</div>
@@ -58,12 +58,12 @@
                       <div class="d-flex flex-wrap gap-1">
                         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                                 data-bs-target="#themeDetailModal-{{ $theme['code'] }}">
-                          {{ __('panel::themes.view_detail') }}
+                          {{ __('panel/themes.view_detail') }}
                         </button>
                         @if(!empty($theme['has_demo']))
                           <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                   data-bs-target="#themeImportModal-{{ $theme['code'] }}">
-                            {{ __('panel::themes.import_demo_data') }}
+                            {{ __('panel/themes.import_demo_data') }}
                           </button>
                         @endif
                       </div>
@@ -80,7 +80,7 @@
           </div>
         </div>
       @else
-        <x-common-no-data :text="__('panel::themes.no_custom_theme')" />
+        <x-common-no-data :text="__('panel/themes.no_custom_theme')" />
       @endif
 
       @if($themes && $themes->isNotEmpty())

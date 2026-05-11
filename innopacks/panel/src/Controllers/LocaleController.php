@@ -60,7 +60,7 @@ class LocaleController extends BaseController
             $data = collect($list)->where('code', $code)->first();
             LocaleRepo::getInstance()->create($data);
 
-            return redirect(panel_route('locales.index'))->with('success', trans('panel::common.install_success'));
+            return redirect(panel_route('locales.index'))->with('success', trans('panel/common.install_success'));
         } catch (\Exception $e) {
             return redirect(panel_route('locales.index'))->withErrors(['error' => $e->getMessage()]);
         }
@@ -90,7 +90,7 @@ class LocaleController extends BaseController
             $data = $request->all();
             LocaleRepo::getInstance()->update($locale, $data);
 
-            return back()->with('success', trans('panel::common.updated_success'));
+            return back()->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -107,7 +107,7 @@ class LocaleController extends BaseController
             $locale = LocaleRepo::getInstance()->builder(['code' => $code])->firstOrFail();
             LocaleRepo::getInstance()->destroy($locale);
 
-            return redirect(panel_route('locales.index'))->with('success', trans('panel::common.uninstall_success'));
+            return redirect(panel_route('locales.index'))->with('success', trans('panel/common.uninstall_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }

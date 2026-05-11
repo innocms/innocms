@@ -1,7 +1,7 @@
 @extends('panel::layouts.app')
 @section('body-class', 'page-analytics')
 
-@section('title', __('panel::menu.analytics'))
+@section('title', __('panel/menu.analytics'))
 
 @push('header')
 <script src="{{ asset('vendor/chart/chart.min.js') }}"></script>
@@ -16,14 +16,14 @@
       <span class="text-secondary"><i class="bi bi-calendar3"></i></span>
       @php
         $dateOptions = [
-          'all'          => __('panel::analytics.filter_all'),
-          'today'        => __('panel::analytics.filter_today'),
-          'yesterday'    => __('panel::analytics.filter_yesterday'),
-          'this_week'    => __('panel::analytics.filter_this_week'),
-          'this_month'   => __('panel::analytics.filter_this_month'),
-          'last_7_days'  => __('panel::analytics.filter_last_7_days'),
-          'last_30_days' => __('panel::analytics.filter_last_30_days'),
-          'custom'       => __('panel::analytics.filter_custom'),
+          'all'          => __('panel/analytics.filter_all'),
+          'today'        => __('panel/analytics.filter_today'),
+          'yesterday'    => __('panel/analytics.filter_yesterday'),
+          'this_week'    => __('panel/analytics.filter_this_week'),
+          'this_month'   => __('panel/analytics.filter_this_month'),
+          'last_7_days'  => __('panel/analytics.filter_last_7_days'),
+          'last_30_days' => __('panel/analytics.filter_last_30_days'),
+          'custom'       => __('panel/analytics.filter_custom'),
         ];
         $currentFilter = $dateFilter ?? 'last_30_days';
       @endphp
@@ -37,7 +37,7 @@
         <input type="date" name="start_date" class="form-control form-control-sm" style="width:140px" value="{{ $startDate }}">
         <span class="text-muted">-</span>
         <input type="date" name="end_date" class="form-control form-control-sm" style="width:140px" value="{{ $endDate }}">
-        <button type="submit" class="btn btn-sm btn-primary">{{ __('panel::common.filter') }}</button>
+        <button type="submit" class="btn btn-sm btn-primary">{{ __('panel/common.filter') }}</button>
       @endif
     </form>
   </div>
@@ -48,7 +48,7 @@
   <div class="col-6 col-md-3">
     <div class="card">
       <div class="card-body py-3 px-4">
-        <div class="text-muted small mb-1">{{ __('panel::analytics.total_visits') }}</div>
+        <div class="text-muted small mb-1">{{ __('panel/analytics.total_visits') }}</div>
         <div class="fs-4 fw-bold">{{ $statistics['total_visits'] ?? 0 }}</div>
       </div>
     </div>
@@ -56,7 +56,7 @@
   <div class="col-6 col-md-3">
     <div class="card">
       <div class="card-body py-3 px-4">
-        <div class="text-muted small mb-1">{{ __('panel::analytics.unique_visitors') }}</div>
+        <div class="text-muted small mb-1">{{ __('panel/analytics.unique_visitors') }}</div>
         <div class="fs-4 fw-bold">{{ $statistics['unique_visitors'] ?? 0 }}</div>
       </div>
     </div>
@@ -64,7 +64,7 @@
   <div class="col-6 col-md-3">
     <div class="card">
       <div class="card-body py-3 px-4">
-        <div class="text-muted small mb-1">{{ __('panel::analytics.page_views') }}</div>
+        <div class="text-muted small mb-1">{{ __('panel/analytics.page_views') }}</div>
         <div class="fs-4 fw-bold">{{ $statistics['page_views'] ?? 0 }}</div>
       </div>
     </div>
@@ -72,7 +72,7 @@
   <div class="col-6 col-md-3">
     <div class="card">
       <div class="card-body py-3 px-4">
-        <div class="text-muted small mb-1">{{ __('panel::analytics.unique_sessions') }}</div>
+        <div class="text-muted small mb-1">{{ __('panel/analytics.unique_sessions') }}</div>
         <div class="fs-4 fw-bold">{{ $statistics['unique_sessions'] ?? 0 }}</div>
       </div>
     </div>
@@ -89,7 +89,7 @@
   <div class="col-12 col-md-8">
     <div class="card" style="min-height:400px">
       <div class="card-header">
-        <h6 class="mb-0 fw-semibold">{{ __('panel::analytics.daily_trends') }}</h6>
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.daily_trends') }}</h6>
       </div>
       <div class="card-body">
         @if($hasDailyData)
@@ -97,7 +97,7 @@
         @else
           <div class="d-flex flex-column align-items-center justify-content-center py-5 text-muted">
             <i class="bi bi-bar-chart-line fs-1 mb-2"></i>
-            <span>{{ __('panel::common.no_data') }}</span>
+            <span>{{ __('panel/common.no_data') }}</span>
           </div>
         @endif
       </div>
@@ -106,7 +106,7 @@
   <div class="col-12 col-md-4">
     <div class="card" style="min-height:400px">
       <div class="card-header">
-        <h6 class="mb-0 fw-semibold">{{ __('panel::analytics.by_device') }}</h6>
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.by_device') }}</h6>
       </div>
       <div class="card-body">
         @if($hasDeviceData)
@@ -124,7 +124,7 @@
         @else
           <div class="d-flex flex-column align-items-center justify-content-center py-5 text-muted">
             <i class="bi bi-pie-chart fs-1 mb-2"></i>
-            <span>{{ __('panel::common.no_data') }}</span>
+            <span>{{ __('panel/common.no_data') }}</span>
           </div>
         @endif
       </div>
@@ -137,15 +137,15 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <h6 class="mb-0 fw-semibold">{{ __('panel::analytics.by_country') }}</h6>
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.by_country') }}</h6>
       </div>
       <div class="card-body">
         <table class="table table-sm">
           <thead>
             <tr>
-              <th>{{ __('panel::analytics.country') }}</th>
-              <th class="text-end">{{ __('panel::analytics.visits') }}</th>
-              <th class="text-end">{{ __('panel::analytics.unique_visitors') }}</th>
+              <th>{{ __('panel/analytics.country') }}</th>
+              <th class="text-end">{{ __('panel/analytics.visits') }}</th>
+              <th class="text-end">{{ __('panel/analytics.unique_visitors') }}</th>
             </tr>
           </thead>
           <tbody>

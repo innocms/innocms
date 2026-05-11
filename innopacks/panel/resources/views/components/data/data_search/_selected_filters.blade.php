@@ -1,18 +1,18 @@
 <div class="d-flex align-items-center flex-wrap gap-2">
     <span class="text-muted small">
-        <i class="bi bi-check-circle"></i> {{ __('panel::common.selected_filters') }}：
+        <i class="bi bi-check-circle"></i> {{ __('panel/common.selected_filters') }}：
     </span>
 
     @if($currentKeyword !== '')
         <span class="badge bg-light text-dark border selected-filter-tag">
-            {{ __('panel::common.search') }}: {{ $currentKeyword }}
+            {{ __('panel/common.search') }}: {{ $currentKeyword }}
             <button type="button" class="btn-close-xs ms-1 remove-filter" data-filter-type="search" data-field="keyword">×</button>
         </span>
     @endif
 
     @if($enableDateRange && $dateFilter !== 'all')
         <span class="badge bg-light text-dark border selected-filter-tag">
-            {{ __('panel::common.created_at') }}: {{ $dateFilter === 'custom' ? ($startDate . ' ~ ' . $endDate) : $dateFilter }}
+            {{ __('panel/common.created_at') }}: {{ $dateFilter === 'custom' ? ($startDate . ' ~ ' . $endDate) : $dateFilter }}
             <button type="button" class="btn-close-xs ms-1 remove-filter" data-filter-type="date" data-field="date_filter">×</button>
         </span>
     @endif
@@ -32,6 +32,6 @@
     @endforeach
 
     <button type="button" class="btn btn-sm btn-outline-secondary clear-all-btn">
-        <i class="bi bi-x-circle"></i> {{ __('panel::common.clear_all') }}
+        <i class="bi bi-x-circle"></i> {{ __('panel/common.clear_all') }}
     </button>
 </div>

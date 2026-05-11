@@ -1,11 +1,11 @@
 @extends('panel::layouts.app')
 @section('body-class', 'page-catalogs')
 
-@section('title', __('panel::menu.catalogs'))
+@section('title', __('panel/menu.catalogs'))
 
 @section('page-title-right')
   <a href="{{ panel_route('catalogs.create') }}" class="btn btn-primary btn-sm">
-    <i class="bi bi-plus-square"></i> {{ __('panel::common.create') }}
+    <i class="bi bi-plus-square"></i> {{ __('panel/common.create') }}
   </a>
 @endsection
 
@@ -23,13 +23,13 @@
       <table class="table align-middle">
         <thead>
           <tr>
-            <td>{{ __('panel::common.id') }}</td>
-            <td>{{ __('panel::common.name') }}</td>
-            <td>{{ __('panel::menu.catalogs') }}</td>
-            <td>{{ __('panel::common.slug') }}</td>
-            <td>{{ __('panel::common.position') }}</td>
-            <td>{{ __('panel::common.status') }}</td>
-            <td>{{ __('panel::common.actions') }}</td>
+            <td>{{ __('panel/common.id') }}</td>
+            <td>{{ __('panel/common.name') }}</td>
+            <td>{{ __('panel/menu.catalogs') }}</td>
+            <td>{{ __('panel/common.slug') }}</td>
+            <td>{{ __('panel/common.position') }}</td>
+            <td>{{ __('panel/common.status') }}</td>
+            <td>{{ __('panel/common.actions') }}</td>
           </tr>
         </thead>
         <tbody>
@@ -40,13 +40,13 @@
             <td>{{ $item->parent->translation->title ?? '-' }}</td>
             <td>{{ $item->slug }}</td>
             <td>{{ $item->position }}</td>
-            <td>{{ $item->active ? __('panel::common.active') : __('panel::common.inactive') }}</td>
+            <td>{{ $item->active ? __('panel/common.active') : __('panel/common.inactive') }}</td>
             <td>
-              <a href="{{ panel_route('catalogs.edit', [$item->id]) }}" class="btn btn-sm btn-outline-primary">{{ __('panel::common.edit') }}</a>
+              <a href="{{ panel_route('catalogs.edit', [$item->id]) }}" class="btn btn-sm btn-outline-primary">{{ __('panel/common.edit') }}</a>
               <form action="{{ panel_route('catalogs.destroy', [$item->id]) }}" method="POST" class="d-inline">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('panel::common.delete') }}</button>
+                <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('panel/common.delete') }}</button>
               </form>
             </td>
           </tr>

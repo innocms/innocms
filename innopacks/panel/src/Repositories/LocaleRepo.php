@@ -20,12 +20,12 @@ class LocaleRepo extends BaseRepo
     {
         $items = [];
         foreach (panel_lang_path_codes() as $localeCode) {
-            $langFile = panel_lang_dir()."/$localeCode/base.php";
+            $langFile = lang_path("$localeCode/common/base.php");
             if (! is_file($langFile)) {
                 throw new \Exception("File ($langFile) not exist!");
             }
             $baseData = require $langFile;
-            $name     = $baseData['name'] ?? $localeCode;
+            $name     = $baseData['language_name'] ?? $baseData['name'] ?? $localeCode;
             $items[]  = [
                 'code'  => $localeCode,
                 'name'  => $name,

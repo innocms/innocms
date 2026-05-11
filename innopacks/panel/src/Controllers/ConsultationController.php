@@ -55,7 +55,7 @@ class ConsultationController extends BaseController
         try {
             ConsultationRepo::getInstance()->destroy($consultation);
 
-            return back()->with('success', trans('panel::common.deleted_success'));
+            return back()->with('success', trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }

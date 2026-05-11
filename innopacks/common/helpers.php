@@ -387,9 +387,11 @@ if (! function_exists('front_lang_path_codes')) {
      */
     function front_lang_path_codes(): array
     {
-        $languageDir = front_lang_dir();
+        $localeCodes = array_values(array_diff(scandir(lang_path()), ['..', '.', '.DS_Store']));
 
-        return array_values(array_diff(scandir($languageDir), ['..', '.', '.DS_Store']));
+        return array_values(array_filter($localeCodes, function ($code) {
+            return is_dir(lang_path($code));
+        }));
     }
 }
 
@@ -401,13 +403,7 @@ if (! function_exists('front_lang_dir')) {
      */
     function front_lang_dir(): string
     {
-        if (is_dir(lang_path('vendor/front'))) {
-            $languageDir = lang_path('vendor/front');
-        } else {
-            $languageDir = inno_path('panel/lang');
-        }
-
-        return $languageDir;
+        return lang_path('front');
     }
 }
 
@@ -464,7 +460,7 @@ if (! function_exists('common_trans')) {
     {
         $parts = explode('.', $key, 2);
         if (($parts[0] ?? '') === 'base' && isset($parts[1])) {
-            return trans('panel::common.'.$parts[1]);
+            return trans('panel/common.'.$parts[1]);
         }
 
         return trans($key);

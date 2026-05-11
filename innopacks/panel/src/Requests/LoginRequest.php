@@ -42,8 +42,8 @@ class LoginRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'email'    => trans('panel::login.email'),
-            'password' => trans('panel::login.password'),
+            'email'    => trans('panel/login.email'),
+            'password' => trans('panel/login.password'),
         ];
     }
 }

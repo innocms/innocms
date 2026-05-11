@@ -59,7 +59,7 @@ class PageController extends BaseController
             $data = $request->all();
             PageRepo::getInstance()->create($data);
 
-            return back()->with('success', trans('panel::common.updated_success'));
+            return back()->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -89,7 +89,7 @@ class PageController extends BaseController
             $data = $request->all();
             PageRepo::getInstance()->update($page, $data);
 
-            return redirect(panel_route('pages.index'))->with('success', trans('panel::common.updated_success'));
+            return redirect(panel_route('pages.index'))->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
@@ -104,7 +104,7 @@ class PageController extends BaseController
         try {
             PageRepo::getInstance()->destroy($page);
 
-            return back()->with('success', trans('panel::common.deleted_success'));
+            return back()->with('success', trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }

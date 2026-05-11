@@ -40,7 +40,7 @@ class PageController extends BaseApiController
             $data = $request->all();
             $page = PageRepo::getInstance()->create($data);
 
-            return json_success(trans('panel::common.updated_success'), $page);
+            return json_success(trans('panel/common.updated_success'), $page);
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -57,7 +57,7 @@ class PageController extends BaseApiController
             $data = $request->all();
             PageRepo::getInstance()->update($page, $data);
 
-            return json_success(trans('panel::common.updated_success'), $page);
+            return json_success(trans('panel/common.updated_success'), $page);
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -72,7 +72,7 @@ class PageController extends BaseApiController
         try {
             PageRepo::getInstance()->destroy($page);
 
-            return json_success(trans('panel::common.deleted_success'));
+            return json_success(trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }

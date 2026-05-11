@@ -1,7 +1,7 @@
 @extends('panel::layouts.app')
 @section('body-class', 'account')
 
-@section('title', __('panel::menu.account'))
+@section('title', __('panel/menu.account'))
 
 <x-panel::form.right-btns />
 

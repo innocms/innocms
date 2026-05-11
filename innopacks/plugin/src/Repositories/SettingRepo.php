@@ -23,7 +23,7 @@ class SettingRepo extends CommonSettingRepo
     {
         return [
             'name'     => 'active',
-            'label'    => trans('panel::common.status'),
+            'label'    => trans('panel/common.status'),
             'type'     => 'bool',
             'required' => true,
         ];

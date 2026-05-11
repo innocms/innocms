@@ -22,9 +22,9 @@ class ArticleRepo extends BaseRepo
     public static function getSearchFieldOptions(): array
     {
         return [
-            ['value' => '', 'label' => trans('panel::common.all_fields')],
-            ['value' => 'keyword', 'label' => trans('panel::common.name')],
-            ['value' => 'slug', 'label' => trans('panel::common.slug')],
+            ['value' => '', 'label' => trans('panel/common.all_fields')],
+            ['value' => 'keyword', 'label' => trans('panel/common.name')],
+            ['value' => 'slug', 'label' => trans('panel/common.slug')],
         ];
     }
 
@@ -36,12 +36,12 @@ class ArticleRepo extends BaseRepo
         return [
             [
                 'name'    => 'active',
-                'label'   => trans('panel::common.status'),
+                'label'   => trans('panel/common.status'),
                 'type'    => 'button',
                 'options' => [
-                    ['value' => '', 'label' => trans('panel::common.all')],
-                    ['value' => '1', 'label' => trans('panel::common.active')],
-                    ['value' => '0', 'label' => trans('panel::common.inactive')],
+                    ['value' => '', 'label' => trans('panel/common.all')],
+                    ['value' => '1', 'label' => trans('panel/common.active')],
+                    ['value' => '0', 'label' => trans('panel/common.inactive')],
                 ],
             ],
         ];

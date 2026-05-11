@@ -458,4 +458,64 @@ final class Plugin
 
         return $item;
     }
+
+    /**
+     * Get README file path, prefer locale-specific version.
+     */
+    public function getReadmePath(): string
+    {
+        $localeCode = locale_code();
+        if ($localeCode) {
+            $localizedReadme = $this->getPath().DIRECTORY_SEPARATOR.'README.'.$localeCode.'.md';
+            if (file_exists($localizedReadme)) {
+                return $localizedReadme;
+            }
+        }
+
+        return $this->getPath().DIRECTORY_SEPARATOR.'README.md';
+    }
+
+    /**
+     * Get raw README markdown content.
+     */
+    public function getReadme(): string
+    {
+        $readmePath = $this->getReadmePath();
+        if (file_exists($readmePath)) {
+            return file_get_contents($readmePath);
+        }
+
+        return '';
+    }
+
+    /**
+     * Get README as parsed HTML.
+     */
+    public function getReadmeHtml(): string
+    {
+        $readme = $this->getReadme();
+        if (empty($readme)) {
+            return '';
+        }
+
+        $parsedown = new \Parsedown;
+
+        return $parsedown->text($readme);
+    }
+
+    /**
+     * Get icon URL for display.
+     */
+    public function getIconUrl(): string
+    {
+        if (empty($this->icon)) {
+            return '';
+        }
+
+        try {
+            return plugin_origin($this->code, $this->icon);
+        } catch (\Throwable $e) {
+            return '';
+        }
+    }
 }

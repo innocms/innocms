@@ -43,7 +43,7 @@
   <div class="col-12 col-md-5">
     <div class="card dashboard-top-card-list">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-semibold">{{ __('panel::dashboard.top_articles') }}</h6>
+        <h6 class="mb-0 fw-semibold">{{ __('panel/dashboard.top_articles') }}</h6>
       </div>
       <div class="card-body">
         @if ($top_viewed_articles)

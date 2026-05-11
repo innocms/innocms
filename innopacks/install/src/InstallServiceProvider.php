@@ -22,7 +22,6 @@ class InstallServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerWebRoutes();
-        $this->loadTranslations();
         $this->loadViewTemplates();
     }
 
@@ -37,15 +36,6 @@ class InstallServiceProvider extends ServiceProvider
             ->group(function () {
                 $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
             });
-    }
-
-    /**
-     * Register front language
-     * @return void
-     */
-    protected function loadTranslations(): void
-    {
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'install');
     }
 
     /**

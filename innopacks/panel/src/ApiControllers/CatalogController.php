@@ -42,7 +42,7 @@ class CatalogController extends BaseApiController
             $data    = $request->all();
             $catalog = CatalogRepo::getInstance()->create($data);
 
-            return json_success(trans('panel::common.updated_success'), $catalog);
+            return json_success(trans('panel/common.updated_success'), $catalog);
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -59,7 +59,7 @@ class CatalogController extends BaseApiController
             $data = $request->all();
             CatalogRepo::getInstance()->update($catalog, $data);
 
-            return json_success(trans('panel::common.updated_success'), $catalog);
+            return json_success(trans('panel/common.updated_success'), $catalog);
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -74,7 +74,7 @@ class CatalogController extends BaseApiController
         try {
             CatalogRepo::getInstance()->destroy($catalog);
 
-            return json_success(trans('panel::common.deleted_success'));
+            return json_success(trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }

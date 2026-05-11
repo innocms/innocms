@@ -52,11 +52,11 @@ class ThemeRepo
     {
         $configFile = $dir.'/config.json';
         if (! file_exists($configFile)) {
-            throw new \Exception(trans('panel::themes.error_config_not_found', ['file' => $configFile]));
+            throw new \Exception(trans('panel/themes.error_config_not_found', ['file' => $configFile]));
         }
         $config = json_decode((string) file_get_contents($configFile), true);
         if (json_last_error() !== JSON_ERROR_NONE || ! is_array($config)) {
-            throw new \Exception(trans('panel::themes.error_config_invalid', ['file' => $configFile]));
+            throw new \Exception(trans('panel/themes.error_config_invalid', ['file' => $configFile]));
         }
 
         return $config;

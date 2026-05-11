@@ -63,33 +63,33 @@ class Sidebar extends Component
         $menus = [
             [
                 'route' => 'dashboard.index',
-                'title' => __('panel::menu.dashboard'),
+                'title' => __('panel/menu.dashboard'),
                 'icon'  => 'bi-house',
             ],
             [
-                'title'    => __('panel::menu.top_content'),
+                'title'    => __('panel/menu.top_content'),
                 'icon'     => 'bi-sticky',
                 'prefixes' => ['articles', 'catalogs', 'tags', 'pages', 'consultations'],
                 'children' => $this->getContentSubRoutes(),
             ],
             [
-                'title'    => __('panel::menu.top_analytic'),
+                'title'    => __('panel/menu.top_analytic'),
                 'icon'     => 'bi-bar-chart',
                 'prefixes' => ['analytics', 'visits'],
                 'children' => $this->getAnalyticSubRoutes(),
             ],
             [
-                'title'    => __('panel::menu.top_design'),
+                'title'    => __('panel/menu.top_design'),
                 'icon'     => 'bi-palette',
                 'children' => $this->getDesignSubRoutes(),
             ],
             [
-                'title'    => __('panel::menu.top_plugin'),
+                'title'    => __('panel/menu.top_plugin'),
                 'icon'     => 'bi-puzzle',
                 'children' => $this->getPluginSubRoutes(),
             ],
             [
-                'title'    => __('panel::menu.top_setting'),
+                'title'    => __('panel/menu.top_setting'),
                 'icon'     => 'bi-gear',
                 'children' => $this->getSettingSubRoutes(),
             ],
@@ -200,8 +200,8 @@ class Sidebar extends Component
     public function getAnalyticSubRoutes(): array
     {
         $routes = [
-            ['route' => 'analytics.index', 'title' => __('panel::menu.analytics')],
-            ['route' => 'visits.index', 'title' => __('panel::menu.visits')],
+            ['route' => 'analytics.index', 'title' => __('panel/menu.analytics')],
+            ['route' => 'visits.index', 'title' => __('panel/menu.visits')],
         ];
 
         return fire_hook_filter('component.sidebar.analytic.routes', $routes);
@@ -213,11 +213,11 @@ class Sidebar extends Component
     public function getContentSubRoutes(): array
     {
         $routes = [
-            ['route' => 'articles.index', 'title' => __('panel::menu.articles')],
-            ['route' => 'catalogs.index', 'title' => __('panel::menu.catalogs')],
-            ['route' => 'tags.index', 'title' => __('panel::menu.tags')],
-            ['route' => 'pages.index', 'title' => __('panel::menu.pages')],
-            ['route' => 'consultations.index', 'title' => __('panel::menu.consultations')],
+            ['route' => 'articles.index', 'title' => __('panel/menu.articles')],
+            ['route' => 'catalogs.index', 'title' => __('panel/menu.catalogs')],
+            ['route' => 'tags.index', 'title' => __('panel/menu.tags')],
+            ['route' => 'pages.index', 'title' => __('panel/menu.pages')],
+            ['route' => 'consultations.index', 'title' => __('panel/menu.consultations')],
         ];
 
         return fire_hook_filter('component.sidebar.content.routes', $routes);
@@ -229,8 +229,8 @@ class Sidebar extends Component
     public function getDesignSubRoutes(): array
     {
         $routes = [
-            ['route' => 'themes_settings.index', 'title' => __('panel::menu.themes_settings')],
-            ['route' => 'themes.index', 'title' => __('panel::menu.themes')],
+            ['route' => 'themes_settings.index', 'title' => __('panel/menu.themes_settings')],
+            ['route' => 'themes.index', 'title' => __('panel/menu.themes')],
         ];
 
         return fire_hook_filter('component.sidebar.design.routes', $routes);
@@ -242,7 +242,7 @@ class Sidebar extends Component
     public function getPluginSubRoutes(): array
     {
         $routes = [
-            ['route' => 'plugins.index', 'title' => __('panel::menu.plugins')],
+            ['route' => 'plugins.index', 'title' => __('panel/menu.plugins')],
         ];
 
         return fire_hook_filter('component.sidebar.plugin.routes', $routes);
@@ -254,11 +254,11 @@ class Sidebar extends Component
     public function getSettingSubRoutes(): array
     {
         $routes = [
-            ['route' => 'settings.index', 'title' => __('panel::menu.settings')],
-            ['route' => 'account.index', 'title' => __('panel::menu.account')],
-            ['route' => 'admins.index', 'title' => __('panel::menu.admins')],
-            ['route' => 'roles.index', 'title' => __('panel::menu.roles')],
-            ['route' => 'locales.index', 'title' => __('panel::menu.locales')],
+            ['route' => 'settings.index', 'title' => __('panel/menu.settings')],
+            ['route' => 'account.index', 'title' => __('panel/menu.account')],
+            ['route' => 'admins.index', 'title' => __('panel/menu.admins')],
+            ['route' => 'roles.index', 'title' => __('panel/menu.roles')],
+            ['route' => 'locales.index', 'title' => __('panel/menu.locales')],
         ];
 
         return fire_hook_filter('component.sidebar.setting.routes', $routes);

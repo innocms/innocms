@@ -71,7 +71,7 @@ class ThemeController extends BaseController
         try {
             SettingRepo::getInstance()->updateValues($settings);
 
-            return redirect($settingUrl)->with('success', trans('panel::common.updated_success'));
+            return redirect($settingUrl)->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return redirect($settingUrl)->withInput()->withErrors(['error' => $e->getMessage()]);
         }
@@ -93,7 +93,7 @@ class ThemeController extends BaseController
                 SettingRepo::getInstance()->updateSystemValue('theme', $code);
             }
 
-            return json_success(trans('panel::common.updated_success'));
+            return json_success(trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -111,26 +111,26 @@ class ThemeController extends BaseController
         try {
             $dir = ThemeRepo::getInstance()->getThemeDirectory($code);
             if ($dir === null || ! is_dir($dir)) {
-                return json_fail(trans('panel::themes.error_theme_directory'));
+                return json_fail(trans('panel/themes.error_theme_directory'));
             }
 
             $config = ThemeRepo::getInstance()->readConfig($dir);
             if (($config['code'] ?? '') !== $code) {
-                return json_fail(trans('panel::themes.error_code_mismatch', [
+                return json_fail(trans('panel/themes.error_code_mismatch', [
                     'folder' => basename($dir),
                     'code'   => $config['code'] ?? '',
                 ]));
             }
 
             if (! $this->themeDemoService->hasDemo($dir)) {
-                return json_fail(trans('panel::themes.error_demo_not_found'));
+                return json_fail(trans('panel/themes.error_demo_not_found'));
             }
 
             $clear = (bool) $request->input('clear_default_catalog', false);
 
             $this->themeDemoService->importDemo($code, $dir, $clear);
 
-            return json_success(trans('panel::themes.demo_installed'));
+            return json_success(trans('panel/themes.demo_installed'));
         } catch (\Throwable $e) {
             return json_fail($e->getMessage());
         }

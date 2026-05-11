@@ -38,7 +38,7 @@ class ConsultationController extends BaseController
         try {
             ConsultationRepo::getInstance()->update($consultation, ['status' => true]);
 
-            return json_success(trans('panel::common.updated_success'));
+            return json_success(trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -54,7 +54,7 @@ class ConsultationController extends BaseController
         try {
             ConsultationRepo::getInstance()->markAllAsRead();
 
-            return json_success(trans('panel::common.updated_success'));
+            return json_success(trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -69,7 +69,7 @@ class ConsultationController extends BaseController
         try {
             ConsultationRepo::getInstance()->destroy($consultation);
 
-            return json_success(trans('panel::common.deleted_success'));
+            return json_success(trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }

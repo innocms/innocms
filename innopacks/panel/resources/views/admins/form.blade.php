@@ -1,13 +1,13 @@
 @extends('panel::layouts.app')
 
-@section('title', __('panel::menu.admins'))
+@section('title', __('panel/menu.admins'))
 
 <x-panel::form.right-btns/>
 
 @section('content')
   <div class="card h-min-600">
     <div class="card-header">
-      <h5 class="card-title mb-0">{{ __('panel::menu.admins') }}</h5>
+      <h5 class="card-title mb-0">{{ __('panel/menu.admins') }}</h5>
     </div>
     <div class="card-body">
       <form class="needs-validation" novalidate id="app-form"

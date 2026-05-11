@@ -70,9 +70,11 @@ if (! function_exists('panel_lang_path_codes')) {
      */
     function panel_lang_path_codes(): array
     {
-        $languageDir = panel_lang_dir();
+        $localeCodes = array_values(array_diff(scandir(lang_path()), ['..', '.', '.DS_Store']));
 
-        return array_values(array_diff(scandir($languageDir), ['..', '.', '.DS_Store']));
+        return array_values(array_filter($localeCodes, function ($code) {
+            return file_exists(lang_path("{$code}/panel"));
+        }));
     }
 }
 
@@ -84,13 +86,7 @@ if (! function_exists('panel_lang_dir')) {
      */
     function panel_lang_dir(): string
     {
-        if (is_dir(lang_path('vendor/panel'))) {
-            $languageDir = lang_path('vendor/panel');
-        } else {
-            $languageDir = inno_path('panel/lang');
-        }
-
-        return $languageDir;
+        return lang_path('panel');
     }
 }
 

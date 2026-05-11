@@ -1,6 +1,6 @@
 @extends('panel::layouts.app')
 
-@section('title', __('panel::menu.pages'))
+@section('title', __('panel/menu.pages'))
 
 @push('header')
 <script src="{{ asset('vendor/tinymce/5.9.1/tinymce.min.js') }}"></script>
@@ -101,8 +101,8 @@
                                 placeholder="SEO 别名" />
             <x-panel-form-input title="浏览次数" name="viewed" :value="old('viewed', $page->viewed ?? 0)"
                                 placeholder="浏览次数"/>
-            <x-panel-form-switch-radio title="{{__('panel::common.enable_breadcrumb')}}" name="show_breadcrumb" :value="old('show_breadcrumb', $page->show_breadcrumb ?? true)"
-                                         placeholder="{{__('panel::common.enable_breadcrumb')}}"/>
+            <x-panel-form-switch-radio title="{{__('panel/common.enable_breadcrumb')}}" name="show_breadcrumb" :value="old('show_breadcrumb', $page->show_breadcrumb ?? true)"
+                                         placeholder="{{__('panel/common.enable_breadcrumb')}}"/>
             <x-panel-form-switch-radio title="是否启用" name="active" :value="old('active', $page->active ?? true)"
               placeholder="是否启用"/>
           </div>

@@ -23,7 +23,7 @@
 
             @if($showMore)
                 <button type="button" class="btn btn-sm btn-link text-decoration-none show-more-btn py-0 px-1">
-                    <i class="bi bi-plus"></i> {{ __('panel::common.more') }}
+                    <i class="bi bi-plus"></i> {{ __('panel/common.more') }}
                 </button>
             @endif
         </div>

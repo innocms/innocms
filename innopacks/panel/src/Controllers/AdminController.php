@@ -67,7 +67,7 @@ class AdminController extends BaseController
             AdminRepo::getInstance()->create($data);
 
             return redirect(panel_route('admins.index'))
-                ->with('success', trans('panel::common.created_success'));
+                ->with('success', trans('panel/common.created_success'));
         } catch (Exception $e) {
             return redirect(panel_route('admins.index'))
                 ->withErrors(['error' => $e->getMessage()]);
@@ -111,7 +111,7 @@ class AdminController extends BaseController
             AdminRepo::getInstance()->update($admin, $data);
 
             return redirect(panel_route('admins.index'))
-                ->with('success', trans('panel::common.updated_success'));
+                ->with('success', trans('panel/common.updated_success'));
         } catch (Exception $e) {
             return redirect(panel_route('admins.index'))
                 ->withErrors(['error' => $e->getMessage()]);
@@ -128,7 +128,7 @@ class AdminController extends BaseController
             AdminRepo::getInstance()->destroy($admin);
 
             return redirect(panel_route('admins.index'))
-                ->with('success', trans('panel::common.deleted_success'));
+                ->with('success', trans('panel/common.deleted_success'));
         } catch (Exception $e) {
             return redirect(panel_route('admins.index'))
                 ->withErrors(['error' => $e->getMessage()]);
@@ -144,7 +144,7 @@ class AdminController extends BaseController
             $admin->active = $request->get('status');
             $admin->saveOrFail();
 
-            return json_success(trans('panel::common.updated_success'));
+            return json_success(trans('panel/common.updated_success'));
         } catch (Exception $e) {
             return json_fail($e->getMessage());
         }

@@ -21,10 +21,10 @@ class ConsultationRepo extends BaseRepo
     public static function getSearchFieldOptions(): array
     {
         return [
-            ['value' => '', 'label' => trans('panel::common.all_fields')],
-            ['value' => 'name', 'label' => trans('panel::consultations.contact_name')],
-            ['value' => 'email', 'label' => trans('panel::common.email')],
-            ['value' => 'company', 'label' => trans('panel::consultations.company')],
+            ['value' => '', 'label' => trans('panel/common.all_fields')],
+            ['value' => 'name', 'label' => trans('panel/consultations.contact_name')],
+            ['value' => 'email', 'label' => trans('panel/common.email')],
+            ['value' => 'company', 'label' => trans('panel/consultations.company')],
         ];
     }
 
@@ -36,12 +36,12 @@ class ConsultationRepo extends BaseRepo
         return [
             [
                 'name'    => 'status',
-                'label'   => trans('panel::common.status'),
+                'label'   => trans('panel/common.status'),
                 'type'    => 'button',
                 'options' => [
-                    ['value' => '', 'label' => trans('panel::common.all')],
-                    ['value' => '0', 'label' => trans('panel::consultations.unread')],
-                    ['value' => '1', 'label' => trans('panel::consultations.read')],
+                    ['value' => '', 'label' => trans('panel/common.all')],
+                    ['value' => '0', 'label' => trans('panel/consultations.unread')],
+                    ['value' => '1', 'label' => trans('panel/consultations.read')],
                 ],
             ],
         ];

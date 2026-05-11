@@ -33,9 +33,9 @@ class VisitController extends BaseController
     private function getSearchFieldOptions(): array
     {
         return [
-            ['value' => '', 'label' => trans('panel::common.all_fields')],
-            ['value' => 'ip_address', 'label' => trans('panel::visit.ip_address')],
-            ['value' => 'country_code', 'label' => trans('panel::visit.country_code')],
+            ['value' => '', 'label' => trans('panel/common.all_fields')],
+            ['value' => 'ip_address', 'label' => trans('panel/visit.ip_address')],
+            ['value' => 'country_code', 'label' => trans('panel/visit.country_code')],
         ];
     }
 
@@ -44,13 +44,13 @@ class VisitController extends BaseController
         return [
             [
                 'name'    => 'device_type',
-                'label'   => trans('panel::visit.device_type'),
+                'label'   => trans('panel/visit.device_type'),
                 'type'    => 'button',
                 'options' => [
-                    ['value' => '', 'label' => trans('panel::common.all')],
-                    ['value' => 'desktop', 'label' => trans('panel::visit.device_desktop')],
-                    ['value' => 'mobile', 'label' => trans('panel::visit.device_mobile')],
-                    ['value' => 'tablet', 'label' => trans('panel::visit.device_tablet')],
+                    ['value' => '', 'label' => trans('panel/common.all')],
+                    ['value' => 'desktop', 'label' => trans('panel/visit.device_desktop')],
+                    ['value' => 'mobile', 'label' => trans('panel/visit.device_mobile')],
+                    ['value' => 'tablet', 'label' => trans('panel/visit.device_tablet')],
                 ],
             ],
         ];

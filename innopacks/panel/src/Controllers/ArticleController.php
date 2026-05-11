@@ -58,7 +58,7 @@ class ArticleController extends BaseController
             $data = $request->all();
             ArticleRepo::getInstance()->create($data);
 
-            return redirect(panel_route('articles.index'))->with('success', trans('panel::common.updated_success'));
+            return redirect(panel_route('articles.index'))->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return redirect(panel_route('articles.create'))->withInput()->withErrors(['error' => $e->getMessage()]);
         }
@@ -102,7 +102,7 @@ class ArticleController extends BaseController
             ArticleRepo::getInstance()->update($article, $data);
 
             return redirect(panel_route('articles.index'))
-                ->with('success', trans('panel::common.updated_success'));
+                ->with('success', trans('panel/common.updated_success'));
         } catch (\Exception $e) {
             return redirect(panel_route('articles.edit', $article))
                 ->withInput()
@@ -119,7 +119,7 @@ class ArticleController extends BaseController
         try {
             ArticleRepo::getInstance()->destroy($article);
 
-            return back()->with('success', trans('panel::common.deleted_success'));
+            return back()->with('success', trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }

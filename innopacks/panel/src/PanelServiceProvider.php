@@ -39,7 +39,6 @@ class PanelServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerWebRoutes();
         $this->registerFileManagerService();
-        $this->loadTranslations();
         $this->loadViewTemplates();
         $this->loadViewComponents();
     }
@@ -153,15 +152,6 @@ class PanelServiceProvider extends ServiceProvider
         $this->app->singleton(FileManagerInterface::class, function () {
             return new FileManagerService;
         });
-    }
-
-    /**
-     * Register panel language
-     * @return void
-     */
-    private function loadTranslations(): void
-    {
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'panel');
     }
 
     /**
