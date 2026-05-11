@@ -68,4 +68,15 @@ return [
     'verify_required' => '请填写',
 
     'enable_breadcrumb' => '启用面包屑',
+
+    'whether_enable' => '是否启用',
+
+    'seo' => 'SEO',
+
+    'all_languages'      => '所有语言',
+    'panel_locale'       => '后台语言',
+    'front_locale'       => '前台语言',
+    'copy_empty'         => '填充空语言',
+    'no_empty_languages' => '没有空语言需要填充',
+    'copied_languages'   => '已填充 :count 个语言',
 ];

@@ -30,6 +30,22 @@ php artisan test
 composer pint
 ```
 
+## Code Style
+
+All PHP class files in `innopacks/` MUST have the following copyright header after `<?php`:
+
+```php
+/**
+ * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
+ *
+ * @link       https://www.innocms.com
+ * @author     InnoCMS <team@innoshop.com>
+ * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ */
+```
+
+Blade template files (`.blade.php`) do NOT need this header.
+
 ## Architecture
 
 ### Core Packages (innopacks/)
@@ -195,6 +211,33 @@ Key models in `innopacks/common/src/Models/`:
 - `Locale` - Available languages
 - `Setting` - System settings
 - `Admin` - Administrator users
+
+## Panel Frontend (axios)
+
+Panel 的 `bootstrap.js` (`innopacks/panel/resources/js/bootstrap.js`) 已全局配置 axios，插件中直接使用 `axios` 即可，**无需手动设置 CSRF token 或 XMLHttpRequest header**。
+
+**关键约定：** axios 响应拦截器已做 `return response.data`，所以 `.then(res => {})` 中 `res` 直接就是 response data，**不要**再取 `res.data`。
+
+```js
+// 正确写法
+axios.post(url).then(data => {
+    if (data.success) { ... }
+    inno.msg(data.message);
+});
+
+// 错误写法 — res.data 会是 undefined
+axios.post(url).then(res => {
+    res.data.success  // undefined!
+});
+```
+
+其他内置行为（无需手动处理）：
+- 自动设置 CSRF token (`X-CSRF-TOKEN`)
+- 自动设置 `X-Requested-With: XMLHttpRequest`
+- 请求时自动显示 loading 层 (`layer.load`)
+- 响应时自动关闭 loading 层
+- `inno.msg(text)` — 显示 toast 提示（支持字符串参数）
+- `inno.alert({msg, type})` — 显示顶部 alert 横幅
 
 ## Middleware Stack
 

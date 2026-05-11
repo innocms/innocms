@@ -138,3 +138,53 @@ if (! function_exists('is_admin')) {
         return false;
     }
 }
+
+if (! function_exists('has_translator')) {
+    /**
+     * Check if the translator is enabled.
+     */
+    function has_translator(): bool
+    {
+        return false;
+    }
+}
+
+if (! function_exists('is_setting_locale')) {
+    /**
+     * Check if locale is the default setting locale.
+     */
+    function is_setting_locale($localeCode): bool
+    {
+        return setting_locale_code() == $localeCode;
+    }
+}
+
+if (! function_exists('default_locale_class')) {
+    /**
+     * Get CSS class for default locale marker.
+     */
+    function default_locale_class($localeCode): string
+    {
+        return is_setting_locale($localeCode) ? 'border border-2 border-danger-subtle ' : '';
+    }
+}
+
+if (! function_exists('locale_field_data')) {
+    /**
+     * Get locale field data for a model (translations array).
+     */
+    function locale_field_data($model, string $fieldName): array
+    {
+        $data = [];
+        foreach (locales() as $locale) {
+            $code  = $locale->code;
+            $value = old("translations.{$code}.{$fieldName}");
+            if ($value === null && $model) {
+                $value = $model->translate($code, $fieldName);
+            }
+            $data[$code] = (string) ($value ?? '');
+        }
+
+        return $data;
+    }
+}

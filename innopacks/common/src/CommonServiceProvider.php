@@ -94,6 +94,7 @@ class CommonServiceProvider extends ServiceProvider
             'form-input'        => Components\Forms\Input::class,
             'form-image'        => Components\Forms\Image::class,
             'form-images'       => Components\Forms\Images::class,
+            'form-locale-input' => Components\Forms\LocaleInput::class,
             'form-rich-text'    => Components\Forms\RichText::class,
             'form-select'       => Components\Forms\Select::class,
             'form-switch-radio' => Components\Forms\SwitchRadio::class,

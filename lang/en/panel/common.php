@@ -68,4 +68,15 @@ return [
     'verify_required' => 'Please fill out',
 
     'enable_breadcrumb' => 'Enable Breadcrumb',
+
+    'whether_enable' => 'Active',
+
+    'seo' => 'SEO',
+
+    'all_languages'      => 'All Languages',
+    'panel_locale'       => 'Panel Locale',
+    'front_locale'       => 'Front Locale',
+    'copy_empty'         => 'Fill Empty',
+    'no_empty_languages' => 'No empty languages to fill',
+    'copied_languages'   => 'Filled :count languages',
 ];

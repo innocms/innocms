@@ -33,8 +33,9 @@ return [
 
     'file_manager' => 'File Manager',
 
-    'top_plugin' => 'Plugins',
-    'plugins'    => 'Plugins',
+    'top_plugin'    => 'Plugins',
+    'plugins'       => 'Plugins',
+    'consultations' => 'Consultations',
 
     'top_customer'    => 'Customers',
     'customers'       => 'Customers',

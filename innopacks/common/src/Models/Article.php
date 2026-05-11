@@ -18,7 +18,7 @@ class Article extends BaseModel
     use Translatable;
 
     protected $fillable = [
-        'catalog_id', 'slug', 'position', 'viewed', 'author', 'active',
+        'catalog_id', 'image', 'slug', 'position', 'viewed', 'author', 'active',
     ];
 
     public $appends = [
@@ -57,5 +57,18 @@ class Article extends BaseModel
         }
 
         return front_route('articles.show', $this);
+    }
+
+    /**
+     * Get article image with fallback logic.
+     * Priority: current locale translation image -> main image
+     */
+    public function getImageAttribute(): string
+    {
+        $originalImage = $this->attributes['image'] ?? '';
+
+        $translationImage = $this->translation?->image ?? '';
+
+        return $translationImage ?: $originalImage;
     }
 }

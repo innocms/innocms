@@ -29,6 +29,7 @@ Route::middleware(['admin_auth:admin'])
         Route::get('/locale/{code}', [Controllers\LocaleController::class, 'switch'])->name('locale.switch');
 
         Route::resource('/articles', Controllers\ArticleController::class);
+        Route::put('/articles/{article}/active', [Controllers\ArticleController::class, 'active'])->name('articles.active');
         Route::resource('/catalogs', Controllers\CatalogController::class);
         Route::resource('/pages', Controllers\PageController::class);
         Route::resource('/tags', Controllers\TagController::class);
