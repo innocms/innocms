@@ -177,8 +177,27 @@ class PluginServiceProvider extends ServiceProvider
      */
     private function loadPluginRoutes($pluginCode): void
     {
+        $this->loadRootRoutes($pluginCode);
         $this->loadPanelRoutes($pluginCode);
         $this->loadShopRoutes($pluginCode);
+    }
+
+    /**
+     * Register root routes (no URI prefix)
+     *
+     * @param  $pluginCode
+     */
+    private function loadRootRoutes($pluginCode): void
+    {
+        $pluginBasePath = $this->pluginBasePath;
+        $rootRoutePath  = "$pluginBasePath/$pluginCode/Routes/root.php";
+        if (file_exists($rootRoutePath)) {
+            Route::middleware('web')
+                ->name('front.')
+                ->group(function () use ($rootRoutePath) {
+                    $this->loadRoutesFrom($rootRoutePath);
+                });
+        }
     }
 
     /**

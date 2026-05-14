@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.3",
         "ext-pdo": "*",
-        "geoip2/geoip2": "^3.2",
+        "geoip2/geoip2": "^3.3",
         "intervention/image": "^3.5",
         "knuckleswtf/scribe": "^5",
         "laravel/framework": "^12.0",
