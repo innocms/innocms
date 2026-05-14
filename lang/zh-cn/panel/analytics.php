@@ -17,7 +17,7 @@ return [
     'filter_last_30_days' => '最近30天',
     'filter_custom'       => '自定义',
 
-    'total_visits'    => '总访问量',
+    'total_visits'    => '访问次数',
     'unique_visitors' => '独立访客',
     'page_views'      => '浏览量',
     'unique_sessions' => '独立IP',
@@ -29,4 +29,7 @@ return [
     'by_country'   => '地区分布',
     'country'      => '国家/地区',
     'visits'       => '访问量',
+
+    'reaggregate'         => '重新聚合',
+    'reaggregate_success' => '数据重新聚合完成',
 ];

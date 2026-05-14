@@ -46,12 +46,14 @@ class VisitTrackingMiddleware
         // Get admin ID if authenticated
         $customerId = current_admin()?->id;
 
-        // Track visit
+        // Track visit (session level)
         $this->visitTrackingService->trackVisit($request, $sessionId, $customerId);
 
-        // Track page view event
-        $eventTrackingService = new EventTrackingService;
-        $eventTrackingService->trackPageView($request);
+        // Track page view event (GET requests only, skip POST/AJAX)
+        if ($request->isMethod('GET') && ! $request->ajax()) {
+            $eventTrackingService = new EventTrackingService;
+            $eventTrackingService->trackPageView($request);
+        }
 
         // Process request
         return $next($request);

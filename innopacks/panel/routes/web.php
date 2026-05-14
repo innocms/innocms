@@ -23,6 +23,7 @@ Route::middleware(['admin_auth:admin'])
         Route::get('/', [Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
         Route::get('/analytics', [Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+        Route::post('/analytics/reaggregate', [Controllers\AnalyticsController::class, 'reaggregate'])->name('analytics.reaggregate');
 
         Route::get('/visits', [Controllers\VisitController::class, 'index'])->name('visits.index');
         Route::get('/visits/{visit}', [Controllers\VisitController::class, 'show'])->name('visits.show');

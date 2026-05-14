@@ -11,7 +11,9 @@ namespace InnoCMS\Panel\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use InnoCMS\Common\Models\Visit\VisitEvent;
 use InnoCMS\Common\Repositories\VisitRepo;
+use InnoCMS\Common\Services\VisitStatisticsService;
 
 class AnalyticsController extends BaseController
 {
@@ -63,6 +65,27 @@ class AnalyticsController extends BaseController
         ];
 
         return view('panel::analytics.index', $data);
+    }
+
+    /**
+     * Re-aggregate all visit statistics.
+     */
+    public function reaggregate(): mixed
+    {
+        $earliest = VisitEvent::orderBy('created_at')->value('created_at');
+
+        if ($earliest) {
+            $start = Carbon::parse($earliest)->startOfDay();
+            $end   = Carbon::today();
+
+            $service = new VisitStatisticsService;
+            $service->aggregateRange($start, $end);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => __('panel/analytics.reaggregate_success'),
+        ]);
     }
 
     /**

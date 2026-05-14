@@ -48,6 +48,14 @@
   <div class="col-6 col-md-3">
     <div class="card">
       <div class="card-body py-3 px-4">
+        <div class="text-muted small mb-1">{{ __('panel/analytics.page_views') }}</div>
+        <div class="fs-4 fw-bold">{{ $statistics['page_views'] ?? 0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card">
+      <div class="card-body py-3 px-4">
         <div class="text-muted small mb-1">{{ __('panel/analytics.total_visits') }}</div>
         <div class="fs-4 fw-bold">{{ $statistics['total_visits'] ?? 0 }}</div>
       </div>
@@ -58,14 +66,6 @@
       <div class="card-body py-3 px-4">
         <div class="text-muted small mb-1">{{ __('panel/analytics.unique_visitors') }}</div>
         <div class="fs-4 fw-bold">{{ $statistics['unique_visitors'] ?? 0 }}</div>
-      </div>
-    </div>
-  </div>
-  <div class="col-6 col-md-3">
-    <div class="card">
-      <div class="card-body py-3 px-4">
-        <div class="text-muted small mb-1">{{ __('panel/analytics.page_views') }}</div>
-        <div class="fs-4 fw-bold">{{ $statistics['page_views'] ?? 0 }}</div>
       </div>
     </div>
   </div>
@@ -90,12 +90,24 @@
 <div class="row g-3">
   <div class="col-12 col-md-8">
     <div class="card" style="min-height:400px">
-      <div class="card-header">
+      <div class="card-header d-flex align-items-center justify-content-between">
         <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.daily_trends') }}</h6>
+        <div class="d-flex align-items-center gap-2">
+          <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-outline-primary active" data-metric="pv" onclick="switchMetric('pv', this)">PV</button>
+            <button type="button" class="btn btn-outline-primary" data-metric="uv" onclick="switchMetric('uv', this)">UV</button>
+            <button type="button" class="btn btn-outline-primary" data-metric="ip" onclick="switchMetric('ip', this)">IP</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="reaggregate()" title="{{ __('panel/analytics.reaggregate') }}">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
       </div>
       <div class="card-body">
         @if($hasDailyData)
-          <canvas id="chart-daily" height="320"></canvas>
+          <div style="position:relative;height:320px;">
+            <canvas id="chart-daily"></canvas>
+          </div>
         @else
           <div class="d-flex flex-column align-items-center justify-content-center py-5 text-muted">
             <i class="bi bi-bar-chart-line fs-1 mb-2"></i>
@@ -206,53 +218,56 @@
 
 @push('footer')
 <script>
-  // Daily trends chart
-  const dailyCtx = document.getElementById('chart-daily').getContext('2d');
-  const dailyLabels = @json(collect($dailyStats)->pluck('date')->map(fn($d) => substr($d, 5)));
-  const pvData = @json(collect($dailyStats)->pluck('page_views'));
-  const uvData = @json(collect($dailyStats)->pluck('unique_visitors'));
-  const hasDailyData = pvData.some(v => v > 0);
+function reaggregate() {
+  axios.post('{{ panel_route('analytics.reaggregate') }}').then(function(data) {
+    inno.msg(data.message);
+    setTimeout(function() { location.reload(); }, 1000);
+  });
+}
 
-  if (hasDailyData) {
-    new Chart(dailyCtx, {
+  // Daily trends chart - tab switching
+  const dailyLabels = @json(collect($dailyStats)->pluck('date')->map(fn($d) => substr($d, 5)));
+  const metricData = {
+    pv: @json(collect($dailyStats)->pluck('page_views')),
+    uv: @json(collect($dailyStats)->pluck('visits')),
+    ip: @json(collect($dailyStats)->pluck('unique_visitors')),
+  };
+  const metricMeta = {
+    pv: { label: 'PV', borderColor: '#2563EB', bgColor: 'rgba(37,99,235,0.1)' },
+    uv: { label: 'UV', borderColor: '#10B981', bgColor: 'rgba(16,185,129,0.1)' },
+    ip: { label: 'IP', borderColor: '#F59E0B', bgColor: 'rgba(245,158,11,0.1)' },
+  };
+
+  const hasDailyData = metricData.pv.some(v => v > 0);
+  let dailyChart = null;
+
+  function renderDailyChart(metric) {
+    const canvas = document.getElementById('chart-daily');
+    if (!canvas) return;
+    const meta = metricMeta[metric];
+    if (dailyChart) { dailyChart.destroy(); }
+    dailyChart = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
         labels: dailyLabels,
-        datasets: [
-          {
-            label: 'PV',
-            data: pvData,
-            borderColor: '#2563EB',
-            backgroundColor: 'rgba(37,99,235,0.1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4,
-            pointRadius: 2,
-            pointHoverRadius: 5,
-          },
-          {
-            label: 'UV',
-            data: uvData,
-            borderColor: '#10B981',
-            backgroundColor: 'rgba(16,185,129,0.1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4,
-            pointRadius: 2,
-            pointHoverRadius: 5,
-          }
-        ]
+        datasets: [{
+          label: meta.label,
+          data: metricData[metric],
+          borderColor: meta.borderColor,
+          backgroundColor: meta.bgColor,
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 2,
+          pointHoverRadius: 5,
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         animation: false,
         plugins: {
-          legend: {
-            position: 'top',
-            align: 'end',
-            labels: { boxWidth: 12, padding: 16, font: { size: 12 } }
-          },
+          legend: { display: false },
           tooltip: {
             backgroundColor: '#0F172A',
             padding: 10,
@@ -274,6 +289,16 @@
         }
       }
     });
+  }
+
+  function switchMetric(metric, btn) {
+    document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderDailyChart(metric);
+  }
+
+  if (hasDailyData) {
+    renderDailyChart('pv');
   }
 
   // Device distribution chart

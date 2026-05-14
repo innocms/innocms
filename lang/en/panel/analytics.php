@@ -29,4 +29,7 @@ return [
     'by_country'   => 'By Country',
     'country'      => 'Country',
     'visits'       => 'Visits',
+
+    'reaggregate'         => 'Re-aggregate',
+    'reaggregate_success' => 'Data re-aggregation complete',
 ];
