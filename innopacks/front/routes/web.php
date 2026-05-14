@@ -14,6 +14,9 @@ $hasSuffix = installed() && system_setting('has_suffix');
 
 Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index');
 
+// Consultation
+Route::post('/consultations', [Controllers\ConsultationController::class, 'store'])->name('consultations.store');
+
 // Upload
 Route::post('/upload/images', [Controllers\UploadController::class, 'images'])->name('upload.images');
 Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->name('upload.files');

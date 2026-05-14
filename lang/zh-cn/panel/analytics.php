@@ -24,6 +24,8 @@ return [
 
     'daily_trends' => '流量趋势',
     'by_device'    => '设备分布',
+    'by_browser'   => '浏览器分布',
+    'by_os'        => '操作系统分布',
     'by_country'   => '地区分布',
     'country'      => '国家/地区',
     'visits'       => '访问量',

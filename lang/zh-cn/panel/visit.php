@@ -24,4 +24,9 @@ return [
     'os'               => '操作系统',
     'last_visited_at'  => '最后访问时间',
     'events'           => '事件数',
+    'visit_detail'     => '访问详情',
+    'session_info'     => '会话信息',
+    'browsing_history' => '浏览记录',
+    'event_type'       => '事件类型',
+    'event_time'       => '事件时间',
 ];

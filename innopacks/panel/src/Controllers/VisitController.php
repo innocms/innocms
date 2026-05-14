@@ -10,6 +10,7 @@
 namespace InnoCMS\Panel\Controllers;
 
 use Illuminate\Http\Request;
+use InnoCMS\Common\Models\Visit\Visit;
 use InnoCMS\Common\Repositories\VisitRepo;
 
 class VisitController extends BaseController
@@ -24,10 +25,28 @@ class VisitController extends BaseController
         $data    = [
             'searchFields'  => $this->getSearchFieldOptions(),
             'filterButtons' => $this->getFilterButtonOptions(),
-            'visits'        => VisitRepo::getInstance()->builder($filters)->orderByDesc('id')->paginate(),
+            'visits'        => VisitRepo::getInstance()->builder($filters)
+                ->withCount('visitEvents')
+                ->orderByDesc('id')
+                ->paginate(),
         ];
 
         return view('panel::visits.index', $data);
+    }
+
+    /**
+     * Show visit detail with all events.
+     *
+     * @param  Visit  $visit
+     * @return mixed
+     */
+    public function show(Visit $visit): mixed
+    {
+        $visit->load(['visitEvents' => function ($query) {
+            $query->orderByDesc('id');
+        }]);
+
+        return view('panel::visits.show', compact('visit'));
     }
 
     private function getSearchFieldOptions(): array

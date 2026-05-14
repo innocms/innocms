@@ -82,6 +82,8 @@
 @php
   $hasDailyData = collect($dailyStats)->pluck('page_views')->some(fn($v) => $v > 0);
   $hasDeviceData = collect($deviceData)->pluck('page_views')->some(fn($v) => $v > 0);
+  $hasBrowserData = collect($browserData)->pluck('visits')->some(fn($v) => $v > 0);
+  $hasOSData = collect($osData)->pluck('visits')->some(fn($v) => $v > 0);
 @endphp
 
 {{-- Charts Row --}}
@@ -110,7 +112,9 @@
       </div>
       <div class="card-body">
         @if($hasDeviceData)
-          <canvas id="chart-device" height="200"></canvas>
+          <div style="position:relative;height:200px;">
+            <canvas id="chart-device"></canvas>
+          </div>
           <table class="table table-sm mt-3 mb-0">
             @foreach($deviceData as $device)
               @if($device['page_views'] > 0)
@@ -131,6 +135,40 @@
     </div>
   </div>
 </div>
+
+{{-- Browser & OS Row --}}
+@if($hasBrowserData || $hasOSData)
+<div class="row g-3 mt-0">
+  @if($hasBrowserData)
+  <div class="col-12 col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.by_browser') }}</h6>
+      </div>
+      <div class="card-body">
+        <div style="position:relative;height:240px;">
+          <canvas id="chart-browser"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
+  @if($hasOSData)
+  <div class="col-12 {{ $hasBrowserData ? 'col-md-6' : 'col-md-12' }}">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.by_os') }}</h6>
+      </div>
+      <div class="card-body">
+        <div style="position:relative;height:240px;">
+          <canvas id="chart-os"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
+</div>
+@endif
 
 @if(count($countryData) > 0)
 <div class="row g-3 mt-0">
@@ -263,6 +301,66 @@
           legend: {
             position: 'bottom',
             labels: { boxWidth: 12, padding: 12, font: { size: 12 } }
+          }
+        }
+      }
+    });
+  }
+
+  // Browser distribution chart
+  const hasBrowserData = {{ $hasBrowserData ? 'true' : 'false' }};
+  if (hasBrowserData) {
+    const browserLabels = @json(collect($browserData)->pluck('browser'));
+    const browserValues = @json(collect($browserData)->pluck('visits'));
+    const browserCtx = document.getElementById('chart-browser').getContext('2d');
+    new Chart(browserCtx, {
+      type: 'doughnut',
+      data: {
+        labels: browserLabels,
+        datasets: [{
+          data: browserValues,
+          backgroundColor: ['#2563EB', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'],
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: { boxWidth: 12, padding: 10, font: { size: 12 } }
+          }
+        }
+      }
+    });
+  }
+
+  // OS distribution chart
+  const hasOSData = {{ $hasOSData ? 'true' : 'false' }};
+  if (hasOSData) {
+    const osLabels = @json(collect($osData)->pluck('os'));
+    const osValues = @json(collect($osData)->pluck('visits'));
+    const osCtx = document.getElementById('chart-os').getContext('2d');
+    new Chart(osCtx, {
+      type: 'doughnut',
+      data: {
+        labels: osLabels,
+        datasets: [{
+          data: osValues,
+          backgroundColor: ['#10B981', '#2563EB', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16'],
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: { boxWidth: 12, padding: 10, font: { size: 12 } }
           }
         }
       }

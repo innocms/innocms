@@ -30,6 +30,7 @@ return [
 
     'top_analytic' => 'Analytics',
     'analytics'    => 'Reports',
+    'visits'       => 'Visits',
 
     'file_manager' => 'File Manager',
 

@@ -25,6 +25,7 @@ Route::middleware(['admin_auth:admin'])
         Route::get('/analytics', [Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
 
         Route::get('/visits', [Controllers\VisitController::class, 'index'])->name('visits.index');
+        Route::get('/visits/{visit}', [Controllers\VisitController::class, 'show'])->name('visits.show');
 
         Route::get('/locale/{code}', [Controllers\LocaleController::class, 'switch'])->name('locale.switch');
 

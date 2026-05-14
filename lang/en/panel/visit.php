@@ -24,4 +24,9 @@ return [
     'os'               => 'OS',
     'last_visited_at'  => 'Last Visited At',
     'events'           => 'Events',
+    'visit_detail'     => 'Visit Detail',
+    'session_info'     => 'Session Info',
+    'browsing_history' => 'Browsing History',
+    'event_type'       => 'Event Type',
+    'event_time'       => 'Event Time',
 ];

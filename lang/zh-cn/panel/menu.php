@@ -18,6 +18,7 @@ return [
 
     'top_analytic' => '数据分析',
     'analytics'    => '数据报表',
+    'visits'       => '访问记录',
 
     'file_manager' => '文件管理',
 

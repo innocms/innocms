@@ -25,6 +25,7 @@
             <td>{{ __('panel/visit.browser') }}</td>
             <td>{{ __('panel/visit.os') }}</td>
             <td>{{ __('panel/visit.referrer') }}</td>
+            <td>PV</td>
             <td>{{ __('panel/visit.first_visited_at') }}</td>
             <td>{{ __('panel/visit.last_visited_at') }}</td>
           </tr>
@@ -50,6 +51,11 @@
             <td>{{ $item->browser ?: '-' }}</td>
             <td>{{ $item->os ?: '-' }}</td>
             <td>{{ $item->referrer ? Str::limit($item->referrer, 30) : '-' }}</td>
+            <td>
+              <a href="{{ panel_route('visits.show', $item->id) }}" class="badge bg-secondary text-decoration-none">
+                {{ $item->visit_events_count ?? 0 }}
+              </a>
+            </td>
             <td>{{ $item->first_visited_at?->format('Y-m-d H:i') }}</td>
             <td>{{ $item->last_visited_at?->format('Y-m-d H:i') }}</td>
           </tr>

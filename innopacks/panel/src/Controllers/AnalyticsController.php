@@ -44,6 +44,12 @@ class AnalyticsController extends BaseController
         // Country distribution
         $countryData = $visitRepo->getVisitsByCountry($filters);
 
+        // Browser distribution
+        $browserData = $visitRepo->getVisitsByBrowser($filters);
+
+        // OS distribution
+        $osData = $visitRepo->getVisitsByOS($filters);
+
         $data = [
             'dateFilter'  => $dateFilter,
             'startDate'   => $startDate,
@@ -51,6 +57,8 @@ class AnalyticsController extends BaseController
             'statistics'  => $statistics,
             'dailyStats'  => $dailyStats,
             'deviceData'  => $deviceData,
+            'browserData' => $browserData,
+            'osData'      => $osData,
             'countryData' => $countryData,
         ];
 

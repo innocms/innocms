@@ -24,6 +24,8 @@ return [
 
     'daily_trends' => 'Daily Trends',
     'by_device'    => 'By Device',
+    'by_browser'   => 'By Browser',
+    'by_os'        => 'By OS',
     'by_country'   => 'By Country',
     'country'      => 'Country',
     'visits'       => 'Visits',
