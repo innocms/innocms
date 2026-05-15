@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Visit\Visit;
 use InnoCMS\Common\Repositories\VisitRepo;
-use InnoCMS\Common\Services\GeoLocationService;
+use InnoCMS\Common\Services\VisitEnrichService;
 
 class VisitController extends BaseController
 {
@@ -51,15 +51,6 @@ class VisitController extends BaseController
         return view('panel::visits.show', compact('visit'));
     }
 
-    private function getSearchFieldOptions(): array
-    {
-        return [
-            ['value' => '', 'label' => trans('panel/common.all_fields')],
-            ['value' => 'ip_address', 'label' => trans('panel/visit.ip_address')],
-            ['value' => 'country_code', 'label' => trans('panel/visit.country_code')],
-        ];
-    }
-
     /**
      * Locate and update a visit record's geo data.
      */
@@ -70,23 +61,12 @@ class VisitController extends BaseController
         }
 
         try {
-            $service = new GeoLocationService;
-            $result  = $service->getLocation($visit->ip_address);
+            $result = app(VisitEnrichService::class)->locate($visit);
         } catch (\RuntimeException $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        $visit->update([
-            'country_code' => $result['country_code'] ?? '',
-            'country_name' => $result['country_name'] ?? '',
-            'city'         => $result['city'] ?? '',
-        ]);
-
-        return response()->json([
-            'success'      => true,
-            'country_name' => $result['country_name'] ?? '',
-            'city'         => $result['city'] ?? '',
-        ]);
+        return response()->json($result);
     }
 
     /**
@@ -98,19 +78,9 @@ class VisitController extends BaseController
             return response()->json(['error' => 'No user agent'], 400);
         }
 
-        $browser = $this->detectBrowser($visit->user_agent);
-        $os      = $this->detectOS($visit->user_agent);
+        $result = app(VisitEnrichService::class)->parseUA($visit);
 
-        $visit->update([
-            'browser' => $browser,
-            'os'      => $os,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'browser' => $browser,
-            'os'      => $os,
-        ]);
+        return response()->json($result);
     }
 
     /**
@@ -119,114 +89,21 @@ class VisitController extends BaseController
     public function batchLocate(): JsonResponse
     {
         try {
-            $geoService = new GeoLocationService;
+            $result = app(VisitEnrichService::class)->batchLocate();
         } catch (\RuntimeException $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        $visits = Visit::where(function ($q) {
-            $q->whereNull('country_name')
-                ->orWhere('country_name', '')
-                ->orWhereNull('city')
-                ->orWhere('city', '')
-                ->orWhereNull('browser')
-                ->orWhere('browser', '')
-                ->orWhereNull('os')
-                ->orWhere('os', '');
-        })
-            ->limit(500)
-            ->get();
-
-        $updated = 0;
-
-        foreach ($visits as $visit) {
-            $fields = [];
-
-            // Geo lookup (local + remote fallback via hook)
-            if ($visit->ip_address && (empty($visit->country_name) || empty($visit->city))) {
-                try {
-                    $result = $geoService->getLocation($visit->ip_address);
-                    if (! empty($result['country_name']) || ! empty($result['city'])) {
-                        $fields['country_code'] = $result['country_code'] ?? '';
-                        $fields['country_name'] = $result['country_name'] ?? '';
-                        $fields['city']         = $result['city'] ?? '';
-                    }
-                } catch (\RuntimeException $e) {
-                    return response()->json(['error' => $e->getMessage()], 500);
-                }
-            }
-
-            // UA parsing
-            if ($visit->user_agent && (empty($visit->browser) || empty($visit->os))) {
-                $fields['browser'] = $this->detectBrowser($visit->user_agent);
-                $fields['os']      = $this->detectOS($visit->user_agent);
-            }
-
-            if (! empty($fields)) {
-                $visit->update($fields);
-                $updated++;
-            }
-        }
-
-        return response()->json([
-            'success' => true,
-            'updated' => $updated,
-        ]);
+        return response()->json($result);
     }
 
-    private function detectBrowser(string $ua): string
+    private function getSearchFieldOptions(): array
     {
-        $patterns = [
-            'Edg/'            => 'Edge',
-            'OPR/'            => 'Opera',
-            'Opera'           => 'Opera',
-            'Vivaldi/'        => 'Vivaldi',
-            'Brave/'          => 'Brave',
-            'SamsungBrowser/' => 'Samsung Browser',
-            'UCBrowser/'      => 'UC Browser',
-            'MicroMessenger/' => 'WeChat',
-            'QQBrowser/'      => 'QQ Browser',
-            'Firefox/'        => 'Firefox',
-            'FxiOS/'          => 'Firefox',
-            'Chrome/'         => 'Chrome',
-            'CriOS/'          => 'Chrome',
-            'Safari/'         => 'Safari',
-            'MSIE'            => 'IE',
-            'Trident/'        => 'IE',
+        return [
+            ['value' => '', 'label' => trans('panel/common.all_fields')],
+            ['value' => 'ip_address', 'label' => trans('panel/visit.ip_address')],
+            ['value' => 'country_code', 'label' => trans('panel/visit.country_code')],
         ];
-
-        foreach ($patterns as $pattern => $name) {
-            if (str_contains($ua, $pattern)) {
-                return $name;
-            }
-        }
-
-        return '';
-    }
-
-    private function detectOS(string $ua): string
-    {
-        $patterns = [
-            'HarmonyOS'     => 'HarmonyOS',
-            'Android'       => 'Android',
-            'iPhone'        => 'iOS',
-            'iPad'          => 'iPadOS',
-            'iPod'          => 'iOS',
-            'Windows Phone' => 'Windows Phone',
-            'Windows NT'    => 'Windows',
-            'Mac OS X'      => 'macOS',
-            'Macintosh'     => 'macOS',
-            'Linux'         => 'Linux',
-            'CrOS'          => 'Chrome OS',
-        ];
-
-        foreach ($patterns as $pattern => $name) {
-            if (str_contains($ua, $pattern)) {
-                return $name;
-            }
-        }
-
-        return '';
     }
 
     private function getFilterButtonOptions(): array

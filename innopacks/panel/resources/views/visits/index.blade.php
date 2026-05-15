@@ -38,11 +38,14 @@
         </thead>
         <tbody>
         @foreach($visits as $item)
-          <tr>
+          <tr data-id="{{ $item->id }}">
             <td>{{ $item->id }}</td>
             <td>{{ $item->ip_address }}</td>
-            <td>{{ $item->country_name ?: '-' }}</td>
-            <td>{{ $item->city ?: '-' }}</td>
+            <td class="col-country">
+              {{ $item->country_name ?: '-' }}
+              <a href="javascript:void(0)" class="text-secondary text-decoration-none btn-refresh-geo ms-1" title="刷新位置"><i class="bi bi-arrow-repeat"></i></a>
+            </td>
+            <td class="col-city">{{ $item->city ?: '-' }}</td>
             <td>
               @if($item->device_type === 'desktop')
                 <span class="badge bg-primary">{{ __('panel/visit.device_desktop') }}</span>
@@ -54,8 +57,8 @@
                 <span class="badge bg-secondary">{{ $item->device_type ?: '-' }}</span>
               @endif
             </td>
-            <td>{{ $item->browser ?: '-' }}</td>
-            <td>{{ $item->os ?: '-' }}</td>
+            <td class="col-browser">{{ $item->browser ?: '-' }}</td>
+            <td class="col-os">{{ $item->os ?: '-' }}</td>
             <td>{{ $item->referrer ? Str::limit($item->referrer, 30) : '-' }}</td>
             <td>
               <a href="{{ panel_route('visits.show', $item->id) }}" class="badge bg-secondary text-decoration-none">
@@ -104,110 +107,44 @@
         });
     }
 
-    // Per-row refresh icons
-    var table = document.querySelector('.page-visits table tbody');
-    if (!table) return;
+    // Per-row refresh geo button
+    document.querySelectorAll('.btn-refresh-geo').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var row = btn.closest('tr');
+            var id  = row.dataset.id;
+            if (btn.disabled) return;
 
-    var COL_COUNTRY = 2, COL_CITY = 3, COL_BROWSER = 5, COL_OS = 6;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
-    function createIcon(title) {
-        var btn = document.createElement('a');
-        btn.href = 'javascript:void(0)';
-        btn.className = 'text-secondary text-decoration-none';
-        btn.title = title;
-        btn.innerHTML = '<i class="bi bi-arrow-repeat"></i>';
-        return btn;
-    }
+            var countryCell = row.querySelector('.col-country');
+            var cityCell    = row.querySelector('.col-city');
+            var browserCell = row.querySelector('.col-browser');
+            var osCell      = row.querySelector('.col-os');
 
-    function setSpin(icons) {
-        icons.forEach(function(b) {
-            b.classList.add('disabled');
-            b.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-        });
-    }
-
-    function setError(icons) {
-        icons.forEach(function(b) {
-            b.innerHTML = '<i class="bi bi-x-circle text-danger"></i>';
-            b.classList.remove('disabled');
-        });
-    }
-
-    table.querySelectorAll('tr').forEach(function(row) {
-        var cells = row.querySelectorAll('td');
-        if (cells.length < 7) return;
-
-        var id = cells[0].textContent.trim();
-        var countryEmpty = cells[COL_COUNTRY].textContent.trim() === '-';
-        var cityEmpty    = cells[COL_CITY].textContent.trim() === '-';
-        var browserEmpty = cells[COL_BROWSER].textContent.trim() === '-';
-        var osEmpty      = cells[COL_OS].textContent.trim() === '-';
-
-        // Geo icons
-        if (countryEmpty || cityEmpty) {
-            var geoIcons = [];
-            if (countryEmpty) {
-                cells[COL_COUNTRY].textContent = '';
-                var ic = createIcon('获取地理位置');
-                cells[COL_COUNTRY].appendChild(ic);
-                geoIcons.push(ic);
-            }
-            if (cityEmpty) {
-                cells[COL_CITY].textContent = '';
-                var ic = createIcon('获取地理位置');
-                cells[COL_CITY].appendChild(ic);
-                geoIcons.push(ic);
-            }
-            geoIcons.forEach(function(icon) {
-                icon.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (icon.classList.contains('disabled')) return;
-                    setSpin(geoIcons);
-                    axios.post(locateUrl.replace('__ID__', id)).then(function(data) {
-                        if (data.success) {
-                            cells[COL_COUNTRY].textContent = data.country_name || '';
-                            cells[COL_CITY].textContent = data.city || '';
-                            geoIcons.forEach(function(b) { b.remove(); });
-                        } else { setError(geoIcons); }
-                    }).catch(function(err) {
-                        var msg = (err.response && err.response.data && err.response.data.error) || '';
-                        if (msg) inno.msg(msg);
-                        setError(geoIcons);
-                    });
+            // Refresh geo
+            axios.post(locateUrl.replace('__ID__', id)).then(function(data) {
+                if (data.success) {
+                    countryCell.textContent = data.country_name || '-';
+                    cityCell.textContent    = data.city || '-';
+                }
+            }).catch(function(err) {
+                var msg = (err.response && err.response.data && err.response.data.error) || '';
+                if (msg) inno.msg(msg);
+            }).finally(function() {
+                // Also refresh UA
+                axios.post(parseUaUrl.replace('__ID__', id)).then(function(data) {
+                    if (data.success) {
+                        browserCell.textContent = data.browser || '-';
+                        osCell.textContent      = data.os || '-';
+                    }
+                }).catch(function() {}).finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-arrow-repeat"></i>';
                 });
             });
-        }
-
-        // UA icons
-        if (browserEmpty || osEmpty) {
-            var uaIcons = [];
-            if (browserEmpty) {
-                cells[COL_BROWSER].textContent = '';
-                var ic = createIcon('解析浏览器');
-                cells[COL_BROWSER].appendChild(ic);
-                uaIcons.push(ic);
-            }
-            if (osEmpty) {
-                cells[COL_OS].textContent = '';
-                var ic = createIcon('解析操作系统');
-                cells[COL_OS].appendChild(ic);
-                uaIcons.push(ic);
-            }
-            uaIcons.forEach(function(icon) {
-                icon.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (icon.classList.contains('disabled')) return;
-                    setSpin(uaIcons);
-                    axios.post(parseUaUrl.replace('__ID__', id)).then(function(data) {
-                        if (data.success) {
-                            cells[COL_BROWSER].textContent = data.browser || '';
-                            cells[COL_OS].textContent = data.os || '';
-                            uaIcons.forEach(function(b) { b.remove(); });
-                        } else { setError(uaIcons); }
-                    }).catch(function() { setError(uaIcons); });
-                });
-            });
-        }
+        });
     });
 })();
 </script>
