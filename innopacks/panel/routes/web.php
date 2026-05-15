@@ -27,6 +27,9 @@ Route::middleware(['admin_auth:admin'])
 
         Route::get('/visits', [Controllers\VisitController::class, 'index'])->name('visits.index');
         Route::get('/visits/{visit}', [Controllers\VisitController::class, 'show'])->name('visits.show');
+        Route::post('/visits/batch-locate', [Controllers\VisitController::class, 'batchLocate'])->name('visits.batch_locate');
+        Route::post('/visits/{visit}/locate', [Controllers\VisitController::class, 'locate'])->name('visits.locate');
+        Route::post('/visits/{visit}/parse-ua', [Controllers\VisitController::class, 'parseUA'])->name('visits.parse_ua');
 
         Route::get('/locale/{code}', [Controllers\LocaleController::class, 'switch'])->name('locale.switch');
 
