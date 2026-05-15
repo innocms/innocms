@@ -69,8 +69,12 @@ class VisitController extends BaseController
             return response()->json(['error' => 'No IP address'], 400);
         }
 
-        $service = new GeoLocationService;
-        $result  = $service->getLocation($visit->ip_address);
+        try {
+            $service = new GeoLocationService;
+            $result  = $service->getLocation($visit->ip_address);
+        } catch (\RuntimeException $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
 
         $visit->update([
             'country_code' => $result['country_code'] ?? '',
@@ -114,7 +118,11 @@ class VisitController extends BaseController
      */
     public function batchLocate(): JsonResponse
     {
-        $geoService = new GeoLocationService;
+        try {
+            $geoService = new GeoLocationService;
+        } catch (\RuntimeException $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
 
         $visits = Visit::where(function ($q) {
             $q->whereNull('country_name')
@@ -136,11 +144,15 @@ class VisitController extends BaseController
 
             // Geo lookup (local + remote fallback via hook)
             if ($visit->ip_address && (empty($visit->country_name) || empty($visit->city))) {
-                $result = $geoService->getLocation($visit->ip_address);
-                if (! empty($result['country_name']) || ! empty($result['city'])) {
-                    $fields['country_code'] = $result['country_code'] ?? '';
-                    $fields['country_name'] = $result['country_name'] ?? '';
-                    $fields['city']         = $result['city'] ?? '';
+                try {
+                    $result = $geoService->getLocation($visit->ip_address);
+                    if (! empty($result['country_name']) || ! empty($result['city'])) {
+                        $fields['country_code'] = $result['country_code'] ?? '';
+                        $fields['country_name'] = $result['country_name'] ?? '';
+                        $fields['city']         = $result['city'] ?? '';
+                    }
+                } catch (\RuntimeException $e) {
+                    return response()->json(['error' => $e->getMessage()], 500);
                 }
             }
 

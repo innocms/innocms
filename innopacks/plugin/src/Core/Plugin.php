@@ -343,7 +343,7 @@ final class Plugin
         $existValues    = SettingRepo::getInstance()->getPluginFields($this->code);
         foreach ($this->fields as $index => $field) {
             $dbField = $existValues[$field['name']] ?? null;
-            $value   = $dbField ? $dbField->value : null;
+            $value   = ($dbField && $dbField->value !== null) ? $dbField->value : ($field['default'] ?? null);
             if ($field['name'] == 'active') {
                 $value = (int) $value;
             }

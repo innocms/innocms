@@ -95,8 +95,9 @@
                     inno.msg('已补全 ' + data.updated + ' 条记录');
                     setTimeout(function() { location.reload(); }, 800);
                 }
-            }).catch(function() {
-                inno.msg('补全失败，请重试');
+            }).catch(function(err) {
+                var msg = (err.response && err.response.data && err.response.data.error) || '补全失败，请重试';
+                inno.msg(msg);
                 batchBtn.disabled = false;
                 batchBtn.innerHTML = '<i class="bi bi-lightning-charge"></i> 补全数据';
             });
@@ -168,7 +169,11 @@
                             cells[COL_CITY].textContent = data.city || '';
                             geoIcons.forEach(function(b) { b.remove(); });
                         } else { setError(geoIcons); }
-                    }).catch(function() { setError(geoIcons); });
+                    }).catch(function(err) {
+                        var msg = (err.response && err.response.data && err.response.data.error) || '';
+                        if (msg) inno.msg(msg);
+                        setError(geoIcons);
+                    });
                 });
             });
         }
