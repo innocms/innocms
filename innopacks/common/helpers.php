@@ -341,7 +341,12 @@ if (! function_exists('front_locale_code')) {
      */
     function front_locale_code(): string
     {
-        return session('locale') ?? setting_locale_code();
+        $sessionLocale = session('locale');
+        if ($sessionLocale && locales()->contains('code', $sessionLocale)) {
+            return $sessionLocale;
+        }
+
+        return setting_locale_code();
     }
 }
 
