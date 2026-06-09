@@ -21,4 +21,8 @@
 return [
     'next'     => '下一页 &raquo;',
     'previous' => '&laquo; 上一页',
+    'showing'  => '显示',
+    'to'       => '到',
+    'of'       => '，共',
+    'results'  => '条',
 ];

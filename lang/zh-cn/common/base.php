@@ -44,6 +44,7 @@ return [
     'yes'           => '是',
 
     // Common Fields
+    'code'        => '编码',
     'created_at'  => '创建时间',
     'description' => '描述',
     'email'       => '邮箱',

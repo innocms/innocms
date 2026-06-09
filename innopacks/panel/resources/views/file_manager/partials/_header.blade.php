@@ -113,5 +113,5 @@
     })(window);
   </script>
 
-  <link rel="stylesheet" href="{{ mix('build/panel/css/file-manager.css') }}">
+  <link rel="stylesheet" href="{{ asset('build/panel/css/app.css') }}">>
 @endpush

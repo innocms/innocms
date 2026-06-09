@@ -11,7 +11,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Tag;
-use InnoCMS\Common\Models\TagTranslation;
+use InnoCMS\Common\Models\Tag\Translation;
 
 class TagSeeder extends Seeder
 {
@@ -27,9 +27,9 @@ class TagSeeder extends Seeder
 
         $items = $this->getTagTranslations();
         if ($items) {
-            TagTranslation::query()->truncate();
+            Translation::query()->truncate();
             foreach ($items as $item) {
-                TagTranslation::query()->create($item);
+                Translation::query()->create($item);
             }
         }
     }

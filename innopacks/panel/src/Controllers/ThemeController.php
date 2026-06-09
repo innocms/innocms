@@ -89,11 +89,13 @@ class ThemeController extends BaseController
             $status = $request->input('status');
             if (empty($status)) {
                 SettingRepo::getInstance()->updateSystemValue('theme', '');
+                $activeCode = '';
             } else {
                 SettingRepo::getInstance()->updateSystemValue('theme', $code);
+                $activeCode = $code;
             }
 
-            return json_success(trans('panel/common.updated_success'));
+            return json_success(trans('panel/common.updated_success'), ['active_code' => $activeCode]);
         } catch (\Exception $e) {
             return json_fail($e->getMessage());
         }

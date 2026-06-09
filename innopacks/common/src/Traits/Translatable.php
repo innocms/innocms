@@ -9,21 +9,23 @@
 
 namespace InnoCMS\Common\Traits;
 
+use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait Translatable
 {
     /**
-     * 设置 Description model
+     * Get the translation model class using nested namespace pattern.
+     *
      * @return string
      */
     public function getDescriptionModelClass(): string
     {
-        return self::class.'Translation';
+        return self::class.'\Translation';
     }
 
     /**
-     * Define translations relationship
+     * Define translations relationship.
      *
      * @return HasMany
      */
@@ -35,10 +37,10 @@ trait Translatable
     }
 
     /**
-     * Locale translation object
+     * Locale translation object.
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function translation(): mixed
     {
@@ -49,7 +51,7 @@ trait Translatable
     }
 
     /**
-     * Translate field by locale
+     * Translate field by locale.
      *
      * @param  $locale
      * @param  $field
@@ -57,6 +59,39 @@ trait Translatable
      */
     public function translate($locale, $field): string
     {
-        return $this->translations->keyBy('locale')[$locale][$field] ?? '';
+        return $this->translations->where('locale', $locale)->first()?->{$field} ?? '';
+    }
+
+    /**
+     * Get translated name from current locale.
+     *
+     * @param  string  $field
+     * @return string
+     */
+    public function translatedName(string $field = 'name'): string
+    {
+        return $this->translation?->{$field} ?? '';
+    }
+
+    /**
+     * Get fallback name.
+     * 1. Current locale -> 2. System default locale -> 3. Any available locale
+     *
+     * @param  string  $field
+     * @return string
+     */
+    public function fallbackName(string $field = 'name'): string
+    {
+        $translatedName = $this->translatedName($field);
+        if ($translatedName) {
+            return $translatedName;
+        }
+
+        $defaultName = $this->translate(setting_locale_code(), $field);
+        if ($defaultName) {
+            return $defaultName;
+        }
+
+        return $this->translations->first()?->{$field} ?? '';
     }
 }

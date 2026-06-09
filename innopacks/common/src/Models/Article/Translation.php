@@ -7,11 +7,15 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\Common\Models;
+namespace InnoCMS\Common\Models\Article;
 
-class CatalogTranslation extends BaseModel
+use InnoCMS\Common\Models\BaseModel;
+
+class Translation extends BaseModel
 {
+    protected $table = 'article_translations';
+
     protected $fillable = [
-        'title', 'summary', 'locale', 'meta_title', 'meta_description', 'meta_keywords',
+        'title', 'summary', 'content', 'locale', 'image', 'meta_title', 'meta_description', 'meta_keywords',
     ];
 }

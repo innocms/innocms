@@ -7,11 +7,21 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\Common\Models;
+namespace InnoCMS\Common\Models\Tag;
 
-class TagTranslation extends BaseModel
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use InnoCMS\Common\Models\BaseModel;
+
+class Translation extends BaseModel
 {
+    protected $table = 'tag_translations';
+
     protected $fillable = [
         'tag_id', 'locale', 'name',
     ];
+
+    public function tag(): BelongsTo
+    {
+        return $this->belongsTo(Tag::class);
+    }
 }

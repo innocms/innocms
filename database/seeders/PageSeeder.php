@@ -11,7 +11,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Page;
-use InnoCMS\Common\Models\PageTranslation;
+use InnoCMS\Common\Models\Page\Translation;
 
 class PageSeeder extends Seeder
 {
@@ -27,9 +27,9 @@ class PageSeeder extends Seeder
 
         $items = $this->getPageTranslations();
         if ($items) {
-            PageTranslation::query()->truncate();
+            Translation::query()->truncate();
             foreach ($items as $item) {
-                PageTranslation::query()->create($item);
+                Translation::query()->create($item);
             }
         }
     }

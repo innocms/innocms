@@ -12,7 +12,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Article;
 use InnoCMS\Common\Models\ArticleTag;
-use InnoCMS\Common\Models\ArticleTranslation;
+use InnoCMS\Common\Models\Article\Translation;
 
 class ArticleSeeder extends Seeder
 {
@@ -28,9 +28,9 @@ class ArticleSeeder extends Seeder
 
         $items = $this->getArticleTranslations();
         if ($items) {
-            ArticleTranslation::query()->truncate();
+            Translation::query()->truncate();
             foreach ($items as $item) {
-                ArticleTranslation::query()->create($item);
+                Translation::query()->create($item);
             }
         }
 

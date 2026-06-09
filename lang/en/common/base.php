@@ -44,6 +44,7 @@ return [
     'yes'           => 'Yes',
 
     // Common Fields
+    'code'        => 'Code',
     'created_at'  => 'Created',
     'description' => 'Description',
     'email'       => 'Email',

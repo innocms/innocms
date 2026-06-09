@@ -1,6 +1,9 @@
+@import './bootstrap/bootstrap';
 @import './_variables.scss';
 
 @import './global.scss';
 @import './dashboard.scss';
 @import './login.scss';
 @import './page-my-plugins.scss';
+@import './file-manager';
+@import './page-theme.scss';

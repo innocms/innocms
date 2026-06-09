@@ -7,11 +7,15 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\Common\Models;
+namespace InnoCMS\Common\Models\Catalog;
 
-class PageTranslation extends BaseModel
+use InnoCMS\Common\Models\BaseModel;
+
+class Translation extends BaseModel
 {
+    protected $table = 'catalog_translations';
+
     protected $fillable = [
-        'page_id', 'locale', 'title', 'content', 'template', 'meta_title', 'meta_description', 'meta_keywords',
+        'title', 'summary', 'locale', 'meta_title', 'meta_description', 'meta_keywords',
     ];
 }

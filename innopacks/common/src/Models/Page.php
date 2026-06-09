@@ -9,6 +9,7 @@
 
 namespace InnoCMS\Common\Models;
 
+use Exception;
 use InnoCMS\Common\Traits\Translatable;
 
 class Page extends BaseModel
@@ -24,12 +25,37 @@ class Page extends BaseModel
     ];
 
     /**
+     * Get page title with fallback.
+     */
+    public function getTitleAttribute(): string
+    {
+        return $this->fallbackName('title');
+    }
+
+    /**
+     * Get page content with fallback.
+     */
+    public function getContentAttribute(): string
+    {
+        return $this->fallbackName('content');
+    }
+
+    /**
      * Get slug url link.
      *
      * @return string
+     * @throws Exception
      */
     public function getUrlAttribute(): string
     {
-        return front_route('pages.slug_show', ['slug' => $this->slug]);
+        try {
+            if ($this->slug) {
+                return front_route('pages.slug_show', ['slug' => $this->slug]);
+            }
+
+            return front_route('pages.show', $this);
+        } catch (Exception $e) {
+            return '';
+        }
     }
 }

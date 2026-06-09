@@ -9,6 +9,7 @@
 
 namespace InnoCMS\Common\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use InnoCMS\Common\Traits\Translatable;
@@ -36,6 +37,30 @@ class Article extends BaseModel
     }
 
     /**
+     * Get article title with fallback.
+     */
+    public function getTitleAttribute(): string
+    {
+        return $this->fallbackName('title');
+    }
+
+    /**
+     * Get article content with fallback.
+     */
+    public function getContentAttribute(): string
+    {
+        return $this->fallbackName('content');
+    }
+
+    /**
+     * Get article summary with fallback.
+     */
+    public function getSummaryAttribute(): string
+    {
+        return $this->fallbackName('summary');
+    }
+
+    /**
      * Get tag names.
      *
      * @return mixed
@@ -49,6 +74,7 @@ class Article extends BaseModel
      * Get slug url link.
      *
      * @return string
+     * @throws Exception
      */
     public function getUrlAttribute(): string
     {
@@ -67,7 +93,7 @@ class Article extends BaseModel
     {
         $originalImage = $this->attributes['image'] ?? '';
 
-        $translationImage = $this->translation?->image ?? '';
+        $translationImage = $this->fallbackName('image');
 
         return $translationImage ?: $originalImage;
     }
