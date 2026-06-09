@@ -11,8 +11,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Article;
-use InnoCMS\Common\Models\ArticleTag;
 use InnoCMS\Common\Models\Article\Translation;
+use InnoCMS\Common\Models\ArticleTag;
 
 class ArticleSeeder extends Seeder
 {

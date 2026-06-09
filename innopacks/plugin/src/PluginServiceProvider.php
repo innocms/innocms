@@ -229,12 +229,26 @@ class PluginServiceProvider extends ServiceProvider
     {
         $pluginBasePath = $this->pluginBasePath;
         $shopRoutePath  = "$pluginBasePath/$pluginCode/Routes/front.php";
-        if (file_exists($shopRoutePath)) {
+        if (! file_exists($shopRoutePath)) {
+            return;
+        }
+
+        $locales = locales();
+        if (hide_url_locale() || $locales->isEmpty()) {
             Route::name('front.')
                 ->middleware('web')
                 ->group(function () use ($shopRoutePath) {
                     $this->loadRoutesFrom($shopRoutePath);
                 });
+        } else {
+            foreach ($locales as $locale) {
+                Route::prefix($locale->code)
+                    ->name($locale->code.'.front.')
+                    ->middleware('web')
+                    ->group(function () use ($shopRoutePath) {
+                        $this->loadRoutesFrom($shopRoutePath);
+                    });
+            }
         }
     }
 
