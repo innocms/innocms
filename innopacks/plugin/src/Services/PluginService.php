@@ -96,6 +96,33 @@ class PluginService
     }
 
     /**
+     * Run plugin seeders manually.
+     *
+     * @param  CPlugin  $CPlugin
+     * @param  bool  $clearData
+     * @return void
+     */
+    public function runSeeders(CPlugin $CPlugin, bool $clearData = false): void
+    {
+        $seederPath = "{$CPlugin->getPath()}/Seeders";
+        if (! is_dir($seederPath)) {
+            return;
+        }
+
+        $pluginCode = $CPlugin->getDirname();
+        $files = glob("$seederPath/*.php");
+        sort($files);
+
+        foreach ($files as $file) {
+            $className = basename($file, '.php');
+            $fullClass = "Plugin\\{$pluginCode}\\Seeders\\{$className}";
+            if (class_exists($fullClass) && method_exists($fullClass, 'run')) {
+                (new $fullClass)->run($clearData);
+            }
+        }
+    }
+
+    /**
      * @param  CPlugin  $CPlugin
      * @return void
      */

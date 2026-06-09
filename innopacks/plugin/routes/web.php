@@ -12,3 +12,4 @@ use InnoCMS\Plugin\Controllers\PluginController;
 
 Route::resource('/plugins', PluginController::class);
 Route::post('/plugins/enabled', [PluginController::class, 'updateStatus'])->name('plugins.update_status');
+Route::post('/plugins/seeders', [PluginController::class, 'runSeeders'])->name('plugins.run_seeders');

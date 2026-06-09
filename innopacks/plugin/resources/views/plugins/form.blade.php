@@ -62,6 +62,13 @@
         </button>
       </li>
       @endif
+      @if($plugin->hasSeeders())
+      <li class="nav-item ms-auto">
+        <button type="button" class="btn btn-outline-primary btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#seederConfirmModal">
+          <i class="bi bi-database-fill-add"></i> 导入初始数据
+        </button>
+      </li>
+      @endif
     </ul>
 
     <div class="tab-content mt-3">
@@ -224,6 +231,40 @@
     @endif
   </div>
 </div>
+
+@if($plugin->checkInstalled() && $plugin->hasSeeders())
+<div class="modal fade" id="seederConfirmModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">确认导入初始数据</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">即将导入插件的初始数据，是否继续？</p>
+        <div class="form-check mb-0">
+          <input class="form-check-input seeder-clear-data" type="checkbox" value="1" id="seederClearData">
+          <label class="form-check-label" for="seederClearData">
+            导入前清空插件相关数据
+          </label>
+        </div>
+        <p class="text-muted small mt-2 mb-0">勾选后将清空该插件所有数据后再重新导入，请谨慎操作。</p>
+        <div class="alert alert-danger mt-3 d-none seeder-error-wrap" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <span class="seeder-error-msg"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary btn-confirm-seeder" data-code="{{ $plugin->getCode() }}">
+          <span class="spinner-border spinner-border-sm d-none me-2 seeder-spinner" role="status" aria-hidden="true"></span>
+          确认导入
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
 @endsection
 
 @push('header')
@@ -266,6 +307,41 @@
         }).catch(function (error) {
           var data = error.response ? error.response.data : {};
           inno.msg(data.message || error.message || 'Install failed');
+        });
+      });
+
+      var $seederModal = $('#seederConfirmModal');
+      $seederModal.on('show.bs.modal', function () {
+        $(this).find('.seeder-clear-data').prop('checked', false);
+        $(this).find('.seeder-error-wrap').addClass('d-none');
+      });
+
+      $seederModal.on('click', '.btn-confirm-seeder', function () {
+        var btn = $(this);
+        var code = btn.data('code');
+        var clearData = $seederModal.find('.seeder-clear-data').is(':checked');
+        var spinner = btn.find('.seeder-spinner');
+
+        btn.prop('disabled', true);
+        spinner.removeClass('d-none');
+        $seederModal.find('.seeder-error-wrap').addClass('d-none');
+
+        axios.post('/{{ panel_name() }}/plugins/seeders', {code: code, clear_data: clearData}).then(function (data) {
+          btn.prop('disabled', false);
+          spinner.addClass('d-none');
+          if (data.success) {
+            $seederModal.modal('hide');
+            inno.msg(data.message);
+          } else {
+            $seederModal.find('.seeder-error-msg').text(data.message || 'Failed');
+            $seederModal.find('.seeder-error-wrap').removeClass('d-none');
+          }
+        }).catch(function (error) {
+          btn.prop('disabled', false);
+          spinner.addClass('d-none');
+          var resp = error.response ? error.response.data : {};
+          $seederModal.find('.seeder-error-msg').text(resp.message || error.message || 'Failed');
+          $seederModal.find('.seeder-error-wrap').removeClass('d-none');
         });
       });
     });

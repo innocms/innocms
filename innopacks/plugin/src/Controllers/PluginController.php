@@ -125,6 +125,24 @@ class PluginController
      * @param  Request  $request
      * @return JsonResponse
      */
+    public function runSeeders(Request $request): JsonResponse
+    {
+        try {
+            $code      = $request->get('code');
+            $clearData = (bool) $request->get('clear_data', false);
+            $plugin    = app('plugin')->getPluginOrFail($code);
+            PluginService::getInstance()->runSeeders($plugin, $clearData);
+
+            return json_success(trans('panel/common.saved_success'));
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param  Request  $request
+     * @return JsonResponse
+     */
     public function updateStatus(Request $request): JsonResponse
     {
         try {

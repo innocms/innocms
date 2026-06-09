@@ -316,6 +316,11 @@ final class Plugin
         return PluginRepo::getInstance()->installed($this->code);
     }
 
+    public function hasSeeders(): bool
+    {
+        return is_dir($this->path.'/Seeders');
+    }
+
     public function checkPriority(): int
     {
         return PluginRepo::getInstance()->getPriority($this->code);
