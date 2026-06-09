@@ -13,7 +13,7 @@
     <div class="row mb-4 align-items-center pb-3 plugin-header-bar">
       <div class="col-auto">
         @if($plugin->getIconUrl())
-          <img src="{{ $plugin->getIconUrl() }}" alt="logo" class="img-fluid rounded me-4 plugin-header-logo">
+          <img src="{{ $plugin->getIconUrl() }}" alt="logo" class="img-fluid rounded-circle me-4 plugin-header-logo" style="width:60px;height:60px;">
         @endif
       </div>
       <div class="col ps-0">

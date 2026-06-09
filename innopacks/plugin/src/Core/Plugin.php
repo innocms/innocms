@@ -518,7 +518,7 @@ final class Plugin
         }
 
         try {
-            return plugin_origin($this->code, $this->icon);
+            return plugin_resize($this->code, $this->icon, 200, 200);
         } catch (\Throwable $e) {
             return '';
         }
