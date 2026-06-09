@@ -1,127 +1,126 @@
-[中文说明](https://github.com/innocms/innocms/blob/master/README.zh-cn.md)
+<p align="center">
+    <a href="https://www.innocms.com"><img src="https://www.innocms.com/images/logo.png" alt="InnoCMS"></a>
+</p>
 
-[![LICENSE](https://img.shields.io/badge/License-OSL%203.0-green.svg)](https://github.com/innocms/innocms/blob/master/LICENSE.txt)
-[![Language](https://img.shields.io/badge/Language-php-blue.svg)](https://www.php.net/)
-[![Leaderboard](https://img.shields.io/badge/InnoCMS%20-orange)](https://www.innocms.com/)
+---
 
-## Open Source E-commerce InnoShop Has Been Released: [InnoShop](https://github.com/innocommerce/innoshop)
+<p align="center">
+    <a href="https://www.innocms.com"><img src="https://img.shields.io/badge/License-OSL%203.0-green.svg" alt="License"></a>
+    <a href="https://www.php.net"><img src="https://img.shields.io/badge/Language-PHP%208.3-blue.svg" alt="PHP"></a>
+    <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-12-orange" alt="Laravel"></a>
+</p>
+
+<p align="center">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/us.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/cn.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/de.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/fr.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/jp.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/kr.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/ru.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/es.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/pt.svg">
+    <img class="flag-img" width="32px" height="24px" src="https://flagicons.lipis.dev/flags/4x3/it.svg">
+</p>
+
+<p align="center">
+    <a href="https://github.com/innocommerce/innoshop">
+        <img src="https://img.shields.io/badge/🔥_Looking_for_an_e--commerce_system%3F-Check_out_InnoShop-8B5CF6?style=for-the-badge" alt="InnoShop">
+    </a>
+</p>
+
+---
 
 # InnoCMS
-Lightweight Enterprise Official Website CMS
+InnoCMS - Lightweight Enterprise CMS
 
-Creating an enterprise official website has never been easier! Our lightweight CMS is designed for rapid development and launch, allowing your official website to go from concept to reality in just a few steps.
+InnoCMS is a lightweight enterprise CMS based on Laravel 12, featuring a modular architecture with hook-based plugin system, multi-language support, visitor tracking with GeoIP2, and theme development capabilities.
 
-Ease of use and efficiency coexist, allowing your team to get started easily and quickly master.
-
-Join us now to experience unprecedented development speed and convenience, and let your enterprise shine on the Internet!
+## Introduction
+- Lightweight enterprise CMS designed for rapid development and deployment.
+- Modular `innopacks` architecture with hook-based plugin extensibility.
+- Multi-language support with built-in locale management.
+- Visitor tracking with GeoIP2 geographic location integration.
+- Theme system with live preview and one-click import.
+- Vite-powered frontend build pipeline.
 
 ## Documentation
-For detailed documentation, please visit: [InnoCMS Documentation Center](http://docs.innoshop.cn/en)
+- https://docs.innoshop.cn
 
-## Demo Site
+InnoCMS shares the same underlying architecture as [InnoShop](https://github.com/innocommerce/innoshop), so the development workflow and plugin system are largely identical.
+
+## Demo
 - Frontend: https://demo.innocms.com/
 - Backend: https://demo.innocms.com/panel
 - Account: admin@innocms.com
 - Password: 123456
 
-### Demo Frontend Screenshot
+### Frontend Screenshot
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
         <img src="https://www.innocms.com/images/readme/front.jpg?" alt="Front">
     </a>
 </p>
 
-### Demo Backend Screenshot
+### Backend Screenshot
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
         <img src="https://www.innocms.com/images/readme/panel.jpg?" alt="Panel">
     </a>
 </p>
 
-## Installation Instructions
-### 1. Choose a PHP Environment:
-You can choose from integrated environments such as Xiaopi, Baota, XAMPP, etc., which are very convenient. If you prefer customization, compiling and installing PHP yourself is also great.
+## Requirements
+- PHP >= 8.3
+- MySQL >= 5.7 or 8.0
+- Node.js >= 18
+- Composer >= 2.0
 
-Version requirements: PHP: `8.2` or above, MySQL: `5.7` or `8.0`
+## Installation
 
-### 2. Set the Website Root Directory:
-Next, let's point your website's root directory to the current project's `public` folder and configure the pseudo-static settings.
+```bash
+git clone https://github.com/innocms/innocms.git
+cd innocms
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+# Edit .env with your database credentials
+php artisan migrate
+php artisan db:seed
+npm run prod
+```
 
-### 3. Install Third-Party Dependencies:
-Open the command-line tool, navigate to your current project directory, and then enter `composer install`. This will help us install the required third-party packages.
-
-### 4. Create a Configuration File:
-Copy a configuration file as a starting point by running the following command: `cp .env.example .env`. This way, you will have an initial configuration file.
-
-### 5. Configure the Database:
-Open the `.env` file, find the lines starting with `DB_`, and fill in your database configuration information.
-
-### 6. Generate a System Key:
-Run the following command to generate a secure key for the system: `php artisan key:generate`
-
-### 7. Database Migration and Data Seeding:
-Execute the following command to create the database structure and import the basic data: `php artisan migrate && php artisan db:seed`
-
-### 8. Upload Resource Directory Settings:
-Run the following command to create the upload resource directory: `php artisan storage:link`
-
-### 9. Frontend Resource Compilation:
-Finally, run the following command to compile the frontend's CSS and JavaScript files: `npm install && npm run prod`
-
-### 10. Log in to the Website Backend for Configuration:
-
-To access your website's backend, please use your website's specific backend address.
-
-For example, if your website address is `example.com`, then the backend access address is `example.com/panel`.
-
-When logging in, please use your administrator account and password. The initial login credentials are usually:
+Visit `your-domain.com/panel` to access the admin panel.
 
 - Email: admin@innocms.com
 - Password: 123456
 
-After entering your login information, you can enter the backend for configuration.
+## Plugin Development
 
-We wish you a smooth installation process. If you have any questions or difficulties during installation or use, please feel free to join our QQ communication group, the group number is: 960062283
+All features should be implemented as plugins using the hook system. See `/plugins/PartnerLink` for a complete example.
 
-Our team and enthusiastic users will provide you with real-time help and support.
-
-## Development Instructions
-### 1. Independent Release Reminder:
-Please note that the three folders under the `/innopacks` directory will be released as independent Composer packages after the v1.0 version is released.
-
-Therefore, we recommend that you avoid directly editing the files in that directory.
-
-### 2. Frontend Development Guide:
-If you are developing the frontend for the second time, you can publish the required view files by executing the following command:
-
-```
-php artisan inno:publish-theme
-```
-
-After this operation, the system will automatically generate the corresponding template files for you in the `/resources/views/vendor` directory.
-
-### 3. Backend Development Guide:
-Similarly, backend secondary development can also obtain template files through the following command:
-
-```
-php artisan vendor:publish --provider="InnoCMS\Panel\PanelServiceProvider" --tag=views
+```php
+// plugins/YourPlugin/Boot.php
+class Boot
+{
+    public function init(): void
+    {
+        listen_hook_filter('component.sidebar.plugin.routes', function ($data) {
+            $data[] = ['route' => 'your_plugin.index', 'title' => 'Your Plugin'];
+            return $data;
+        });
+    }
+}
 ```
 
-After executing the command, you will find the template files required for the backend in the same directory.
-
-### 4. Invitation to Free Play:
-Now, you can boldly develop and customize in this safe environment without worrying about damaging the original code.
-
-### 5. Error Correction Tips:
-If you accidentally make a wrong modification, don't worry! Just delete those modified files, and the system will automatically restore to its original state.
-
-### 6. Backend Development:
-Our system offers a plugin development mechanism based on `hooks`, which allows you to customize your development experience flexibly without the need to touch the core code of the system. 
-You can refer to the `PartnerLink` plugin located in the `/plugins` directory to understand how to develop plugins, so that you can enjoy the convenience and fun of free customization.
-
-We advise that all secondary development features be implemented using a plugin model. This approach not only facilitates future official system upgrades but also helps to better organize your code, 
-preventing the chaotic accumulation known colloquially as "code mountains."
-
-### Please look forward to the innovation and convenience we bring!
-- If you find `InnoCMS` helpful to you, please do not hesitate to give us a star.
+- If you find `InnoCMS` helpful, please do not hesitate to give us a star.
 - Every like from you is the driving force for our continuous improvement.
+
+## Contributors
+
+Thanks to the [Contributors](https://github.com/innocms/innocms/graphs/contributors)
+
+<a href="https://github.com/yushine"><img class="avatar-img" width="32px" height="32px" src="https://github.com/yushine.png"/></a>
+<a href="https://github.com/liuweixxx"><img class="avatar-img" width="32px" height="32px" src="https://github.com/liuweixxx.png"/></a>
+<a href="https://github.com/qxsclass"><img class="avatar-img" width="32px" height="32px" src="https://github.com/qxsclass.png"/></a>
+<a href="https://github.com/what123"><img class="avatar-img" width="32px" height="32px" src="https://github.com/what123.png"/></a>
