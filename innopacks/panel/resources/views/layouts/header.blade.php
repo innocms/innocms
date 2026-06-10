@@ -18,12 +18,25 @@
     </div>
 
     <div class="header-item dropdown d-flex align-items-center">
-      <span class="">{{ current_admin()->name }} <i class="bi bi-chevron-down"></i></span>
+      <span class=""><i class="bi bi-person-circle me-1"></i>{{ current_admin()->name }} <i class="bi bi-chevron-down ms-1"></i></span>
 
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('front.home.index') }}" target="_blank">前台首页</a></li>
-        <li><a class="dropdown-item" href="{{ panel_route('account.index') }}">个人中心</a></li>
-        <li><a class="dropdown-item" href="{{ panel_route('logout.index') }}">退出登录</a></li>
+        <li>
+          <a class="dropdown-item" href="{{ route('front.home.index') }}" target="_blank">
+            <i class="bi bi-window-stack me-2"></i>{{ __('panel/dashboard.frontend') }}
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="{{ panel_route('account.index') }}">
+            <i class="bi bi-person me-2"></i>{{ __('panel/dashboard.profile') }}
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item text-danger" href="{{ panel_route('logout.index') }}">
+            <i class="bi bi-box-arrow-right me-2"></i>{{ __('panel/dashboard.sign_out') }}
+          </a>
+        </li>
       </ul>
     </div>
   </div>

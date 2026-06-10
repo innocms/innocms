@@ -9,16 +9,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Setting;
 
-class SettingSeeder extends Seeder
+class SettingSeeder extends BaseSeeder
 {
     public function run(): void
     {
         $items = $this->getSettings();
         if ($items) {
-            Setting::query()->truncate();
+            $this->safeTruncate(Setting::class);
             foreach ($items as $item) {
                 Setting::query()->create($item);
             }
@@ -63,14 +62,14 @@ class SettingSeeder extends Seeder
                 'id'    => 5,
                 'space' => 'system',
                 'name'  => 'panel_logo',
-                'value' => 'images/logo-panel.png',
+                'value' => 'images/logo-panel.svg',
                 'json'  => 0,
             ],
             [
                 'id'    => 6,
                 'space' => 'system',
                 'name'  => 'placeholder',
-                'value' => 'images/placeholder.png',
+                'value' => 'images/placeholder.svg',
                 'json'  => 0,
             ],
             [

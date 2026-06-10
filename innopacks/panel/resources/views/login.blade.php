@@ -18,8 +18,24 @@
   @stack('header')
 </head>
 <body class="page-login">
-<div class="">
-  <div class="container vh-100 pt-2 pt-sm-5 pb-4 pb-sm-5">
+<div class="login-container">
+  <div class="login-left">
+    <div class="login-brand">
+      @if (system_setting('panel_logo'))
+        <img src="{{ image_origin(system_setting('panel_logo')) }}" alt="Logo" class="brand-logo">
+      @else
+        <img src="{{ image_origin('images/logo-panel.svg') }}" alt="Logo" class="brand-logo">
+        <h1 class="brand-name">{{ system_setting('panel_name') ?: 'InnoCMS' }}</h1>
+      @endif
+    </div>
+    <div class="login-decoration">
+      <div class="deco-circle deco-circle-1"></div>
+      <div class="deco-circle deco-circle-2"></div>
+      <div class="deco-circle deco-circle-3"></div>
+      <div class="deco-dots"></div>
+    </div>
+  </div>
+  <div class="login-right">
     <div class="locale-wrap">
       <div class="d-flex align-items-center locale">
         <div class="wh-20 me-2"><img src="{{ image_origin('images/flags/'. panel_locale_code().'.svg') }}" class="img-fluid"></div>
@@ -36,47 +52,48 @@
         </ul>
       </div>
     </div>
-    <div class="login-wrap">
-      <div class="card login-content">
-        <div class="card-header">
-          <h3 class="fw-bold text-center">{{ __('panel/login.login_index') }}</h3>
-        </div>
+    <div class="login-form-wrap">
+      <div class="login-form-inner">
+        <h2 class="login-title">{{ __('panel/login.login_index') }}</h2>
+        <p class="login-subtitle">{{ __('panel/login.description') }}</p>
 
-        <div class="card-body">
-          <form action="{{ panel_route('login.store') }}" method="post">
-            @csrf
+        <form action="{{ panel_route('login.store') }}" method="post">
+          @csrf
 
-            <div class="form-floating mb-4">
-              <input type="text" name="email" class="form-control" id="email-input" value="{{ old('email', $admin_email ?? '') }}" placeholder="{{ __('panel/login.email') }}">
-              <label for="email-input">{{ __('panel/login.email') }}</label>
-              @error('email')
-              <div class="invalid-feedback d-block">{{ $message }}</div>
-              @enderror
+          <div class="form-group mb-3">
+            <label for="email-input" class="form-label">{{ __('panel/login.email') }}</label>
+            <div class="input-icon-wrap">
+              <i class="bi bi-envelope"></i>
+              <input type="text" name="email" class="form-control" id="email-input" value="{{ old('email', $admin_email ?? '') }}" placeholder="{{ __('panel/login.email') }}" autocomplete="email">
             </div>
+            @error('email')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+          </div>
 
-            <div class="form-floating mb-5">
-              <input type="password" name="password" class="form-control" id="password-input" value="{{ old('password', $admin_password ?? '') }}" placeholder="{{ __('panel/login.password') }}">
-              <label for="password-input">{{ __('panel/login.password') }}</label>
-              @error('password')
-              <div class="invalid-feedback d-block">{{ $message }}</div>
-              @enderror
+          <div class="form-group mb-4">
+            <label for="password-input" class="form-label">{{ __('panel/login.password') }}</label>
+            <div class="input-icon-wrap">
+              <i class="bi bi-lock"></i>
+              <input type="password" name="password" class="form-control" id="password-input" value="{{ old('password', $admin_password ?? '') }}" placeholder="{{ __('panel/login.password') }}" autocomplete="current-password">
             </div>
+            @error('password')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+          </div>
 
-            @if (session('error'))
-              <div class="alert alert-danger">
-                {{ session('error') }}
-              </div>
-            @endif
-
-            <div class="d-grid mb-4">
-              <button type="submit" class="btn btn-lg btn-primary">{{ __('panel/login.btn_login') }}</button>
+          @if (session('error'))
+            <div class="alert alert-danger">
+              {{ session('error') }}
             </div>
-          </form>
-        </div>
+          @endif
+
+          <button type="submit" class="btn btn-login">{{ __('panel/login.btn_login') }}</button>
+        </form>
       </div>
-      <p class="text-center text-secondary mt-5">
+      <p class="text-center text-footer">
         {!! innocms_brand_link() !!}
-        {{ innocms_version() }} &copy; {{ date('Y') }} All Rights Reserved
+        {{ innocms_version() }} &copy; {{ date('Y') }}
       </p>
     </div>
   </div>

@@ -9,16 +9,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Admin;
 
-class AdminSeeder extends Seeder
+class AdminSeeder extends BaseSeeder
 {
     public function run(): void
     {
         $items = $this->getAdmins();
         if ($items) {
-            Admin::query()->truncate();
+            $this->safeTruncate(Admin::class);
             foreach ($items as $item) {
                 Admin::query()->create($item);
             }

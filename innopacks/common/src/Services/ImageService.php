@@ -24,7 +24,7 @@ class ImageService
 
     private string $placeholderImage;
 
-    const PLACEHOLDER_IMAGE = 'images/placeholder.png';
+    const PLACEHOLDER_IMAGE = 'images/placeholder.svg';
 
     /**
      * @throws Exception

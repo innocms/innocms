@@ -69,7 +69,7 @@ class Sidebar extends Component
             [
                 'title'    => __('panel/menu.top_content'),
                 'icon'     => 'bi-sticky',
-                'prefixes' => ['articles', 'catalogs', 'tags', 'pages', 'consultations'],
+                'prefixes' => ['articles', 'catalogs', 'tags', 'pages', 'consultations', 'file_manager'],
                 'children' => $this->getContentSubRoutes(),
             ],
             [
@@ -218,6 +218,7 @@ class Sidebar extends Component
             ['route' => 'tags.index', 'title' => __('panel/menu.tags')],
             ['route' => 'pages.index', 'title' => __('panel/menu.pages')],
             ['route' => 'consultations.index', 'title' => __('panel/menu.consultations')],
+            ['route' => 'file_manager.index', 'title' => __('panel/menu.file_manager')],
         ];
 
         return fire_hook_filter('component.sidebar.content.routes', $routes);

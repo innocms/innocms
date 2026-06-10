@@ -22,4 +22,8 @@ return [
     'frontend'          => 'Frontend',
     'profile'           => 'Profile',
     'sign_out'          => 'Log out',
+    'today_pv'          => "Today's PV",
+    'today_uv'          => "Today's UV",
+    'today_ip'          => "Today's IP",
+    'article_quantity'  => 'Articles',
 ];

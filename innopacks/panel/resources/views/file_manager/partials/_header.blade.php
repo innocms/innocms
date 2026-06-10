@@ -113,5 +113,5 @@
     })(window);
   </script>
 
-  <link rel="stylesheet" href="{{ asset('build/panel/css/app.css') }}">>
+  <link rel="stylesheet" href="{{ asset('build/panel/css/app.css') }}">
 @endpush

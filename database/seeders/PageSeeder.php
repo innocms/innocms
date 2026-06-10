@@ -9,17 +9,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Page;
 use InnoCMS\Common\Models\Page\Translation;
 
-class PageSeeder extends Seeder
+class PageSeeder extends BaseSeeder
 {
     public function run(): void
     {
         $items = $this->getPages();
         if ($items) {
-            Page::query()->truncate();
+            $this->safeTruncate(Page::class);
             foreach ($items as $item) {
                 Page::query()->create($item);
             }
@@ -27,7 +26,7 @@ class PageSeeder extends Seeder
 
         $items = $this->getPageTranslations();
         if ($items) {
-            Translation::query()->truncate();
+            $this->safeTruncate(Translation::class);
             foreach ($items as $item) {
                 Translation::query()->create($item);
             }

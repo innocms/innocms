@@ -1,77 +1,71 @@
 body.page-home {
   .dashboard-top-card {
     .dashboard-item {
+      background: #fff;
+      border: 1px solid $border;
       border-radius: 10px;
       padding: 1.25rem 1.5rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
       cursor: default;
 
       &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        border-color: $primary-border;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
       }
 
       .left {
         .quantity {
-          font-size: 2rem;
+          font-size: 1.75rem;
           font-weight: 700;
           color: $text-heading;
           line-height: 1.2;
           letter-spacing: -0.02em;
+          font-variant-numeric: tabular-nums;
         }
 
         .title {
           font-size: 0.8125rem;
-          color: $text-muted;
-          font-weight: 500;
-          margin-top: 2px;
+          color: $text-light;
+          font-weight: 400;
+          margin-top: 4px;
         }
       }
 
       .right {
         .icon-wrap {
-          width: 44px;
-          height: 44px;
+          width: 42px;
+          height: 42px;
           display: flex;
           align-items: center;
           justify-content: center;
           border-radius: 10px;
-          background-color: rgba(255, 255, 255, 0.6);
 
           .icon {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
           }
         }
       }
     }
 
     .col-6 {
-      &:nth-child(1) {
-        .dashboard-item {
-          background: linear-gradient(135deg, $primary-bg 0%, $primary-border 100%);
-          .icon-wrap .icon { color: $primary; }
-        }
+      &:nth-child(1) .icon-wrap {
+        background-color: $primary-bg;
+        .icon { color: $primary; }
       }
 
-      &:nth-child(2) {
-        .dashboard-item {
-          background: linear-gradient(135deg, $success-bg 0%, $success-bg-dark 100%);
-          .icon-wrap .icon { color: $success; }
-        }
+      &:nth-child(2) .icon-wrap {
+        background-color: $success-bg;
+        .icon { color: $success; }
       }
 
-      &:nth-child(3) {
-        .dashboard-item {
-          background: linear-gradient(135deg, $warning-bg 0%, $warning-bg-dark 100%);
-          .icon-wrap .icon { color: $warning; }
-        }
+      &:nth-child(3) .icon-wrap {
+        background-color: $warning-bg;
+        .icon { color: $warning; }
       }
 
-      &:nth-child(4) {
-        .dashboard-item {
-          background: linear-gradient(135deg, $danger-bg 0%, $danger-bg-dark 100%);
-          .icon-wrap .icon { color: $danger; }
-        }
+      &:nth-child(4) .icon-wrap {
+        background-color: $danger-bg;
+        .icon { color: $danger; }
       }
     }
   }

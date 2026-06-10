@@ -33,7 +33,12 @@
   <aside class="sidebar-box navbar-expand-xs border-radius-xl">
     <div class="sidebar-header">
       <a href="{{ panel_route('home.index') }}" class="sidebar-logo">
-        <img src="{{ image_origin(system_setting('panel_logo') ?: 'images/logo-panel.png') }}" class="img-fluid">
+        @if (system_setting('panel_logo'))
+          <img src="{{ image_origin(system_setting('panel_logo')) }}" class="img-fluid">
+        @else
+          <img src="{{ image_origin('images/logo-panel.svg') }}" class="img-fluid sidebar-logo-icon">
+          <span class="sidebar-logo-text">{{ system_setting('panel_name') ?: 'InnoCMS' }}</span>
+        @endif
       </a>
     </div>
 

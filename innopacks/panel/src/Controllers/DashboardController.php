@@ -10,6 +10,7 @@
 namespace InnoCMS\Panel\Controllers;
 
 use Exception;
+use InnoCMS\Common\Repositories\VisitRepo;
 use InnoCMS\Panel\Repositories\Dashboard\ArticleRepo;
 use InnoCMS\Panel\Repositories\DashboardRepo;
 
@@ -31,6 +32,8 @@ class DashboardController extends BaseController
             ],
             'visit_trend'         => $dashboard->getVisitTrendLatestMonth(),
             'top_viewed_articles' => ArticleRepo::getInstance()->getTopViewedArticles(),
+            'device_data'         => VisitRepo::getInstance()->getVisitsByDeviceType(),
+            'browser_data'        => VisitRepo::getInstance()->getVisitsByBrowser(),
         ];
 
         return view('panel::dashboard', $data);

@@ -9,18 +9,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Article;
 use InnoCMS\Common\Models\Article\Translation;
 use InnoCMS\Common\Models\ArticleTag;
 
-class ArticleSeeder extends Seeder
+class ArticleSeeder extends BaseSeeder
 {
     public function run(): void
     {
         $items = $this->getArticles();
         if ($items) {
-            Article::query()->truncate();
+            $this->safeTruncate(Article::class);
             foreach ($items as $item) {
                 Article::query()->create($item);
             }
@@ -28,7 +27,7 @@ class ArticleSeeder extends Seeder
 
         $items = $this->getArticleTranslations();
         if ($items) {
-            Translation::query()->truncate();
+            $this->safeTruncate(Translation::class);
             foreach ($items as $item) {
                 Translation::query()->create($item);
             }
@@ -36,7 +35,7 @@ class ArticleSeeder extends Seeder
 
         $items = $this->getArticleTags();
         if ($items) {
-            ArticleTag::query()->truncate();
+            $this->safeTruncate(ArticleTag::class);
             foreach ($items as $item) {
                 ArticleTag::query()->create($item);
             }

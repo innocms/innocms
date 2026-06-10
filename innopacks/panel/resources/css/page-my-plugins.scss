@@ -29,13 +29,34 @@ body.page-my-plugins {
         }
       }
 
+      .title-wrap {
+        min-width: 0;
+        flex: 1;
+      }
+
       .title {
         font-size: 16px;
         font-weight: bold;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+        white-space: nowrap;
         overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .plugin-meta {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        color: $text-light;
+        font-size: 0.7rem;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .plugin-meta-dot {
+          margin: 0 5px;
+          color: $border;
+        }
       }
     }
 

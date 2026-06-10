@@ -36,22 +36,22 @@ class DashboardRepo
 
         return [
             [
-                'title'    => '今日 PV',
+                'title'    => __('panel/dashboard.today_pv'),
                 'icon'     => 'bi bi-bar-chart-line',
                 'quantity' => $visitStats['pv'],
             ],
             [
-                'title'    => '今日 UV',
+                'title'    => __('panel/dashboard.today_uv'),
                 'icon'     => 'bi bi-people',
                 'quantity' => $visitStats['uv'],
             ],
             [
-                'title'    => '今日 IP',
+                'title'    => __('panel/dashboard.today_ip'),
                 'icon'     => 'bi bi-globe',
                 'quantity' => $visitStats['ip'],
             ],
             [
-                'title'    => '文章数量',
+                'title'    => __('panel/dashboard.article_quantity'),
                 'icon'     => 'bi bi-file-earmark-text',
                 'quantity' => Article::query()->count(),
             ],

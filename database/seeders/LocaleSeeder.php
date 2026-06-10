@@ -9,16 +9,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Locale;
 
-class LocaleSeeder extends Seeder
+class LocaleSeeder extends BaseSeeder
 {
     public function run(): void
     {
         $items = $this->getLocales();
         if ($items) {
-            Locale::query()->truncate();
+            $this->safeTruncate(Locale::class);
             foreach ($items as $item) {
                 Locale::query()->create($item);
             }

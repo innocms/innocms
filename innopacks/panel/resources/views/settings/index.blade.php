@@ -28,10 +28,21 @@
           <div class="tab-content">
             <!-- Basic Settings -->
             <div class="tab-pane fade show active" id="tab-setting-basics">
-              <x-panel-form-image title="前台 Logo" name="front_logo" value="{{ old('front_logo', system_setting('front_logo')) }}"/>
-              <x-panel-form-image title="后台 Logo" name="panel_logo" value="{{ old('panel_logo', system_setting('panel_logo')) }}"/>
-              <x-panel-form-image title="缺省图" name="placeholder" value="{{ old('placeholder', system_setting('placeholder')) }}"/>
-              <x-panel-form-image title="浏览器小图标" name="favicon" value="{{ old('favicon', system_setting('favicon')) }}"/>
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <x-panel-form-image title="前台 Logo" name="front_logo" value="{{ old('front_logo', system_setting('front_logo')) }}"/>
+                </div>
+                <div class="col-md-3">
+                  <x-panel-form-image title="后台 Logo" name="panel_logo" value="{{ old('panel_logo', system_setting('panel_logo')) }}"/>
+                </div>
+                <div class="col-md-3">
+                  <x-panel-form-image title="缺省图" name="placeholder" value="{{ old('placeholder', system_setting('placeholder')) }}"/>
+                </div>
+                <div class="col-md-3">
+                  <x-panel-form-image title="浏览器小图标" name="favicon" value="{{ old('favicon', system_setting('favicon')) }}"/>
+                </div>
+              </div>
+              <div class="mb-3"></div>
               <x-panel-form-input title="Meta 标题" name="meta_title"
                                   value="{{ old('meta_title', system_setting('meta_title')) }}" required
                                   placeholder="Meta 标题"/>

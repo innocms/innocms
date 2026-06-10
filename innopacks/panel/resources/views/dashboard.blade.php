@@ -2,7 +2,7 @@
 @section('body-class', 'page-home')
 
 @push('header')
-<script src="{{ asset('vendor/chart/chart.min.js') }}"></script>
+<script src="{{ asset('vendor/echarts/echarts.min.js') }}"></script>
 @endpush
 
 @section('content')
@@ -29,14 +29,37 @@
   </div>
 </div>
 
-<div class="row g-3">
-  <div class="col-12 col-md-7">
+<div class="row g-3 mb-3">
+  <div class="col-12 col-lg-8">
     <div class="card dashboard-chart-card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h6 class="mb-0 fw-semibold">流量趋势</h6>
       </div>
       <div class="card-body">
-        <canvas id="chart-visit-trend" height="320"></canvas>
+        <div id="chart-visit-trend" style="height:320px;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="card dashboard-chart-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold">设备分布</h6>
+      </div>
+      <div class="card-body d-flex align-items-center justify-content-center">
+        <div id="chart-device" style="height:320px;width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-md-7">
+    <div class="card dashboard-chart-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold">浏览器分布</h6>
+      </div>
+      <div class="card-body">
+        <div id="chart-browser" style="height:320px;"></div>
       </div>
     </div>
   </div>
@@ -81,116 +104,224 @@
 
 @push('footer')
 <script>
-  const ctx1 = document.getElementById('chart-visit-trend').getContext('2d');
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-        align: 'end',
-        labels: {
-          boxWidth: 12,
-          boxHeight: 12,
-          borderRadius: 3,
-          useBorderRadius: true,
-          padding: 16,
-          font: { size: 12, weight: '500' },
-          color: '#64748B',
-        }
-      },
-      tooltip: {
-        backgroundColor: '#0F172A',
-        titleFont: { size: 13, weight: '500' },
-        bodyFont: { size: 12 },
-        padding: 12,
-        cornerRadius: 8,
-        displayColors: true,
-      }
-    },
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: {
-          drawBorder: false,
-          borderDash: [4, 4],
-          color: '#E2E8F0',
-        },
-        ticks: {
-          color: '#94A3B8',
-          font: { size: 12 },
-          padding: 8,
-        },
-        border: { display: false }
-      },
-      x: {
-        grid: {
-          drawBorder: false,
-          display: false,
-        },
-        ticks: {
-          color: '#94A3B8',
-          font: { size: 12 },
-          padding: 8,
-          callback: function(value, index) {
-            const label = this.getLabelForValue(value);
-            return label ? label.substring(5) : label;
-          }
-        },
-        border: { display: false }
-      }
-    },
+(function() {
+  const colors = {
+    primary: '#2563EB',
+    primaryLight: '#3B82F6',
+    success: '#10B981',
+    successLight: '#34D399',
+    warning: '#F59E0B',
+    danger: '#EF4444',
+    text: '#475569',
+    textLight: '#94A3B8',
+    border: '#E2E8F0',
   };
 
-  const pvGradient = ctx1.createLinearGradient(0, 0, 0, 320);
-  pvGradient.addColorStop(0, 'rgba(37,99,235,0.15)');
-  pvGradient.addColorStop(1, 'rgba(37,99,235,0)');
+  // ===== 1. Visit Trend (Area Chart) =====
+  const trendEl = document.getElementById('chart-visit-trend');
+  if (trendEl) {
+    const trendChart = echarts.init(trendEl);
+    const periods = @json($visit_trend['period']);
+    const labels = periods.map(p => p.substring(5));
 
-  const uvGradient = ctx1.createLinearGradient(0, 0, 0, 320);
-  uvGradient.addColorStop(0, 'rgba(16,185,129,0.15)');
-  uvGradient.addColorStop(1, 'rgba(16,185,129,0)');
-
-  const chart1 = new Chart(ctx1, {
-    type: 'line',
-    data: {
-      labels: @json($visit_trend['period']),
-      datasets: [
+    trendChart.setOption({
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: '#0F172A',
+        borderColor: 'transparent',
+        textStyle: { color: '#fff', fontSize: 12 },
+        axisPointer: { type: 'cross', crossStyle: { color: '#94A3B8' } },
+      },
+      legend: {
+        top: 0,
+        right: 0,
+        itemWidth: 16,
+        itemHeight: 3,
+        itemGap: 16,
+        textStyle: { color: colors.text, fontSize: 12 },
+      },
+      grid: { left: 8, right: 8, top: 36, bottom: 8, containLabel: true },
+      xAxis: {
+        type: 'category',
+        data: labels,
+        boundaryGap: false,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: colors.textLight, fontSize: 11 },
+      },
+      yAxis: {
+        type: 'value',
+        splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: colors.textLight, fontSize: 11 },
+      },
+      series: [
         {
-          label: 'PV',
+          name: 'PV',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 6,
+          showSymbol: false,
+          lineStyle: { width: 2.5, color: colors.primary },
+          itemStyle: { color: colors.primary, borderWidth: 2, borderColor: '#fff' },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(37,99,235,0.2)' },
+              { offset: 1, color: 'rgba(37,99,235,0.01)' }
+            ])
+          },
+          emphasis: { focus: 'series' },
           data: @json($visit_trend['pv']),
-          backgroundColor: pvGradient,
-          borderColor: '#2563EB',
-          borderWidth: 2.5,
-          fill: true,
-          pointBackgroundColor: '#fff',
-          pointBorderColor: '#2563EB',
-          pointBorderWidth: 2,
-          pointRadius: 3,
-          pointHoverRadius: 5,
-          tension: 0.4
         },
         {
-          label: 'UV',
+          name: 'UV',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 6,
+          showSymbol: false,
+          lineStyle: { width: 2.5, color: colors.success },
+          itemStyle: { color: colors.success, borderWidth: 2, borderColor: '#fff' },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(16,185,129,0.2)' },
+              { offset: 1, color: 'rgba(16,185,129,0.01)' }
+            ])
+          },
+          emphasis: { focus: 'series' },
           data: @json($visit_trend['uv']),
-          backgroundColor: uvGradient,
-          borderColor: '#10B981',
-          borderWidth: 2.5,
-          fill: true,
-          pointBackgroundColor: '#fff',
-          pointBorderColor: '#10B981',
-          pointBorderWidth: 2,
-          pointRadius: 3,
-          pointHoverRadius: 5,
-          tension: 0.4
+        },
+      ],
+    });
+    window.addEventListener('resize', () => trendChart.resize());
+  }
+
+  // ===== 2. Device Distribution (Doughnut) =====
+  const deviceEl = document.getElementById('chart-device');
+  if (deviceEl) {
+    const deviceChart = echarts.init(deviceEl);
+    const rawDevices = @json($device_data);
+    const deviceMap = { desktop: '桌面端', mobile: '移动端', tablet: '平板' };
+    const deviceColors = [colors.primary, colors.success, colors.warning];
+    const deviceData = rawDevices.map((d, i) => ({
+      name: deviceMap[d.device_type] || d.device_type,
+      value: d.page_views || d.visits || 0,
+      itemStyle: { color: deviceColors[i % deviceColors.length] },
+    }));
+    const total = deviceData.reduce((s, d) => s + d.value, 0);
+
+    deviceChart.setOption({
+      tooltip: {
+        trigger: 'item',
+        backgroundColor: '#0F172A',
+        borderColor: 'transparent',
+        textStyle: { color: '#fff', fontSize: 12 },
+        formatter: '{b}: {c} ({d}%)',
+      },
+      graphic: [{
+        type: 'text',
+        left: 'center',
+        top: '38%',
+        style: {
+          text: total.toLocaleString(),
+          fontSize: 22,
+          fontWeight: 700,
+          fill: '#0F172A',
+          textAlign: 'center',
         }
-      ]
-    },
-    options: options
-  });
+      }, {
+        type: 'text',
+        left: 'center',
+        top: '52%',
+        style: {
+          text: '总访问',
+          fontSize: 12,
+          fill: '#94A3B8',
+          textAlign: 'center',
+        }
+      }],
+      series: [{
+        type: 'pie',
+        radius: ['50%', '72%'],
+        center: ['50%', '48%'],
+        avoidLabelOverlap: true,
+        padAngle: 3,
+        itemStyle: { borderRadius: 6 },
+        label: {
+          show: true,
+          position: 'outside',
+          formatter: '{b}\n{d}%',
+          fontSize: 11,
+          color: colors.text,
+          lineHeight: 16,
+        },
+        labelLine: { length: 12, length2: 8 },
+        emphasis: {
+          label: { show: true, fontSize: 13, fontWeight: 600 },
+          itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.1)' },
+        },
+        data: deviceData,
+      }],
+    });
+    window.addEventListener('resize', () => deviceChart.resize());
+  }
+
+  // ===== 3. Browser Distribution (Horizontal Bar) =====
+  const browserEl = document.getElementById('chart-browser');
+  if (browserEl) {
+    const browserChart = echarts.init(browserEl);
+    const rawBrowsers = @json($browser_data);
+    const browserNames = rawBrowsers.map(b => b.browser || 'Unknown').reverse();
+    const browserValues = rawBrowsers.map(b => b.visits || 0).reverse();
+
+    browserChart.setOption({
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: '#0F172A',
+        borderColor: 'transparent',
+        textStyle: { color: '#fff', fontSize: 12 },
+        axisPointer: { type: 'shadow' },
+      },
+      grid: { left: 8, right: 32, top: 8, bottom: 8, containLabel: true },
+      xAxis: {
+        type: 'value',
+        splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: colors.textLight, fontSize: 11 },
+      },
+      yAxis: {
+        type: 'category',
+        data: browserNames,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: colors.text, fontSize: 12 },
+      },
+      series: [{
+        type: 'bar',
+        barWidth: 16,
+        itemStyle: {
+          borderRadius: [0, 4, 4, 0],
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+            { offset: 0, color: '#3B82F6' },
+            { offset: 1, color: '#2563EB' },
+          ]),
+        },
+        emphasis: {
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              { offset: 0, color: '#2563EB' },
+              { offset: 1, color: '#1E40AF' },
+            ]),
+          }
+        },
+        data: browserValues,
+      }],
+    });
+    window.addEventListener('resize', () => browserChart.resize());
+  }
+})();
 </script>
 @endpush

@@ -130,12 +130,13 @@ class MenuSearchRepo
             [
                 'title'    => __('panel/menu.top_content'),
                 'icon'     => 'bi-sticky',
-                'prefixes' => ['articles', 'catalogs', 'tags', 'pages'],
+                'prefixes' => ['articles', 'catalogs', 'tags', 'pages', 'file_manager'],
                 'children' => fire_hook_filter('component.sidebar.content.routes', [
                     ['route' => 'articles.index', 'title' => __('panel/menu.articles')],
                     ['route' => 'catalogs.index', 'title' => __('panel/menu.catalogs')],
                     ['route' => 'tags.index', 'title' => __('panel/menu.tags')],
                     ['route' => 'pages.index', 'title' => __('panel/menu.pages')],
+                    ['route' => 'file_manager.index', 'title' => __('panel/menu.file_manager')],
                 ]),
             ],
             [

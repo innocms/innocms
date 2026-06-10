@@ -9,17 +9,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use InnoCMS\Common\Models\Catalog;
 use InnoCMS\Common\Models\Catalog\Translation;
 
-class CatalogSeeder extends Seeder
+class CatalogSeeder extends BaseSeeder
 {
     public function run(): void
     {
         $items = $this->getCatalogs();
         if ($items) {
-            Catalog::query()->truncate();
+            $this->safeTruncate(Catalog::class);
             foreach ($items as $item) {
                 Catalog::query()->create($item);
             }
@@ -27,7 +26,7 @@ class CatalogSeeder extends Seeder
 
         $items = $this->getCatalogTranslations();
         if ($items) {
-            Translation::query()->truncate();
+            $this->safeTruncate(Translation::class);
             foreach ($items as $item) {
                 Translation::query()->create($item);
             }

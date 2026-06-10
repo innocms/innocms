@@ -72,27 +72,46 @@ img {
 
   .sidebar-box {
     background-color: $sidebar-bg;
-    color: $border-dark;
-    width: 230px;
+    color: $text-body;
+    width: 240px;
     transition: all 0.2s ease;
+    border-right: 1px solid $border-light;
+    overflow-y: auto;
 
     .sidebar-header {
-      height: 60px;
+      height: 64px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      padding: 0 20px;
       background-color: $sidebar-header;
       position: relative;
       z-index: 9;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid $border-light;
 
       .sidebar-logo {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+
         img {
-          max-width: 76%;
-          max-height: 50px;
+          max-height: 42px;
+          width: auto;
+        }
+
+        .sidebar-logo-text {
+          font-size: 20px;
+          font-weight: 700;
+          color: $primary;
+          letter-spacing: 0.5px;
+          line-height: 1;
+          text-transform: lowercase;
         }
       }
+    }
+
+    .sidebar-body {
+      padding: 12px 0;
     }
 
     .accordion {
@@ -102,32 +121,57 @@ img {
 
       .accordion-item {
         border: none;
+        margin-bottom: 2px;
 
         .accordion-body {
-          background-color: rgba(0, 0, 0, 0.15);
+          background-color: transparent;
+          padding: 4px 0 8px;
+          position: relative;
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 0;
+            bottom: 4px;
+            width: 1.5px;
+            background-color: $border;
+            border-radius: 1px;
+          }
         }
       }
 
       .nav {
         border: none;
         a {
-          color: $text-light;
-          padding: .75rem 1.25rem .75rem 2.85rem;
+          color: $text-muted;
+          padding: 8px 16px 8px 48px;
           font-size: 0.875rem;
           transition: all 0.15s ease;
-          border-left: 3px solid transparent;
+          border-radius: 0 6px 6px 0;
+          margin: 1px 0;
+          position: relative;
 
           &:hover {
-            color: #fff;
+            color: $primary;
             background-color: $sidebar-hover;
-            border-left-color: rgba(59, 130, 246, 0.5);
           }
 
           &.active {
-            color: #fff;
+            color: $primary;
             background-color: $sidebar-hover;
-            border-left-color: $primary-light;
             font-weight: 500;
+
+            &::after {
+              content: '';
+              position: absolute;
+              left: 22px;
+              top: 6px;
+              bottom: 6px;
+              width: 1.5px;
+              background-color: $primary;
+              border-radius: 1px;
+            }
           }
         }
       }
@@ -139,16 +183,29 @@ img {
       }
 
       .accordion-button {
-        color: $border-dark;
+        color: $text-dark;
         text-decoration: none;
-        font-size: 0.875rem;
+        font-size: 0.9375rem;
         font-weight: 500;
         transition: all 0.15s ease;
+        padding: 12px 12px 12px 16px;
+        border-radius: 0;
 
         &.sidebar-link-active {
-          color: #fff;
+          color: $primary;
           background-color: $sidebar-hover;
-          border-left: 3px solid $primary-light;
+          position: relative;
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            bottom: 6px;
+            width: 3px;
+            background-color: $primary;
+            border-radius: 0 2px 2px 0;
+          }
         }
 
         &::after {
@@ -157,8 +214,10 @@ img {
           justify-content: center;
           align-items: center;
           font-family: 'bootstrap-icons';
-          font-size: 11px;
+          font-size: 10px;
           background-image: none;
+          color: $text-light;
+          transition: color 0.15s ease;
         }
 
         &:focus {
@@ -166,18 +225,28 @@ img {
         }
 
         &:not(.collapsed) {
-          color: rgba(255, 255, 255, 0.7);
-          background-color: rgba(255, 255, 255, 0.05);
+          color: $text-dark;
+          background-color: transparent;
+
+          &::after {
+            color: $text-muted;
+          }
         }
 
         &:hover {
-          color: #fff;
-          background-color: rgba(255, 255, 255, 0.08);
+          color: $primary;
+          background-color: $sidebar-hover;
+
+          &::after {
+            color: $primary-light;
+          }
         }
 
         .icon {
-          width: 24px;
-          font-size: 1rem;
+          width: 22px;
+          font-size: 0.9375rem;
+          margin-right: 10px;
+          text-align: center;
         }
       }
     }
@@ -185,22 +254,21 @@ img {
 
   #content {
     flex: 1;
-    padding: 0 1.5rem 5rem;
+    padding: 0 2rem 5rem;
     overflow-y: auto;
     position: relative;
     background-color: $content-bg;
 
     .header-box {
-      margin: 0 -1.5rem 0;
-      height: 60px;
+      margin: 0 -2rem 0;
+      height: 64px;
       background-color: #fff;
-      box-shadow: $header-shadow;
       border-bottom: 1px solid $border-light;
 
       .header-item {
         cursor: pointer;
-        height: 60px;
-        padding: 0 10px;
+        height: 64px;
+        padding: 0 12px;
         transition: background-color 0.15s ease;
 
         &:hover {

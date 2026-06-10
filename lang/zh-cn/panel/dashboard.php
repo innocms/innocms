@@ -22,4 +22,8 @@ return [
     'frontend'          => '前台首页',
     'profile'           => '个人中心',
     'sign_out'          => '退出登录',
+    'today_pv'          => '今日 PV',
+    'today_uv'          => '今日 UV',
+    'today_ip'          => '今日 IP',
+    'article_quantity'  => '文章数量',
 ];

@@ -110,7 +110,7 @@ class PluginService
         }
 
         $pluginCode = $CPlugin->getDirname();
-        $files = glob("$seederPath/*.php");
+        $files      = glob("$seederPath/*.php");
         sort($files);
 
         foreach ($files as $file) {

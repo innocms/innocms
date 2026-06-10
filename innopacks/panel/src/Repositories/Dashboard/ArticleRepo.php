@@ -31,7 +31,7 @@ class ArticleRepo extends BaseRepo
                 continue;
             }
 
-            $name    = $item->translation->title;
+            $name    = $item->title;
             $items[] = [
                 'id'      => $item->id,
                 'image'   => image_resize($item->image),
@@ -88,7 +88,7 @@ class ArticleRepo extends BaseRepo
 
         $names = $viewed = [];
         foreach ($articles as $article) {
-            $names[]  = sub_string($article->translation->title, 8);
+            $names[]  = sub_string($article->title, 8);
             $viewed[] = $article->viewed;
         }
 

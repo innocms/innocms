@@ -46,8 +46,9 @@ class PluginController
             $code   = $request->get('code');
             $plugin = app('plugin')->getPluginOrFail($code);
             PluginService::getInstance()->installPlugin($plugin);
+            $data = $this->getPluginResourceData($code, true, true);
 
-            return json_success(trans('panel/common.saved_success'));
+            return json_success(trans('panel/common.saved_success'), $data);
         } catch (Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -62,8 +63,9 @@ class PluginController
         try {
             $plugin = app('plugin')->getPluginOrFail($code);
             PluginService::getInstance()->uninstallPlugin($plugin);
+            $data = $this->getPluginResourceData($code, false, false);
 
-            return json_success(trans('panel/common.deleted_success'));
+            return json_success(trans('panel/common.deleted_success'), $data);
         } catch (Exception $e) {
             return json_fail($e->getMessage());
         }
@@ -79,14 +81,14 @@ class PluginController
     {
         try {
             $plugin = app('plugin')->getPluginOrFail($code);
-            $view   = $plugin->getFieldView() ?: 'plugin::plugins.form';
+            $view   = $plugin->getFieldView();
             $data   = [
                 'view'   => $view,
                 'plugin' => $plugin,
                 'fields' => $plugin->getFields(),
             ];
 
-            return view($view, $data);
+            return view('plugin::plugins.form', $data);
         } catch (Exception $e) {
             $plugin = app('plugin')->getPlugin($code);
             $data   = [
@@ -150,12 +152,31 @@ class PluginController
             $enabled = $request->get('enabled');
             app('plugin')->getPluginOrFail($code);
             SettingRepo::getInstance()->updatePluginValue($code, 'active', $enabled);
+            $data = $this->getPluginResourceData($code, true, (bool) $enabled);
 
-            return json_success(trans('panel/common.updated_success'));
+            return json_success(trans('panel/common.updated_success'), $data);
         } catch (Exception $e) {
             return json_fail($e->getMessage());
         } catch (Throwable $e) {
             return json_fail($e->getMessage());
         }
+    }
+
+    /**
+     * Get plugin resource data with explicit installed/enabled state.
+     *
+     * @param  string  $code
+     * @param  bool  $installed
+     * @param  bool  $enabled
+     * @return array
+     */
+    private function getPluginResourceData(string $code, bool $installed, bool $enabled): array
+    {
+        $plugin            = app('plugin')->getPlugin($code);
+        $data              = $plugin ? (new PluginResource($plugin))->jsonSerialize() : [];
+        $data['installed'] = $installed;
+        $data['enabled']   = $enabled;
+
+        return $data;
     }
 }
