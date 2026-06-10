@@ -934,6 +934,26 @@ if (! function_exists('innocms_brand_link')) {
     }
 }
 
+if (! function_exists('theme_trans')) {
+    /**
+     * Translate key from the active theme's language files.
+     *
+     * @param  string  $key
+     * @param  string  $theme
+     * @param  array  $replace
+     * @param  null  $locale
+     * @return mixed
+     */
+    function theme_trans($key, string $theme = '', array $replace = [], $locale = null): mixed
+    {
+        if (empty($theme)) {
+            $theme = system_setting('theme', 'default');
+        }
+
+        return trans("theme-$theme::$key", $replace, $locale);
+    }
+}
+
 if (! function_exists('to_sql')) {
     /**
      * Render SQL by builder object

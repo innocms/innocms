@@ -14,6 +14,9 @@ $hasSuffix = installed() && system_setting('has_suffix');
 
 Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index');
 
+// Locale
+Route::get('/locales/switch/{code}', [Controllers\LocaleController::class, 'switch'])->name('locales.switch');
+
 // Consultation
 Route::post('/consultations', [Controllers\ConsultationController::class, 'store'])->name('consultations.store');
 

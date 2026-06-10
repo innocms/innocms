@@ -16,6 +16,7 @@ use InnoCMS\Common\Middleware\ContentFilterHook;
 use InnoCMS\Common\Middleware\EventActionHook;
 use InnoCMS\Common\Middleware\VisitTrackingMiddleware;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
+use InnoCMS\Front\Middleware\SetFrontLocale;
 
 class FrontServiceProvider extends ServiceProvider
 {
@@ -61,6 +62,7 @@ class FrontServiceProvider extends ServiceProvider
     {
         $router      = $this->app['router'];
         $middlewares = [
+            SetFrontLocale::class,
             EventActionHook::class,
             ContentFilterHook::class,
             GlobalDataMiddleware::class,
@@ -154,12 +156,17 @@ class FrontServiceProvider extends ServiceProvider
      */
     protected function loadThemeTranslations(): void
     {
-        if ($theme = system_setting('theme')) {
-            $themeLangPath = base_path("themes/{$theme}/lang");
-            if (is_dir($themeLangPath)) {
-                $this->loadTranslationsFrom($themeLangPath, 'front');
-            }
+        $currentTheme = system_setting('theme');
+        if (! $currentTheme) {
+            return;
         }
+
+        $themeLangPath = base_path("themes/{$currentTheme}/lang");
+        if (! is_dir($themeLangPath)) {
+            return;
+        }
+
+        $this->loadTranslationsFrom($themeLangPath, "theme-{$currentTheme}");
     }
 
     /**
