@@ -10,9 +10,12 @@
 namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use InnoCMS\Common\Traits\PatchRequestTrait;
 
 class PageRequest extends FormRequest
 {
+    use PatchRequestTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,20 +33,34 @@ class PageRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->page) {
-            $slugRule = 'required|alpha_dash|unique:pages,slug,'.$this->page->id;
-        } else {
-            $slugRule = 'required|alpha_dash|unique:pages,slug';
+        $rules = [
+            'viewed'          => 'integer',
+            'position'        => 'integer',
+            'show_breadcrumb' => 'bool',
+            'active'          => 'bool',
+
+            'translations.*.locale'           => 'required',
+            'translations.*.title'            => 'required',
+            'translations.*.content'          => 'nullable',
+            'translations.*.template'         => 'nullable|string|max:60',
+            'translations.*.meta_title'       => 'nullable|string|max:500',
+            'translations.*.meta_keywords'    => 'nullable|string|max:500',
+            'translations.*.meta_description' => 'nullable|string|max:1000',
+        ];
+
+        if ($this->slug) {
+            if ($this->page) {
+                $slugRule = 'alpha_dash|unique:pages,slug,'.$this->page->id;
+            } else {
+                $slugRule = 'alpha_dash|unique:pages,slug';
+            }
+            $rules['slug'] = $slugRule;
         }
 
-        return [
-            'slug'   => $slugRule,
-            'viewed' => 'integer',
-            'active' => 'bool',
+        if ($this->isMethod('PATCH')) {
+            $rules = $this->applySometimesToRules($rules);
+        }
 
-            'descriptions.*.locale'  => 'required',
-            'descriptions.*.title'   => 'required',
-            'descriptions.*.content' => 'required',
-        ];
+        return $rules;
     }
 }

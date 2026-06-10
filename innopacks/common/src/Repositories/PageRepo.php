@@ -119,6 +119,49 @@ class PageRepo extends BaseRepo
     }
 
     /**
+     * @param  Page  $page
+     * @param  array  $data
+     * @return mixed
+     */
+    public function patch(Page $page, array $data): mixed
+    {
+        $page->loadMissing(['translations']);
+
+        $merged = [
+            'slug'            => $page->slug,
+            'viewed'          => $page->viewed,
+            'position'        => $page->position,
+            'show_breadcrumb' => $page->show_breadcrumb,
+            'active'          => $page->active,
+            'translations'    => [],
+        ];
+
+        foreach ($page->translations as $translation) {
+            $merged['translations'][$translation->locale] = $translation->only($translation->getFillable());
+        }
+
+        foreach (['slug', 'viewed', 'position', 'show_breadcrumb', 'active'] as $key) {
+            if (array_key_exists($key, $data)) {
+                $merged[$key] = $data[$key];
+            }
+        }
+
+        if (isset($data['translations']) && is_array($data['translations'])) {
+            foreach ($data['translations'] as $locale => $fields) {
+                if (! is_array($fields)) {
+                    continue;
+                }
+                $merged['translations'][$locale] = array_merge(
+                    $merged['translations'][$locale] ?? ['locale' => $locale],
+                    $fields
+                );
+            }
+        }
+
+        return $this->update($page, $merged);
+    }
+
+    /**
      * @param  $item
      * @return void
      */

@@ -33,6 +33,7 @@ class FrontServiceProvider extends ServiceProvider
         }
 
         load_settings();
+        $this->loadThemeTranslations();
         $this->registerSitemapRoute();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
@@ -144,6 +145,21 @@ class FrontServiceProvider extends ServiceProvider
         $this->publishes([
             $originViewPath => $customViewPath,
         ], 'views');
+    }
+
+    /**
+     * Load theme translations from themes/{theme}/lang/.
+     *
+     * @return void
+     */
+    protected function loadThemeTranslations(): void
+    {
+        if ($theme = system_setting('theme')) {
+            $themeLangPath = base_path("themes/{$theme}/lang");
+            if (is_dir($themeLangPath)) {
+                $this->loadTranslationsFrom($themeLangPath, 'front');
+            }
+        }
     }
 
     /**

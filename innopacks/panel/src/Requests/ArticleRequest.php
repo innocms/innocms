@@ -10,9 +10,12 @@
 namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use InnoCMS\Common\Traits\PatchRequestTrait;
 
 class ArticleRequest extends FormRequest
 {
+    use PatchRequestTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -35,10 +38,17 @@ class ArticleRequest extends FormRequest
             'position'   => 'integer',
             'viewed'     => 'integer',
             'active'     => 'bool',
+            'image'      => 'nullable|string|max:500',
+            'author'     => 'nullable|string|max:60',
 
-            'descriptions.*.locale'  => 'required',
-            'descriptions.*.title'   => 'required',
-            'descriptions.*.content' => 'required',
+            'translations.*.locale'           => 'required',
+            'translations.*.title'            => 'required',
+            'translations.*.content'          => 'nullable',
+            'translations.*.summary'          => 'nullable|string|max:500',
+            'translations.*.image'            => 'nullable|string|max:500',
+            'translations.*.meta_title'       => 'nullable|string|max:500',
+            'translations.*.meta_keywords'    => 'nullable|string|max:500',
+            'translations.*.meta_description' => 'nullable|string|max:1000',
         ];
 
         if ($this->slug) {
@@ -48,6 +58,10 @@ class ArticleRequest extends FormRequest
                 $slugRule = 'alpha_dash|unique:articles,slug';
             }
             $rules['slug'] = $slugRule;
+        }
+
+        if ($this->isMethod('PATCH')) {
+            $rules = $this->applySometimesToRules($rules);
         }
 
         return $rules;

@@ -10,9 +10,12 @@
 namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use InnoCMS\Common\Traits\PatchRequestTrait;
 
 class TagRequest extends FormRequest
 {
+    use PatchRequestTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,19 +33,27 @@ class TagRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->tag) {
-            $slugRule = 'required|alpha_dash|unique:tags,slug,'.$this->tag->id;
-        } else {
-            $slugRule = 'required|alpha_dash|unique:tags,slug';
-        }
-
-        return [
-            'slug'     => $slugRule,
+        $rules = [
             'position' => 'integer',
             'active'   => 'bool',
 
-            'descriptions.*.locale' => 'required',
-            'descriptions.*.name'   => 'required',
+            'translations.*.locale' => 'required',
+            'translations.*.name'   => 'required',
         ];
+
+        if ($this->slug) {
+            if ($this->tag) {
+                $slugRule = 'alpha_dash|unique:tags,slug,'.$this->tag->id;
+            } else {
+                $slugRule = 'alpha_dash|unique:tags,slug';
+            }
+            $rules['slug'] = $slugRule;
+        }
+
+        if ($this->isMethod('PATCH')) {
+            $rules = $this->applySometimesToRules($rules);
+        }
+
+        return $rules;
     }
 }

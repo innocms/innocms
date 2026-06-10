@@ -10,9 +10,12 @@
 namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use InnoCMS\Common\Traits\PatchRequestTrait;
 
 class CatalogRequest extends FormRequest
 {
+    use PatchRequestTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -31,21 +34,29 @@ class CatalogRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'position' => 'integer',
-            'active'   => 'bool',
+            'parent_id' => 'integer',
+            'position'  => 'integer',
+            'active'    => 'bool',
 
-            'descriptions.*.locale'  => 'required',
-            'descriptions.*.title'   => 'required',
-            'descriptions.*.content' => 'required',
+            'translations.*.locale'           => 'required',
+            'translations.*.title'            => 'required',
+            'translations.*.summary'          => 'nullable|string|max:500',
+            'translations.*.meta_title'       => 'nullable|string|max:500',
+            'translations.*.meta_keywords'    => 'nullable|string|max:500',
+            'translations.*.meta_description' => 'nullable|string|max:1000',
         ];
 
         if ($this->slug) {
             if ($this->catalog) {
-                $slugRule = 'required|alpha_dash|unique:articles,slug,'.$this->catalog->id;
+                $slugRule = 'alpha_dash|unique:catalogs,slug,'.$this->catalog->id;
             } else {
-                $slugRule = 'required|alpha_dash|unique:articles,slug';
+                $slugRule = 'alpha_dash|unique:catalogs,slug';
             }
             $rules['slug'] = $slugRule;
+        }
+
+        if ($this->isMethod('PATCH')) {
+            $rules = $this->applySometimesToRules($rules);
         }
 
         return $rules;

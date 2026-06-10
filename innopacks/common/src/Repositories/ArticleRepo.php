@@ -150,6 +150,53 @@ class ArticleRepo extends BaseRepo
     }
 
     /**
+     * @param  Article  $article
+     * @param  array  $data
+     * @return mixed
+     */
+    public function patch(Article $article, array $data): mixed
+    {
+        $article->loadMissing(['translations', 'tags']);
+
+        $merged = [
+            'catalog_id'   => $article->catalog_id,
+            'slug'         => $article->slug,
+            'position'     => $article->position,
+            'viewed'       => $article->viewed,
+            'author'       => $article->author,
+            'image'        => $article->getRawOriginal('image') ?? '',
+            'active'       => $article->active,
+            'tag_ids'      => $article->tags->pluck('id')->all(),
+            'translations' => [],
+        ];
+
+        foreach ($article->translations as $translation) {
+            $merged['translations'][$translation->locale] = $translation->only($translation->getFillable());
+        }
+
+        $scalarKeys = ['catalog_id', 'slug', 'position', 'viewed', 'author', 'image', 'active', 'tag_ids'];
+        foreach ($scalarKeys as $key) {
+            if (array_key_exists($key, $data)) {
+                $merged[$key] = $data[$key];
+            }
+        }
+
+        if (isset($data['translations']) && is_array($data['translations'])) {
+            foreach ($data['translations'] as $locale => $fields) {
+                if (! is_array($fields)) {
+                    continue;
+                }
+                $merged['translations'][$locale] = array_merge(
+                    $merged['translations'][$locale] ?? ['locale' => $locale],
+                    $fields
+                );
+            }
+        }
+
+        return $this->update($article, $merged);
+    }
+
+    /**
      * @param  $item
      * @return void
      */
