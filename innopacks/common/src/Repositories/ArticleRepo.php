@@ -66,8 +66,11 @@ class ArticleRepo extends BaseRepo
         $filters = array_merge($this->filters, $filters);
         $builder = Article::query()->with([
             'translation',
+            'translations',
             'catalog.translation',
+            'catalog.translations',
             'tags.translation',
+            'tags.translations',
         ]);
 
         $slug = $filters['slug'] ?? '';

@@ -36,7 +36,7 @@
           <tr>
             <td>{{ $item->id }}</td>
             <td>{{ $item->slug }}</td>
-            <td>{{ $item->translation->name ?? '' }}</td>
+            <td>{{ $item->name }}</td>
             <td>{{ $item->position }}</td>
             <td>{{ $item->active ? __('panel/common.active') : __('panel/common.inactive') }}</td>
             <td>

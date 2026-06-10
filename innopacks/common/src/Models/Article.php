@@ -67,7 +67,7 @@ class Article extends BaseModel
      */
     public function getTagNamesAttribute(): mixed
     {
-        return $this->tags->pluck('translation.name')->implode(',');
+        return $this->tags->map(fn ($tag) => $tag->fallbackName('name'))->implode(',');
     }
 
     /**

@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('shared.page-head', ['title' => $catalog->translation->title])
+@include('shared.page-head', ['title' => $catalog->title])
 @include('shared.articles')
 
 @endsection

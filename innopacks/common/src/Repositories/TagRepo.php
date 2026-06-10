@@ -78,7 +78,7 @@ class TagRepo extends BaseRepo
      */
     public function builder(array $filters = []): Builder
     {
-        $builder = Tag::query()->with(['translation']);
+        $builder = Tag::query()->with(['translation', 'translations']);
 
         $slug = $filters['slug'] ?? '';
         if ($slug) {

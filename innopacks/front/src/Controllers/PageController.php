@@ -89,7 +89,7 @@ class PageController extends Controller
             'slug' => $slug,
             'page' => $page,
         ];
-        $template = $page->translation->template ?? '';
+        $template = $page->translation?->template ?? '';
         if ($template) {
             $result         = Blade::render($template, $data);
             $data['result'] = $result;

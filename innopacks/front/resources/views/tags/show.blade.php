@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('shared.page-head', ['title' => $tag->translation->name])
+@include('shared.page-head', ['title' => $tag->name])
 @include('shared.articles')
 
 @endsection

@@ -91,9 +91,12 @@ class CatalogRepo extends BaseRepo
         $filters = array_merge($this->filters, $filters);
         $builder = Catalog::query()->with([
             'translation',
+            'translations',
             'parent.translation',
+            'parent.translations',
             'children',
             'children.translation',
+            'children.translations',
         ]);
 
         $slug = $filters['slug'] ?? '';

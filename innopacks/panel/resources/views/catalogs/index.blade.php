@@ -36,8 +36,8 @@
         @foreach($catalogs as $item)
           <tr>
             <td>{{ $item->id }}</td>
-            <td>{{ $item->translation->title ?? '' }}</td>
-            <td>{{ $item->parent->translation->title ?? '-' }}</td>
+            <td>{{ $item->title }}</td>
+            <td>{{ $item->parent->title ?? '-' }}</td>
             <td>{{ $item->slug }}</td>
             <td>{{ $item->position }}</td>
             <td>{{ $item->active ? __('panel/common.active') : __('panel/common.inactive') }}</td>

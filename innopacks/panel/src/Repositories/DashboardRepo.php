@@ -170,7 +170,7 @@ class DashboardRepo
         $topArticleArticles = ArticleRepo::getInstance()->builder()->orderByDesc('viewed')->limit(5)->get();
         $names              = $viewed = [];
         foreach ($topArticleArticles as $article) {
-            $names[]  = sub_string($article->translation->title, 8);
+            $names[]  = sub_string($article->title, 8);
             $viewed[] = $article->viewed;
         }
 

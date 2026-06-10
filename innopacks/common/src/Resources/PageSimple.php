@@ -24,7 +24,7 @@ class PageSimple extends JsonResource
     {
         return [
             'id'   => $this->id,
-            'name' => $this->translation->title ?? '',
+            'name' => $this->fallbackName('title'),
             'url'  => $this->url,
         ];
     }

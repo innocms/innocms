@@ -25,7 +25,7 @@ class TagListItem extends JsonResource
         return [
             'id'       => $this->id,
             'slug'     => $this->slug,
-            'name'     => $this->translation->name ?? '',
+            'name'     => $this->fallbackName('name'),
             'position' => $this->position,
             'active'   => (bool) $this->active,
         ];

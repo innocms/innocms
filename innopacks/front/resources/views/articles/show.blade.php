@@ -9,13 +9,13 @@
     <div class="row">
       <div class="col-12 col-md-9">
         <div class="newest-box">
-          <div class="newes-title">{{ $article->translation->title }}</div>
+          <div class="newes-title">{{ $article->title }}</div>
           @if ($article->tags->count())
           <div class="newes-tags mb-3 mt-n2">
             <i class="bi bi-tags me-1"></i>
             <div class="d-flex">
               @foreach($article->tags as $tag)
-                <a href="{{ front_route('tags.show', $tag->slug) }}">{{ $tag->translation->name }}</a>
+                <a href="{{ front_route('tags.show', $tag->slug) }}">{{ $tag->name }}</a>
               @endforeach
             </div>
           </div>
@@ -23,11 +23,11 @@
           <div class="newes-top">
             <div class="newes-time"><i class="bi bi-clock"></i> {{ $article->created_at->format('Y-m-d') }}</div>
             <div class="newes-author"><i class="bi bi-person-square"></i> {{ $article->author ?? '' }}</div>
-            <div class="newes-author"><i class="bi bi-ui-radios-grid"></i> {{ $article->catalog->translation->title ?? '' }}</div>
+            <div class="newes-author"><i class="bi bi-ui-radios-grid"></i> {{ $article->catalog->title }}</div>
             <div class="newes-author"><i class="bi bi-eye"></i> {{ $article->viewed }}</div>
           </div>
           <div class="content">
-            {!! $article->translation->content !!}
+            {!! $article->content !!}
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
           <div class="sidebar-list">
             <ul>
               @foreach($catalogs as $catalog)
-                <li><a href="{{ $catalog->url }}">{{ $catalog->translation->title ?? '' }}</a></li>
+                <li><a href="{{ $catalog->url }}">{{ $catalog->title }}</a></li>
               @endforeach
             </ul>
           </div>

@@ -46,7 +46,7 @@ class MetaInfo
      */
     public function getTitle(): string
     {
-        $metaTitle = $this->object->translation->meta_title ?? '';
+        $metaTitle = $this->object->translation?->meta_title ?? '';
         if (empty($metaTitle)) {
             $metaTitle = $this->getName();
         }
@@ -59,7 +59,7 @@ class MetaInfo
      */
     public function getDescription(): string
     {
-        $metaDescription = $this->object->translation->meta_description ?? '';
+        $metaDescription = $this->object->translation?->meta_description ?? '';
         if (empty($metaDescription)) {
             $metaDescription = $this->getName();
         }
@@ -72,7 +72,7 @@ class MetaInfo
      */
     public function getKeywords(): string
     {
-        $metaKeywords = $this->object->translation->meta_keywords ?? '';
+        $metaKeywords = $this->object->translation?->meta_keywords ?? '';
         if (empty($metaKeywords)) {
             $metaKeywords = $this->getName();
         }

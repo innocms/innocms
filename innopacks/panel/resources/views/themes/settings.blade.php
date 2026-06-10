@@ -101,7 +101,7 @@
                                    value="{{ $item->id }}"
                                    id="header-catalog-{{ $item->id }}" {{ in_array($item->id, old('menu_header_catalogs', system_setting('menu_header_catalogs', []) ?: [])) ? 'checked' : '' }}>
                             <label class="form-check ps-0"
-                                   for="header-catalog-{{ $item->id }}">{{ $item->translation->title }}</label>
+                                   for="header-catalog-{{ $item->id }}">{{ $item->title }}</label>
                           </div>
                         @endforeach
                       </div>
@@ -118,7 +118,7 @@
                                    value="{{ $item->id }}"
                                    id="header-page-{{ $item->id }}" {{ in_array($item->id, old('menu_header_pages', system_setting('menu_header_pages', []) ?: [])) ? 'checked' : '' }}>
                             <label class="form-check ps-0"
-                                   for="header-page-{{ $item->id }}">{{ $item->translation->title }}</label>
+                                   for="header-page-{{ $item->id }}">{{ $item->title }}</label>
                           </div>
                         @endforeach
                       </div>
@@ -140,7 +140,7 @@
                                    value="{{ $item->id }}"
                                    id="footer-catalog-{{ $item->id }}" {{ in_array($item->id, old('menu_footer_catalogs', system_setting('menu_footer_catalogs', []) ?: [])) ? 'checked' : '' }}>
                             <label class="form-check ps-0"
-                                   for="footer-catalog-{{ $item->id }}">{{ $item->translation->title }}</label>
+                                   for="footer-catalog-{{ $item->id }}">{{ $item->title }}</label>
                           </div>
                         @endforeach
                       </div>
@@ -157,7 +157,7 @@
                                    value="{{ $item->id }}"
                                    id="footer-page-{{ $item->id }}" {{ in_array($item->id, old('menu_footer_pages', system_setting('menu_footer_pages', []) ?: [])) ? 'checked' : '' }}>
                             <label class="form-check ps-0"
-                                   for="footer-page-{{ $item->id }}">{{ $item->translation->title }}</label>
+                                   for="footer-page-{{ $item->id }}">{{ $item->title }}</label>
                           </div>
                         @endforeach
                       </div>

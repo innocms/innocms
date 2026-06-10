@@ -63,7 +63,7 @@ class PageRepo extends BaseRepo
      */
     public function builder(array $filters = []): Builder
     {
-        $builder = Page::query()->with(['translation']);
+        $builder = Page::query()->with(['translation', 'translations']);
 
         $filters = array_merge($this->filters, $filters);
 

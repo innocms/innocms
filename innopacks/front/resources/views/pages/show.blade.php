@@ -4,11 +4,11 @@
     @if($page->show_breadcrumb)
       <div class="page-head">
         <div class="container">
-          <div class="page-title">{{ $page->translation->title }}</div>
+          <div class="page-title">{{ $page->title }}</div>
           <nav>
             <ol class="breadcrumb d-flex justify-content-center">
               <li class="breadcrumb-item"><a href="{{ front_route('home.index') }}"><i class="bi bi-house-door-fill"></i> 首页</a></li>
-              <li class="breadcrumb-item active" aria-current="page">{{ $page->translation->title }}</li>
+              <li class="breadcrumb-item active" aria-current="page">{{ $page->title }}</li>
             </ol>
           </nav>
         </div>
@@ -24,7 +24,7 @@
     <div class="page-service-content">
       <div class="container">
         <div class="row">
-          {!! $page->translation->content !!}
+          {!! $page->content !!}
         </div>
       </div>
     </div>
