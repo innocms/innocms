@@ -5,6 +5,7 @@
 /public/solutions
 /public/themes
 /public/mix-manifest.json
+/public/build
 /storage/*.key
 /storage/installed
 /package-lock.json
@@ -24,3 +25,4 @@ yarn-error.log
 /.vscode
 docker-compose.yml
 .DS_Store
+/storage/certs/

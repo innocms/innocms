@@ -41,6 +41,11 @@ class LoginController extends BaseController
     public function store(LoginRequest $request): mixed
     {
         if (auth('admin')->attempt($request->validated())) {
+            $admin = auth('admin')->user();
+            $admin->tokens()->delete();
+            $token = $admin->createToken('admin-token')->plainTextToken;
+            session(['panel_api_token' => $token]);
+
             return redirect(panel_route('home.index'));
         }
 
