@@ -44,8 +44,10 @@ class ArticleController extends Controller
     {
         $article->increment('viewed');
         $data = [
-            'article'  => $article,
-            'catalogs' => CatalogRepo::getInstance()->list(['active' => true]),
+            'article'    => $article,
+            'catalogs'   => CatalogRepo::getInstance()->list(['active' => true]),
+            'tags'       => TagRepo::getInstance()->list(['active' => true]),
+            'sidebarHot' => ArticleRepo::getInstance()->list(['active' => true])->sortByDesc('viewed')->take(5),
         ];
 
         return inno_view('articles.show', $data);
@@ -62,9 +64,11 @@ class ArticleController extends Controller
         $article = ArticleRepo::getInstance()->builder(['active' => true])->where('slug', $slug)->firstOrFail();
         $article->increment('viewed');
         $data = [
-            'slug'     => $slug,
-            'article'  => $article,
-            'catalogs' => CatalogRepo::getInstance()->list(['active' => true]),
+            'slug'       => $slug,
+            'article'    => $article,
+            'catalogs'   => CatalogRepo::getInstance()->list(['active' => true]),
+            'tags'       => TagRepo::getInstance()->list(['active' => true]),
+            'sidebarHot' => ArticleRepo::getInstance()->list(['active' => true])->sortByDesc('viewed')->take(5),
         ];
 
         return inno_view('articles.show', $data);
