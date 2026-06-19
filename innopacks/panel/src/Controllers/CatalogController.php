@@ -16,7 +16,7 @@ use InnoCMS\Common\Repositories\CatalogRepo;
 use InnoCMS\Common\Resources\CatalogSimple;
 use InnoCMS\Panel\Requests\CatalogRequest;
 
-class CatalogController
+class CatalogController extends BaseController
 {
     /**
      * @param  Request  $request

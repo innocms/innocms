@@ -9,7 +9,6 @@
 
 namespace InnoCMS\Panel\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Article;
@@ -123,21 +122,6 @@ class ArticleController extends BaseController
             return back()->with('success', trans('panel/common.deleted_success'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
-    /**
-     * Toggle article active status (AJAX).
-     */
-    public function active(Request $request, Article $article): JsonResponse
-    {
-        try {
-            $article->active = $request->get('status');
-            $article->saveOrFail();
-
-            return json_success(trans('common/base.updated_success'));
-        } catch (\Exception $e) {
-            return json_fail($e->getMessage());
         }
     }
 }

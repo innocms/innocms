@@ -36,8 +36,11 @@ Route::middleware(['admin_auth:admin'])
         Route::resource('/articles', Controllers\ArticleController::class);
         Route::put('/articles/{article}/active', [Controllers\ArticleController::class, 'active'])->name('articles.active');
         Route::resource('/catalogs', Controllers\CatalogController::class);
+        Route::put('/catalogs/{catalog}/active', [Controllers\CatalogController::class, 'active'])->name('catalogs.active');
         Route::resource('/pages', Controllers\PageController::class);
+        Route::put('/pages/{page}/active', [Controllers\PageController::class, 'active'])->name('pages.active');
         Route::resource('/tags', Controllers\TagController::class);
+        Route::put('/tags/{tag}/active', [Controllers\TagController::class, 'active'])->name('tags.active');
 
         Route::get('/consultations', [Controllers\ConsultationController::class, 'index'])->name('consultations.index');
         Route::get('/consultations/{consultation}', [Controllers\ConsultationController::class, 'show'])->name('consultations.show');

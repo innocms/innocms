@@ -40,7 +40,7 @@
             <td>{{ $item->parent->title ?? '-' }}</td>
             <td>{{ $item->slug }}</td>
             <td>{{ $item->position }}</td>
-            <td>{{ $item->active ? __('panel/common.active') : __('panel/common.inactive') }}</td>
+            <td>@include('panel::shared.list_switch', ['value' => $item->active, 'url' => panel_route('catalogs.active', $item->id)])</td>
             <td>
               <a href="{{ panel_route('catalogs.edit', [$item->id]) }}" class="btn btn-sm btn-outline-primary">{{ __('panel/common.edit') }}</a>
               <form action="{{ panel_route('catalogs.destroy', [$item->id]) }}" method="POST" class="d-inline">
