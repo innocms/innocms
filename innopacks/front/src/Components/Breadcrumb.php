@@ -21,12 +21,14 @@ class Breadcrumb extends Component
      * @param  mixed  $value  model instance, route name, or url
      * @param  string  $title  title for route/static types
      * @param  string|null  $parent  optional parent route to insert before current
+     * @param  string|null  $current  optional current page title appended as the last (no-link) item
      */
     public function __construct(
         string $type,
         $value = null,
         string $title = '',
         ?string $parent = null,
+        ?string $current = null,
     ) {
         $this->breadcrumbs[] = $this->formatBreadcrumb([
             'title' => theme_trans('front.breadcrumb_home'),
@@ -47,6 +49,13 @@ class Breadcrumb extends Component
             if (! empty($trail)) {
                 $this->breadcrumbs[] = $this->formatBreadcrumb($trail);
             }
+        }
+
+        if ($current) {
+            $this->breadcrumbs[] = $this->formatBreadcrumb([
+                'title' => $current,
+                'url'   => '',
+            ]);
         }
     }
 
