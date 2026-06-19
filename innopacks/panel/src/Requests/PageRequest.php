@@ -42,7 +42,7 @@ class PageRequest extends FormRequest
             'translations.*.locale'           => 'required',
             'translations.*.title'            => 'required',
             'translations.*.content'          => 'nullable',
-            'translations.*.template'         => 'nullable|string|max:60',
+            'translations.*.template'         => 'nullable|string|max:65535',
             'translations.*.meta_title'       => 'nullable|string|max:500',
             'translations.*.meta_keywords'    => 'nullable|string|max:500',
             'translations.*.meta_description' => 'nullable|string|max:1000',
