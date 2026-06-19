@@ -54,7 +54,7 @@ class ArticleRepo extends BaseRepo
      */
     public function list($filters = []): LengthAwarePaginator
     {
-        return $this->builder($filters)->orderByDesc('id')->paginate();
+        return $this->builder($filters)->orderByDesc('created_at')->orderByDesc('id')->paginate();
     }
 
     /**
