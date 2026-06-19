@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Catalog;
 use InnoCMS\Common\Repositories\ArticleRepo;
 use InnoCMS\Common\Repositories\CatalogRepo;
+use InnoCMS\Common\Repositories\TagRepo;
 
 class CatalogController extends Controller
 {
@@ -35,11 +36,13 @@ class CatalogController extends Controller
     {
         $catalogs = CatalogRepo::getInstance()->list(['active' => true]);
         $articles = ArticleRepo::getInstance()->list(['active' => true, 'catalog_id' => $catalog->id]);
+        $tags     = TagRepo::getInstance()->list(['active' => true]);
 
         $data = [
             'catalog'  => $catalog,
             'catalogs' => $catalogs,
             'articles' => $articles,
+            'tags'     => $tags,
         ];
 
         return inno_view('catalogs.show', $data);
@@ -56,12 +59,14 @@ class CatalogController extends Controller
         $catalog  = CatalogRepo::getInstance()->builder(['active' => true])->where('slug', $slug)->firstOrFail();
         $catalogs = CatalogRepo::getInstance()->list(['active' => true]);
         $articles = ArticleRepo::getInstance()->list(['active' => true, 'catalog_id' => $catalog->id]);
+        $tags     = TagRepo::getInstance()->list(['active' => true]);
 
         $data = [
             'slug'     => $slug,
             'catalog'  => $catalog,
             'catalogs' => $catalogs,
             'articles' => $articles,
+            'tags'     => $tags,
         ];
 
         return inno_view('catalogs.show', $data);
