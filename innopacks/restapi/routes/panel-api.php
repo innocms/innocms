@@ -19,6 +19,10 @@ Route::middleware($middlewares)->group(function () {
 
     Route::get('/admin', [PanelApiControllers\AuthController::class, 'admin'])->name('auth.admin');
 
+    // Locales
+    Route::get('/locales', [PanelApiControllers\LocaleController::class, 'index'])->name('locales.index');
+    Route::get('/locales/{locale}', [PanelApiControllers\LocaleController::class, 'show'])->name('locales.show');
+
     Route::get('/dashboard', [PanelApiControllers\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/{date}', [PanelApiControllers\DashboardController::class, 'daily'])->name('dashboard.daily');
 
