@@ -177,7 +177,7 @@ class ArticleRepo extends BaseRepo
             $merged['translations'][$translation->locale] = $translation->only($translation->getFillable());
         }
 
-        $scalarKeys = ['catalog_id', 'slug', 'position', 'viewed', 'author', 'image', 'active', 'tag_ids'];
+        $scalarKeys = ['catalog_id', 'slug', 'position', 'viewed', 'author', 'image', 'active', 'tag_ids', 'created_at'];
         foreach ($scalarKeys as $key) {
             if (array_key_exists($key, $data)) {
                 $merged[$key] = $data[$key];

@@ -40,6 +40,7 @@ class ArticleRequest extends FormRequest
             'active'     => 'bool',
             'image'      => 'nullable|string|max:500',
             'author'     => 'nullable|string|max:60',
+            'created_at' => 'nullable|date',
 
             'translations.*.locale'           => 'required',
             'translations.*.title'            => 'required',

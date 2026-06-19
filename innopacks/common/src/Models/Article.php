@@ -19,7 +19,7 @@ class Article extends BaseModel
     use Translatable;
 
     protected $fillable = [
-        'catalog_id', 'image', 'slug', 'position', 'viewed', 'author', 'active',
+        'catalog_id', 'image', 'slug', 'position', 'viewed', 'author', 'active', 'created_at',
     ];
 
     public $appends = [
