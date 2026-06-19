@@ -31,7 +31,7 @@ class Breadcrumb extends Component
         ?string $current = null,
     ) {
         $this->breadcrumbs[] = $this->formatBreadcrumb([
-            'title' => theme_trans('front.breadcrumb_home'),
+            'title' => trans('common/base.home'),
             'url'   => front_route('home.index'),
         ]);
 

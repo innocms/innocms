@@ -8,6 +8,7 @@
  */
 
 return [
+    'home'              => 'Home',
     'add'               => 'Aggiungi',
     'back'              => 'Indietro',
     'cancel'            => 'Annulla',

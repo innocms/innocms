@@ -9,6 +9,7 @@
 
 return [
     // Actions
+    'home'              => 'Início',
     'add'               => 'Adicionar',
     'back'              => 'Voltar',
     'cancel'            => 'Cancelar',

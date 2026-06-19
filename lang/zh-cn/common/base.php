@@ -9,6 +9,7 @@
 
 return [
     // Actions
+    'home'              => '首页',
     'add'               => '添加',
     'back'              => '返回',
     'cancel'            => '取消',

@@ -9,6 +9,7 @@
 
 return [
     // Actions
+    'home'              => 'Home',
     'add'               => 'Add',
     'back'              => 'Back',
     'cancel'            => 'Cancel',

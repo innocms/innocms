@@ -9,6 +9,7 @@
 
 return [
     // Actions
+    'home'              => '홈',
     'add'               => '추가',
     'back'              => '뒤로',
     'cancel'            => '취소',
