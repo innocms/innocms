@@ -206,7 +206,7 @@ class FrontServiceProvider extends ServiceProvider
     protected function loadViewComponents(): void
     {
         $this->loadViewComponentsAs('front', [
-
+            'breadcrumb' => Components\Breadcrumb::class,
         ]);
     }
 }

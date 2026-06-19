@@ -9,8 +9,6 @@
 
 namespace InnoCMS\Common\Libraries;
 
-use Exception;
-
 class Breadcrumb
 {
     public static function getInstance(): Breadcrumb
@@ -19,44 +17,26 @@ class Breadcrumb
     }
 
     /**
-     * @param  $type
-     * @param  $object
-     * @param  string  $title
+     * Build a single breadcrumb trail entry by type.
+     *
+     * @param  string  $type  article|catalog|tag|page|route|static
+     * @param  mixed  $object  model instance, route name, or url
+     * @param  string  $title  override title (required by route/static)
      * @return array
-     * @throws Exception
      */
-    public function getTrail($type, $object, string $title = ''): array
+    public function getTrail(string $type, $object, string $title = ''): array
     {
-        if (in_array($type, ['category', 'product', 'tag'])) {
-            return [
-                'title' => $object->fallbackName('name'),
-                'url'   => $object->url,
-            ];
-        } elseif (in_array($type, ['catalog', 'article', 'page'])) {
+        if (in_array($type, ['catalog', 'article', 'page'])) {
             return [
                 'title' => $object->fallbackName('title'),
                 'url'   => $object->url,
             ];
-        } elseif ($type == 'brand') {
+        } elseif ($type == 'tag') {
             return [
-                'title' => $object->name,
+                'title' => $object->fallbackName('name'),
                 'url'   => $object->url,
             ];
-        } elseif ($type == 'order') {
-            return [
-                'title' => $object->number,
-                'url'   => account_route('orders.number_show', ['number' => $object->number]),
-            ];
-        } elseif ($type == 'order_return') {
-            return [
-                'title' => $object->number,
-                'url'   => account_route('order_returns.show', ['order_return' => $object->id]),
-            ];
         } elseif ($type == 'route') {
-            if (empty($title)) {
-                $title = front_trans('common.'.str_replace('.', '_', $object));
-            }
-
             return [
                 'title' => $title,
                 'url'   => front_route($object),
