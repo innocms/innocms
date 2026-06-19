@@ -12,6 +12,7 @@ namespace InnoCMS\Common\Repositories;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use InnoCMS\Common\Models\Catalog;
 
 class CatalogRepo extends BaseRepo
@@ -141,11 +142,13 @@ class CatalogRepo extends BaseRepo
      */
     public function create($data): Catalog
     {
-        $item = new Catalog($this->handleData($data));
-        $item->saveOrFail();
-        $item->translations()->createMany($data['translations']);
+        return DB::transaction(function () use ($data) {
+            $item = new Catalog($this->handleData($data));
+            $item->saveOrFail();
+            $item->translations()->createMany($data['translations']);
 
-        return $item;
+            return $item;
+        });
     }
 
     /**
@@ -155,12 +158,14 @@ class CatalogRepo extends BaseRepo
      */
     public function update($item, $data): mixed
     {
-        $item->fill($this->handleData($data));
-        $item->saveOrFail();
-        $item->translations()->delete();
-        $item->translations()->createMany($data['translations']);
+        return DB::transaction(function () use ($item, $data) {
+            $item->fill($this->handleData($data));
+            $item->saveOrFail();
+            $item->translations()->delete();
+            $item->translations()->createMany($data['translations']);
 
-        return $item;
+            return $item;
+        });
     }
 
     /**
