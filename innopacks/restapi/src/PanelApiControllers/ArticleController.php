@@ -39,6 +39,19 @@ class ArticleController extends BaseController
     }
 
     /**
+     * @param  Article  $article
+     * @return mixed
+     */
+    #[Endpoint('Get article detail')]
+    #[UrlParam('article', 'integer', description: 'Article ID')]
+    public function show(Article $article): mixed
+    {
+        $article->load(['translations', 'catalog.translations', 'tags.translations']);
+
+        return read_json_success($article);
+    }
+
+    /**
      * @param  Request  $request
      * @return AnonymousResourceCollection
      * @throws Exception

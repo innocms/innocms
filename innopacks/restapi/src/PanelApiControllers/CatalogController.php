@@ -39,6 +39,19 @@ class CatalogController extends BaseController
     }
 
     /**
+     * @param  Catalog  $catalog
+     * @return mixed
+     */
+    #[Endpoint('Get catalog detail')]
+    #[UrlParam('catalog', 'integer', description: 'Catalog ID')]
+    public function show(Catalog $catalog): mixed
+    {
+        $catalog->load(['translations']);
+
+        return read_json_success($catalog);
+    }
+
+    /**
      * @param  Request  $request
      * @return AnonymousResourceCollection
      * @throws Exception

@@ -41,6 +41,19 @@ class PageController extends BaseController
     }
 
     /**
+     * @param  Page  $page
+     * @return mixed
+     */
+    #[Endpoint('Get page detail')]
+    #[UrlParam('page', 'integer', description: 'Page ID')]
+    public function show(Page $page): mixed
+    {
+        $page->load(['translations']);
+
+        return read_json_success($page);
+    }
+
+    /**
      * @param  Request  $request
      * @return AnonymousResourceCollection
      * @throws Exception

@@ -47,6 +47,19 @@ class TagController extends BaseController
     }
 
     /**
+     * @param  Tag  $tag
+     * @return mixed
+     */
+    #[Endpoint('Get tag detail')]
+    #[UrlParam('tag', 'integer', description: 'Tag ID')]
+    public function show(Tag $tag): mixed
+    {
+        $tag->load(['translations']);
+
+        return read_json_success($tag);
+    }
+
+    /**
      * @param  Request  $request
      * @return AnonymousResourceCollection
      * @throws Exception
