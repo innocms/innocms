@@ -89,16 +89,26 @@ class VisitEnrichService
 
             if ($visit->ip_address && (empty($visit->country_name) || empty($visit->city))) {
                 $result = $geoService->getLocation($visit->ip_address);
-                if (! empty($result['country_name']) || ! empty($result['city'])) {
-                    $fields['country_code'] = $result['country_code'] ?? '';
-                    $fields['country_name'] = $result['country_name'] ?? '';
-                    $fields['city']         = $result['city'] ?? '';
+                if (empty($visit->country_code) && ! empty($result['country_code'])) {
+                    $fields['country_code'] = $result['country_code'];
+                }
+                if (empty($visit->country_name) && ! empty($result['country_name'])) {
+                    $fields['country_name'] = $result['country_name'];
+                }
+                if (empty($visit->city) && ! empty($result['city'])) {
+                    $fields['city'] = $result['city'];
                 }
             }
 
             if ($visit->user_agent && (empty($visit->browser) || empty($visit->os))) {
-                $fields['browser'] = self::detectBrowser($visit->user_agent);
-                $fields['os']      = self::detectOS($visit->user_agent);
+                $browser = self::detectBrowser($visit->user_agent);
+                $os      = self::detectOS($visit->user_agent);
+                if (empty($visit->browser) && $browser !== '') {
+                    $fields['browser'] = $browser;
+                }
+                if (empty($visit->os) && $os !== '') {
+                    $fields['os'] = $os;
+                }
             }
 
             if (! empty($fields)) {

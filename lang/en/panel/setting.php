@@ -84,4 +84,7 @@ return [
     'storage_region_hint_obs'             => 'e.g. cn-north-4, cn-east-3, cn-south-1',
     'storage_region_hint_r2'              => 'Use auto (R2 manages regions automatically)',
     'storage_region_hint_minio'           => 'Any value, e.g. us-east-1',
+
+    // Tools Settings
+    'tools_setting' => 'Tools Settings',
 ];

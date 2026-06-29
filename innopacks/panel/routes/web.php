@@ -66,6 +66,8 @@ Route::middleware(['admin_auth:admin'])
 
         Route::get('/settings', [Controllers\SettingController::class, 'index'])->name('settings.index');
         Route::put('/settings', [Controllers\SettingController::class, 'update'])->name('settings.update');
+        Route::post('/settings/download-geolite2', [Controllers\SettingController::class, 'downloadGeoLite2'])->name('settings.download_geolite2');
+        Route::get('/settings/geolite2-info', [Controllers\SettingController::class, 'getGeoLite2Info'])->name('settings.geolite2_info');
 
         Route::resource('/admins', Controllers\AdminController::class);
         Route::put('/admins/{admin}/active', [Controllers\AdminController::class, 'active'])->name('admins.active');

@@ -81,4 +81,7 @@ return [
     'storage_region_hint_obs'             => '例如 cn-north-4、cn-east-3、cn-south-1',
     'storage_region_hint_r2'              => '填写 auto 即可（R2 自动管理区域）',
     'storage_region_hint_minio'           => '可填写任意值，如 us-east-1',
+
+    // Tools Settings
+    'tools_setting' => '工具设置',
 ];
