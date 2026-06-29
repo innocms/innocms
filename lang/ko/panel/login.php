@@ -15,4 +15,5 @@ return [
     'email'       => '이메일',
     'password'    => '비밀번호',
     'btn_login'   => '로그인',
+    'tagline'     => '빠른 속도를 위한 현대적인 관리자',
 ];

@@ -15,4 +15,5 @@ return [
     'email'       => 'Email',
     'password'    => 'Password',
     'btn_login'   => 'Login Now',
+    'tagline'     => 'Modern admin, built for speed',
 ];

@@ -15,4 +15,5 @@ return [
     'email'       => '邮箱',
     'password'    => '密码',
     'btn_login'   => '立即登录',
+    'tagline'     => '现代化后台管理，为高效而生',
 ];

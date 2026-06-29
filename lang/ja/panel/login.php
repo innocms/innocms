@@ -15,4 +15,5 @@ return [
     'email'       => 'メール',
     'password'    => 'パスワード',
     'btn_login'   => 'ログイン',
+    'tagline'     => 'モダンな管理画面、スピードのために構築',
 ];

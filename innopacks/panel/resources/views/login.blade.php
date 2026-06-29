@@ -20,13 +20,9 @@
 <body class="page-login">
 <div class="login-container">
   <div class="login-left">
-    <div class="login-brand">
-      @if (system_setting('panel_logo'))
-        <img src="{{ image_origin(system_setting('panel_logo')) }}" alt="Logo" class="brand-logo">
-      @else
-        <img src="{{ image_origin('images/logo-panel.svg') }}" alt="Logo" class="brand-logo">
-        <h1 class="brand-name">{{ system_setting('panel_name') ?: 'InnoCMS' }}</h1>
-      @endif
+    <div class="login-hero">
+      <h1 class="hero-name">{{ system_setting('panel_name') ?: 'InnoCMS' }}</h1>
+      <p class="hero-tagline">@yield('hero_tagline', __('panel/login.tagline'))</p>
     </div>
     <div class="login-decoration">
       <div class="deco-circle deco-circle-1"></div>
@@ -36,20 +32,29 @@
     </div>
   </div>
   <div class="login-right">
-    <div class="locale-wrap">
-      <div class="d-flex align-items-center locale">
-        <div class="wh-20 me-2"><img src="{{ image_origin('images/flags/'. panel_locale_code().'.svg') }}" class="img-fluid"></div>
-        <span class="">{{ current_panel_locale()['name'] }} <i class="bi bi-chevron-down"></i></span>
-        <ul class="dropdown-menu">
-          @foreach (panel_locales() as $locale)
-          <li>
-            <a class="dropdown-item d-flex" href="{{ panel_route('login.index', ['locale'=> $locale['code']]) }}">
-              <div class="wh-20 me-2"><img src="{{ image_origin($locale['image']) }}" class="img-fluid"></div>
-              {{ $locale['name'] }}
-            </a>
-          </li>
-          @endforeach
-        </ul>
+    <div class="login-header">
+      <div class="login-brand">
+        @if (system_setting('panel_logo'))
+          <img src="{{ image_origin(system_setting('panel_logo')) }}" alt="Logo" class="brand-logo">
+        @else
+          <img src="{{ image_origin('images/logo-panel.svg') }}" alt="Logo" class="brand-logo">
+        @endif
+      </div>
+      <div class="locale-wrap">
+        <div class="d-flex align-items-center locale">
+          <div class="wh-20 me-2"><img src="{{ image_origin('images/flags/'. panel_locale_code().'.svg') }}" class="img-fluid"></div>
+          <span class="">{{ current_panel_locale()['name'] }} <i class="bi bi-chevron-down"></i></span>
+          <ul class="dropdown-menu">
+            @foreach (panel_locales() as $locale)
+            <li>
+              <a class="dropdown-item d-flex" href="{{ panel_route('login.index', ['locale'=> $locale['code']]) }}">
+                <div class="wh-20 me-2"><img src="{{ image_origin($locale['image']) }}" class="img-fluid"></div>
+                {{ $locale['name'] }}
+              </a>
+            </li>
+            @endforeach
+          </ul>
+        </div>
       </div>
     </div>
     <div class="login-form-wrap">

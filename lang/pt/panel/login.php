@@ -15,4 +15,5 @@ return [
     'email'       => 'E-mail',
     'password'    => 'Senha',
     'btn_login'   => 'Entrar',
+    'tagline'     => 'Administração moderna, feita para velocidade',
 ];

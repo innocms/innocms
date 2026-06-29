@@ -15,4 +15,5 @@ return [
     'email'       => 'E-Mail',
     'password'    => 'Passwort',
     'btn_login'   => 'Jetzt anmelden',
+    'tagline'     => 'Moderne Verwaltung, gemacht für Effizienz',
 ];

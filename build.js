@@ -29,9 +29,11 @@ const coreEntries = [
     { name: 'panel/css', input: 'innopacks/panel/resources/css/app.scss', outDir: 'public/build/panel/css', outputName: 'app', group: 'panel' },
     { name: 'panel/js', input: 'innopacks/panel/resources/js/app.js', outDir: 'public/build/panel/js', outputName: 'app', group: 'panel' },
     { name: 'install/css', input: 'innopacks/install/resources/css/app.scss', outDir: 'public/build/install/css', outputName: 'app', group: 'install' },
+    { name: 'tenant/css', input: 'innopacks/tenant/resources/assets/css/app.css', outDir: 'public/build/tenant/css', outputName: 'app', group: 'tenant' },
+    { name: 'tenant/js', input: 'innopacks/tenant/resources/assets/js/app.js', outDir: 'public/build/tenant/js', outputName: 'app', group: 'tenant' },
 ];
 
-const entries = theme ? [] : coreEntries.filter(e => !target || e.group === target);
+const entries = theme ? [] : coreEntries.filter(e => (!target || e.group === target) && fs.existsSync(e.input));
 
 if (theme) {
     const themeDir = `themes/${theme}`;
