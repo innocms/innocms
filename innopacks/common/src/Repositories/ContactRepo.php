@@ -11,9 +11,9 @@ namespace InnoCMS\Common\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use InnoCMS\Common\Models\Consultation;
+use InnoCMS\Common\Models\Contact;
 
-class ConsultationRepo extends BaseRepo
+class ContactRepo extends BaseRepo
 {
     /**
      * @return array
@@ -22,9 +22,9 @@ class ConsultationRepo extends BaseRepo
     {
         return [
             ['value' => '', 'label' => trans('panel/common.all_fields')],
-            ['value' => 'name', 'label' => trans('panel/consultations.contact_name')],
+            ['value' => 'name', 'label' => trans('panel/contacts.contact_name')],
             ['value' => 'email', 'label' => trans('panel/common.email')],
-            ['value' => 'company', 'label' => trans('panel/consultations.company')],
+            ['value' => 'company', 'label' => trans('panel/contacts.company')],
         ];
     }
 
@@ -40,8 +40,8 @@ class ConsultationRepo extends BaseRepo
                 'type'    => 'button',
                 'options' => [
                     ['value' => '', 'label' => trans('panel/common.all')],
-                    ['value' => '0', 'label' => trans('panel/consultations.unread')],
-                    ['value' => '1', 'label' => trans('panel/consultations.read')],
+                    ['value' => '0', 'label' => trans('panel/contacts.unread')],
+                    ['value' => '1', 'label' => trans('panel/contacts.read')],
                 ],
             ],
         ];
@@ -64,7 +64,7 @@ class ConsultationRepo extends BaseRepo
      */
     public function builder(array $filters = []): Builder
     {
-        $builder = Consultation::query();
+        $builder = Contact::query();
 
         $keyword     = $filters['keyword'] ?? '';
         $searchField = $filters['search_field'] ?? '';
@@ -89,7 +89,7 @@ class ConsultationRepo extends BaseRepo
     }
 
     /**
-     * Mark a consultation as read.
+     * Mark a contact as read.
      *
      * @param  int  $id
      * @return void
@@ -103,13 +103,13 @@ class ConsultationRepo extends BaseRepo
     }
 
     /**
-     * Mark all consultations as read.
+     * Mark all contacts as read.
      *
      * @return void
      */
     public function markAllAsRead(): void
     {
-        Consultation::where('status', false)->update(['status' => true]);
+        Contact::where('status', false)->update(['status' => true]);
     }
 
     /**
@@ -119,6 +119,6 @@ class ConsultationRepo extends BaseRepo
      */
     public function getUnreadCount(): int
     {
-        return Consultation::where('status', false)->count();
+        return Contact::where('status', false)->count();
     }
 }

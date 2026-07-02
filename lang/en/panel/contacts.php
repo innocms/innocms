@@ -14,7 +14,7 @@ return [
     'read'          => 'Read',
     'phone'         => 'Phone',
     'content'       => 'Message',
-    'detail'        => 'Consultation Detail',
+    'detail'        => 'Contact Detail',
     'mark_read'     => 'Mark as Read',
     'mark_all_read' => 'Mark All as Read',
 ];

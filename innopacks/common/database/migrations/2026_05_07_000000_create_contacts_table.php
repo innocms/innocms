@@ -20,9 +20,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('consultations')) {
-            Schema::create('consultations', function (Blueprint $table) {
-                $table->comment('Consultations');
+        if (! Schema::hasTable('contacts')) {
+            Schema::create('contacts', function (Blueprint $table) {
+                $table->comment('Contacts');
                 $table->bigIncrements('id')->comment('ID');
                 $table->string('name', 100)->nullable()->comment('Contact Name');
                 $table->string('email', 100)->comment('Email');
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('consultations');
+        Schema::dropIfExists('contacts');
     }
 };

@@ -10,18 +10,18 @@
 namespace InnoCMS\Front\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use InnoCMS\Common\Repositories\ConsultationRepo;
-use InnoCMS\Front\Requests\ConsultationRequest;
+use InnoCMS\Common\Repositories\ContactRepo;
+use InnoCMS\Front\Requests\ContactRequest;
 
-class ConsultationController
+class ContactController
 {
     /**
-     * Submit a consultation.
+     * Submit a contact message.
      */
-    public function store(ConsultationRequest $request): JsonResponse
+    public function store(ContactRequest $request): JsonResponse
     {
         try {
-            ConsultationRepo::getInstance()->create($request->only(['name', 'email', 'phone', 'company', 'content']));
+            ContactRepo::getInstance()->create($request->only(['name', 'email', 'phone', 'company', 'content']));
 
             return json_success('提交成功，我们将尽快联系您');
         } catch (\Exception $e) {

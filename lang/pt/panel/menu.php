@@ -34,9 +34,9 @@ return [
 
     'file_manager' => 'Gerenciador de Arquivos',
 
-    'top_plugin'    => 'Plugins',
-    'plugins'       => 'Plugins',
-    'consultations' => 'Consultas',
+    'top_plugin' => 'Plugins',
+    'plugins'    => 'Plugins',
+    'contacts'   => 'Contatos',
 
     'top_customer'    => 'Clientes',
     'customers'       => 'Clientes',

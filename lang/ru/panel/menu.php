@@ -29,7 +29,7 @@ return [
     'file_manager'     => 'Файловый менеджер',
     'top_plugin'       => 'Плагины',
     'plugins'          => 'Плагины',
-    'consultations'    => 'Запросы',
+    'contacts'         => 'Контакты',
     'top_customer'     => 'Клиенты',
     'customers'        => 'Клиенты',
     'customer_groups'  => 'Группы',

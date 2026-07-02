@@ -34,9 +34,9 @@ return [
 
     'file_manager' => '파일 관리자',
 
-    'top_plugin'    => '플러그인',
-    'plugins'       => '플러그인',
-    'consultations' => '상담',
+    'top_plugin' => '플러그인',
+    'plugins'    => '플러그인',
+    'contacts'   => '연락처',
 
     'top_customer'    => '고객',
     'customers'       => '고객',

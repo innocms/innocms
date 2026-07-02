@@ -9,7 +9,7 @@
 
 namespace InnoCMS\Common\Models;
 
-class Consultation extends BaseModel
+class Contact extends BaseModel
 {
     protected $fillable = [
         'name', 'email', 'phone', 'company', 'content', 'status',

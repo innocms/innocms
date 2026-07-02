@@ -69,7 +69,7 @@ class Sidebar extends Component
             [
                 'title'    => __('panel/menu.top_content'),
                 'icon'     => 'bi-sticky',
-                'prefixes' => ['articles', 'catalogs', 'tags', 'pages', 'consultations', 'file_manager'],
+                'prefixes' => ['articles', 'catalogs', 'tags', 'pages', 'contacts', 'file_manager'],
                 'children' => $this->getContentSubRoutes(),
             ],
             [
@@ -217,7 +217,7 @@ class Sidebar extends Component
             ['route' => 'catalogs.index', 'title' => __('panel/menu.catalogs')],
             ['route' => 'tags.index', 'title' => __('panel/menu.tags')],
             ['route' => 'pages.index', 'title' => __('panel/menu.pages')],
-            ['route' => 'consultations.index', 'title' => __('panel/menu.consultations')],
+            ['route' => 'contacts.index', 'title' => __('panel/menu.contacts')],
             ['route' => 'file_manager.index', 'title' => __('panel/menu.file_manager')],
         ];
 

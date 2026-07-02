@@ -42,9 +42,9 @@ Route::middleware(['admin_auth:admin'])
         Route::resource('/tags', Controllers\TagController::class);
         Route::put('/tags/{tag}/active', [Controllers\TagController::class, 'active'])->name('tags.active');
 
-        Route::get('/consultations', [Controllers\ConsultationController::class, 'index'])->name('consultations.index');
-        Route::get('/consultations/{consultation}', [Controllers\ConsultationController::class, 'show'])->name('consultations.show');
-        Route::delete('/consultations/{consultation}', [Controllers\ConsultationController::class, 'destroy'])->name('consultations.destroy');
+        Route::get('/contacts', [Controllers\ContactController::class, 'index'])->name('contacts.index');
+        Route::get('/contacts/{contact}', [Controllers\ContactController::class, 'show'])->name('contacts.show');
+        Route::delete('/contacts/{contact}', [Controllers\ContactController::class, 'destroy'])->name('contacts.destroy');
 
         Route::get('/file_manager', [Controllers\FileManagerController::class, 'index'])->name('file_manager.index');
         Route::get('/file_manager/iframe', [Controllers\FileManagerController::class, 'iframe'])->name('file_manager.iframe');

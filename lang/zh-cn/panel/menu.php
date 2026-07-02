@@ -22,9 +22,9 @@ return [
 
     'file_manager' => '文件管理',
 
-    'top_plugin'    => '插件扩展',
-    'plugins'       => '插件列表',
-    'consultations' => '咨询管理',
+    'top_plugin' => '插件扩展',
+    'plugins'    => '插件列表',
+    'contacts'   => '联系管理',
 
     'top_design'      => '模板主题',
     'themes'          => '主题切换',

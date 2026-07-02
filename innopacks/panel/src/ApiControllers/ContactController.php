@@ -7,14 +7,14 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\PanelApiControllers;
+namespace InnoCMS\Panel\ApiControllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use InnoCMS\Common\Models\Consultation;
-use InnoCMS\Common\Repositories\ConsultationRepo;
+use InnoCMS\Common\Models\Contact;
+use InnoCMS\Common\Repositories\ContactRepo;
 
-class ConsultationController extends BaseController
+class ContactController extends BaseApiController
 {
     /**
      * @param  Request  $request
@@ -24,19 +24,19 @@ class ConsultationController extends BaseController
     {
         $filters = $request->all();
 
-        return ConsultationRepo::getInstance()->list($filters);
+        return ContactRepo::getInstance()->list($filters);
     }
 
     /**
-     * Mark a consultation as read.
+     * Mark a contact as read.
      *
-     * @param  Consultation  $consultation
+     * @param  Contact  $contact
      * @return JsonResponse
      */
-    public function markRead(Consultation $consultation): JsonResponse
+    public function markRead(Contact $contact): JsonResponse
     {
         try {
-            ConsultationRepo::getInstance()->update($consultation, ['status' => true]);
+            ContactRepo::getInstance()->update($contact, ['status' => true]);
 
             return json_success(trans('panel/common.updated_success'));
         } catch (\Exception $e) {
@@ -45,14 +45,14 @@ class ConsultationController extends BaseController
     }
 
     /**
-     * Mark all consultations as read.
+     * Mark all contacts as read.
      *
      * @return JsonResponse
      */
     public function markAllRead(): JsonResponse
     {
         try {
-            ConsultationRepo::getInstance()->markAllAsRead();
+            ContactRepo::getInstance()->markAllAsRead();
 
             return json_success(trans('panel/common.updated_success'));
         } catch (\Exception $e) {
@@ -61,13 +61,13 @@ class ConsultationController extends BaseController
     }
 
     /**
-     * @param  Consultation  $consultation
+     * @param  Contact  $contact
      * @return JsonResponse
      */
-    public function destroy(Consultation $consultation): JsonResponse
+    public function destroy(Contact $contact): JsonResponse
     {
         try {
-            ConsultationRepo::getInstance()->destroy($consultation);
+            ContactRepo::getInstance()->destroy($contact);
 
             return json_success(trans('panel/common.deleted_success'));
         } catch (\Exception $e) {

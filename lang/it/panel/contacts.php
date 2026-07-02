@@ -14,7 +14,7 @@ return [
     'read'          => 'Letto',
     'phone'         => 'Telefono',
     'content'       => 'Messaggio',
-    'detail'        => 'Dettaglio consulto',
+    'detail'        => 'Dettaglio contatto',
     'mark_read'     => 'Segna come letto',
     'mark_all_read' => 'Segna tutto come letto',
 ];

@@ -62,11 +62,11 @@ Route::middleware($middlewares)->group(function () {
     Route::patch('/tags/{tag}', [PanelApiControllers\TagController::class, 'patch'])->name('tags.patch');
     Route::delete('/tags/{tag}', [PanelApiControllers\TagController::class, 'destroy'])->name('tags.destroy');
 
-    // Consultations
-    Route::get('/consultations', [PanelApiControllers\ConsultationController::class, 'index'])->name('consultations.index');
-    Route::put('/consultations/read-all', [PanelApiControllers\ConsultationController::class, 'markAllRead'])->name('consultations.mark_all_read');
-    Route::put('/consultations/{consultation}/read', [PanelApiControllers\ConsultationController::class, 'markRead'])->name('consultations.mark_read');
-    Route::delete('/consultations/{consultation}', [PanelApiControllers\ConsultationController::class, 'destroy'])->name('consultations.destroy');
+    // Contacts
+    Route::get('/contacts', [PanelApiControllers\ContactController::class, 'index'])->name('contacts.index');
+    Route::put('/contacts/read-all', [PanelApiControllers\ContactController::class, 'markAllRead'])->name('contacts.mark_all_read');
+    Route::put('/contacts/{contact}/read', [PanelApiControllers\ContactController::class, 'markRead'])->name('contacts.mark_read');
+    Route::delete('/contacts/{contact}', [PanelApiControllers\ContactController::class, 'destroy'])->name('contacts.destroy');
 
     // File Manager
     Route::get('/file_manager/files', [PanelApiControllers\FileManagerController::class, 'getFiles'])->name('file_manager.get_files');

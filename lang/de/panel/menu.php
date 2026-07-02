@@ -29,7 +29,7 @@ return [
     'file_manager'     => 'Dateimanager',
     'top_plugin'       => 'Plugins',
     'plugins'          => 'Plugins',
-    'consultations'    => 'Anfragen',
+    'contacts'         => 'Kontakte',
     'top_customer'     => 'Kunden',
     'customers'        => 'Kunden',
     'customer_groups'  => 'Gruppen',

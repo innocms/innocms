@@ -17,8 +17,8 @@ Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index'
 // Locale
 Route::get('/locales/switch/{code}', [Controllers\LocaleController::class, 'switch'])->name('locales.switch');
 
-// Consultation
-Route::post('/consultations', [Controllers\ConsultationController::class, 'store'])->name('consultations.store');
+// Contact
+Route::post('/contacts', [Controllers\ContactController::class, 'store'])->name('contacts.store');
 
 // Upload
 Route::post('/upload/images', [Controllers\UploadController::class, 'images'])->name('upload.images');
