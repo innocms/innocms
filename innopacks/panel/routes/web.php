@@ -69,6 +69,10 @@ Route::middleware(['admin_auth:admin'])
         Route::post('/settings/download-geolite2', [Controllers\SettingController::class, 'downloadGeoLite2'])->name('settings.download_geolite2');
         Route::get('/settings/geolite2-info', [Controllers\SettingController::class, 'getGeoLite2Info'])->name('settings.geolite2_info');
 
+        Route::post('/content_ai/generate', [Controllers\ContentAIController::class, 'generate'])->name('content_ai.generate');
+        Route::get('/content_ai/models', [Controllers\ContentAIController::class, 'getModels'])->name('content_ai.models');
+        Route::post('/content_ai/test-model', [Controllers\ContentAIController::class, 'testModel'])->name('content_ai.test_model');
+
         Route::resource('/admins', Controllers\AdminController::class);
         Route::put('/admins/{admin}/active', [Controllers\AdminController::class, 'active'])->name('admins.active');
 

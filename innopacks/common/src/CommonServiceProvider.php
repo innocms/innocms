@@ -11,6 +11,7 @@ namespace InnoCMS\Common;
 
 use Illuminate\Support\ServiceProvider;
 use InnoCMS\Common\Console\Commands;
+use InnoCMS\Common\Services\AI\ProviderRegistry;
 
 class CommonServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,16 @@ class CommonServiceProvider extends ServiceProvider
      * config path.
      */
     private string $basePath = __DIR__.'/../';
+
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        $this->app->singleton(ProviderRegistry::class);
+    }
 
     /**
      * Boot front service provider.
@@ -31,6 +42,23 @@ class CommonServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->loadViewComponents();
         $this->loadViewTemplates();
+        $this->loadAiConfig();
+    }
+
+    /**
+     * Push system_setting('ai_*') values into config('ai.*') so laravel/ai SDK
+     * picks them up. Equivalent to InnoShop's loadAiConfig().
+     *
+     * @return void
+     */
+    private function loadAiConfig(): void
+    {
+        if (! installed()) {
+            return;
+        }
+
+        load_settings();
+        app(ProviderRegistry::class)->buildLaravelAiConfig();
     }
 
     /**

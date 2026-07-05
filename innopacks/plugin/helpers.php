@@ -57,6 +57,29 @@ if (! function_exists('plugin_path')) {
     }
 }
 
+if (! function_exists('plugin_asset')) {
+    /**
+     * Get plugin static asset URL. Copies from plugins/{Code}/Public/{path} into
+     * public/static/plugins/{code}/{path} on demand (same convention as InnoShop).
+     *
+     * @param  string  $pluginCode  e.g. 'SitePilot'
+     * @param  string  $path  e.g. 'js/editor.js'
+     */
+    function plugin_asset(string $pluginCode, string $path, ?bool $secure = null): string
+    {
+        $pluginDirectory  = Str::studly($pluginCode);
+        $originPluginPath = "$pluginDirectory/Public/$path";
+        $destPluginPath   = strtolower("static/plugins/$pluginCode/$path");
+
+        $sourceFile = plugin_path($originPluginPath);
+        $destFile   = public_path($destPluginPath);
+
+        should_copy_static_file($sourceFile, $destFile);
+
+        return app('url')->asset($destPluginPath, $secure);
+    }
+}
+
 if (! function_exists('plugin_resize')) {
     /**
      * Resize plugin image

@@ -10,7 +10,17 @@
 namespace InnoCMS\Common\Services\AI;
 
 use Illuminate\Support\Facades\Log;
+use Laravel\Ai\AnonymousAgent;
+use Laravel\Ai\Messages\Message;
 
+/**
+ * Thin facade over the laravel/ai SDK. Plugin code (SitePilot, ContentAI,
+ * CustomerService etc.) talks to AIServiceManager so we can evolve the
+ * underlying SDK without touching call sites.
+ *
+ * Configuration flows: settings table -> ProviderRegistry::buildLaravelAiConfig()
+ * -> config('ai.*') -> laravel/ai SDK. Boot is done in CommonServiceProvider.
+ */
 class AIServiceManager
 {
     private static ?AIServiceManager $instance = null;
@@ -22,11 +32,6 @@ class AIServiceManager
         $this->config = $this->loadConfig();
     }
 
-    /**
-     * Get singleton instance of AIServiceManager
-     *
-     * @return AIServiceManager The singleton instance
-     */
     public static function getInstance(): AIServiceManager
     {
         if (self::$instance === null) {
@@ -37,371 +42,235 @@ class AIServiceManager
     }
 
     /**
-     * Generate content using AI service
-     *
-     * @param  string  $prompt  The prompt text to generate content from
-     * @param  string|null  $purpose  Purpose of generation (e.g., tdk, chat, image)
-     * @param  array  $options  Additional options for generation
-     * @return string The generated content
-     * @throws \RuntimeException When generation fails
+     * Single-shot text generation. Backed by AnonymousAgent.
      */
     public function generate(string $prompt, ?string $purpose = null, array $options = []): string
     {
-        try {
-            Log::info('AIServiceManager generate started');
-            Log::info('Prompt: '.substr($prompt, 0, 100));
-            Log::info('Purpose: '.($purpose ?? 'null'));
-            Log::info('Options: '.json_encode($options));
+        $messages = [
+            ['role' => 'system', 'content' => $options['system_prompt'] ?? 'You are a helpful assistant.'],
+            ['role' => 'user', 'content' => $prompt],
+        ];
 
-            $model  = $this->getModelForPurpose($purpose);
-            $config = $this->getModelConfig($model);
-
-            Log::info('Selected model: '.$model);
-            Log::info('Config: '.json_encode($config));
-
-            $service = new LaravelAIService;
-            Log::info('Service created successfully');
-
-            // Allow modification of request via hooks
-            $prompt  = apply_filters('ai.generate_prompt', $prompt, $purpose, $model);
-            $options = apply_filters('ai.generate_options', $options, $purpose, $model);
-
-            Log::info('After filters - Prompt: '.substr($prompt, 0, 100));
-            Log::info('After filters - Options: '.json_encode($options));
-
-            try {
-                $result = $service->generate($prompt, $options);
-                Log::info('Generation successful: '.substr($result, 0, 100));
-
-                return apply_filters('ai.generate_result', $result, $prompt, $purpose, $model);
-            } catch (\Exception $e) {
-                Log::error('Primary model failed: '.$e->getMessage());
-
-                // Try fallback model if primary model fails
-                $fallbackModel = $this->getFallbackModel($model);
-                if ($fallbackModel && $fallbackModel !== $model) {
-                    Log::info('Trying fallback model: '.$fallbackModel);
-                    $config  = $this->getModelConfig($fallbackModel);
-                    $service = new LaravelAIService;
-
-                    return $service->generate($prompt, $options);
-                }
-
-                throw new \RuntimeException('AI generation failed: '.$e->getMessage());
-            }
-        } catch (\Exception $e) {
-            Log::error('AIServiceManager final error: '.$e->getMessage());
-            Log::error('AIServiceManager stack: '.$e->getTraceAsString());
-            throw $e;
-        }
+        return $this->chat($messages, $options);
     }
 
     /**
-     * Stream content generation using AI service
-     *
-     * @param  string  $prompt  The prompt text to generate content from
-     * @param  string|null  $purpose  Purpose of generation
-     * @param  array  $options  Additional options for generation
-     * @return iterable Iterator yielding generated content chunks
+     * Stream text generation.
      */
     public function stream(string $prompt, ?string $purpose = null, array $options = []): iterable
     {
-        $model  = $this->getModelForPurpose($purpose);
-        $config = $this->getModelConfig($model);
+        $system = $options['system_prompt'] ?? 'You are a helpful assistant.';
+        $agent  = new AnonymousAgent(
+            instructions: $system,
+            messages: [new Message('user', $prompt)],
+            tools: [],
+        );
 
-        $service = new LaravelAIService;
-
-        $prompt  = apply_filters('ai.generate_prompt', $prompt, $purpose, $model);
-        $options = apply_filters('ai.generate_options', $options, $purpose, $model);
-
-        foreach ($service->stream($prompt, $options) as $chunk) {
-            yield apply_filters('ai.generate_result', $chunk, $prompt, $purpose, $model);
+        foreach ($agent->stream($prompt) as $chunk) {
+            yield $chunk;
         }
     }
 
     /**
-     * Create AI service instance
-     *
-     * @param  string  $model  The model name
-     * @param  array  $config  Optional configuration override
-     * @return AIServiceInterface The AI service instance
-     * @throws \InvalidArgumentException When model is not supported or disabled
-     */
-    public function make(string $model, array $config = []): AIServiceInterface
-    {
-        return new LaravelAIService;
-    }
-
-    /**
-     * Chat with multi-turn messages.
+     * Multi-turn chat. Splits the system message out for AnonymousAgent
+     * (its `instructions` slot), passes the rest as Conversation messages.
      */
     public function chat(array $messages, array $options = []): string
     {
-        $model  = $options['model'] ?? $this->getModelForPurpose('chat');
-        $config = array_merge($this->getModelConfig($model), $options);
+        $system = $options['system_prompt']
+            ?? collect($messages)->firstWhere('role', 'system')['content']
+            ?? 'You are a helpful assistant.';
+
+        $convoMessages = collect($messages)
+            ->reject(fn ($m) => ($m['role'] ?? '') === 'system')
+            ->map(fn ($m) => new Message($m['role'], $m['content']))
+            ->values()
+            ->all();
+
+        $agent = new AnonymousAgent(
+            instructions: $system,
+            messages: $convoMessages,
+            tools: [],
+        );
+
+        $lastUser = collect($messages)->last(fn ($m) => ($m['role'] ?? '') === 'user');
+        $prompt   = $lastUser['content'] ?? '';
 
         try {
-            return $this->make($model)->chat($messages, $config);
+            $response = $agent->prompt($prompt);
+
+            return $response->text ?? '';
         } catch (\Throwable $e) {
-            $fallback = $this->getFallbackModel($model);
-            if ($fallback) {
-                try {
-                    return $this->make($fallback)->chat($messages, $config);
-                } catch (\Throwable $e2) {
-                    throw new \RuntimeException('AI chat failed: '.$e2->getMessage());
-                }
-            }
-            throw new \RuntimeException('AI chat failed: '.$e->getMessage());
+            Log::error('AIServiceManager chat failed: '.$e->getMessage());
+
+            throw new \RuntimeException('AI chat failed: '.$e->getMessage(), 0, $e);
         }
     }
 
     /**
-     * Get model for specified purpose
-     *
-     * @param  string|null  $purpose  The purpose for which to get the model
-     * @return string The model name
+     * Multi-turn streaming chat.
+     */
+    public function chatStream(array $messages, array $options = []): iterable
+    {
+        $system = $options['system_prompt']
+            ?? collect($messages)->firstWhere('role', 'system')['content']
+            ?? 'You are a helpful assistant.';
+
+        $convoMessages = collect($messages)
+            ->reject(fn ($m) => ($m['role'] ?? '') === 'system')
+            ->map(fn ($m) => new Message($m['role'], $m['content']))
+            ->values()
+            ->all();
+
+        $agent = new AnonymousAgent(
+            instructions: $system,
+            messages: $convoMessages,
+            tools: [],
+        );
+
+        $lastUser = collect($messages)->last(fn ($m) => ($m['role'] ?? '') === 'user');
+        $prompt   = $lastUser['content'] ?? '';
+
+        foreach ($agent->stream($prompt) as $chunk) {
+            yield $chunk;
+        }
+    }
+
+    /**
+     * Backwards-compatible factory. Always returns the SDK-backed service;
+     * the model argument is kept for signature compatibility.
+     */
+    public function make(string $model, array $config = []): AIServiceInterface
+    {
+        return new class($model, $config) implements AIServiceInterface
+        {
+            public function __construct(private string $model, private array $config) {}
+
+            public function generate(string $prompt, array $options = []): string
+            {
+                return AIServiceManager::getInstance()->generate($prompt, null, $options);
+            }
+
+            public function stream(string $prompt, array $options = []): iterable
+            {
+                return AIServiceManager::getInstance()->stream($prompt, null, $options);
+            }
+
+            public function validateConfig(array $config): bool
+            {
+                return ! empty($config['api_key']) || ! empty($config['key']);
+            }
+
+            public static function getModelInfo(): array
+            {
+                return ['name' => 'laravel/ai'];
+            }
+
+            public function chat(array $messages, array $options = []): string
+            {
+                return AIServiceManager::getInstance()->chat($messages, $options);
+            }
+
+            public function chatStream(array $messages, array $options = []): iterable
+            {
+                return AIServiceManager::getInstance()->chatStream($messages, $options);
+            }
+        };
+    }
+
+    /**
+     * Resolve which provider code to use for a given purpose.
      */
     public function getModelForPurpose(?string $purpose): string
     {
-        // 优先使用后台设置的默认模型
-        $userDefaultModel = system_setting('ai_model');
-        if ($userDefaultModel && isset($this->config['models'][$userDefaultModel])) {
-            return $userDefaultModel;
+        $userDefault = system_setting('ai_text_provider') ?: system_setting('ai_model');
+
+        if ($userDefault) {
+            return $userDefault;
         }
 
-        // 如果用户没有设置，使用配置中的默认模型
-        return $this->config['default_model'] ?? 'openai';
+        return $this->config['default_model'] ?? 'glm';
     }
 
     /**
-     * Get model configuration
-     *
-     * @param  string  $model  The model name
-     * @return array The model configuration
-     */
-    private function getModelConfig(string $model): array
-    {
-        return $this->config['models'][$model] ?? [];
-    }
-
-    /**
-     * Get fallback model for specified model
-     *
-     * @param  string  $model  The current model name
-     * @return string|null The fallback model name, or null if no fallback
-     */
-    private function getFallbackModel(string $model): ?string
-    {
-        return $this->config['fallback_models'][$model] ?? null;
-    }
-
-    /**
-     * Load AI configuration from system settings
-     *
-     * @return array The loaded configuration
-     */
-    private function loadConfig(): array
-    {
-        // Load AI configuration from system settings
-        $config = system_setting('ai_config', []);
-
-        // Default configuration
-        $defaultConfig = [
-            'default_model' => 'openai',
-            'models'        => [
-                'openai' => [
-                    'enabled'     => system_setting('openai_enabled', false),
-                    'api_key'     => system_setting('openai_api_key', ''),
-                    'base_url'    => 'https://api.openai.com',
-                    'model'       => 'gpt-3.5-turbo',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'deepseek' => [
-                    'enabled'     => system_setting('deepseek_enabled', false),
-                    'api_key'     => system_setting('deepseek_api_key', ''),
-                    'base_url'    => 'https://api.deepseek.com/v1',
-                    'model'       => 'deepseek-chat',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'kimi' => [
-                    'enabled'     => system_setting('kimi_enabled', false),
-                    'api_key'     => system_setting('kimi_api_key', ''),
-                    'base_url'    => 'https://api.moonshot.cn',
-                    'model'       => 'moonshot-v1-8k',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'doubao' => [
-                    'enabled'     => system_setting('doubao_enabled', false),
-                    'api_key'     => system_setting('doubao_api_key', ''),
-                    'base_url'    => 'https://ark.cn-beijing.volces.com/api/v3',
-                    'model'       => 'doubao-lite-4k',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'qianwen' => [
-                    'enabled'     => system_setting('qianwen_enabled', false),
-                    'api_key'     => system_setting('qianwen_api_key', ''),
-                    'base_url'    => 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-                    'model'       => 'qwen-turbo',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'hunyuan' => [
-                    'enabled'     => system_setting('hunyuan_enabled', false),
-                    'api_key'     => system_setting('hunyuan_api_key', ''),
-                    'base_url'    => 'https://api.hunyuan.cloud.tencent.com/v1',
-                    'model'       => 'hunyuan-standard',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'anthropic' => [
-                    'enabled'     => system_setting('anthropic_enabled', false),
-                    'api_key'     => system_setting('anthropic_api_key', ''),
-                    'base_url'    => 'https://api.anthropic.com',
-                    'model'       => 'claude-3-sonnet-20240229',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'glm' => [
-                    'enabled'     => system_setting('glm_enabled', false),
-                    'api_key'     => system_setting('glm_api_key', ''),
-                    'base_url'    => 'https://open.bigmodel.cn/api/paas/v4',
-                    'model'       => 'glm-4',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-                'minimax' => [
-                    'enabled'     => system_setting('minimax_enabled', false),
-                    'api_key'     => system_setting('minimax_api_key', ''),
-                    'base_url'    => 'https://api.minimax.chat/v1',
-                    'model'       => 'MiniMax-Text-01',
-                    'max_tokens'  => 1000,
-                    'temperature' => 0.7,
-                ],
-            ],
-            'purpose_mapping' => [
-                'tdk'   => 'openai',
-                'chat'  => 'openai',
-                'image' => 'openai',
-            ],
-            'fallback_models' => [
-                'openai'    => 'deepseek',
-                'deepseek'  => 'kimi',
-                'kimi'      => 'openai',
-                'doubao'    => 'qianwen',
-                'qianwen'   => 'hunyuan',
-                'hunyuan'   => 'anthropic',
-                'anthropic' => 'glm',
-                'glm'       => 'minimax',
-                'minimax'   => 'openai',
-            ],
-        ];
-
-        return array_merge($defaultConfig, $config);
-    }
-
-    /**
-     * Get all available models information
-     *
-     * @return array Available models information
+     * All available providers from ProviderRegistry presets + user settings.
      */
     public function getAvailableModels(): array
     {
-        $models = [
-            'openai'    => OpenAIService::class,
-            'anthropic' => OpenAIService::class,
-            'deepseek'  => OpenAIService::class,
-            'kimi'      => OpenAIService::class,
-            'doubao'    => OpenAIService::class,
-            'qianwen'   => OpenAIService::class,
-            'hunyuan'   => OpenAIService::class,
-            'glm'       => GlmService::class,
-            'minimax'   => MinimaxService::class,
-        ];
+        $result   = [];
+        $registry = app(ProviderRegistry::class);
 
-        $result = [];
-        foreach ($models as $key => $class) {
-            $result[$key] = $class::getModelInfo();
+        foreach ($registry->getProviders() as $provider) {
+            $code = $provider['code'] ?? '';
+            if (! $code) {
+                continue;
+            }
+            $result[$code] = [
+                'name'        => $provider['name'] ?? ucfirst($code),
+                'driver'      => $provider['driver'] ?? 'openai',
+                'base_url'    => $provider['base_url'] ?? '',
+                'models'      => $provider['models'] ?? [],
+                'description' => $provider['description'] ?? '',
+            ];
         }
 
         return apply_filters('ai.available_models', $result);
     }
 
     /**
-     * Get formatted AI models for select options
-     *
-     * @return array Formatted models for frontend select
+     * Providers that have an API key configured — for panel select dropdowns.
      */
     public function getModelsForSelect(): array
     {
-        $formatted       = [];
-        $systemProviders = ['openai', 'anthropic', 'deepseek', 'kimi', 'doubao', 'qianwen', 'hunyuan', 'glm', 'minimax'];
-
-        foreach ($systemProviders as $name) {
-            $apiKey = system_setting("{$name}_api_key");
-            if (! empty($apiKey)) {
-                $formatted[] = [
-                    'code' => $name,
-                    'name' => ucfirst($name),
-                ];
-            }
-        }
-
-        return $formatted;
+        return app(ProviderRegistry::class)->getConfiguredProviders();
     }
 
     /**
-     * Validate model configuration
-     *
-     * @param  string  $model  The model name
-     * @param  array  $config  Configuration array to validate
-     * @return bool Whether the configuration is valid
+     * Validate a provider configuration.
      */
     public function validateModelConfig(string $model, array $config): bool
     {
-        return ! empty($config['api_key']);
+        return ! empty($config['api_key']) || ! empty($config['key']);
     }
 
     /**
-     * Get only enabled models
-     *
-     * @return array Enabled models configuration
+     * All providers that have an API key set (alias for clarity in older callers).
      */
     public function getEnabledModels(): array
     {
-        $enabledModels = [];
-
-        foreach ($this->config['models'] as $key => $config) {
-            if (isset($config['enabled']) && $config['enabled']) {
-                $enabledModels[$key] = $config;
+        $result = [];
+        foreach (app(ProviderRegistry::class)->getProviders() as $provider) {
+            if (! empty($provider['api_key'])) {
+                $result[$provider['code']] = $provider;
             }
         }
 
-        return $enabledModels;
+        return $result;
     }
 
-    /**
-     * Check if a model is enabled
-     *
-     * @param  string  $model  The model name
-     * @return bool Whether the model is enabled
-     */
     public function isModelEnabled(string $model): bool
     {
-        $modelConfig = $this->config['models'][$model] ?? [];
+        foreach (app(ProviderRegistry::class)->getProviders() as $provider) {
+            if (($provider['code'] ?? '') === $model && ! empty($provider['api_key'])) {
+                return true;
+            }
+        }
 
-        return isset($modelConfig['enabled']) && $modelConfig['enabled'];
+        return false;
     }
 
     /**
-     * 重新加载配置
+     * Reload settings → config('ai.*'). Call after settings are mutated in panel.
      */
     public function reloadConfig(): void
     {
-        $this->config = $this->loadConfig();
-        // Cache cleared via config refresh
+        app(ProviderRegistry::class)->buildLaravelAiConfig();
+    }
+
+    private function loadConfig(): array
+    {
+        return [
+            'default_model' => config('ai.default', 'glm'),
+        ];
     }
 }

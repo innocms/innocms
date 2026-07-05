@@ -18,6 +18,7 @@
             <a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-basics">基本设置</a>
             <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-storage">{{ __('panel/setting.storage_settings') }}</a>
             <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-tools">{{ __('panel/setting.tools_setting') }}</a>
+            <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-ai">AI 配置</a>
           </ul>
         </div>
       </div>
@@ -66,6 +67,8 @@
             @include('panel::settings._storage_setting')
 
             @include('panel::settings._tools_setting')
+
+            @include('panel::settings._ai_setting')
           </div>
         </div>
       </div>
