@@ -11,8 +11,10 @@ if (token) {
 
 axios.interceptors.request.use(
   config => {
-    // 在发送请求之前显示加载层
-    layer.load(2, { shade: [0.3, '#fff'] });
+    // 在发送请求之前显示加载层（除非请求声明 silentLoading，比如自带局部 spinner 的调用）
+    if (!config.silentLoading) {
+      layer.load(2, { shade: [0.3, '#fff'] });
+    }
     return config;
   },
   error => {
