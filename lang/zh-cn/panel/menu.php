@@ -16,6 +16,10 @@ return [
     'pages'       => '单页管理',
     'tags'        => '文章标签',
 
+    'top_product' => '产品管理',
+    'products'    => '产品列表',
+    'categories'  => '产品分类',
+
     'top_analytic' => '数据分析',
     'analytics'    => '数据报表',
     'visits'       => '访问记录',

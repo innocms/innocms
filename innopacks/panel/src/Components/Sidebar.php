@@ -67,6 +67,12 @@ class Sidebar extends Component
                 'icon'  => 'bi-house',
             ],
             [
+                'title'    => __('panel/menu.top_product'),
+                'icon'     => 'bi-box-seam',
+                'prefixes' => ['products', 'categories'],
+                'children' => $this->getProductSubRoutes(),
+            ],
+            [
                 'title'    => __('panel/menu.top_content'),
                 'icon'     => 'bi-sticky',
                 'prefixes' => ['articles', 'catalogs', 'tags', 'pages', 'contacts', 'file_manager'],
@@ -222,6 +228,19 @@ class Sidebar extends Component
         ];
 
         return fire_hook_filter('component.sidebar.content.routes', $routes);
+    }
+
+    /**
+     * Get product sub routes.
+     */
+    public function getProductSubRoutes(): array
+    {
+        $routes = [
+            ['route' => 'products.index',   'title' => __('panel/menu.products')],
+            ['route' => 'categories.index', 'title' => __('panel/menu.categories')],
+        ];
+
+        return fire_hook_filter('component.sidebar.product.routes', $routes);
     }
 
     /**

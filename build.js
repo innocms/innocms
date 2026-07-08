@@ -60,8 +60,10 @@ if (entries.length === 0) {
 let failed = 0;
 for (const entry of entries) {
     try {
+        // Env vars are passed cross-platform via the `env` option below; do NOT inline them
+        // into the command string (`VAR=value cmd` is bash-only and breaks on Windows cmd.exe).
         execSync(
-            `BUILD_INPUT="${entry.input}" BUILD_OUTDIR="${entry.outDir}" BUILD_OUTPUT_NAME="${entry.outputName}" npx vite build`,
+            'npx vite build',
             { stdio: 'pipe', env: { ...process.env, BUILD_INPUT: entry.input, BUILD_OUTDIR: entry.outDir, BUILD_OUTPUT_NAME: entry.outputName } }
         );
         if (entry.input.endsWith('.js')) {

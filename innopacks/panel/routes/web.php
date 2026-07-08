@@ -42,6 +42,13 @@ Route::middleware(['admin_auth:admin'])
         Route::resource('/tags', Controllers\TagController::class);
         Route::put('/tags/{tag}/active', [Controllers\TagController::class, 'active'])->name('tags.active');
 
+        Route::post('/products/copy/{product}', [Controllers\ProductController::class, 'copy'])->name('products.copy');
+        Route::resource('/products', Controllers\ProductController::class);
+        Route::put('/products/{product}/active', [Controllers\ProductController::class, 'active'])->name('products.active');
+
+        Route::resource('/categories', Controllers\CategoryController::class);
+        Route::put('/categories/{category}/active', [Controllers\CategoryController::class, 'active'])->name('categories.active');
+
         Route::get('/contacts', [Controllers\ContactController::class, 'index'])->name('contacts.index');
         Route::get('/contacts/{contact}', [Controllers\ContactController::class, 'show'])->name('contacts.show');
         Route::delete('/contacts/{contact}', [Controllers\ContactController::class, 'destroy'])->name('contacts.destroy');

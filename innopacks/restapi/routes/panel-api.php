@@ -62,6 +62,14 @@ Route::middleware($middlewares)->group(function () {
     Route::patch('/tags/{tag}', [PanelApiControllers\TagController::class, 'patch'])->name('tags.patch');
     Route::delete('/tags/{tag}', [PanelApiControllers\TagController::class, 'destroy'])->name('tags.destroy');
 
+    // Products (display-only CMS) — picker endpoints for the product form
+    Route::get('/products', [PanelApiControllers\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/autocomplete', [PanelApiControllers\ProductController::class, 'autocomplete'])->name('products.autocomplete');
+
+    // Product categories — picker endpoints for the product form
+    Route::get('/categories', [PanelApiControllers\CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/autocomplete', [PanelApiControllers\CategoryController::class, 'autocomplete'])->name('categories.autocomplete');
+
     // Contacts
     Route::get('/contacts', [PanelApiControllers\ContactController::class, 'index'])->name('contacts.index');
     Route::put('/contacts/read-all', [PanelApiControllers\ContactController::class, 'markAllRead'])->name('contacts.mark_all_read');
