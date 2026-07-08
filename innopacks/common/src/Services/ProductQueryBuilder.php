@@ -38,8 +38,8 @@ class ProductQueryBuilder
         if ($parentSlug) {
             $parentCategory = Category::query()->where('slug', $parentSlug)->first();
             if ($parentCategory) {
-                $childCategories = CategoryRepo::getInstance()->builder(['parent_id' => $parentCategory->id])->get();
-                $typeCategoryIds = array_merge($typeCategoryIds, $childCategories->pluck('id')->toArray());
+                $childCategories   = CategoryRepo::getInstance()->builder(['parent_id' => $parentCategory->id])->get();
+                $typeCategoryIds   = array_merge($typeCategoryIds, $childCategories->pluck('id')->toArray());
                 $typeCategoryIds[] = $parentCategory->id;
             }
         }
@@ -55,9 +55,9 @@ class ProductQueryBuilder
         if ($categorySlug) {
             $category = Category::query()->where('slug', $categorySlug)->first();
             if ($category) {
-                $categories          = CategoryRepo::getInstance()->builder(['parent_id' => $category->id])->get();
-                $childCategoryIds    = $categories->pluck('id')->toArray();
-                $specificCategoryIds = array_merge($specificCategoryIds, $childCategoryIds);
+                $categories            = CategoryRepo::getInstance()->builder(['parent_id' => $category->id])->get();
+                $childCategoryIds      = $categories->pluck('id')->toArray();
+                $specificCategoryIds   = array_merge($specificCategoryIds, $childCategoryIds);
                 $specificCategoryIds[] = $category->id;
             }
         }

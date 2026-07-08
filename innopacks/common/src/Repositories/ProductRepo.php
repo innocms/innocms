@@ -191,7 +191,7 @@ class ProductRepo extends BaseRepo
         ]);
 
         return DB::transaction(function () use ($product) {
-            $copy = $product->replicate();
+            $copy       = $product->replicate();
             $copy->slug = $this->uniqueCopySlug($product->slug);
             if ($copy->spu_code) {
                 $copy->spu_code .= '-'.random_int(10000, 99999);
@@ -358,7 +358,7 @@ class ProductRepo extends BaseRepo
             // A plain URL string ('https://.../x.mp4') is not valid JSON, so a
             // bare json_decode would null it out — treat it as ['url' => <string>].
             $decoded = json_decode($video, true);
-            $video = is_array($decoded) ? $decoded : ['url' => $video];
+            $video   = is_array($decoded) ? $decoded : ['url' => $video];
         }
 
         $slug = $data['slug'] ?? null;

@@ -37,15 +37,15 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'position'  => 'integer',
-            'viewed'    => 'integer',
-            'active'    => 'bool',
-            'price'     => 'nullable|numeric|min:0',
-            'link'      => ['nullable', 'string', 'max:500', 'regex:#^https?://#i'],
-            'spu_code'  => 'nullable|string|max:128',
-            'images'    => 'nullable|array',
-            'video'     => 'nullable|array',
-            'video.url' => ['nullable', 'string', 'max:500', 'regex:#^(https?:\/\/|\/)#i'],
+            'position'    => 'integer',
+            'viewed'      => 'integer',
+            'active'      => 'bool',
+            'price'       => 'nullable|numeric|min:0',
+            'link'        => ['nullable', 'string', 'max:500', 'regex:#^https?://#i'],
+            'spu_code'    => 'nullable|string|max:128',
+            'images'      => 'nullable|array',
+            'video'       => 'nullable|array',
+            'video.url'   => ['nullable', 'string', 'max:500', 'regex:#^(https?:\/\/|\/)#i'],
             'categories'  => 'nullable|array',
             'related_ids' => 'nullable|array',
 
