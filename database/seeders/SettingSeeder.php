@@ -62,7 +62,7 @@ class SettingSeeder extends BaseSeeder
                 'id'    => 5,
                 'space' => 'system',
                 'name'  => 'panel_logo',
-                'value' => 'images/logo-panel.svg',
+                'value' => 'images/logo-panel.png',
                 'json'  => 0,
             ],
             [

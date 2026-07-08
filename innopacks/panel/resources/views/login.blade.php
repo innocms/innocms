@@ -37,7 +37,7 @@
         @if (system_setting('panel_logo'))
           <img src="{{ image_origin(system_setting('panel_logo')) }}" alt="Logo" class="brand-logo">
         @else
-          <img src="{{ image_origin('images/logo-panel.svg') }}" alt="Logo" class="brand-logo">
+          <img src="{{ image_origin('images/logo-panel.png') }}" alt="Logo" class="brand-logo">
         @endif
       </div>
       <div class="locale-wrap">
