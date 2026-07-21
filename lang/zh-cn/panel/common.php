@@ -79,4 +79,5 @@ return [
     'copy_empty'         => '填充空语言',
     'no_empty_languages' => '没有空语言需要填充',
     'copied_languages'   => '已填充 :count 个语言',
+    'drag_sort_hint'     => '拖拽排序',
 ];

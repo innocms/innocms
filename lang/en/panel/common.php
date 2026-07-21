@@ -79,4 +79,5 @@ return [
     'copy_empty'         => 'Fill Empty',
     'no_empty_languages' => 'No empty languages to fill',
     'copied_languages'   => 'Filled :count languages',
+    'drag_sort_hint'     => 'Drag to sort',
 ];

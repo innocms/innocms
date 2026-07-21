@@ -9,10 +9,12 @@
 
 namespace InnoCMS\Panel\Controllers;
 
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Category;
 use InnoCMS\Common\Repositories\CategoryRepo;
+use InnoCMS\Common\Resources\CategoryTree;
 use InnoCMS\Panel\Requests\CategoryRequest;
 
 class CategoryController extends BaseController
@@ -20,15 +22,15 @@ class CategoryController extends BaseController
     /**
      * @param  Request  $request
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function index(Request $request): mixed
     {
-        $filters = $request->all();
-        $data    = [
-            'searchFields'  => CategoryRepo::getSearchFieldOptions(),
-            'filterButtons' => CategoryRepo::getFilterButtonOptions(),
-            'categories'    => CategoryRepo::getInstance()->list($filters),
+        $filters              = $request->all();
+        $filters['parent_id'] = 0;
+        $categories           = CategoryRepo::getInstance()->all($filters);
+        $data                 = [
+            'categories' => CategoryTree::collection($categories)->jsonSerialize(),
         ];
 
         return view('panel::categories.index', $data);
@@ -38,7 +40,7 @@ class CategoryController extends BaseController
      * Category creation page.
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(): mixed
     {
@@ -56,7 +58,7 @@ class CategoryController extends BaseController
             CategoryRepo::getInstance()->create($request->all());
 
             return redirect(panel_route('categories.index'))->with('success', trans('panel/common.updated_success'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
     }
@@ -64,7 +66,7 @@ class CategoryController extends BaseController
     /**
      * @param  Category  $category
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function edit(Category $category): mixed
     {
@@ -74,7 +76,7 @@ class CategoryController extends BaseController
     /**
      * @param  $category
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function form($category): mixed
     {
@@ -106,7 +108,7 @@ class CategoryController extends BaseController
 
             return redirect(panel_route('categories.index'))
                 ->with('success', trans('panel/common.updated_success'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect(panel_route('categories.edit', $category))
                 ->withInput()
                 ->withErrors(['error' => $e->getMessage()]);
@@ -117,14 +119,35 @@ class CategoryController extends BaseController
      * @param  Category  $category
      * @return RedirectResponse
      */
-    public function destroy(Category $category): RedirectResponse
+    public function destroy(Category $category): mixed
     {
         try {
+            if ($category->children()->count()) {
+                throw new Exception(trans('panel/category.has_children'));
+            }
             CategoryRepo::getInstance()->destroy($category);
 
-            return back()->with('success', trans('panel/common.deleted_success'));
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
+            return json_success(trans('panel/common.deleted_success'));
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * Reorder categories (drag-and-drop).
+     *
+     * @param  Request  $request
+     * @return mixed
+     */
+    public function reorder(Request $request): mixed
+    {
+        try {
+            $ids = (array) $request->input('ids', []);
+            CategoryRepo::getInstance()->reorder($ids);
+
+            return json_success(common_trans('base.updated_success'));
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
         }
     }
 }

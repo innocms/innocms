@@ -13,7 +13,8 @@
   <meta name="api-token" content="{{ session('panel_api_token') }}">
   <meta name="storage-base-url" content="{{ storage_url('') }}">
   <link rel="shortcut icon" href="{{ image_origin(system_setting('favicon', 'images/favicon.png')) }}">
-  <link rel="stylesheet" href="{{ asset('build/panel/css/app.css') }}">
+  @php($panelCss = 'build/panel/css/app.css')
+  <link rel="stylesheet" href="{{ asset($panelCss) . (file_exists(public_path($panelCss)) ? '?v=' . filemtime(public_path($panelCss)) : '') }}">
   <script src="{{ asset('vendor/jquery/jquery-3.7.1.min.js') }}"></script>
   <script src="{{ asset('vendor/layer/3.5.1/layer.js') }}"></script>
   <script src="{{ asset('build/panel/js/app.js') }}"></script>

@@ -79,4 +79,5 @@ return [
     'copy_empty'         => 'Preencher Vazio',
     'no_empty_languages' => 'Nenhum idioma vazio para preencher',
     'copied_languages'   => ':count idiomas preenchidos',
+    'drag_sort_hint'     => 'Arraste para ordenar',
 ];

@@ -8,6 +8,10 @@
  */
 
 return [
-    'list'   => 'Katalogliste',
-    'create' => 'Neuer Katalog',
+    'list'        => 'Katalogliste',
+    'create'      => 'Neuer Katalog',
+    'title'       => 'Titel',
+    'summary'     => 'Zusammenfassung',
+    'content_tab' => 'Inhalt',
+    'extra_tab'   => 'Weitere Informationen',
 ];

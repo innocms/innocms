@@ -1,0 +1,17 @@
+// 文章分类（catalogs）列表样式
+// - 拖拽手柄外观与 hover 反馈
+// - 拖拽列固定列宽
+body.page-catalogs {
+  .table {
+    .drag-handle {
+      cursor: move;
+      font-size: .75rem;
+      opacity: .4;
+      transition: opacity .15s ease-in-out;
+    }
+
+    tbody tr:hover .drag-handle { opacity: .6; }
+
+    .col-drag { width: 40px; }
+  }
+}

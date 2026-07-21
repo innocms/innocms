@@ -2,10 +2,13 @@
 
 @section('title', __('panel/menu.catalogs'))
 
+<x-panel::form.right-btns formid="catalog-form" />
+
 @section('content')
   <div class="card h-min-600">
     <div class="card-body">
       <form class="needs-validation" novalidate
+            id="catalog-form"
             action="{{ $catalog->id ? panel_route('catalogs.update', [$catalog->id]) : panel_route('catalogs.store') }}"
             method="POST">
         @csrf
@@ -13,83 +16,78 @@
 
         <ul class="nav nav-tabs mb-4" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data" type="button">分类内容
-            </button>
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data" type="button">{{ __('panel/catalog.content_tab') }}</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-info" type="button">其他信息</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-info" type="button">{{ __('panel/catalog.extra_tab') }}</button>
           </li>
         </ul>
 
         <div class="tab-content">
+          {{-- 分类内容：与产品编辑一致的多语言方式 --}}
           <div class="tab-pane fade show active" id="tab-data">
-            <div class="accordion accordion-flush locales-accordion" id="data-locales">
-              @foreach (locales() as $locale)
-                @php($localeCode = $locale->code)
-                @php($localeName = $locale->name)
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button {{ $loop->first ? '' : 'collapsed' }}" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#data-locale-{{ $localeCode }}"
-                            aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
-                            aria-controls="data-locale-{{ $localeCode }}">
-                      <div class="wh-20 me-2">
-                        <img src="{{ image_origin($locale->image) }}" class="img-fluid">
-                      </div>
-                      {{ $localeName }}
-                    </button>
-                  </h2>
-                  <div id="data-locale-{{ $localeCode }}"
-                       class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
-                       data-bs-parent="#data-locales">
-                    <div class="accordion-body">
-                      <input name="translations[{{$localeCode}}][locale]" value="{{$localeCode}}" class="d-none">
-
-                      <x-panel-form-input title="标题" name="translations[{{$localeCode}}][title]"
-                                          value="{{ old('translations.' . $localeCode . '.title', $catalog->translate($localeCode, 'title')) }}"
-                                          required placeholder="标题"/>
-
-                      <x-panel-form-input title="摘要说明" name="translations[{{$localeCode}}][summary]"
-                                          value="{{ old('translations.' . $localeCode . '.summary', $catalog->translate($localeCode, 'summary')) }}"
-                                          placeholder="摘要说明"/>
-
-                      <x-panel-form-input title="Meta Title" name="translations[{{$localeCode}}][meta_title]"
-                                          value="{{ old('translations.' . $localeCode . '.meta_title', $catalog->translate($localeCode, 'meta_title')) }}"
-                                          placeholder="Meta Title"/>
-
-                      <x-panel-form-input title="Meta Keywords" name="translations[{{$localeCode}}][meta_keywords]"
-                                          value="{{ old('translations.' . $localeCode . '.meta_keywords', $catalog->translate($localeCode, 'meta_keywords')) }}"
-                                          placeholder="Meta Keywords"/>
-
-                      <x-panel-form-input title="Meta Description" name="translations[{{$localeCode}}][meta_description]"
-                                          value="{{ old('translations.' . $localeCode . '.meta_description', $catalog->translate($localeCode, 'meta_description')) }}"
-                                          placeholder="Meta Description"/>
-                    </div>
-                  </div>
-                </div>
-              @endforeach
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <x-common-form-locale-input
+                  name="title"
+                  type="input"
+                  :translations="locale_field_data($catalog, 'title')"
+                  :required="true"
+                  :label="__('panel/catalog.title')"
+                  :placeholder="__('panel/catalog.title')"
+                />
+              </div>
             </div>
+
+            <x-common-form-locale-input
+              name="summary"
+              type="textarea"
+              :translations="locale_field_data($catalog, 'summary')"
+              :label="__('panel/catalog.summary')"
+              :placeholder="__('panel/catalog.summary')"
+              :rows="3"
+            />
+
+            <x-common-form-locale-input
+              name="meta_title"
+              type="input"
+              :translations="locale_field_data($catalog, 'meta_title')"
+              :label="__('panel/common.meta_title')"
+              :placeholder="__('panel/common.meta_title')"
+            />
+
+            <x-common-form-locale-input
+              name="meta_keywords"
+              type="input"
+              :translations="locale_field_data($catalog, 'meta_keywords')"
+              :label="__('panel/common.meta_keywords')"
+              :placeholder="__('panel/common.meta_keywords')"
+            />
+
+            <x-common-form-locale-input
+              name="meta_description"
+              type="textarea"
+              :translations="locale_field_data($catalog, 'meta_description')"
+              :label="__('panel/common.meta_description')"
+              :placeholder="__('panel/common.meta_description')"
+              :rows="3"
+            />
           </div>
 
           <div class="tab-pane fade" id="tab-info">
-            <x-panel-form-select title="上级分类" name="parent_id" :value="old('parent_id', $catalog->parent_id ?? 0)"
+            <x-panel-form-select title="{{ __('panel/category.parent') }}" name="parent_id" :value="old('parent_id', $catalog->parent_id ?? 0)"
                                 :options="$catalogs" key="id" label="name" />
-            <x-panel-form-input title="SEO 别名" name="slug" :value="old('slug', $catalog->slug ?? '')"
-                                placeholder="SEO 别名" />
-            <x-panel-form-input title="分类排序" name="position" :value="old('position', $catalog->position ?? 0)"
-                                placeholder="文章排序"/>
-            <x-panel-form-switch-radio title="是否启用" name="active" :value="old('active', $catalog->active ?? true)"
-              placeholder="是否启用"/>
+            <x-panel-form-input title="{{ __('panel/common.slug') }}" name="slug" :value="old('slug', $catalog->slug ?? '')"
+                                placeholder="{{ __('panel/common.slug') }}" />
+            <x-panel-form-input title="{{ __('panel/common.position') }}" name="position" :value="old('position', $catalog->position ?? 0)"
+                                placeholder="{{ __('panel/common.position') }}"/>
+            <x-panel-form-switch-radio title="{{ __('panel/common.whether_enable') }}" name="active" :value="old('active', $catalog->active ?? true)"
+              placeholder="{{ __('panel/common.whether_enable') }}"/>
           </div>
         </div>
 
-        <x-panel::form.bottom-btns />
+        <button type="submit" class="d-none"></button>
       </form>
     </div>
   </div>
 @endsection
-
-@push('footer')
-  <script>
-  </script>
-@endpush
