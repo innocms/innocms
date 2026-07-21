@@ -79,4 +79,5 @@ return [
     'copy_empty'         => '빈 값 채우기',
     'no_empty_languages' => '채울 빈 값이 없습니다',
     'copied_languages'   => ':count개 언어에 채웠습니다',
+    'drag_sort_hint'     => '드래그하여 정렬',
 ];

@@ -19,4 +19,5 @@ return [
     // Validation errors thrown by Category model booted() hook
     'parent_self'        => '上级分类不能是自身',
     'circular_reference' => '不能选择自身或下级分类作为上级',
+    'has_children'       => '请先删除或转移该分类下的子分类',
 ];

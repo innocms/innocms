@@ -79,4 +79,5 @@ return [
     'copy_empty'         => '空欄を補完',
     'no_empty_languages' => '補完する空欄の言語がありません',
     'copied_languages'   => ':count 言語を補完しました',
+    'drag_sort_hint'     => 'ドラッグで並べ替え',
 ];

@@ -19,4 +19,5 @@ return [
     // Validation errors thrown by Category model booted() hook
     'parent_self'        => 'A category cannot be its own parent',
     'circular_reference' => 'Cannot select itself or a descendant as parent',
+    'has_children'       => 'Please delete or reassign child categories first',
 ];

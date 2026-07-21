@@ -79,4 +79,5 @@ return [
     'copy_empty'         => 'Заполнить пустые',
     'no_empty_languages' => 'Нет пустых языков для заполнения',
     'copied_languages'   => 'Заполнено :count языков',
+    'drag_sort_hint'     => 'Перетащите для сортировки',
 ];

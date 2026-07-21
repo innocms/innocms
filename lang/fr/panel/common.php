@@ -79,4 +79,5 @@ return [
     'copy_empty'         => 'Remplir les vides',
     'no_empty_languages' => 'Aucune langue vide à remplir',
     'copied_languages'   => ':count langue(s) remplie(s)',
+    'drag_sort_hint'     => 'Glisser pour trier',
 ];

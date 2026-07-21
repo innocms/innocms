@@ -72,4 +72,5 @@ return [
     'copy_empty'         => 'Leere füllen',
     'no_empty_languages' => 'Keine leeren Sprachen zum Füllen',
     'copied_languages'   => ':count Sprachen gefüllt',
+    'drag_sort_hint'     => 'Ziehen zum Sortieren',
 ];

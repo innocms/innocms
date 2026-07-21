@@ -1,0 +1,80 @@
+// 产品分类树状目录样式（对齐 enterprise.test 的 page-category 外观）
+// - 展开收起箭头放到分类名称左侧
+// - 子级缩进，体现层级（避免过于扁平）
+body.page-product-categories {
+  #categories-top {
+    .accordion-header {
+      padding-right: 10px;
+
+      &:hover {
+        background-color: #eee;
+
+        .drag-handle { opacity: .6; }
+      }
+    }
+
+    // 拖拽手柄（drag-to-sort）
+    .drag-handle {
+      cursor: move;
+      font-size: .75rem;
+      opacity: .15;
+      transition: opacity .15s ease-in-out;
+    }
+
+    // 无子级的分类项：禁用展开箭头
+    .accordion-button.no-children {
+      cursor: default;
+
+      &::after { display: none; }
+    }
+
+    .accordion-button {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-right: 0;
+      padding-left: 30px; // 为左侧箭头留出空间
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      background-color: transparent;
+      box-shadow: none;
+
+      // 箭头移到左侧
+      &:after {
+        position: absolute;
+        left: 10px;
+        --bs-accordion-btn-icon-width: .7rem;
+        transform: rotate(-90deg); // 收起：▶
+      }
+
+      &[aria-expanded="true"] {
+        &:after {
+          transform: rotate(0); // 展开：▼
+        }
+      }
+    }
+
+    .accordion-body {
+      padding: 0;
+
+      // 子级缩进，形成树状层级
+      .accordion-header {
+        padding-left: 18px;
+      }
+
+      .accordion-item {
+        border: none;
+
+        .accordion-button {
+          padding-right: 0;
+        }
+      }
+    }
+
+    // 右侧启用开关稍微缩小（仅影响产品分类页，不动全局）
+    .category-switch .form-check-input {
+      transform: scale(.82);
+      cursor: pointer;
+    }
+  }
+}

@@ -23,6 +23,7 @@
       <table class="table align-middle">
         <thead>
           <tr>
+            <td class="col-drag"></td>
             <td>{{ __('panel/common.id') }}</td>
             <td>{{ __('panel/common.name') }}</td>
             <td>{{ __('panel/menu.catalogs') }}</td>
@@ -34,7 +35,10 @@
         </thead>
         <tbody>
         @foreach($catalogs as $item)
-          <tr>
+          <tr data-id="{{ $item->id }}">
+            <td class="text-center col-drag">
+              <i class="bi bi-grip-vertical drag-handle text-muted" title="{{ __('panel/common.drag_sort_hint') }}"></i>
+            </td>
             <td>{{ $item->id }}</td>
             <td>{{ $item->title }}</td>
             <td>{{ $item->parent->title ?? '-' }}</td>
@@ -61,3 +65,36 @@
   </div>
 </div>
 @endsection
+
+@push('footer')
+    <script src="{{ asset('vendor/vuedraggable/sortable.min.js') }}"></script>
+    <script>
+    function initCatalogSortable() {
+      if (typeof Sortable === 'undefined') return;
+      const tbody = document.querySelector('table tbody');
+      if (!tbody || tbody.dataset.sortableInit) return;
+      tbody.dataset.sortableInit = '1';
+      new Sortable(tbody, {
+        handle: '.drag-handle',
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        onEnd: function(evt) {
+          const ids = [];
+          Array.prototype.forEach.call(evt.to.querySelectorAll(':scope > tr'), function(tr) {
+            const id = tr.getAttribute('data-id');
+            if (id) ids.push(parseInt(id));
+          });
+          if (ids.length < 1) return;
+          axios.post(@json(panel_route('catalogs.reorder')), { ids: ids })
+            .then(function(res) { inno.msg(res.message); })
+            .catch(function(err) {
+              if (err.response && err.response.data && err.response.data.message) {
+                inno.msg(err.response.data.message);
+              }
+            });
+        }
+      });
+    }
+    initCatalogSortable();
+    </script>
+@endpush

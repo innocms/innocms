@@ -79,4 +79,5 @@ return [
     'copy_empty'         => 'Rellenar vacíos',
     'no_empty_languages' => 'No hay idiomas vacíos para rellenar',
     'copied_languages'   => 'Rellenados :count idiomas',
+    'drag_sort_hint'     => 'Arrastrar para ordenar',
 ];

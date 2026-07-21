@@ -37,6 +37,7 @@ Route::middleware(['admin_auth:admin'])
         Route::put('/articles/{article}/active', [Controllers\ArticleController::class, 'active'])->name('articles.active');
         Route::resource('/catalogs', Controllers\CatalogController::class);
         Route::put('/catalogs/{catalog}/active', [Controllers\CatalogController::class, 'active'])->name('catalogs.active');
+        Route::post('/catalogs/reorder', [Controllers\CatalogController::class, 'reorder'])->name('catalogs.reorder');
         Route::resource('/pages', Controllers\PageController::class);
         Route::put('/pages/{page}/active', [Controllers\PageController::class, 'active'])->name('pages.active');
         Route::resource('/tags', Controllers\TagController::class);
@@ -48,6 +49,7 @@ Route::middleware(['admin_auth:admin'])
 
         Route::resource('/categories', Controllers\CategoryController::class);
         Route::put('/categories/{category}/active', [Controllers\CategoryController::class, 'active'])->name('categories.active');
+        Route::post('/categories/reorder', [Controllers\CategoryController::class, 'reorder'])->name('categories.reorder');
 
         Route::get('/contacts', [Controllers\ContactController::class, 'index'])->name('contacts.index');
         Route::get('/contacts/{contact}', [Controllers\ContactController::class, 'show'])->name('contacts.show');
