@@ -42,6 +42,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article): mixed
     {
+        abort_unless((bool) $article->active, 404);
         $article->increment('viewed');
         $data = [
             'article'    => $article,
