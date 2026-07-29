@@ -83,6 +83,10 @@ class ArticleRepo extends BaseRepo
             $builder->where('catalog_id', $catalogId);
         }
 
+        if (isset($filters['active'])) {
+            $builder->where('active', (bool) $filters['active']);
+        }
+
         $searchField = $filters['search_field'] ?? '';
         $keyword     = $filters['keyword'] ?? '';
         if ($keyword) {
