@@ -135,8 +135,23 @@ class PluginServiceProvider extends ServiceProvider
         foreach ($enabledPlugins as $plugin) {
             $pluginCode = $plugin->getDirname();
             $this->bootPlugin($plugin);
+            $this->loadPluginHelpers($pluginCode);
             $this->loadPluginRoutes($pluginCode);
             $this->loadPluginMiddlewares($pluginCode);
+        }
+    }
+
+    /**
+     * Load plugin helpers.
+     *
+     * @param  $pluginCode
+     * @return void
+     */
+    private function loadPluginHelpers($pluginCode): void
+    {
+        $helpersPath = "$this->pluginBasePath/$pluginCode/helpers.php";
+        if (file_exists($helpersPath)) {
+            require_once $helpersPath;
         }
     }
 
@@ -192,7 +207,7 @@ class PluginServiceProvider extends ServiceProvider
         $pluginBasePath = $this->pluginBasePath;
         $rootRoutePath  = "$pluginBasePath/$pluginCode/Routes/root.php";
         if (file_exists($rootRoutePath)) {
-            Route::middleware('web')
+            Route::middleware('front')
                 ->name('front.')
                 ->group(function () use ($rootRoutePath) {
                     $this->loadRoutesFrom($rootRoutePath);
@@ -236,7 +251,7 @@ class PluginServiceProvider extends ServiceProvider
         $locales = locales();
         if (hide_url_locale() || $locales->isEmpty()) {
             Route::name('front.')
-                ->middleware('web')
+                ->middleware('front')
                 ->group(function () use ($shopRoutePath) {
                     $this->loadRoutesFrom($shopRoutePath);
                 });
@@ -244,7 +259,7 @@ class PluginServiceProvider extends ServiceProvider
             foreach ($locales as $locale) {
                 Route::prefix($locale->code)
                     ->name($locale->code.'.front.')
-                    ->middleware('web')
+                    ->middleware('front')
                     ->group(function () use ($shopRoutePath) {
                         $this->loadRoutesFrom($shopRoutePath);
                     });
