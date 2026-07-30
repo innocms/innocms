@@ -9,7 +9,7 @@ interface FileManagerInterface
     /**
      * Get files list
      */
-    public function getFiles(string $baseFolder, string $keyword = '', string $sort = 'created', string $order = 'desc', int $page = 1, int $perPage = 20): array;
+    public function getFiles(string $baseFolder, string $keyword = '', string $sort = 'created', string $order = 'desc', int $page = 1, int $perPage = 20, bool $includeDirectories = false): array;
 
     /**
      * Get directories list

@@ -46,6 +46,7 @@
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('panel/common.delete') }}</button>
               </form>
+              @hookinsert('panel.pages.index.row_actions')
             </td>
           </tr>
         @endforeach

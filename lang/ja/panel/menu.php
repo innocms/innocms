@@ -26,7 +26,7 @@ return [
     'top_analytic'     => '分析',
     'analytics'        => 'レポート',
     'visits'           => '訪問',
-    'file_manager'     => 'ファイルマネージャー',
+    'media'            => 'ファイルマネージャー',
     'top_plugin'       => 'プラグイン',
     'plugins'          => 'プラグイン',
     'contacts'         => 'お問い合わせ',

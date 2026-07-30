@@ -12,7 +12,9 @@ namespace InnoCMS\RestAPI\PanelApiControllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use InnoCMS\Common\Models\MediaFile;
 use InnoCMS\Common\Repositories\SettingRepo;
 use InnoCMS\Common\Requests\UploadFileRequest;
 use InnoCMS\Panel\Controllers\BaseController;
@@ -28,19 +30,19 @@ use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\QueryParam;
 
-#[Group('Panel - File Manager')]
+#[Group('Panel - Media Library')]
 class FileManagerController extends BaseController
 {
     protected function getService(): FileManagerInterface
     {
         $service = app(FileManagerInterface::class);
 
-        return fire_hook_filter('file_manager.service', $service);
+        return fire_hook_filter('media.service', $service);
     }
 
     /**
-     * 获取文件管理器的基础配置数据
-     * Get basic configuration data for file manager
+     * 获取媒体库的基础配置数据
+     * Get basic configuration data for media library
      *
      * @return array
      */
@@ -59,7 +61,7 @@ class FileManagerController extends BaseController
 
         $request = request();
 
-        $fmDriver = system_setting('file_manager_driver', 'local');
+        $fmDriver = system_setting('media_driver', 'local');
 
         return [
             'isIframe'        => $request->header('X-Iframe') === '1',
@@ -67,7 +69,7 @@ class FileManagerController extends BaseController
             'type'            => $request->query('type', 'all'),
             'base_folder'     => '/',
             'driver'          => $fmDriver,
-            'title'           => $fmDriver !== 'local' ? trans('panel/file_manager.oss_title') : trans('panel/file_manager.root_name'),
+            'title'           => $fmDriver !== 'local' ? trans('panel/media.oss_title') : trans('panel/media.root_name'),
             'enabled_drivers' => $this->getEnabledDrivers(),
             'config'          => [
                 'driver'   => $fmDriver,
@@ -81,24 +83,24 @@ class FileManagerController extends BaseController
     }
 
     /**
-     * Display the file manager index view.
+     * Display the media library index view.
      *
      * @return mixed
      */
-    #[Endpoint('File manager index page')]
+    #[Endpoint('Media library index page')]
     public function index(): mixed
     {
         $data = $this->getFileManagerData();
 
-        return inno_view('panel::file_manager.index', $data);
+        return inno_view('panel::media.index', $data);
     }
 
     /**
-     * Display the file manager iframe view.
+     * Display the media library iframe view.
      *
      * @return mixed
      */
-    #[Endpoint('File manager iframe view')]
+    #[Endpoint('Media library iframe view')]
     public function iframe(): mixed
     {
         $data = $this->getFileManagerData();
@@ -106,7 +108,7 @@ class FileManagerController extends BaseController
         // Override isIframe to true for iframe view
         $data['isIframe'] = true;
 
-        return inno_view('panel::file_manager.iframe', $data);
+        return inno_view('panel::media.iframe', $data);
     }
 
     /**
@@ -126,16 +128,17 @@ class FileManagerController extends BaseController
     public function getFiles(Request $request): mixed
     {
         try {
-            $baseFolder = (string) $request->input('base_folder', '/');
-            $page       = (int) $request->input('page', 1);
-            $perPage    = (int) $request->input('per_page', 20);
-            $keyword    = (string) $request->input('keyword', '');
-            $sort       = (string) $request->input('sort', 'created');  // 默认按创建时间排序
-            $order      = (string) $request->input('order', 'desc');    // 默认降序，最新的在前面
+            $baseFolder         = (string) $request->input('base_folder', '/');
+            $page               = (int) $request->input('page', 1);
+            $perPage            = (int) $request->input('per_page', 20);
+            $keyword            = (string) $request->input('keyword', '');
+            $sort               = (string) $request->input('sort', 'created');  // 默认按创建时间排序
+            $order              = (string) $request->input('order', 'desc');    // 默认降序，最新的在前面
+            $includeDirectories = (bool) $request->input('include_directories', false);
 
             $service = $this->getService();
 
-            return $service->getFiles($baseFolder, $keyword, $sort, $order, $page, $perPage);
+            return $service->getFiles($baseFolder, $keyword, $sort, $order, $page, $perPage, $includeDirectories);
 
         } catch (Exception $e) {
             Log::error('Get files failed:', [
@@ -208,7 +211,7 @@ class FileManagerController extends BaseController
 
             // Prevent path traversal in new name
             if (str_contains($newName, '/') || str_contains($newName, '\\')) {
-                throw new Exception(trans('panel/file_manager.invalid_params'));
+                throw new Exception(trans('panel/media.invalid_params'));
             }
 
             $originName = $this->normalizePath($originName);
@@ -395,16 +398,16 @@ class FileManagerController extends BaseController
     {
         try {
             $config = [
-                'driver' => system_setting('file_manager_driver', 'local'),
+                'driver' => system_setting('media_driver', 'local'),
             ];
 
-            return json_success(trans('panel/file_manager.storage_config_loaded'), $config);
+            return json_success(trans('panel/media.storage_config_loaded'), $config);
         } catch (Exception $e) {
             Log::error('Get storage config failed:', [
                 'error' => $e->getMessage(),
             ]);
 
-            return json_fail(trans('panel/file_manager.storage_config_load_failed').': '.$e->getMessage());
+            return json_fail(trans('panel/media.storage_config_load_failed').': '.$e->getMessage());
         }
     }
 
@@ -422,7 +425,7 @@ class FileManagerController extends BaseController
         try {
             $driver = $request->input('driver', 'local');
 
-            SettingRepo::getInstance()->updateSystemValue('file_manager_driver', $driver);
+            SettingRepo::getInstance()->updateSystemValue('media_driver', $driver);
 
             Artisan::call('config:clear');
             load_settings();
@@ -440,13 +443,13 @@ class FileManagerController extends BaseController
                 });
             }
 
-            return json_success(trans('panel/file_manager.storage_config_saved'), ['driver' => $driver]);
+            return json_success(trans('panel/media.storage_config_saved'), ['driver' => $driver]);
         } catch (Exception $e) {
             Log::error('Save storage config failed:', [
                 'error' => $e->getMessage(),
             ]);
 
-            return json_fail(trans('panel/file_manager.storage_config_save_failed').': '.$e->getMessage());
+            return json_fail(trans('panel/media.storage_config_save_failed').': '.$e->getMessage());
         }
     }
 
@@ -478,7 +481,7 @@ class FileManagerController extends BaseController
     }
 
     /**
-     * Download a remote file and save to the file manager.
+     * Download a remote file and save to the media library.
      *
      * @param  Request  $request
      * @return mixed
@@ -495,7 +498,7 @@ class FileManagerController extends BaseController
             $fileName = $request->input('file_name');
 
             if (empty($url)) {
-                throw new Exception(trans('panel/file_manager.invalid_url'));
+                throw new Exception(trans('panel/media.invalid_url'));
             }
 
             $service    = $this->getService();
@@ -508,7 +511,7 @@ class FileManagerController extends BaseController
                 'origin_url' => storage_url($storageKey),
             ];
 
-            return json_success(trans('panel/file_manager.download_success'), $data);
+            return json_success(trans('panel/media.download_success'), $data);
         } catch (Exception $e) {
             Log::error('Download remote file failed:', [
                 'error' => $e->getMessage(),
@@ -517,6 +520,175 @@ class FileManagerController extends BaseController
 
             return json_fail($e->getMessage());
         }
+    }
+
+    /**
+     * Get detail for a single MediaFile record (drawer panel data).
+     *
+     * @param  int  $id
+     * @return mixed
+     */
+    #[Endpoint('Get media detail')]
+    public function getMediaDetail(int $id): mixed
+    {
+        try {
+            $media = MediaFile::query()->find($id);
+            if (! $media) {
+                Log::warning('Media detail requested but not found', ['id' => $id]);
+
+                return json_fail(trans('panel/media.media_not_found'));
+            }
+
+            $usage = $media->usageCount();
+
+            $cloud = null;
+            if ($media->disk !== 'local') {
+                try {
+                    $cloud = (new OSSService)->getCloudMeta($media->getRawStorageKey());
+                    if ($cloud['cloud_size'] !== null) {
+                        $cloud['cloud_size_readable'] = $this->formatBytes((int) $cloud['cloud_size']);
+                    }
+                } catch (Exception $e) {
+                    Log::warning('Media detail cloud meta failed:', [
+                        'id'    => $id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+
+            return json_success(trans('panel/media.media_detail_loaded'), [
+                'id'            => $media->id,
+                'disk'          => $media->disk,
+                'storage_key'   => $media->storage_key,
+                'original_name' => $media->original_name,
+                'checksum'      => $media->checksum,
+                'mime'          => $media->mime,
+                'size'          => $media->size,
+                'size_readable' => $this->formatBytes((int) $media->size),
+                'width'         => $media->width,
+                'height'        => $media->height,
+                'alt'           => $media->alt,
+                'source'        => $media->source,
+                'created_at'    => $media->created_at?->toDateTimeString(),
+                'updated_at'    => $media->updated_at?->toDateTimeString(),
+                'url'           => $media->url(),
+                'usage'         => $usage,
+                'total_usage'   => array_sum($usage),
+                'cloud'         => $cloud,
+            ]);
+        } catch (Exception $e) {
+            Log::error('Get media detail failed:', [
+                'id'    => $id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * Update editable fields on a media record (currently alt; extensible).
+     *
+     * @param  int  $id
+     * @param  Request  $request
+     * @return mixed
+     */
+    #[Endpoint('Update media')]
+    #[BodyParam('alt', type: 'string', required: false, example: 'Alt text')]
+    public function updateMedia(int $id, Request $request): mixed
+    {
+        try {
+            $media = MediaFile::query()->find($id);
+            if (! $media) {
+                return json_fail(trans('panel/media.media_not_found'));
+            }
+
+            if ($request->has('alt')) {
+                $media->alt = $request->input('alt') ?: null;
+            }
+            $media->save();
+
+            return json_success(trans('panel/media.media_updated'), [
+                'id'  => $media->id,
+                'alt' => $media->alt,
+            ]);
+        } catch (Exception $e) {
+            Log::error('Update media failed:', [
+                'id'    => $id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * Aggregate media library statistics: total count, total size, by disk, by mime.
+     *
+     * @return mixed
+     */
+    #[Endpoint('Get media stats')]
+    public function getMediaStats(): mixed
+    {
+        try {
+            $driver    = system_setting('media_driver', 'local');
+            $baseQuery = MediaFile::query()->where('disk', $driver);
+
+            $totalFiles = (clone $baseQuery)->count();
+            $totalSize  = (clone $baseQuery)->sum('size');
+
+            $byDisk = MediaFile::query()
+                ->select('disk', DB::raw('COUNT(*) as count'), DB::raw('COALESCE(SUM(size), 0) as size'))
+                ->groupBy('disk')
+                ->get()
+                ->mapWithKeys(fn ($row) => [$row->disk => [
+                    'count' => (int) $row->count,
+                    'size'  => (int) $row->size,
+                ]])
+                ->all();
+
+            $byMime = (clone $baseQuery)
+                ->select('mime', DB::raw('COUNT(*) as count'), DB::raw('COALESCE(SUM(size), 0) as size'))
+                ->groupBy('mime')
+                ->orderByDesc('size')
+                ->limit(10)
+                ->get()
+                ->map(fn ($row) => [
+                    'mime'  => $row->mime ?: 'unknown',
+                    'count' => (int) $row->count,
+                    'size'  => (int) $row->size,
+                ])
+                ->all();
+
+            return json_success(trans('panel/media.media_stats_loaded'), [
+                'total_files'   => $totalFiles,
+                'total_size'    => (int) $totalSize,
+                'size_readable' => $this->formatBytes((int) $totalSize),
+                'by_disk'       => $byDisk,
+                'by_mime'       => $byMime,
+            ]);
+        } catch (Exception $e) {
+            Log::error('Get media stats failed:', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * Convert a byte count into a human-readable string (e.g. 4532 -> "4.4 KB").
+     */
+    private function formatBytes(int $bytes, int $precision = 1): string
+    {
+        if ($bytes <= 0) {
+            return '0 B';
+        }
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        $exp   = (int) floor(log($bytes, 1024));
+        $exp   = min($exp, count($units) - 1);
+
+        return round($bytes / (1024 ** $exp), $precision).' '.$units[$exp];
     }
 
     /**

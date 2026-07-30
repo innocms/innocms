@@ -26,7 +26,7 @@ return [
     'top_analytic'     => 'Analisi',
     'analytics'        => 'Report',
     'visits'           => 'Visite',
-    'file_manager'     => 'File manager',
+    'media'            => 'Media Library',
     'top_plugin'       => 'Plugin',
     'plugins'          => 'Plugin',
     'contacts'         => 'Contatti',

@@ -23,6 +23,8 @@ use InnoCMS\Common\Repositories\LocaleRepo;
 use InnoCMS\Common\Repositories\SettingRepo;
 use InnoCMS\Common\Services\ImageService;
 use InnoCMS\Common\Services\StorageService;
+use InnoCMS\Common\Support\EntityLinkEnricher;
+use InnoCMS\Common\Support\EntityLinkPayload;
 
 if (! function_exists('load_settings')) {
     /**
@@ -251,6 +253,24 @@ if (! function_exists('is_secure')) {
     }
 }
 
+if (! function_exists('has_install_lock')) {
+    /**
+     * Check install lockfile. Used to gate route registration: in the testing
+     * environment the database is migrated after providers boot, so this must
+     * not depend on the database.
+     *
+     * @return bool
+     */
+    function has_install_lock(): bool
+    {
+        if (app()->environment('testing')) {
+            return true;
+        }
+
+        return file_exists(storage_path('installed'));
+    }
+}
+
 if (! function_exists('installed')) {
     /**
      * @return bool
@@ -258,7 +278,7 @@ if (! function_exists('installed')) {
     function installed(): bool
     {
         try {
-            if (Schema::hasTable('settings') && file_exists(storage_path('installed'))) {
+            if (Schema::hasTable('settings') && has_install_lock()) {
                 return true;
             }
         } catch (Exception $e) {
@@ -268,6 +288,20 @@ if (! function_exists('installed')) {
         }
 
         return false;
+    }
+}
+
+if (! function_exists('ai_enabled')) {
+    /**
+     * Check if the aicore innopack is installed and its views are registered.
+     *
+     * @return bool
+     */
+    function ai_enabled(): bool
+    {
+        static $enabled = null;
+
+        return $enabled ??= view()->exists('aicore::settings._tools');
     }
 }
 
@@ -322,14 +356,18 @@ if (! function_exists('current_guest_id')) {
 
 if (! function_exists('locales')) {
     /**
-     * Get available locales
+     * Get available locales. Returns an empty collection when the database is
+     * not ready (e.g. providers boot before tests run migrations).
      *
      * @return mixed
-     * @throws Exception
      */
     function locales(): mixed
     {
-        return LocaleRepo::getInstance()->getActiveList();
+        try {
+            return LocaleRepo::getInstance()->getActiveList();
+        } catch (Throwable $e) {
+            return collect([]);
+        }
     }
 }
 
@@ -701,7 +739,7 @@ if (! function_exists('equal_route_name')) {
      */
     function equal_route_name($routeName): bool
     {
-        $currentRouteName = Route::getCurrentRoute()->getName();
+        $currentRouteName = Route::getCurrentRoute()?->getName();
         if (is_string($routeName)) {
             return $currentRouteName == $routeName;
         } elseif (is_array($routeName)) {
@@ -722,7 +760,7 @@ if (! function_exists('equal_route_param')) {
      */
     function equal_route_param($routeName, array $parameters = []): bool
     {
-        $currentRouteName = Route::getCurrentRoute()->getName();
+        $currentRouteName = Route::getCurrentRoute()?->getName();
         if ($routeName != $currentRouteName) {
             return false;
         }
@@ -743,19 +781,6 @@ if (! function_exists('equal_url')) {
     function equal_url(string $url): bool
     {
         return url()->current() == $url;
-    }
-}
-
-if (! function_exists('locales')) {
-    /**
-     * Get available locales
-     *
-     * @return mixed
-     * @throws Exception
-     */
-    function locales(): mixed
-    {
-        return LocaleRepo::getInstance()->getActiveList();
     }
 }
 
@@ -974,5 +999,72 @@ if (! function_exists('to_sql')) {
         }
 
         return $sql;
+    }
+}
+
+if (! function_exists('entity_link_normalize')) {
+    /**
+     * Normalize a stored entity link value to a canonical row (no DB hit).
+     *
+     * @param  array<string, mixed>|string|null  $stored
+     * @return array{type: string, value: string, entity_label: string, link: string, entity_image: string, entity_price: string}
+     *
+     * @see EntityLinkPayload::normalize()
+     */
+    function entity_link_normalize(array|string|null $stored): array
+    {
+        return EntityLinkPayload::normalize($stored);
+    }
+}
+
+if (! function_exists('entity_link_enrich')) {
+    /**
+     * Fill entity_label / entity_image / entity_price from the DB.
+     *
+     * @param  array{type: string, value: string, entity_label: string, link: string, entity_image: string, entity_price: string}  $row
+     * @return array{type: string, value: string, entity_label: string, link: string, entity_image: string, entity_price: string}
+     *
+     * @see EntityLinkEnricher::enrichRow()
+     */
+    function entity_link_enrich(array $row): array
+    {
+        return EntityLinkEnricher::enrichRow($row);
+    }
+}
+
+if (! function_exists('entity_link_url')) {
+    /**
+     * Resolve a stored entity link to a storefront URL.
+     *
+     * @param  array<string, mixed>|string|null  $stored
+     */
+    function entity_link_url(array|string|null $stored): string
+    {
+        return EntityLinkPayload::urlFromStored($stored);
+    }
+}
+
+if (! function_exists('entity_link_display')) {
+    /**
+     * Normalize + enrich + resolved storefront href for theme partials.
+     *
+     * @param  array<string, mixed>|string|null  $stored
+     * @return array{type: string, value: string, entity_label: string, link: string, entity_image: string, entity_price: string, entity_href: string}
+     *
+     * @see EntityLinkPayload::forDisplay()
+     */
+    function entity_link_display(array|string|null $stored): array
+    {
+        return EntityLinkPayload::forDisplay($stored);
+    }
+}
+
+if (! function_exists('entity_link_resolve')) {
+    /**
+     * @param  class-string  $modelClass
+     */
+    function entity_link_resolve(string $modelClass, string $value, array $with = []): ?object
+    {
+        return EntityLinkEnricher::resolveByIdOrSlug($modelClass, $value, $with);
     }
 }

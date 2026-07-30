@@ -55,4 +55,12 @@ return [
     'updated_at'  => 'Aktualisiert',
 
     'language_name' => 'Deutsch',
+
+    // Error pages
+    'back_page'                  => 'Zurück',
+    'refresh'                    => 'Aktualisieren',
+    'page_not_found'             => 'Seite nicht gefunden',
+    'page_not_found_description' => 'Die gesuchte Seite existiert nicht oder wurde entfernt.',
+    'server_error'               => 'Serverfehler',
+    'server_error_description'   => 'Auf dem Server ist ein interner Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
 ];

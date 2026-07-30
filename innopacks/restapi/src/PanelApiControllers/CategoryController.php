@@ -12,6 +12,7 @@ namespace InnoCMS\RestAPI\PanelApiControllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use InnoCMS\Common\Repositories\CategoryRepo;
+use InnoCMS\Common\Resources\CategoryName;
 use InnoCMS\Common\Resources\CategorySimple;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
@@ -57,6 +58,6 @@ class CategoryController extends BaseController
         $keyword    = $request->get('keyword');
         $categories = CategoryRepo::getInstance()->autocomplete($keyword, 50);
 
-        return CategorySimple::collection($categories);
+        return CategoryName::collection($categories);
     }
 }

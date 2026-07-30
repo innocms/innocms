@@ -44,6 +44,18 @@ return [
             'throw' => false,
         ],
 
+        // Media library disk — InnoShop Bundle compatibility alias.
+        // The ported FileManagerService/MediaFile code calls Storage::disk('media')
+        // to read/write the media library; this disk points at the same public
+        // static/media/ tree that StorageService::STORAGE_PREFIX uses.
+        'media' => [
+            'driver'     => 'local',
+            'root'       => public_path('static/media'),
+            'url'        => env('APP_URL').'/static/media',
+            'visibility' => 'public',
+            'throw'      => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

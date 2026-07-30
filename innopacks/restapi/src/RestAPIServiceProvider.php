@@ -66,7 +66,7 @@ class RestAPIServiceProvider extends ServiceProvider
 
         $this->registerScribePanelDocumentationRoutes();
 
-        if (! installed()) {
+        if (! has_install_lock()) {
             return;
         }
 

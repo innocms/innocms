@@ -32,7 +32,7 @@ return [
     'analytics'    => 'Reports',
     'visits'       => 'Visits',
 
-    'file_manager' => 'File Manager',
+    'media' => 'Media Library',
 
     'top_plugin' => 'Plugins',
     'plugins'    => 'Plugins',

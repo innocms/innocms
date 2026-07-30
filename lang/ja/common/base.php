@@ -52,4 +52,12 @@ return [
     'status'            => 'ステータス',
     'updated_at'        => '更新日',
     'language_name'     => '日本語',
+
+    // Error pages
+    'back_page'                  => '戻る',
+    'refresh'                    => '更新',
+    'page_not_found'             => 'ページが見つかりません',
+    'page_not_found_description' => 'お探しのページは存在しないか、削除されました。',
+    'server_error'               => 'サーバーエラー',
+    'server_error_description'   => 'サーバーで内部エラーが発生しました。しばらくしてからもう一度お試しください。',
 ];

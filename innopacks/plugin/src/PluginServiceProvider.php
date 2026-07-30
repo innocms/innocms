@@ -52,7 +52,7 @@ class PluginServiceProvider extends ServiceProvider
     {
         $this->registerMigrations();
 
-        if (! installed()) {
+        if (! has_install_lock()) {
             return;
         }
 

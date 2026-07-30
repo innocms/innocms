@@ -26,7 +26,7 @@ return [
     'top_analytic'     => 'Аналитика',
     'analytics'        => 'Отчёты',
     'visits'           => 'Визиты',
-    'file_manager'     => 'Файловый менеджер',
+    'media'            => 'Файловый менеджер',
     'top_plugin'       => 'Плагины',
     'plugins'          => 'Плагины',
     'contacts'         => 'Контакты',

@@ -10,8 +10,9 @@
         "geoip2/geoip2": "^3.3",
         "intervention/image": "^3.5",
         "knuckleswtf/scribe": "^5",
-        "laravel/ai": "^0.8.1",
+        "laravel/ai": "^0.10.1",
         "laravel/framework": "^12.0",
+        "laravel/mcp": "^0.9.1",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "mobiledetect/mobiledetectlib": "^4.8",
@@ -40,6 +41,8 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "InnoCMS\\Common\\": "innopacks/common/src",
+            "InnoCMS\\Aicore\\": "innopacks/aicore/src",
+            "InnoCMS\\Mcp\\": "innopacks/mcp/src",
             "InnoCMS\\Front\\": "innopacks/front/src",
             "InnoCMS\\Panel\\": "innopacks/panel/src",
             "InnoCMS\\DevTools\\": "innopacks/devtools/src",
@@ -56,8 +59,11 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
+            "InnoCMS\\Aicore\\Tests\\": "innopacks/aicore/tests",
+            "InnoCMS\\Mcp\\Tests\\": "innopacks/mcp/tests",
             "InnoCMS\\DevTools\\Tests\\": "innopacks/devtools/tests",
-            "InnoCMS\\RestAPI\\Tests\\": "innopacks/restapi/tests"
+            "InnoCMS\\RestAPI\\Tests\\": "innopacks/restapi/tests",
+            "InnoCMS\\Common\\Tests\\": "innopacks/common/tests"
         }
     },
     "scripts": {

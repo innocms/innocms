@@ -1,0 +1,81 @@
+// InnoLinkPicker + entity picker dialog — used by theme slideshow settings
+// and any other panel page that mounts the InnoLinkPicker component.
+// Loaded only when the picker assets are pushed onto the page.
+
+.inno-link-picker {
+  min-width: 0;
+
+  &__selected {
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+
+  &__entity-meta {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+
+    .el-tooltip {
+      display: block;
+      max-width: 100%;
+    }
+
+    .el-tooltip__trigger {
+      display: block !important;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      vertical-align: top;
+    }
+
+    .text-truncate,
+    .text-truncate.d-block {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  &__actions {
+    padding-top: 0.125rem;
+  }
+}
+
+.panel-entity-picker-dialog .el-dialog__body {
+  padding-top: 12px;
+}
+
+.panel-entity-picker-list__scroll {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.panel-entity-picker-row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  min-width: 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &--selected {
+    background-color: var(--el-color-primary-light-9);
+  }
+
+  > .flex-grow-1.min-w-0 {
+    overflow: hidden;
+  }
+
+  &__thumb {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+  }
+
+  &__price {
+    color: #fd560f;
+    min-width: 4.5rem;
+  }
+}

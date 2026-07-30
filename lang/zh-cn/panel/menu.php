@@ -24,7 +24,7 @@ return [
     'analytics'    => '数据报表',
     'visits'       => '访问记录',
 
-    'file_manager' => '文件管理',
+    'media' => '媒体库',
 
     'top_plugin' => '插件扩展',
     'plugins'    => '插件列表',

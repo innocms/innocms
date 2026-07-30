@@ -46,6 +46,15 @@ All PHP class files in `innopacks/` MUST have the following copyright header aft
 
 Blade template files (`.blade.php`) do NOT need this header.
 
+## Git Workflow
+
+### Commit Rules
+- Do NOT add `Co-Authored-By: Claude` or any AI attribution trailers
+- Message format: `type: short description`
+- Types: feat, fix, refactor, docs, style, test, chore
+- Run `composer pint` before committing
+- Only stage files related to the current change; leave unrelated work-in-progress (other modified/untracked files) out of the commit
+
 ## Architecture
 
 ### Core Packages (innopacks/)

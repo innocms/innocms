@@ -52,4 +52,12 @@ return [
     'status'            => 'Статус',
     'updated_at'        => 'Обновлено',
     'language_name'     => 'Русский',
+
+    // Error pages
+    'back_page'                  => 'Назад',
+    'refresh'                    => 'Обновить',
+    'page_not_found'             => 'Страница не найдена',
+    'page_not_found_description' => 'К сожалению, запрашиваемая страница не существует или была удалена.',
+    'server_error'               => 'Ошибка сервера',
+    'server_error_description'   => 'На сервере произошла внутренняя ошибка. Повторите попытку позже.',
 ];

@@ -39,7 +39,7 @@ class FileRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => trans('panel/file_manager.name'),
+            'name' => trans('panel/media.name'),
         ];
     }
 
@@ -50,7 +50,7 @@ class FileRequest extends FormRequest
     {
         return [
             'name' => [
-                'description' => 'Directory or file name for file manager operations.',
+                'description' => 'Directory or file name for media library operations.',
                 'example'     => 'uploads',
             ],
             'parent_id' => [

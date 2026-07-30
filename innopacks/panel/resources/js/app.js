@@ -5,10 +5,11 @@ import './alert';
 import "./autocomplete";
 
 import common from "./common";
-import fileManager from "./panel-file-manager";
+import media from "./panel-media";
 
 window.inno = common;
-window.inno.fileManagerIframe = fileManager.init;
+window.inno.media = media;
+window.inno.fileManagerIframe = media.init;  // back-compat alias
 
 const base = document.querySelector('base').href;
 const editor_language = document.querySelector('meta[name="editor_language"]')?.content || 'zh-cn';

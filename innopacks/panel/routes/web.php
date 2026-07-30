@@ -55,8 +55,8 @@ Route::middleware(['admin_auth:admin'])
         Route::get('/contacts/{contact}', [Controllers\ContactController::class, 'show'])->name('contacts.show');
         Route::delete('/contacts/{contact}', [Controllers\ContactController::class, 'destroy'])->name('contacts.destroy');
 
-        Route::get('/file_manager', [Controllers\FileManagerController::class, 'index'])->name('file_manager.index');
-        Route::get('/file_manager/iframe', [Controllers\FileManagerController::class, 'iframe'])->name('file_manager.iframe');
+        Route::get('/media', [Controllers\MediaController::class, 'index'])->name('media.index');
+        Route::get('/media/iframe', [Controllers\MediaController::class, 'iframe'])->name('media.iframe');
 
         Route::get('/locales', [Controllers\LocaleController::class, 'index'])->name('locales.index');
         Route::post('/locales/install', [Controllers\LocaleController::class, 'install'])->name('locales.install');
@@ -77,10 +77,6 @@ Route::middleware(['admin_auth:admin'])
         Route::put('/settings', [Controllers\SettingController::class, 'update'])->name('settings.update');
         Route::post('/settings/download-geolite2', [Controllers\SettingController::class, 'downloadGeoLite2'])->name('settings.download_geolite2');
         Route::get('/settings/geolite2-info', [Controllers\SettingController::class, 'getGeoLite2Info'])->name('settings.geolite2_info');
-
-        Route::post('/content_ai/generate', [Controllers\ContentAIController::class, 'generate'])->name('content_ai.generate');
-        Route::get('/content_ai/models', [Controllers\ContentAIController::class, 'getModels'])->name('content_ai.models');
-        Route::post('/content_ai/test-model', [Controllers\ContentAIController::class, 'testModel'])->name('content_ai.test_model');
 
         Route::resource('/admins', Controllers\AdminController::class);
         Route::put('/admins/{admin}/active', [Controllers\AdminController::class, 'active'])->name('admins.active');

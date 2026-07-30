@@ -188,3 +188,20 @@ if (! function_exists('locale_field_data')) {
         return $data;
     }
 }
+
+if (! function_exists('panel_link_parse')) {
+    /**
+     * Parse a stored entity-link value into the row shape consumed by the
+     * panel InnoLinkPicker: normalize + DB enrichment.
+     *
+     * @param  array|string|null  $stored
+     * @return array{type: string, value: string, entity_label: string, link: string, entity_image: string, entity_price: string}
+     *
+     * @see entity_link_normalize()
+     * @see entity_link_enrich()
+     */
+    function panel_link_parse(array|string|null $stored): array
+    {
+        return entity_link_enrich(entity_link_normalize($stored));
+    }
+}

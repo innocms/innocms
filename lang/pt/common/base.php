@@ -59,4 +59,12 @@ return [
 
     // Language name
     'language_name' => 'Português',
+
+    // Error pages
+    'back_page'                  => 'Voltar',
+    'refresh'                    => 'Atualizar',
+    'page_not_found'             => 'Página não encontrada',
+    'page_not_found_description' => 'Desculpe, a página que você procura não existe ou foi removida.',
+    'server_error'               => 'Erro do servidor',
+    'server_error_description'   => 'O servidor encontrou um erro interno. Tente novamente mais tarde.',
 ];

@@ -8,7 +8,6 @@
  */
 
 use Barryvdh\Debugbar\Facades\Debugbar;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use InnoCMS\Common\Services\ImageService;
 use InnoCMS\Plugin\Core\Blade\Hook;
@@ -131,15 +130,15 @@ if (! function_exists('fire_hook_action')) {
      * Fire(Trigger) hook action, used in system.
      *
      * @param  $hookName
-     * @param  Request  $request
+     * @param  mixed  $data
      * @return void
      */
-    function fire_hook_action($hookName, Request $request): void
+    function fire_hook_action($hookName, $data = null): void
     {
         if (config('app.debug') && has_debugbar()) {
             Debugbar::log('HOOK === fire_hook_action: '.$hookName);
         }
-        app('eventy')->action($hookName, $request);
+        app('eventy')->action($hookName, $data);
     }
 }
 

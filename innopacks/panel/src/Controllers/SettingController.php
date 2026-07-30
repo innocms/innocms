@@ -11,6 +11,7 @@ namespace InnoCMS\Panel\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use InnoCMS\Aicore\Services\ProviderRegistry;
 use InnoCMS\Common\Repositories\SettingRepo;
 use InnoCMS\Common\Services\GeoLite2Service;
 
@@ -24,6 +25,13 @@ class SettingController
         $data = [
             'geolite2_info' => (new GeoLite2Service)->getDatabaseInfo(),
         ];
+
+        if (ai_enabled()) {
+            $data['ai_providers']        = app(ProviderRegistry::class)->getUserProviders();
+            $data['ai_plugin_providers'] = app(ProviderRegistry::class)->getPluginProviders();
+            $data['ai_presets']          = app(ProviderRegistry::class)->getPresets();
+            $data['ai_models']           = app(ProviderRegistry::class)->getConfiguredProviders();
+        }
 
         return view('panel::settings.index', $data);
     }

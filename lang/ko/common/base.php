@@ -59,4 +59,12 @@ return [
 
     // Language name
     'language_name' => '한국어',
+
+    // Error pages
+    'back_page'                  => '뒤로 가기',
+    'refresh'                    => '새로 고침',
+    'page_not_found'             => '페이지를 찾을 수 없습니다',
+    'page_not_found_description' => '찾으시는 페이지가 존재하지 않거나 삭제되었습니다.',
+    'server_error'               => '서버 오류',
+    'server_error_description'   => '서버에 내부 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
 ];

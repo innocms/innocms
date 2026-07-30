@@ -52,4 +52,12 @@ return [
     'status'            => 'Estado',
     'updated_at'        => 'Actualizado',
     'language_name'     => 'Español',
+
+    // Error pages
+    'back_page'                  => 'Volver',
+    'refresh'                    => 'Actualizar',
+    'page_not_found'             => 'Página no encontrada',
+    'page_not_found_description' => 'Lo sentimos, la página que busca no existe o ha sido eliminada.',
+    'server_error'               => 'Error del servidor',
+    'server_error_description'   => 'El servidor ha encontrado un error interno. Inténtelo de nuevo más tarde.',
 ];

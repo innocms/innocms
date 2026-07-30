@@ -1,18 +1,32 @@
 <!-- Tools Settings -->
 <div class="tab-pane fade" id="tab-setting-tools">
   <ul class="nav nav-tabs mb-3" role="tablist">
+    @if(ai_enabled())
     <li class="nav-item" role="presentation">
       <button class="nav-link active" type="button" role="tab"
+              data-bs-toggle="tab" data-bs-target="#ai-tools"
+              aria-controls="ai-tools" aria-selected="true">
+        {{ __('aicore::setting_ai.ai_setting') }}
+      </button>
+    </li>
+    @endif
+    <li class="nav-item" role="presentation">
+      <button class="nav-link @if(!ai_enabled()) active @endif" type="button" role="tab"
               data-bs-toggle="tab" data-bs-target="#tools-geolite2"
-              aria-controls="tools-geolite2" aria-selected="true">
+              aria-controls="tools-geolite2" aria-selected="false">
         {{ __('panel/setting_geolite2.geolite2_setting') }}
       </button>
     </li>
   </ul>
 
   <div class="tab-content">
+    @if(ai_enabled())
+    <!-- AI Tools Sub-tab -->
+    @include('aicore::settings._tools')
+    @endif
+
     <!-- GeoLite2 Sub-tab -->
-    <div class="tab-pane fade show active" id="tools-geolite2" role="tabpanel">
+    <div class="tab-pane fade @if(!ai_enabled()) show active @endif" id="tools-geolite2" role="tabpanel">
       <div class="card mb-4">
         <div class="card-header">
           <h5 class="card-title mb-0">{{ __('panel/setting_geolite2.geolite2_setting') }}</h5>

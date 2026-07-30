@@ -22,8 +22,9 @@
   <script>
     let urls = {
       panel_base: '{{ panel_route('home.index') }}',
+      panel_api: '{{ route('api.panel.base.index') }}',
       upload_images: '{{ panel_route('upload.images') }}',
-      file_manager_title: '{{ __("panel/menu.file_manager") }}',
+      file_manager_title: '{{ __("panel/menu.media") }}',
     }
   </script>
   @stack('header')

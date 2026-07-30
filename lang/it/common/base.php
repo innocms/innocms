@@ -52,4 +52,12 @@ return [
     'status'            => 'Stato',
     'updated_at'        => 'Aggiornato',
     'language_name'     => 'Italiano',
+
+    // Error pages
+    'back_page'                  => 'Indietro',
+    'refresh'                    => 'Aggiorna',
+    'page_not_found'             => 'Pagina non trovata',
+    'page_not_found_description' => 'Spiacenti, la pagina che stai cercando non esiste o è stata rimossa.',
+    'server_error'               => 'Errore del server',
+    'server_error_description'   => 'Il server ha riscontrato un errore interno. Riprova più tardi.',
 ];

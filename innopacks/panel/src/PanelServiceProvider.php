@@ -87,7 +87,7 @@ class PanelServiceProvider extends ServiceProvider
      */
     protected function registerUploadFileSystem(): void
     {
-        $driver    = system_setting('file_manager_driver', 'local');
+        $driver    = system_setting('media_driver', 'local');
         $s3Drivers = ['oss', 'cos', 'qiniu', 's3', 'obs', 'r2', 'minio'];
 
         if (in_array($driver, $s3Drivers)) {

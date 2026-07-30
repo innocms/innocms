@@ -5,6 +5,19 @@
 
 <x-panel::form.right-btns/>
 
+@push('header')
+  <link rel="stylesheet" href="{{ asset('vendor/element-plus/index.css') }}">
+  <script src="{{ asset('vendor/vue/3.5/vue.global' . (config('app.debug') ? '' : '.prod') . '.js') }}"></script>
+  <script src="{{ asset('vendor/element-plus/index.full.js') }}"></script>
+  <script src="{{ asset('vendor/element-plus/icons.min.js') }}"></script>
+  @if(str_starts_with(panel_locale_code(), 'zh'))
+    <script src="{{ asset('vendor/element-plus/zh-cn.js') }}"></script>
+  @endif
+  <script src="{{ asset('vendor/panel-link-picker/panel-entity-autocomplete.js') }}"></script>
+  <script src="{{ asset('vendor/panel-link-picker/panel-entity-picker.js') }}"></script>
+  <script src="{{ asset('vendor/panel-link-picker/panel-inno-panel.js') }}"></script>
+@endpush
+
 @section('content')
   <form class="needs-validation" novalidate action="{{ panel_route('themes_settings.update') }}" method="POST"
         id="app-form">
@@ -70,8 +83,11 @@
                         </div>
                       </td>
                       <td>
-                        <input type="text" name="slideshow[{{ $slide_index }}][link]" value="{{ $slide['link'] }}"
-                               class="form-control">
+                        @php($parsedLink = panel_link_parse($slide['link'] ?? null))
+                        <input type="hidden" name="slideshow[{{ $slide_index }}][link]"
+                               value="{{ json_encode($parsedLink, JSON_UNESCAPED_UNICODE) }}"
+                               class="panel-link-input" data-index="{{ $slide_index }}">
+                        <div class="panel-inno-link-mount" data-index="{{ $slide_index }}" style="min-width:260px"></div>
                       </td>
                       <td class="text-end">
                         <button type="button" class="btn btn-danger" onclick="this.closest('tr').remove()">删除</button>
@@ -179,6 +195,87 @@
   <script>
     const locales = @json(locales());
 
+    const linkTypeOptions = [
+      {value: 'custom', label: '{{ __('panel/setting.link_type_custom') }}'},
+      {value: 'page', label: '{{ __('panel/setting.link_type_page') }}'},
+      {value: 'article', label: '{{ __('panel/setting.link_type_article') }}'},
+      {value: 'catalog', label: '{{ __('panel/setting.link_type_catalog') }}'},
+      {value: 'product', label: '{{ __('panel/setting.link_type_product') }}'},
+      {value: 'category', label: '{{ __('panel/setting.link_type_category') }}'},
+    ];
+
+    const pickerLabels = {
+      placeholderType: '{{ __('panel/setting.link_picker_placeholder_type') }}',
+      placeholderCustomUrl: 'https://',
+      pickerHint: '{{ __('panel/setting.link_picker_hint') }}',
+      pickerPlaceholder: '{{ __('panel/setting.link_picker_placeholder') }}',
+      pickerTitleTemplate: '{{ __('panel/setting.link_picker_title') }}',
+      searchButton: '{{ __('panel/setting.link_picker_search') }}',
+      confirmButton: '{{ __('panel/setting.link_picker_confirm') }}',
+      emptyText: '{{ __('panel/setting.link_picker_empty') }}',
+      chooseEntity: '{{ __('panel/setting.link_picker_choose') }}',
+      changeEntity: '{{ __('panel/setting.link_picker_change') }}',
+      clearEntity: '{{ __('panel/setting.link_picker_clear') }}',
+    };
+
+    function initPickers() {
+      if (typeof Vue === 'undefined' || !window.InnoPanel || !window.InnoPanel.installVue) {
+        return;
+      }
+      document.querySelectorAll('.panel-inno-link-mount:not([data-mounted])').forEach(function (mount) {
+        mount.setAttribute('data-mounted', '1');
+        const hidden = document.querySelector('.panel-link-input[data-index="' + mount.dataset.index + '"]');
+        if (!hidden) {
+          return;
+        }
+        let initial = null;
+        try {
+          initial = hidden.value ? JSON.parse(hidden.value) : null;
+        } catch (e) {
+          initial = null;
+        }
+
+        const app = Vue.createApp({
+          setup() {
+            const model = Vue.ref(initial);
+            function onUpdate(v) {
+              model.value = v;
+              hidden.value = v ? JSON.stringify(v) : '';
+            }
+
+            return {
+              model: model,
+              onUpdate: onUpdate,
+              linkTypeOptions: linkTypeOptions,
+              labels: pickerLabels,
+            };
+          },
+          template:
+            '<inno-link-picker' +
+            ' :model-value="model"' +
+            ' @update:model-value="onUpdate"' +
+            ' :link-type-options="linkTypeOptions"' +
+            ' :placeholder-type="labels.placeholderType"' +
+            ' :placeholder-custom-url="labels.placeholderCustomUrl"' +
+            ' :picker-hint="labels.pickerHint"' +
+            ' :picker-placeholder="labels.pickerPlaceholder"' +
+            ' :picker-title-template="labels.pickerTitleTemplate"' +
+            ' :picker-search-button-label="labels.searchButton"' +
+            ' :picker-confirm-button-label="labels.confirmButton"' +
+            ' :picker-empty-text="labels.emptyText"' +
+            ' :choose-entity-label="labels.chooseEntity"' +
+            ' :change-entity-label="labels.changeEntity"' +
+            ' :clear-entity-label="labels.clearEntity"' +
+            ' />',
+        });
+
+        const pluginOptions = window.ElementPlusLocaleZhCn ? {locale: window.ElementPlusLocaleZhCn} : {};
+        app.use(window.ElementPlus, pluginOptions);
+        window.InnoPanel.installVue(app);
+        app.mount(mount);
+      });
+    }
+
     function addSlide(btn) {
       var tbody = $(btn).closest('table').find('tbody');
       var index = tbody.find('tr').length;
@@ -212,7 +309,8 @@
           </div>
         </td>
         <td>
-          <input type="text" name="slideshow[${index}][link]" class="form-control">
+          <input type="hidden" name="slideshow[${index}][link]" value="" class="panel-link-input" data-index="${index}">
+          <div class="panel-inno-link-mount" data-index="${index}" style="min-width:260px"></div>
         </td>
         <td class="text-end">
           <button type="button" class="btn btn-danger" onclick="this.closest('tr').remove()">删除</button>
@@ -220,25 +318,27 @@
       </tr>
     `;
       tbody.append(tr);
+      initPickers();
     }
 
     $(document).on('click', '.is-up-file.slideshow-img .img-upload-item', function () {
       const _self = $(this);
-      $('#form-upload').remove();
-      $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" accept="image/*" name="file" /></form>');
-      $('#form-upload input[name=\'file\']').trigger('click');
-      $('#form-upload input[name=\'file\']').change(function () {
-        let file = $(this).prop('files')[0];
-        inno.imgUploadAjax(file, _self, (data) => {
-          _self.find('input').val(data.data.value);
-          _self.find('.img-info').html('<img src="' + data.data.url + '" class="img-fluid">');
-        })
-      });
+      window.inno.fileManagerIframe((file) => {
+        const val = file.path;
+        const url = file.url || file.origin_url;
+        _self.find('input').val(val);
+        _self.find('.img-info').html('<img src="' + url + '" class="img-fluid">');
+        _self.find('input').trigger('change');
+      }, {type: 'image', multiple: false});
     })
 
     $('.settings-nav').on('click', 'a', function () {
       var text = $(this).text();
       $('.setting-header').text(text);
+    });
+
+    $(function () {
+      initPickers();
     });
   </script>
 @endpush

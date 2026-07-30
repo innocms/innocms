@@ -13,7 +13,9 @@ namespace InnoCMS\Common\Support;
 
 use InnoCMS\Common\Models\Article;
 use InnoCMS\Common\Models\Catalog;
+use InnoCMS\Common\Models\Category;
 use InnoCMS\Common\Models\Page;
+use InnoCMS\Common\Models\Product;
 use Throwable;
 
 /**
@@ -63,6 +65,29 @@ final class EntityLinkEnricher
                         $row['entity_label'] = $catalog->fallbackName('title');
                     }
                     break;
+
+                case 'product':
+                    $product = self::resolveByIdOrSlug(Product::class, $value, ['translation']);
+                    if ($product instanceof Product) {
+                        $row['entity_label'] = $product->fallbackName();
+                        if ($needImage && $product->image) {
+                            $row['entity_image'] = (string) image_resize($product->image, 100, 100);
+                        }
+                        if (($row['entity_price'] ?? '') === '' && $product->price !== null) {
+                            $row['entity_price'] = (string) $product->price;
+                        }
+                    }
+                    break;
+
+                case 'category':
+                    $category = self::resolveByIdOrSlug(Category::class, $value, ['translation']);
+                    if ($category instanceof Category) {
+                        $row['entity_label'] = $category->fallbackName();
+                        if ($needImage && $category->image) {
+                            $row['entity_image'] = (string) image_resize($category->image, 100, 100);
+                        }
+                    }
+                    break;
             }
         } catch (Throwable) {
             return $row;
@@ -102,10 +127,12 @@ final class EntityLinkEnricher
         }
 
         $model = match ($type) {
-            'page'    => self::resolveByIdOrSlug(Page::class, $value, []),
-            'article' => self::resolveByIdOrSlug(Article::class, $value, []),
-            'catalog' => self::resolveByIdOrSlug(Catalog::class, $value, []),
-            default   => null,
+            'page'     => self::resolveByIdOrSlug(Page::class, $value, []),
+            'article'  => self::resolveByIdOrSlug(Article::class, $value, []),
+            'catalog'  => self::resolveByIdOrSlug(Catalog::class, $value, []),
+            'product'  => self::resolveByIdOrSlug(Product::class, $value, []),
+            'category' => self::resolveByIdOrSlug(Category::class, $value, []),
+            default    => null,
         };
 
         if ($model === null) {

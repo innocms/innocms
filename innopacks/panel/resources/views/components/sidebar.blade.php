@@ -23,6 +23,7 @@
               @foreach($menuLink['children'] as $child)
                 <li class="nav-item">
                   <a href="{{ $child['url'] }}"
+                     @if($child['blank']) target="_blank" @endif
                      class="nav-link {{ $child['active'] ? 'active' : '' }}">{{ $child['title'] }}</a>
                 </li>
               @endforeach

@@ -225,4 +225,24 @@ class ArticleRepo extends BaseRepo
             ->limit($limit)
             ->get();
     }
+
+    /**
+     * Fuzzy search articles by translated title for autocomplete picker.
+     *
+     * @param  $keyword
+     * @param  int  $limit
+     * @return mixed
+     */
+    public function autocomplete($keyword, int $limit = 10): mixed
+    {
+        $keyword = trim((string) $keyword);
+        $builder = Article::query()->with(['translation']);
+        if ($keyword !== '') {
+            $builder->whereHas('translation', function ($query) use ($keyword) {
+                $query->where('title', 'like', "%{$keyword}%");
+            });
+        }
+
+        return $builder->orderByDesc('id')->limit($limit)->get();
+    }
 }

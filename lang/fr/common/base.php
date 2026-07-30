@@ -52,4 +52,12 @@ return [
     'status'            => 'Statut',
     'updated_at'        => 'Mis à jour',
     'language_name'     => 'Français',
+
+    // Error pages
+    'back_page'                  => 'Retour',
+    'refresh'                    => 'Actualiser',
+    'page_not_found'             => 'Page non trouvée',
+    'page_not_found_description' => 'Désolé, la page que vous recherchez n\'existe pas ou a été supprimée.',
+    'server_error'               => 'Erreur du serveur',
+    'server_error_description'   => 'Le serveur a rencontré une erreur interne. Veuillez réessayer plus tard.',
 ];

@@ -26,7 +26,7 @@ return [
     'top_analytic'     => 'Analíticas',
     'analytics'        => 'Informes',
     'visits'           => 'Visitas',
-    'file_manager'     => 'Gestor de archivos',
+    'media'            => 'Gestor de archivos',
     'top_plugin'       => 'Plugins',
     'plugins'          => 'Plugins',
     'contacts'         => 'Contactos',

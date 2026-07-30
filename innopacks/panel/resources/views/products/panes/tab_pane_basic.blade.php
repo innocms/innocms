@@ -21,7 +21,7 @@
 
   <div class="row">
     <div class="col-12 col-md-6">
-      {{-- 产品视频：手填 URL 或从文件管理选择本地视频 --}}
+      {{-- 产品视频：手填 URL 或从媒体库选择本地视频 --}}
       <div class="mb-3">
         <div class="col-form-label">{{ __('panel/product.video') }}</div>
         <div class="input-group">
@@ -94,7 +94,7 @@
     renderVideoPreview($(this).val());
   });
 
-  // 从文件管理器选择本地视频文件
+  // 从媒体库选择本地视频文件
   $('#product-video-pick').on('click', function () {
     window.inno.fileManagerIframe(function (file) {
       var url = file.url || file.origin_url || file.path;

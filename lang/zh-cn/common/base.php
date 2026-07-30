@@ -59,4 +59,12 @@ return [
 
     // Language name
     'language_name' => '简体中文',
+
+    // Error pages
+    'back_page'                  => '返回上一页',
+    'refresh'                    => '刷新',
+    'page_not_found'             => '页面未找到',
+    'page_not_found_description' => '抱歉，您访问的页面不存在或已被删除。',
+    'server_error'               => '服务器错误',
+    'server_error_description'   => '服务器发生内部错误，请稍后再试。',
 ];

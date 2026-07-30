@@ -12,6 +12,7 @@ namespace InnoCMS\RestAPI\PanelApiControllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use InnoCMS\Common\Repositories\ProductRepo;
+use InnoCMS\Common\Resources\ProductName;
 use InnoCMS\Common\Resources\ProductSimple;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
@@ -57,6 +58,6 @@ class ProductController extends BaseController
         $keyword  = $request->get('keyword');
         $products = ProductRepo::getInstance()->autocomplete($keyword, 20);
 
-        return ProductSimple::collection($products);
+        return ProductName::collection($products);
     }
 }

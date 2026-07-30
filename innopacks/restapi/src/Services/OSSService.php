@@ -88,7 +88,7 @@ class OSSService implements FileManagerInterface
      */
     protected function loadConfig(): void
     {
-        $driver = system_setting('file_manager_driver', 'local');
+        $driver = system_setting('media_driver', 'local');
         $prefix = "storage_{$driver}_";
 
         $this->config = [
@@ -163,7 +163,7 @@ class OSSService implements FileManagerInterface
                 'error' => $e->getMessage(),
                 'file'  => $originName,
             ]);
-            throw new Exception(trans('panel/file_manager.upload_failed'));
+            throw new Exception(trans('panel/media.upload_failed'));
         }
     }
 
@@ -172,7 +172,7 @@ class OSSService implements FileManagerInterface
      * For keyword search or non-name sort, falls back to full scan (required by S3 limitations).
      * Otherwise uses S3 MaxKeys for server-side limiting.
      */
-    public function getFiles(string $baseFolder, ?string $keyword = '', string $sort = 'name', string $order = 'asc', int $page = 1, int $perPage = 20): array
+    public function getFiles(string $baseFolder, ?string $keyword = '', string $sort = 'name', string $order = 'asc', int $page = 1, int $perPage = 20, bool $includeDirectories = false): array
     {
         try {
             $prefix = trim($baseFolder, '/');
@@ -427,7 +427,7 @@ class OSSService implements FileManagerInterface
                 'error' => $e->getMessage(),
                 'path'  => $path,
             ]);
-            throw new Exception(trans('panel/file_manager.create_fail'));
+            throw new Exception(trans('panel/media.create_fail'));
         }
     }
 
@@ -461,7 +461,7 @@ class OSSService implements FileManagerInterface
                 'files'    => $files,
                 'destPath' => $destPath,
             ]);
-            throw new Exception(trans('panel/file_manager.move_fail'));
+            throw new Exception(trans('panel/media.move_fail'));
         }
     }
 
@@ -490,7 +490,7 @@ class OSSService implements FileManagerInterface
                 'files'    => $files,
                 'destPath' => $destPath,
             ]);
-            throw new Exception(trans('panel/file_manager.copy_failed'));
+            throw new Exception(trans('panel/media.copy_failed'));
         }
     }
 
@@ -523,7 +523,7 @@ class OSSService implements FileManagerInterface
                 'error' => $e->getMessage(),
                 'files' => $files,
             ]);
-            throw new Exception(trans('panel/file_manager.delete_failed'));
+            throw new Exception(trans('panel/media.delete_failed'));
         }
     }
 
@@ -574,7 +574,7 @@ class OSSService implements FileManagerInterface
                 'error' => $e->getMessage(),
                 'path'  => $path,
             ]);
-            throw new Exception(trans('panel/file_manager.delete_failed'));
+            throw new Exception(trans('panel/media.delete_failed'));
         }
     }
 
@@ -617,7 +617,7 @@ class OSSService implements FileManagerInterface
                 'sourcePath' => $sourcePath,
                 'destPath'   => $destPath,
             ]);
-            throw new Exception(trans('panel/file_manager.move_fail'));
+            throw new Exception(trans('panel/media.move_fail'));
         }
     }
 
@@ -649,7 +649,7 @@ class OSSService implements FileManagerInterface
                 'originPath' => $originPath,
                 'newPath'    => $newPath,
             ]);
-            throw new Exception(trans('panel/file_manager.rename_failed'));
+            throw new Exception(trans('panel/media.rename_failed'));
         }
     }
 
@@ -757,7 +757,7 @@ class OSSService implements FileManagerInterface
     public function downloadRemoteFile(string $url, string $savePath, ?string $fileName = null): string
     {
         if (! filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new Exception(trans('panel/file_manager.invalid_url'));
+            throw new Exception(trans('panel/media.invalid_url'));
         }
 
         $savePath = FileSecurityValidator::validateDirectoryPath($savePath);
@@ -765,7 +765,7 @@ class OSSService implements FileManagerInterface
         // Download the file first
         $response = Http::timeout(60)->get($url);
         if (! $response->successful()) {
-            throw new Exception(trans('panel/file_manager.download_failed'));
+            throw new Exception(trans('panel/media.download_failed'));
         }
 
         // Determine file name

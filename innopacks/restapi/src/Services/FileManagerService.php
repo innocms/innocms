@@ -13,7 +13,9 @@ use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use InnoCMS\Common\Models\MediaFile;
 use InnoCMS\Common\Services\FileSecurityValidator;
+use InnoCMS\Common\Services\MediaUrlResolver;
 use InnoCMS\Common\Services\StorageService;
 
 class FileManagerService implements FileManagerInterface
@@ -86,7 +88,7 @@ class FileManagerService implements FileManagerInterface
      * @return array Paginated file list with metadata
      * @throws Exception If an error occurs during retrieval
      */
-    public function getFiles(string $baseFolder, string $keyword = '', string $sort = self::SORT_FIELD_CREATED, string $order = self::SORT_ORDER_DESC, int $page = 1, int $perPage = 20): array
+    public function getFiles(string $baseFolder, string $keyword = '', string $sort = self::SORT_FIELD_CREATED, string $order = self::SORT_ORDER_DESC, int $page = 1, int $perPage = 20, bool $includeDirectories = false): array
     {
         $baseFolder   = FileSecurityValidator::validateDirectoryPath($baseFolder);
         $realBasePath = $this->getRealBasePath();
@@ -95,10 +97,10 @@ class FileManagerService implements FileManagerInterface
         }
 
         $currentBasePath = rtrim($this->fileBasePath.$baseFolder, '/');
-        $folders         = $this->collectFolders($currentBasePath, $realBasePath);
         $fileEntries     = $this->collectFileEntries($currentBasePath, $realBasePath, $keyword);
-
-        $allItems = array_merge($folders, $fileEntries);
+        $allItems        = $includeDirectories
+            ? array_merge($this->collectFolders($currentBasePath, $realBasePath), $fileEntries)
+            : $fileEntries;
         $allItems = $this->sortItems($allItems, $sort, $order);
 
         $total     = count($allItems);
@@ -130,7 +132,7 @@ class FileManagerService implements FileManagerInterface
 
             $folderPath = $this->getFullPath($path);
             if (is_dir($folderPath)) {
-                throw new Exception(trans('panel/file_manager.directory_already_exist'));
+                throw new Exception(trans('panel/media.directory_already_exist'));
             }
 
             create_directories("$this->mediaDir/$path");
@@ -171,8 +173,11 @@ class FileManagerService implements FileManagerInterface
                 Log::error('Failed to move directory:', [
                     'error' => error_get_last(),
                 ]);
-                throw new Exception(trans('panel/file_manager.move_failed'));
+                throw new Exception(trans('panel/media.move_failed'));
             }
+
+            $newRelDir = rtrim($destPath, '/').'/'.basename($sourcePath);
+            $this->relocateMediaUnderDirectory($sourcePath, $newRelDir);
 
             return true;
         } catch (Exception $e) {
@@ -232,7 +237,7 @@ class FileManagerService implements FileManagerInterface
                 $this->deleteFile($fullPath);
             } else {
                 Log::warning('Path not found:', ['path' => $fullPath]);
-                throw new Exception(trans('panel/file_manager.file_not_exist'));
+                throw new Exception(trans('panel/media.file_not_exist'));
             }
 
             return true;
@@ -300,7 +305,7 @@ class FileManagerService implements FileManagerInterface
             $newFullPath    = $this->getFullPath($newPath);
 
             if (! is_dir($originFullPath) && ! file_exists($originFullPath)) {
-                throw new Exception(trans('panel/file_manager.target_not_exist'));
+                throw new Exception(trans('panel/media.target_not_exist'));
             }
 
             if (file_exists($newFullPath)) {
@@ -316,7 +321,17 @@ class FileManagerService implements FileManagerInterface
                     'to'    => $newFullPath,
                     'error' => error_get_last(),
                 ]);
-                throw new Exception(trans('panel/file_manager.rename_failed'));
+                throw new Exception(trans('panel/media.rename_failed'));
+            }
+
+            // Sync MediaFile DB records: file = relocate single key; dir = relocate under prefix.
+            if (is_dir($newFullPath)) {
+                $this->relocateMediaUnderDirectory($originPath, $newPath);
+            } else {
+                $this->relocateMediaByKey(
+                    StorageService::storageKey($originPath),
+                    StorageService::storageKey($newPath)
+                );
             }
 
             return true;
@@ -348,8 +363,11 @@ class FileManagerService implements FileManagerInterface
 
         $originName = $this->getUniqueFileName($savePath, $originName);
         $filePath   = $file->storeAs($savePath, $originName, 'media');
+        $storageKey = StorageService::storageKey($filePath);
 
-        return StorageService::storageKey($filePath);
+        $this->registerMediaFromUpload($file, $storageKey);
+
+        return $storageKey;
     }
 
     /**
@@ -365,7 +383,7 @@ class FileManagerService implements FileManagerInterface
     public function downloadRemoteFile(string $url, string $savePath, ?string $fileName = null): string
     {
         if (! filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new Exception(trans('panel/file_manager.invalid_url'));
+            throw new Exception(trans('panel/media.invalid_url'));
         }
 
         $savePath = FileSecurityValidator::validateDirectoryPath($savePath);
@@ -373,7 +391,7 @@ class FileManagerService implements FileManagerInterface
         // Download the file first
         $response = Http::timeout(60)->get($url);
         if (! $response->successful()) {
-            throw new Exception(trans('panel/file_manager.download_failed'));
+            throw new Exception(trans('panel/media.download_failed'));
         }
 
         // Determine file name: explicit > URL path > content-type based
@@ -399,7 +417,10 @@ class FileManagerService implements FileManagerInterface
 
         file_put_contents($fullPath, $response->body());
 
-        return StorageService::storageKey($filePath);
+        $storageKey = StorageService::storageKey($filePath);
+        $this->registerMediaFromLocalPath($storageKey, $fullPath, $fileName);
+
+        return $storageKey;
     }
 
     /**
@@ -864,7 +885,7 @@ class FileManagerService implements FileManagerInterface
     protected function validateFilesNotEmpty(array $files): void
     {
         if (empty($files)) {
-            throw new Exception(trans('panel/file_manager.no_files_selected'));
+            throw new Exception(trans('panel/media.no_files_selected'));
         }
     }
 
@@ -894,7 +915,7 @@ class FileManagerService implements FileManagerInterface
     protected function ensureDirectoryExists(string $dirPath): void
     {
         if (! is_dir($dirPath)) {
-            throw new Exception(trans('panel/file_manager.target_dir_not_exist'));
+            throw new Exception(trans('panel/media.target_dir_not_exist'));
         }
     }
 
@@ -914,11 +935,11 @@ class FileManagerService implements FileManagerInterface
 
         if (! file_exists($sourcePath)) {
             Log::warning('Source file not found:', ['path' => $sourcePath]);
-            throw new Exception(trans('panel/file_manager.source_file_not_exist'));
+            throw new Exception(trans('panel/media.source_file_not_exist'));
         }
 
         if (file_exists($destFilePath)) {
-            throw new Exception(trans('panel/file_manager.target_file_exists'));
+            throw new Exception(trans('panel/media.target_file_exists'));
         }
 
         if (! @rename($sourcePath, $destFilePath)) {
@@ -927,8 +948,14 @@ class FileManagerService implements FileManagerInterface
                 'destination' => $destFilePath,
                 'error'       => error_get_last(),
             ]);
-            throw new Exception(trans('panel/file_manager.move_failed'));
+            throw new Exception(trans('panel/media.move_failed'));
         }
+
+        $newRelKey = ltrim(rtrim($destPath, '/'), '/').'/'.basename($fileName);
+        $this->relocateMediaByKey(
+            StorageService::storageKey($fileName),
+            StorageService::storageKey($newRelKey)
+        );
     }
 
     /**
@@ -944,10 +971,11 @@ class FileManagerService implements FileManagerInterface
     {
         $sourcePath   = $this->getFullPath($fileName);
         $destFilePath = rtrim($destFullPath, '/').'/'.basename($fileName);
+        $newName      = basename($fileName);
 
         if (! file_exists($sourcePath)) {
             Log::warning('Source file not found:', ['path' => $sourcePath]);
-            throw new Exception(trans('panel/file_manager.source_file_not_exist'));
+            throw new Exception(trans('panel/media.source_file_not_exist'));
         }
 
         if (file_exists($destFilePath)) {
@@ -961,8 +989,12 @@ class FileManagerService implements FileManagerInterface
                 'destination' => $destFilePath,
                 'error'       => error_get_last(),
             ]);
-            throw new Exception(trans('panel/file_manager.copy_failed'));
+            throw new Exception(trans('panel/media.copy_failed'));
         }
+
+        $newRelKey     = ltrim(rtrim($destPath, '/'), '/').'/'.$newName;
+        $newStorageKey = StorageService::storageKey($newRelKey);
+        $this->registerMediaCopy($newStorageKey, $destFilePath, $newName);
     }
 
     /**
@@ -976,7 +1008,7 @@ class FileManagerService implements FileManagerInterface
     protected function validatePathsNotEmpty(string $sourcePath, string $destPath): void
     {
         if (empty($sourcePath) || empty($destPath)) {
-            throw new Exception(trans('panel/file_manager.empty_path'));
+            throw new Exception(trans('panel/media.empty_path'));
         }
     }
 
@@ -991,7 +1023,7 @@ class FileManagerService implements FileManagerInterface
     protected function validateNotMovingToSubdirectory(string $sourcePath, string $destPath): void
     {
         if (str_starts_with($destPath, $sourcePath.'/')) {
-            throw new Exception(trans('panel/file_manager.cannot_move_to_subdirectory'));
+            throw new Exception(trans('panel/media.cannot_move_to_subdirectory'));
         }
     }
 
@@ -1005,7 +1037,7 @@ class FileManagerService implements FileManagerInterface
     protected function ensurePathDoesNotExist(string $path): void
     {
         if (is_dir($path) || file_exists($path)) {
-            throw new Exception(trans('panel/file_manager.target_dir_exist'));
+            throw new Exception(trans('panel/media.target_dir_exist'));
         }
     }
 
@@ -1020,7 +1052,12 @@ class FileManagerService implements FileManagerInterface
     {
         $files = glob($dirPath.'/*');
         if ($files) {
-            throw new Exception(trans('panel/file_manager.directory_not_empty'));
+            throw new Exception(trans('panel/media.directory_not_empty'));
+        }
+
+        $relPath = $this->relativePathFromFull($dirPath);
+        if ($relPath !== null) {
+            $this->removeMediaUnderDirectory($relPath);
         }
 
         if (! @rmdir($dirPath)) {
@@ -1028,7 +1065,7 @@ class FileManagerService implements FileManagerInterface
                 'path'  => $dirPath,
                 'error' => error_get_last(),
             ]);
-            throw new Exception(trans('panel/file_manager.delete_failed'));
+            throw new Exception(trans('panel/media.delete_failed'));
         }
     }
 
@@ -1041,13 +1078,40 @@ class FileManagerService implements FileManagerInterface
      */
     protected function deleteFile(string $filePath): void
     {
+        $relPath = $this->relativePathFromFull($filePath);
+        if ($relPath !== null) {
+            $this->removeMediaByKey(StorageService::storageKey($relPath));
+        }
+
         if (! @unlink($filePath)) {
             Log::error('Failed to delete file:', [
                 'path'  => $filePath,
                 'error' => error_get_last(),
             ]);
-            throw new Exception(trans('panel/file_manager.delete_failed'));
+            throw new Exception(trans('panel/media.delete_failed'));
         }
+    }
+
+    /**
+     * Convert an absolute filesystem path back to a path relative to the media
+     * base directory. Returns null when the path is outside the media tree.
+     */
+    protected function relativePathFromFull(string $fullPath): ?string
+    {
+        $realBase = $this->getRealBasePath();
+        if (! is_string($realBase) || $realBase === '') {
+            return null;
+        }
+        $realBase = rtrim($realBase, '/').'/';
+        $realFull = realpath($fullPath);
+        if ($realFull === false) {
+            $realFull = rtrim($fullPath, '/');
+        }
+        if (! str_starts_with($realFull, $realBase)) {
+            return null;
+        }
+
+        return ltrim(substr($realFull, strlen($realBase)), '/');
     }
 
     /**
@@ -1063,5 +1127,116 @@ class FileManagerService implements FileManagerInterface
         Log::error($message, array_merge([
             'error' => $exception->getMessage(),
         ], $context));
+    }
+
+    /**
+     * Register a media record after a fresh upload (dedups by checksum).
+     */
+    protected function registerMediaFromUpload(UploadedFile $file, string $storageKey): void
+    {
+        try {
+            MediaUrlResolver::getInstance()->registerFromUploadedFile($file, $storageKey, 'local');
+        } catch (\Throwable $e) {
+            Log::warning('Media register (upload) failed: '.$e->getMessage(), ['key' => $storageKey]);
+        }
+    }
+
+    /**
+     * Register a media record for a file that landed on disk via a non-upload
+     * path (e.g. downloadRemoteFile). Reads size/mime from the stored file.
+     */
+    protected function registerMediaFromLocalPath(string $storageKey, string $absolutePath, ?string $originalName = null): void
+    {
+        try {
+            if (! is_file($absolutePath)) {
+                return;
+            }
+            MediaUrlResolver::getInstance()->register([
+                'disk'          => 'local',
+                'storage_key'   => $storageKey,
+                'original_name' => $originalName ?? basename($absolutePath),
+                'checksum'      => hash_file('sha256', $absolutePath) ?: null,
+                'mime'          => mime_content_type($absolutePath) ?: null,
+                'size'          => filesize($absolutePath) ?: 0,
+                'source'        => 'url_import',
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Media register (local) failed: '.$e->getMessage(), ['key' => $storageKey]);
+        }
+    }
+
+    /**
+     * Update a single media record's storage_key after a file rename/move.
+     */
+    protected function relocateMediaByKey(string $oldKey, string $newKey): void
+    {
+        try {
+            MediaUrlResolver::getInstance()->relocateByKey($oldKey, $newKey);
+        } catch (\Throwable $e) {
+            Log::warning('Media relocate failed: '.$e->getMessage(), ['old' => $oldKey, 'new' => $newKey]);
+        }
+    }
+
+    /**
+     * Register a media record for a freshly-copied file.
+     */
+    protected function registerMediaCopy(string $storageKey, string $absolutePath, ?string $originalName = null): void
+    {
+        try {
+            MediaUrlResolver::getInstance()->registerCopy($storageKey, 'local', [
+                'original_name' => $originalName ?? basename($absolutePath),
+                'checksum'      => is_file($absolutePath) ? hash_file('sha256', $absolutePath) ?: null : null,
+                'mime'          => is_file($absolutePath) ? (mime_content_type($absolutePath) ?: null) : null,
+                'size'          => is_file($absolutePath) ? (filesize($absolutePath) ?: 0) : 0,
+                'source'        => 'copy',
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Media copy register failed: '.$e->getMessage(), ['key' => $storageKey]);
+        }
+    }
+
+    /**
+     * Soft-delete a single media record after its file is removed.
+     */
+    protected function removeMediaByKey(string $storageKey): void
+    {
+        try {
+            MediaUrlResolver::getInstance()->removeByKey($storageKey);
+        } catch (\Throwable $e) {
+            Log::warning('Media remove failed: '.$e->getMessage(), ['key' => $storageKey]);
+        }
+    }
+
+    /**
+     * Soft-delete every media record under a directory (used by deleteDirectory).
+     */
+    protected function removeMediaUnderDirectory(string $relDirPath): void
+    {
+        $prefix = StorageService::storageKey(ltrim($relDirPath, '/').'/');
+        try {
+            foreach (MediaFile::query()->where('storage_key', 'like', $prefix.'%')->cursor() as $media) {
+                $media->delete();
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Media remove under dir failed: '.$e->getMessage(), ['prefix' => $prefix]);
+        }
+    }
+
+    /**
+     * Rewrite storage_key for every media record under a directory (used by moveDirectory).
+     */
+    protected function relocateMediaUnderDirectory(string $oldRelDirPath, string $newRelDirPath): void
+    {
+        $oldPrefix = StorageService::storageKey(ltrim($oldRelDirPath, '/').'/');
+        $newPrefix = StorageService::storageKey(ltrim($newRelDirPath, '/').'/');
+        try {
+            $resolver = MediaUrlResolver::getInstance();
+            foreach (MediaFile::query()->where('storage_key', 'like', $oldPrefix.'%')->cursor() as $media) {
+                $newKey = $newPrefix.substr($media->storage_key, strlen($oldPrefix));
+                $resolver->relocate($media->id, $newKey);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Media relocate under dir failed: '.$e->getMessage(), ['old' => $oldPrefix, 'new' => $newPrefix]);
+        }
     }
 }

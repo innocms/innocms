@@ -10,6 +10,7 @@
 namespace InnoCMS\Front;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\FileViewFinder;
 use InnoCMS\Common\Middleware\ContentFilterHook;
@@ -17,6 +18,7 @@ use InnoCMS\Common\Middleware\EventActionHook;
 use InnoCMS\Common\Middleware\VisitTrackingMiddleware;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
 use InnoCMS\Front\Middleware\SetFrontLocale;
+use InnoCMS\Front\Repositories\MenuRepo;
 
 class FrontServiceProvider extends ServiceProvider
 {
@@ -29,18 +31,36 @@ class FrontServiceProvider extends ServiceProvider
     {
         $this->loadTranslations();
 
-        if (! installed()) {
+        if (! has_install_lock()) {
             return;
         }
 
         load_settings();
         $this->loadThemeTranslations();
+        $this->shareGlobalViewData();
         $this->registerSitemapRoute();
         $this->registerWebRoutes();
         $this->registerApiRoutes();
         $this->publishViewTemplates();
         $this->loadThemeViewPath();
         $this->loadViewComponents();
+    }
+
+    /**
+     * Share global view data.
+     *
+     * GlobalDataMiddleware only runs on matched front routes, so error pages
+     * (404/500 rendered outside routing) get menus via this composer instead.
+     *
+     * @return void
+     */
+    protected function shareGlobalViewData(): void
+    {
+        View::composer('layouts.header', function (\Illuminate\View\View $view) {
+            if (! $view->offsetExists('menus')) {
+                $view->with('menus', MenuRepo::getInstance()->getMenus());
+            }
+        });
     }
 
     /**
