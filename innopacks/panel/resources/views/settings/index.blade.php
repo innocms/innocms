@@ -107,6 +107,20 @@
               <x-panel-form-textarea title="第三方JS代码" name="js_code"
                                      value="{{ old('js_code', system_setting('js_code')) }}"
                                      placeholder="第三方JS代码"/>
+
+              <h6 class="mt-4 mb-3 text-muted">{{ __('panel/setting.contact_info') }}</h6>
+              <x-panel-form-input title="{{ __('panel/setting.contact_phone') }}" name="contact_phone"
+                                  value="{{ old('contact_phone', system_setting('contact_phone')) }}"
+                                  placeholder="136-0000-0000"/>
+              <x-panel-form-input title="{{ __('panel/setting.contact_email') }}" name="contact_email"
+                                  value="{{ old('contact_email', system_setting('contact_email')) }}"
+                                  placeholder="team@example.com"/>
+              <x-panel-form-input title="{{ __('panel/setting.contact_address') }}" name="contact_address"
+                                  value="{{ old('contact_address', system_setting('contact_address')) }}"
+                                  placeholder="成都市高新区…"/>
+              <x-panel-form-input title="{{ __('panel/setting.contact_hours') }}" name="contact_hours"
+                                  value="{{ old('contact_hours', system_setting('contact_hours')) }}"
+                                  placeholder="周一至周五 9:00-18:00"/>
             </div>
 
             @include('panel::settings._storage_setting')

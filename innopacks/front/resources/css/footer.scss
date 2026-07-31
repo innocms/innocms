@@ -125,4 +125,69 @@
       }
     }
   }
+
+  // Company + product group row
+  .footer-bottom__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+  }
+
+  .footer-bottom__row--legal {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, .08);
+    font-size: 12px;
+  }
+
+  .footer-bottom__company {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .footer-bottom__company-name {
+    color: #fff !important;
+    font-weight: 600;
+  }
+
+  .footer-bottom__products {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+
+      &::after {
+        content: '|';
+        margin: 0 10px;
+        color: rgba(255, 255, 255, .25);
+        font-weight: 300;
+      }
+
+      &:last-child::after { content: none; }
+    }
+
+    a {
+      color: rgba(255, 255, 255, .7) !important;
+      letter-spacing: .3px;
+    }
+  }
+
+  .powered-by { color: rgba(255, 255, 255, .55); }
+
+  @media (max-width: 768px) {
+    .footer-bottom__row { flex-direction: column; align-items: flex-start; }
+    .footer-bottom__row--legal { flex-direction: column-reverse; align-items: flex-start; }
+    .footer-bottom__products { gap: 6px 0; }
+  }
 }

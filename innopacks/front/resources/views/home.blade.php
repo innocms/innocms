@@ -132,50 +132,6 @@
     </div>
   </div>
 
-  {{-- Contact strip --}}
-  <div class="home-contact">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-lg-3">
-          <div class="contact-item">
-            <div class="icon"><i class="bi bi-telephone-fill"></i></div>
-            <div class="right">
-              <div class="text-1">{{ __('front::common.contact_phone') }}</div>
-              <div class="text-2">{{ system_setting('contact_phone') }}</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-lg-3">
-          <div class="contact-item">
-            <div class="icon"><i class="bi bi-envelope-fill"></i></div>
-            <div class="right">
-              <div class="text-1">{{ __('front::common.contact_email') }}</div>
-              <div class="text-2">{{ system_setting('contact_email') }}</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-lg-3">
-          <div class="contact-item">
-            <div class="icon"><i class="bi bi-geo-alt-fill"></i></div>
-            <div class="right">
-              <div class="text-1">{{ __('front::common.contact_address') }}</div>
-              <div class="text-2 text-muted">{{ system_setting('contact_address') }}</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-lg-3">
-          <div class="contact-item">
-            <div class="icon"><i class="bi bi-clock-fill"></i></div>
-            <div class="right">
-              <div class="text-1">{{ __('front::common.contact_hours') }}</div>
-              <div class="text-2 text-muted">{{ system_setting('contact_hours') }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   @hookinsert('page.content.bottom')
 
 @endsection

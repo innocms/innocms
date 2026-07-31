@@ -1,6 +1,8 @@
 @php
   $allLocales = locales();
   $currentLocaleCode = front_locale_code();
+  $currentLocale = $allLocales->firstWhere('code', $currentLocaleCode);
+  $currentLocaleName = $currentLocale?->name ?? $currentLocaleCode;
   $contactUrl = has_front_route('pages.slug_show') ? front_route('pages.slug_show', ['slug' => 'contact']) : null;
 @endphp
 
@@ -9,25 +11,36 @@
   <div class="container d-flex justify-content-between align-items-center">
     <div class="topbar-left">
       @if($phone = system_setting('contact_phone'))
-        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}"><i class="bi bi-telephone-fill"></i> {{ $phone }}</a>
+        <a href="tel:{{ preg_replace('/[^0+]/', '', $phone) }}"><i class="bi bi-telephone-fill"></i> {{ $phone }}</a>
       @endif
       @if($email = system_setting('contact_email'))
         <a href="mailto:{{ $email }}" class="ms-4"><i class="bi bi-envelope-fill"></i> {{ $email }}</a>
       @endif
     </div>
     <div class="topbar-right">
-      @if($address = system_setting('contact_address'))
-        <span class="me-3"><i class="bi bi-geo-alt-fill"></i> {{ $address }}</span>
-      @endif
       @if($allLocales->count() > 1)
-        <span class="topbar-lang">
-          <i class="bi bi-globe2"></i>
-          @foreach($allLocales as $locale)
-            <a href="{{ front_route('locales.switch', ['code' => $locale->code]) }}"
-               class="{{ $locale->code === $currentLocaleCode ? 'active' : '' }}">{{ $locale->name }}</a>
-            @unless($loop->last)<span class="divider">/</span>@endunless
-          @endforeach
-        </span>
+        <div class="topbar-lang dropdown">
+          <button type="button" class="topbar-lang__btn" data-bs-toggle="dropdown" aria-expanded="false">
+            @if($currentLocale?->image)
+              <img class="topbar-lang__flag" src="{{ image_origin($currentLocale->image) }}" alt="">
+            @endif
+            <span>{{ $currentLocaleName }}</span>
+            <i class="bi bi-chevron-down topbar-lang__caret" aria-hidden="true"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end topbar-lang__menu">
+            @foreach($allLocales as $locale)
+              <li>
+                <a class="dropdown-item topbar-lang__item {{ $locale->code === $currentLocaleCode ? 'is-active' : '' }}"
+                   href="{{ front_route('locales.switch', ['code' => $locale->code]) }}">
+                  @if($locale->image)
+                    <img class="topbar-lang__flag" src="{{ image_origin($locale->image) }}" alt="">
+                  @endif
+                  <span>{{ $locale->name }}</span>
+                </a>
+              </li>
+            @endforeach
+          </ul>
+        </div>
       @endif
     </div>
   </div>
@@ -52,12 +65,14 @@
           </li>
           @foreach($menus as $menu)
             @if($menu['children'] ?? [])
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle {{ equal_url($menu['url']) ? 'active' : '' }}" href="{{ $menu['url'] }}"
-                   data-bs-toggle="dropdown" role="button" aria-expanded="false">{{ $menu['name'] }}</a>
-                <ul class="dropdown-menu">
+              <li class="nav-item has-mega">
+                <a class="nav-link {{ equal_url($menu['url']) ? 'active' : '' }}"
+                   href="{{ $menu['url'] }}" aria-haspopup="true" aria-expanded="false">{{ $menu['name'] }}
+                  <i class="bi bi-chevron-down has-mega__caret" aria-hidden="true"></i>
+                </a>
+                <ul class="mega-panel">
                   @foreach($menu['children'] as $child)
-                    <li><a class="dropdown-item" href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
+                    <li><a class="mega-panel__item" href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
                   @endforeach
                 </ul>
               </li>
@@ -92,16 +107,14 @@
           </li>
           @foreach($menus as $menu)
             @if($menu['children'] ?? [])
-              <li class="nav-item">
-                <div class="dropdown">
-                  <a class="nav-link {{ equal_url($menu['url']) ? 'active' : '' }}"
-                     href="{{ $menu['url'] }}">{{ $menu['name'] }}</a>
-                  <ul class="dropdown-menu">
-                    @foreach($menu['children'] as $child)
-                      <li><a class="dropdown-item" href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
-                    @endforeach
-                  </ul>
-                </div>
+              <li class="nav-item has-children">
+                <a class="nav-link {{ equal_url($menu['url']) ? 'active' : '' }}"
+                   href="{{ $menu['url'] }}">{{ $menu['name'] }}</a>
+                <ul class="sub-menu">
+                  @foreach($menu['children'] as $child)
+                    <li><a class="nav-link {{ equal_url($child['url']) ? 'active' : '' }}" href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
+                  @endforeach
+                </ul>
               </li>
             @else
               <li class="nav-item">

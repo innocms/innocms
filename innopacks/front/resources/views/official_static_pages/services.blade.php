@@ -105,7 +105,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1400" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-7.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <img src="{{asset('images/cms/services/icon-7.png')}}" class="card-img-top w-75 mx-auto" alt="整站托管">
                       <div class="card-body">
                           <h5 class="card-title text-center">整站托管</h5>
                           <p class="card-text">我们提供一站式托管服务，从建站到部署上线，全部交由我们的专业人士完成，并提供后续的运维和升级，省时省力省心。</p>
@@ -114,7 +114,7 @@
               </div>
               <div data-aos="fade-up" data-aos-duration="1800" class="col">
                   <div class="card h-100 border-0 shadow-sm">
-                      <img src="{{asset('images/cms/services/icon-8.png')}}" class="card-img-top w-75 mx-auto" alt="技术培训">
+                      <img src="{{asset('images/cms/services/icon-8.png')}}" class="card-img-top w-75 mx-auto" alt="主题设计">
                       <div class="card-body">
                           <h5 class="card-title text-center">主题设计</h5>
                           <p class="card-text d-inline">我们提供定制主题设计服务，根据您的业务需求和真实业务场景，为您设计专属的主题和配套UI以及页面布局。</p>

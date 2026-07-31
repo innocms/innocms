@@ -54,17 +54,35 @@
       </div>
     </div>
 
+    @php
+      $funnlinkProducts = [
+          ['name' => 'InnoCMS',    'url' => 'https://www.innocms.com'],
+          ['name' => 'InnoShop',    'url' => 'https://www.innoshop.cn'],
+          ['name' => 'InnoCRM',     'url' => 'https://www.innocrm.com.cn'],
+          ['name' => 'InnoCard',    'url' => 'https://www.innocard.cn'],
+      ];
+    @endphp
     <div class="footer-bottom">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <div class="left-links">Powered By <a href="https://www.innocms.com" target="_blank">INNOCMS</a></div>
+      <div class="footer-bottom__row">
+        <div class="footer-bottom__company">
+          <a class="footer-bottom__company-name" href="https://www.funnlink.cn" target="_blank" rel="noopener">
+            {{ __('front::common.company_name') }}
+          </a>
         </div>
-        <div class="col-md-6 copyright-text">
+        <ul class="footer-bottom__products">
+          @foreach($funnlinkProducts as $product)
+            <li><a href="{{ $product['url'] }}" target="_blank" rel="noopener">{{ $product['name'] }}</a></li>
+          @endforeach
+        </ul>
+      </div>
+      <div class="footer-bottom__row footer-bottom__row--legal">
+        <div class="copyright-text">
           &copy; {{ date('Y') }} {{ __('front::common.footer_rights') }}
           @if(system_setting('icp_number'))
             <a href="https://beian.miit.gov.cn" class="ms-2" target="_blank">{{ system_setting('icp_number') }}</a>
           @endif
         </div>
+        <div class="powered-by">Powered By <a href="https://www.innocms.com" target="_blank" rel="noopener">INNOCMS</a></div>
       </div>
     </div>
   </div>

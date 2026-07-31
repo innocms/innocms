@@ -13,4 +13,18 @@ $(function () {
       $('.header-content-placeholder').remove();
     }
   });
+
+  // Hover mega-menu: toggle on click for touch devices (hover is CSS-only).
+  $('.has-mega > .nav-link').on('click', function (e) {
+    // Only intercept on coarse pointers (touch); let the link navigate on desktop click.
+    if (window.matchMedia('(hover: none)').matches) {
+      e.preventDefault();
+      $(this).parent('.has-mega').toggleClass('is-open').siblings('.has-mega').removeClass('is-open');
+    }
+  });
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('.has-mega').length) {
+      $('.has-mega').removeClass('is-open');
+    }
+  });
 });

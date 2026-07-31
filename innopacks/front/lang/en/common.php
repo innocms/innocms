@@ -28,6 +28,7 @@ return [
     'footer_quick_links' => 'Quick Links',
     'footer_contact'     => 'Contact Us',
     'footer_rights'      => 'All Rights Reserved',
+    'company_name'       => 'Chengdu Funnlink Technology Co., Ltd.',
 
     // Default product landing (home)
     'hero_title'        => 'A Lightweight CMS for Corporate Websites',

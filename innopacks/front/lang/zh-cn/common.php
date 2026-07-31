@@ -28,6 +28,7 @@ return [
     'footer_quick_links' => '快速链接',
     'footer_contact'     => '联系我们',
     'footer_rights'      => '版权所有',
+    'company_name'       => '成都帆连科技有限公司',
 
     // Default product landing (home)
     'hero_title'        => '轻量级企业官网建站系统',
