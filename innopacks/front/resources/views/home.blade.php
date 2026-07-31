@@ -24,10 +24,10 @@
           </div>
           <div class="col-md-5 d-none d-md-block">
             <div class="home-hero-visual" data-aos="fade-left" data-aos-duration="700">
-              <div class="hero-card hero-card--1"><i class="bi bi-boxes"></i><span>innopacks</span></div>
-              <div class="hero-card hero-card--2"><i class="bi bi-plug-fill"></i><span>Hook Plugins</span></div>
-              <div class="hero-card hero-card--3"><i class="bi bi-palette-fill"></i><span>Themes</span></div>
-              <div class="hero-card hero-card--4"><i class="bi bi-translate"></i><span>i18n</span></div>
+              <div class="hero-card hero-card--1"><i class="bi bi-boxes"></i><span>{{ __('front::common.hero_card_1') }}</span></div>
+              <div class="hero-card hero-card--2"><i class="bi bi-plug-fill"></i><span>{{ __('front::common.hero_card_2') }}</span></div>
+              <div class="hero-card hero-card--3"><i class="bi bi-palette-fill"></i><span>{{ __('front::common.hero_card_3') }}</span></div>
+              <div class="hero-card hero-card--4"><i class="bi bi-translate"></i><span>{{ __('front::common.hero_card_4') }}</span></div>
             </div>
           </div>
         </div>
@@ -120,17 +120,6 @@
       </div>
     </div>
   @endif
-
-  {{-- CTA --}}
-  <div class="home-cta">
-    <div class="container text-center">
-      <h2 data-aos="fade-up">{{ __('front::common.cta_title') }}</h2>
-      <p data-aos="fade-up" data-aos-duration="300">{{ __('front::common.cta_sub') }}</p>
-      <div data-aos="fade-up" data-aos-duration="500">
-        <a href="{{ front_route('pages.slug_show', ['slug' => 'get-started']) }}" class="btn btn-lg btn-accent">{{ __('front::common.cta_btn') }}</a>
-      </div>
-    </div>
-  </div>
 
   @hookinsert('page.content.bottom')
 
