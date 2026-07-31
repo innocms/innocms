@@ -70,6 +70,7 @@
   {{-- Stats --}}
   <div class="home-stats">
     <div class="container">
+      <div class="module-title" data-aos="fade-up">{{ __('front::common.stats_title') }}</div>
       <div class="row g-4 text-center">
         <div class="col-6 col-md-3" data-aos="fade-up" data-aos-duration="300">
           <div class="stat-number">500+</div>
@@ -86,6 +87,40 @@
         <div class="col-6 col-md-3" data-aos="fade-up" data-aos-duration="600">
           <div class="stat-number">10{{ __('front::common.unit_min') }}</div>
           <div class="stat-label">{{ __('front::common.stat_launch') }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{-- How It Works --}}
+  <div class="home-workflow">
+    <div class="container">
+      <div class="module-title" data-aos="fade-up">{{ __('front::common.workflow_title') }}</div>
+      <div class="module-sub-title" data-aos="fade-up">{{ __('front::common.workflow_sub') }}</div>
+      <div class="row g-4 align-items-center">
+        <div class="col-12 col-md-4" data-aos="fade-up" data-aos-duration="300">
+          <div class="workflow-step">
+            <div class="workflow-icon"><i class="bi bi-layout-text-window"></i></div>
+            <div class="workflow-num">01</div>
+            <div class="workflow-title">{{ __('front::common.workflow_1_title') }}</div>
+            <div class="workflow-desc">{{ __('front::common.workflow_1_desc') }}</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4" data-aos="fade-up" data-aos-duration="500">
+          <div class="workflow-step">
+            <div class="workflow-icon"><i class="bi bi-pencil-square"></i></div>
+            <div class="workflow-num">02</div>
+            <div class="workflow-title">{{ __('front::common.workflow_2_title') }}</div>
+            <div class="workflow-desc">{{ __('front::common.workflow_2_desc') }}</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4" data-aos="fade-up" data-aos-duration="700">
+          <div class="workflow-step">
+            <div class="workflow-icon"><i class="bi bi-rocket-takeoff"></i></div>
+            <div class="workflow-num">03</div>
+            <div class="workflow-title">{{ __('front::common.workflow_3_title') }}</div>
+            <div class="workflow-desc">{{ __('front::common.workflow_3_desc') }}</div>
+          </div>
         </div>
       </div>
     </div>

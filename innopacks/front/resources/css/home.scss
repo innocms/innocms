@@ -760,3 +760,61 @@ body.page-home {
     }
   }
 }
+
+.home-workflow {
+  padding: 5rem 0;
+  background: linear-gradient(180deg, #f0f3fe 0%, #fff 100%);
+
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
+
+  .workflow-step {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e6ebf3;
+    transition: transform .25s ease, box-shadow .25s ease;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(37, 99, 235, .12);
+    }
+  }
+
+  .workflow-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $primary 0%, #3b82f6 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+    font-size: 2rem;
+  }
+
+  .workflow-num {
+    font-size: .85rem;
+    font-weight: 700;
+    color: $primary;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: .4rem;
+  }
+
+  .workflow-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: .6rem;
+  }
+
+  .workflow-desc {
+    font-size: .92rem;
+    color: #666;
+    line-height: 1.7;
+  }
+}
