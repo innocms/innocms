@@ -39,24 +39,14 @@ class TagSeeder extends BaseSeeder
     private function getTags(): array
     {
         return [
-            [
-                'id'       => 1,
-                'slug'     => 'ecommerce',
-                'position' => 1,
-                'active'   => 1,
-            ],
-            [
-                'id'       => 2,
-                'slug'     => 'opensource',
-                'position' => 2,
-                'active'   => 1,
-            ],
-            [
-                'id'       => 3,
-                'slug'     => 'export',
-                'position' => 2,
-                'active'   => 1,
-            ],
+            ['id' => 1, 'slug' => 'cnc-machining', 'position' => 1, 'active' => 1],
+            ['id' => 2, 'slug' => 'precision-parts', 'position' => 2, 'active' => 1],
+            ['id' => 3, 'slug' => 'oem-odm', 'position' => 3, 'active' => 1],
+            ['id' => 4, 'slug' => 'iso-9001', 'position' => 4, 'active' => 1],
+            ['id' => 5, 'slug' => 'aluminum', 'position' => 5, 'active' => 1],
+            ['id' => 6, 'slug' => 'stainless-steel', 'position' => 6, 'active' => 1],
+            ['id' => 7, 'slug' => 'five-axis', 'position' => 7, 'active' => 1],
+            ['id' => 8, 'slug' => 'rapid-prototyping', 'position' => 8, 'active' => 1],
         ];
     }
 
@@ -65,27 +55,23 @@ class TagSeeder extends BaseSeeder
      */
     private function getTagTranslations(): array
     {
-        return
-            [
+        $rows = [
+            [1, 'CNC加工', 'CNC Machining'],
+            [2, '精密零件', 'Precision Parts'],
+            [3, 'OEM/ODM', 'OEM/ODM'],
+            [4, 'ISO 9001', 'ISO 9001'],
+            [5, '铝合金', 'Aluminum'],
+            [6, '不锈钢', 'Stainless Steel'],
+            [7, '五轴加工', '5-Axis'],
+            [8, '快速打样', 'Rapid Prototyping'],
+        ];
 
-                [
-                    'id'     => 1,
-                    'tag_id' => 1,
-                    'locale' => 'zh-cn',
-                    'name'   => '电商',
-                ],
-                [
-                    'id'     => 2,
-                    'tag_id' => 2,
-                    'locale' => 'zh-cn',
-                    'name'   => '开源',
-                ],
-                [
-                    'id'     => 3,
-                    'tag_id' => 3,
-                    'locale' => 'zh-cn',
-                    'name'   => '外贸',
-                ],
-            ];
+        $translations = [];
+        foreach ($rows as [$tagId, $zhName, $enName]) {
+            $translations[] = ['tag_id' => $tagId, 'locale' => 'zh-cn', 'name' => $zhName];
+            $translations[] = ['tag_id' => $tagId, 'locale' => 'en', 'name' => $enName];
+        }
+
+        return $translations;
     }
 }
