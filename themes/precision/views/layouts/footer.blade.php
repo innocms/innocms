@@ -43,13 +43,13 @@
         <div class="col-lg-2">
           <div class="footer-title">{{ __('theme-precision::footer.contact_us') }}</div>
           <ul class="footer-contact">
-            @if($phone = system_setting('contact_phone'))
+            @if($phone = system_setting('telephone'))
               <li><i class="bi bi-telephone-fill"></i> {{ $phone }}</li>
             @endif
-            @if($email = system_setting('contact_email'))
+            @if($email = system_setting('email'))
               <li><i class="bi bi-envelope-fill"></i> {{ $email }}</li>
             @endif
-            @if($address = system_setting('contact_address'))
+            @if($address = system_setting_locale('address'))
               <li><i class="bi bi-geo-alt-fill"></i> {{ $address }}</li>
             @endif
           </ul>

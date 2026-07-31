@@ -46,18 +46,35 @@ function precision_truncate(): void
 
 function precision_seed_settings(): void
 {
-    $values = [
+    $scalar = [
         'theme'            => 'precision',
         'meta_title'       => '傲锋精密 Apex Precision - CNC加工|钣金|压铸一站式精密零部件制造商',
         'meta_keywords'    => 'CNC加工,精密零件,五轴加工,钣金加工,压铸,阳极氧化,OEM/ODM,傲锋精密,Apex Precision',
         'meta_description' => '傲锋精密（Apex Precision）成立于 2008 年，提供 CNC 加工、钣金、压铸与表面处理一站式精密零部件制造服务，通过 ISO 9001 / IATF 16949 / ISO 13485 认证，产品远销 30 多个国家和地区。',
-        'contact_phone'    => '+86-769-8123-4567',
-        'contact_email'    => 'sales@apexprecision.cn',
-        'contact_address'  => 'Dongguan, China',
-        'contact_hours'    => 'Mon-Sat 8:30-18:00 (GMT+8)',
+        'telephone'        => '+86-769-8123-4567',
+        'email'            => 'sales@apexprecision.cn',
     ];
-    foreach ($values as $name => $value) {
+    foreach ($scalar as $name => $value) {
         Setting::query()->updateOrInsert(['space' => 'system', 'name' => $name], ['value' => $value, 'json' => 0]);
+    }
+
+    $i18n = [
+        'store_name'        => ['zh-cn' => '傲锋精密制造有限公司', 'en' => 'Apex Precision Manufacturing Co., Ltd.'],
+        'store_description' => [
+            'zh-cn' => '傲锋精密（Apex Precision）成立于 2008 年，专注 CNC 加工、钣金、压铸与表面处理一站式精密零部件制造。',
+            'en'    => 'Founded in 2008, Apex Precision delivers one-stop precision parts manufacturing across CNC machining, sheet metal, die casting and surface finishing.',
+        ],
+        'address' => [
+            'zh-cn' => '广东省东莞市长安镇高盛路 8 号 傲锋精密产业园',
+            'en'    => 'No. 8 Gaosheng Road, Chang’an Town, Dongguan, Guangdong, China',
+        ],
+        'business_hours' => [
+            'zh-cn' => '周一至周六 8:30-18:00（GMT+8）',
+            'en'    => 'Mon–Sat 8:30-18:00 (GMT+8)',
+        ],
+    ];
+    foreach ($i18n as $name => $value) {
+        Setting::query()->updateOrInsert(['space' => 'system', 'name' => $name], ['value' => json_encode($value), 'json' => 1]);
     }
 }
 

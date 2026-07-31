@@ -10,10 +10,10 @@
 <div class="header-topbar">
   <div class="container d-flex justify-content-between align-items-center">
     <div class="topbar-left">
-      @if($phone = system_setting('contact_phone'))
+      @if($phone = system_setting('telephone'))
         <a href="tel:{{ preg_replace('/[^0+]/', '', $phone) }}"><i class="bi bi-telephone-fill"></i> {{ $phone }}</a>
       @endif
-      @if($email = system_setting('contact_email'))
+      @if($email = system_setting('email'))
         <a href="mailto:{{ $email }}" class="ms-4"><i class="bi bi-envelope-fill"></i> {{ $email }}</a>
       @endif
     </div>

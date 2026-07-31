@@ -242,7 +242,7 @@
             <div class="icon"><i class="bi bi-telephone-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('theme-precision::home.contact_phone') }}</div>
-              <div class="text-2"><a href="tel:{{ preg_replace('/[^0-9+]/', '', system_setting('contact_phone')) }}">{{ system_setting('contact_phone') }}</a></div>
+              <div class="text-2"><a href="tel:{{ preg_replace('/[^0-9+]/', '', system_setting('telephone')) }}">{{ system_setting('telephone') }}</a></div>
             </div>
           </div>
         </div>
@@ -251,7 +251,7 @@
             <div class="icon"><i class="bi bi-envelope-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('theme-precision::home.contact_email') }}</div>
-              <div class="text-2"><a href="mailto:{{ system_setting('contact_email') }}">{{ system_setting('contact_email') }}</a></div>
+              <div class="text-2"><a href="mailto:{{ system_setting('email') }}">{{ system_setting('email') }}</a></div>
             </div>
           </div>
         </div>
@@ -260,7 +260,7 @@
             <div class="icon"><i class="bi bi-geo-alt-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('theme-precision::home.contact_address') }}</div>
-              <div class="text-2 text-muted">{{ system_setting('contact_address') }}</div>
+              <div class="text-2 text-muted">{{ system_setting_locale('address') }}</div>
             </div>
           </div>
         </div>
@@ -269,7 +269,7 @@
             <div class="icon"><i class="bi bi-clock-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('theme-precision::home.contact_hours') }}</div>
-              <div class="text-2 text-muted">{{ system_setting('contact_hours') }}</div>
+              <div class="text-2 text-muted">{{ system_setting_locale('business_hours') }}</div>
             </div>
           </div>
         </div>

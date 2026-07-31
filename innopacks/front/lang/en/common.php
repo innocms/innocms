@@ -20,10 +20,6 @@ return [
 
     // Header / footer / contact (generic placeholders — edit after install)
     'get_quote'          => 'Try Free',
-    'contact_phone'      => 'Phone',
-    'contact_email'      => 'Email',
-    'contact_address'    => 'Address',
-    'contact_hours'      => 'Business Hours',
     'footer_about'       => 'InnoCMS is a lightweight CMS for fast corporate websites — modular architecture, hook plugins, themes and built-in multilingual.',
     'footer_quick_links' => 'Quick Links',
     'footer_contact'     => 'Contact Us',
@@ -31,9 +27,9 @@ return [
     'company_name'       => 'Chengdu Funnlink Technology Co., Ltd.',
 
     // Default product landing (home)
-    'hero_title'        => 'A Lightweight CMS for Corporate Websites',
+    'hero_title'        => 'B2B Export Independent Site Builder',
     'hero_highlight'    => 'live in minutes',
-    'hero_sub'          => 'Built on Laravel with a modular architecture, hook-based plugins, one-click themes and built-in multilingual content — made for B2B brand sites and export landing pages.',
+    'hero_sub'          => 'Built on Laravel with a modular architecture, hook-based plugins, one-click themes and built-in multilingual content — helping export factories and brand teams launch high-conversion B2B inquiry websites fast.',
     'hero_cta_start'    => 'Get Started',
     'hero_cta_features' => 'See Features',
     'features_title'    => 'Why InnoCMS',

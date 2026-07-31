@@ -20,10 +20,6 @@ return [
 
     // Header / footer / contact (generic placeholders — edit after install)
     'get_quote'          => '免费试用',
-    'contact_phone'      => '联系电话',
-    'contact_email'      => '联系邮箱',
-    'contact_address'    => '公司地址',
-    'contact_hours'      => '工作时间',
     'footer_about'       => 'InnoCMS 是一款专为企业官网快速建站而设计的轻量级 CMS，模块化架构、Hook 插件、主题与多语言内置。',
     'footer_quick_links' => '快速链接',
     'footer_contact'     => '联系我们',
@@ -31,9 +27,9 @@ return [
     'company_name'       => '成都帆连科技有限公司',
 
     // Default product landing (home)
-    'hero_title'        => '轻量级企业官网建站系统',
+    'hero_title'        => '外贸 B2B 独立站建站平台',
     'hero_highlight'    => '几分钟上线',
-    'hero_sub'          => 'InnoCMS 基于 Laravel，模块化架构、Hook 插件、主题一键切换、内置多语言，专为 B2B 品牌官网与外贸独立站而生。',
+    'hero_sub'          => 'InnoCMS 基于 Laravel，模块化架构、Hook 插件、主题一键切换、内置多语言，帮助外贸工厂与品牌出海团队快速搭建高转化的 B2B 询盘独立站。',
     'hero_cta_start'    => '快速开始',
     'hero_cta_features' => '查看特性',
     'features_title'    => '为什么选择 InnoCMS',
