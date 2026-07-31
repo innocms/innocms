@@ -121,6 +121,34 @@ class SettingSeeder extends BaseSeeder
                 'value' => 'contact@example.com',
                 'json'  => 0,
             ],
+            [
+                'id'    => 14,
+                'space' => 'system',
+                'name'  => 'contact_phone',
+                'value' => '',
+                'json'  => 0,
+            ],
+            [
+                'id'    => 15,
+                'space' => 'system',
+                'name'  => 'contact_email',
+                'value' => '',
+                'json'  => 0,
+            ],
+            [
+                'id'    => 16,
+                'space' => 'system',
+                'name'  => 'contact_address',
+                'value' => '',
+                'json'  => 0,
+            ],
+            [
+                'id'    => 17,
+                'space' => 'system',
+                'name'  => 'contact_hours',
+                'value' => '',
+                'json'  => 0,
+            ],
         ];
     }
 }

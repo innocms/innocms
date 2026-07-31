@@ -1,0 +1,31 @@
+// Precision Manufacturing B2B theme — design tokens
+$primary: #0d3e73;
+$secondary: #5b6b7f;
+$accent: #f4772e;
+$accent-dark: #d9611a;
+
+$topbar-bg: #0a2540;
+$footer-bg: #0b1f3a;
+$footer-bottom-bg: #081831;
+
+$text-strong: #1c2b3a;
+$text-body: #3d4a5a;
+$text-muted: #6b7280;
+$section-bg: #f5f7fa;
+
+$font-size-base: 0.9rem;
+$border-radius: 0.3rem;
+$enable-negative-margins: true;
+
+$bootstrap-icons-font: "bootstrap-icons" !default;
+$bootstrap-icons-font-src: url("/vendor/bootstrap-icons/bootstrap-icons.woff2?08efbba7c53d8c5413793eecb19b20bb") format("woff2"),
+url("/vendor/bootstrap-icons/bootstrap-icons.woff?08efbba7c53d8c5413793eecb19b20bb") format("woff") !default;
+
+@font-face {
+  font-display: block;
+  font-family: $bootstrap-icons-font;
+  src: $bootstrap-icons-font-src;
+}
+
+@import 'bootstrap-icons';
+@import 'node_modules/bootstrap/scss/bootstrap';

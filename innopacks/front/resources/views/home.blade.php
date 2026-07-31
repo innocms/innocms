@@ -141,7 +141,7 @@
             <div class="icon"><i class="bi bi-telephone-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('front::common.contact_phone') }}</div>
-              <div class="text-2">{{ __('front::common.contact_phone_v') }}</div>
+              <div class="text-2">{{ system_setting('contact_phone') }}</div>
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@
             <div class="icon"><i class="bi bi-envelope-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('front::common.contact_email') }}</div>
-              <div class="text-2">{{ __('front::common.contact_email_v') }}</div>
+              <div class="text-2">{{ system_setting('contact_email') }}</div>
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@
             <div class="icon"><i class="bi bi-geo-alt-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('front::common.contact_address') }}</div>
-              <div class="text-2 text-muted">{{ __('front::common.contact_address_v') }}</div>
+              <div class="text-2 text-muted">{{ system_setting('contact_address') }}</div>
             </div>
           </div>
         </div>
@@ -168,7 +168,7 @@
             <div class="icon"><i class="bi bi-clock-fill"></i></div>
             <div class="right">
               <div class="text-1">{{ __('front::common.contact_hours') }}</div>
-              <div class="text-2 text-muted">{{ __('front::common.contact_hours_v') }}</div>
+              <div class="text-2 text-muted">{{ system_setting('contact_hours') }}</div>
             </div>
           </div>
         </div>

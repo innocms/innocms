@@ -12,9 +12,12 @@
       <div class="row">
         <div class="col-lg-4 mb-4 mb-lg-0">
           <div class="footer-logo">
-            <img src="{{ asset('images/logo-white.png') }}" class="img-fluid" alt="InnoCMS">
+            <img src="{{ asset('images/logo-white.png') }}" class="img-fluid" alt="Apex Precision">
           </div>
-          <p class="footer-about">{{ __('front::common.footer_about') }}</p>
+          <p class="footer-about">{{ __('theme-precision::footer.about') }}</p>
+          <div class="footer-certs">
+            <i class="bi bi-patch-check-fill"></i> {{ __('theme-precision::footer.certs') }}
+          </div>
         </div>
 
         @foreach($catalogMenus as $catalogMenu)
@@ -29,7 +32,7 @@
         @endforeach
 
         <div class="col-6 col-lg-2 mb-4 mb-lg-0">
-          <div class="footer-title">{{ __('front::common.footer_quick_links') }}</div>
+          <div class="footer-title">{{ __('theme-precision::footer.quick_links') }}</div>
           <ul class="footer-links">
             @foreach($pageMenus as $pageMenu)
               <li><a href="{{ $pageMenu['url'] }}">{{ $pageMenu['name'] }}</a></li>
@@ -38,7 +41,7 @@
         </div>
 
         <div class="col-lg-2">
-          <div class="footer-title">{{ __('front::common.footer_contact') }}</div>
+          <div class="footer-title">{{ __('theme-precision::footer.contact_us') }}</div>
           <ul class="footer-contact">
             @if($phone = system_setting('contact_phone'))
               <li><i class="bi bi-telephone-fill"></i> {{ $phone }}</li>
@@ -60,7 +63,7 @@
           <div class="left-links">Powered By <a href="https://www.innocms.com" target="_blank">INNOCMS</a></div>
         </div>
         <div class="col-md-6 copyright-text">
-          &copy; {{ date('Y') }} {{ __('front::common.footer_rights') }}
+          Apex Precision &copy; {{ date('Y') }} {{ __('theme-precision::footer.rights') }}
           @if(system_setting('icp_number'))
             <a href="https://beian.miit.gov.cn" class="ms-2" target="_blank">{{ system_setting('icp_number') }}</a>
           @endif

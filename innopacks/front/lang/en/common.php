@@ -21,13 +21,9 @@ return [
     // Header / footer / contact (generic placeholders — edit after install)
     'get_quote'          => 'Try Free',
     'contact_phone'      => 'Phone',
-    'contact_phone_v'    => '+86 400-000-0000',
     'contact_email'      => 'Email',
-    'contact_email_v'    => 'hello@example.com',
     'contact_address'    => 'Address',
-    'contact_address_v'  => 'Your company address',
     'contact_hours'      => 'Business Hours',
-    'contact_hours_v'    => 'Mon–Fri 9:00 – 18:00',
     'footer_about'       => 'InnoCMS is a lightweight CMS for fast corporate websites — modular architecture, hook plugins, themes and built-in multilingual.',
     'footer_quick_links' => 'Quick Links',
     'footer_contact'     => 'Contact Us',

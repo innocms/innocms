@@ -21,13 +21,9 @@ return [
     // Header / footer / contact (generic placeholders — edit after install)
     'get_quote'          => '免费试用',
     'contact_phone'      => '联系电话',
-    'contact_phone_v'    => '+86 400-000-0000',
     'contact_email'      => '联系邮箱',
-    'contact_email_v'    => 'hello@example.com',
     'contact_address'    => '公司地址',
-    'contact_address_v'  => '请填写你的公司地址',
     'contact_hours'      => '工作时间',
-    'contact_hours_v'    => '周一至周五 9:00 – 18:00',
     'footer_about'       => 'InnoCMS 是一款专为企业官网快速建站而设计的轻量级 CMS，模块化架构、Hook 插件、主题与多语言内置。',
     'footer_quick_links' => '快速链接',
     'footer_contact'     => '联系我们',

@@ -48,7 +48,7 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link {{ equal_route_name('home.index') ? 'active' : '' }}" aria-current="page"
-               href="{{ front_route('home.index') }}">{{ __('front::common.home') }}</a>
+               href="{{ front_route('home.index') }}">{{ __('theme-precision::header.home') }}</a>
           </li>
           @foreach($menus as $menu)
             @if($menu['children'] ?? [])
@@ -75,7 +75,7 @@
       @if($contactUrl)
         <a href="{{ $contactUrl }}"
            class="btn btn-accent d-none d-lg-inline-flex align-items-center ms-3">
-          <i class="bi bi-send-fill me-1"></i> {{ __('front::common.get_quote') }}
+          <i class="bi bi-send-fill me-1"></i> {{ __('theme-precision::header.get_quote') }}
         </a>
       @endif
 
@@ -88,20 +88,18 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link {{ equal_route_name('home.index') ? 'active' : '' }}" aria-current="page"
-               href="{{ front_route('home.index') }}">{{ __('front::common.home') }}</a>
+               href="{{ front_route('home.index') }}">{{ __('theme-precision::header.home') }}</a>
           </li>
           @foreach($menus as $menu)
             @if($menu['children'] ?? [])
               <li class="nav-item">
-                <div class="dropdown">
-                  <a class="nav-link {{ equal_url($menu['url']) ? 'active' : '' }}"
-                     href="{{ $menu['url'] }}">{{ $menu['name'] }}</a>
-                  <ul class="dropdown-menu">
-                    @foreach($menu['children'] as $child)
-                      <li><a class="dropdown-item" href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
-                    @endforeach
-                  </ul>
-                </div>
+                <a class="nav-link {{ equal_url($menu['url']) ? 'active' : '' }}"
+                   href="{{ $menu['url'] }}">{{ $menu['name'] }}</a>
+                <ul class="dropdown-menu">
+                  @foreach($menu['children'] as $child)
+                    <li><a class="dropdown-item" href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
+                  @endforeach
+                </ul>
               </li>
             @else
               <li class="nav-item">
@@ -112,7 +110,7 @@
           @endforeach
           @if($contactUrl)
             <li class="nav-item p-3">
-              <a href="{{ $contactUrl }}" class="btn btn-accent w-100">{{ __('front::common.get_quote') }}</a>
+              <a href="{{ $contactUrl }}" class="btn btn-accent w-100">{{ __('theme-precision::header.get_quote') }}</a>
             </li>
           @endif
         </ul>

@@ -1,0 +1,19 @@
+{
+  "code": "precision",
+  "name": {
+    "zh-cn": "精密制造 B2B",
+    "en": "Precision Manufacturing B2B"
+  },
+  "description": {
+    "zh-cn": "面向精密加工 / CNC / 钣金 / 压铸等制造业的 B2B 外贸独立站主题：深蓝工程主色 + 工业橙 CTA，含顶栏询价、产品/行业/新闻/资质/OEM 全套版块与演示数据。",
+    "en": "B2B export theme for precision / CNC / sheet-metal / die-casting manufacturers: engineering navy + industrial orange, with quote top-bar and full product / industry / news / quality / OEM sections plus demo data."
+  },
+  "version": "v1.0.0",
+  "icon": "/images/favicon.png",
+  "has_demo": true,
+  "offer_on_install": true,
+  "author": {
+    "name": "InnoCMS",
+    "email": "team@innoshop.com"
+  }
+}
