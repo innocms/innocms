@@ -12,8 +12,10 @@
     <div class="page-service-content">
       <div class="container">
         <div class="row">
-          <div class="col-12">
-            {!! $page->translation->content ?? '' !!}
+          <div class="col-12 col-md-10 col-lg-8 mx-auto">
+            <div class="content">
+              {!! $page->translation->content ?? '' !!}
+            </div>
           </div>
         </div>
       </div>
