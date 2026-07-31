@@ -162,3 +162,42 @@ body.page-news-details {
     }
   }
 }
+// List item hover feedback (B2B polish)
+body.page-news, body.page-news-details {
+  .newest-item {
+    transition: transform .2s ease, box-shadow .2s ease;
+    border-radius: 8px;
+    padding: 16px 12px;
+
+    &:hover {
+      box-shadow: 0 10px 30px rgba(13, 62, 115, .08);
+      transform: translateY(-2px);
+
+      .item-title a {
+        color: $primary;
+      }
+    }
+
+    .item-img {
+      border-radius: 6px;
+      overflow: hidden;
+
+      img {
+        transition: transform .35s ease;
+      }
+    }
+
+    &:hover .item-img img {
+      transform: scale(1.05);
+    }
+  }
+
+  .sidebar-list a {
+    transition: color .2s, padding-left .2s;
+
+    &:hover {
+      color: $accent;
+      padding-left: 4px;
+    }
+  }
+}

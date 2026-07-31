@@ -80,7 +80,16 @@ class ArticleRepo extends BaseRepo
 
         $catalogId = $filters['catalog_id'] ?? '';
         if ($catalogId) {
-            $builder->where('catalog_id', $catalogId);
+            if (is_array($catalogId)) {
+                $builder->whereIn('catalog_id', $catalogId);
+            } else {
+                $builder->where('catalog_id', $catalogId);
+            }
+        }
+
+        $catalogIds = $filters['catalog_ids'] ?? null;
+        if (is_array($catalogIds) && $catalogIds) {
+            $builder->whereIn('catalog_id', $catalogIds);
         }
 
         if (isset($filters['active'])) {

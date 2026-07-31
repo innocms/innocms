@@ -1,1 +1,14 @@
-$primary: #1272f5;
+// Default (B2B) theme design tokens.
+// Keep $primary in sync with bootstrap/bootstrap.scss, which feeds Bootstrap utilities.
+$primary: #0d3e73;
+$accent: #f4772e;
+$accent-dark: #d9611a;
+
+$topbar-bg: #0a2540;
+$footer-bg: #0b1f3a;
+$footer-bottom-bg: #081831;
+
+$text-strong: #1c2b3a;
+$text-body: #3d4a5a;
+$text-muted: #6b7280;
+$section-bg: #f5f7fa;

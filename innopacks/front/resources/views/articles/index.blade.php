@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('shared.page-head', ['title' => '新闻资讯'])
+@include('shared.page-head', ['title' => $sidebarCatalog->translation->title ?? __('front::common.news')])
 @include('shared.articles')
 
 @endsection

@@ -1,28 +1,71 @@
-
 @hookinsert('layouts.footer.top')
 
-<div class="footer-box">
-  <div class="top-bg"><img src="{{ asset('images/front/home/footer-bg.svg') }}" class="img-fluid"></div>
+@php
+  $footerMenus    = $menus ?? [];
+  $catalogMenus   = array_values(array_filter($footerMenus, fn ($m) => ! empty($m['children'])));
+  $pageMenus      = array_values(array_filter($footerMenus, fn ($m) => empty($m['children'])));
+@endphp
+
+<footer class="footer-box">
   <div class="container">
-    <div class="top-title">InnoCMS 轻量级企业官网建站系统</div>
-    <div class="bottom-box">
+    <div class="footer-main">
       <div class="row">
-        <div class="col-md-6">
-          <div class="left-links">
-            Powered By <a href="https://www.innocms.com" target="_blank">INNOCMS</a>
+        <div class="col-lg-4 mb-4 mb-lg-0">
+          <div class="footer-logo">
+            <img src="{{ asset('images/logo-white.png') }}" class="img-fluid" alt="Apex Precision">
+          </div>
+          <p class="footer-about">{{ __('front::footer.about') }}</p>
+          <div class="footer-certs">
+            <i class="bi bi-patch-check-fill"></i> {{ __('front::footer.certs') }}
           </div>
         </div>
+
+        @foreach($catalogMenus as $catalogMenu)
+          <div class="col-6 col-lg-2 mb-4 mb-lg-0">
+            <div class="footer-title"><a href="{{ $catalogMenu['url'] }}">{{ $catalogMenu['name'] }}</a></div>
+            <ul class="footer-links">
+              @foreach($catalogMenu['children'] as $child)
+                <li><a href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
+              @endforeach
+            </ul>
+          </div>
+        @endforeach
+
+        <div class="col-6 col-lg-2 mb-4 mb-lg-0">
+          <div class="footer-title">{{ __('front::footer.quick_links') }}</div>
+          <ul class="footer-links">
+            @foreach($pageMenus as $pageMenu)
+              <li><a href="{{ $pageMenu['url'] }}">{{ $pageMenu['name'] }}</a></li>
+            @endforeach
+          </ul>
+        </div>
+
+        <div class="col-lg-2">
+          <div class="footer-title">{{ __('front::footer.contact_us') }}</div>
+          <ul class="footer-contact">
+            <li><i class="bi bi-telephone-fill"></i> +86-769-8123-4567</li>
+            <li><i class="bi bi-envelope-fill"></i> sales@apexprecision.cn</li>
+            <li><i class="bi bi-geo-alt-fill"></i> {{ __('front::home.contact_address_v') }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="left-links">Powered By <a href="https://www.innocms.com" target="_blank">INNOCMS</a></div>
+        </div>
         <div class="col-md-6 copyright-text">
-          <a href="https://www.innocms.com" class="ms-2" target="_blank">InnoCMS</a>
-          &copy; {{ date('Y') }} All Rights Reserved
+          Apex Precision &copy; {{ date('Y') }} {{ __('front::footer.rights') }}
           @if(system_setting('icp_number'))
             <a href="https://beian.miit.gov.cn" class="ms-2" target="_blank">{{ system_setting('icp_number') }}</a>
           @endif
         </div>
-    </div>
+      </div>
     </div>
   </div>
-</div>
+</footer>
 
 @hookinsert('layouts.footer.bottom')
 

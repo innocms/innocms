@@ -1,3 +1,19 @@
+@php
+  $sidebarList = [];
+  if (! empty($sidebarCatalog)) {
+      $children = $sidebarCatalog->children ?? collect();
+      if ($children->isNotEmpty()) {
+          // Parent catalog: list itself + its children.
+          $sidebarList = collect([$sidebarCatalog])->merge($children);
+      } elseif ($sidebarCatalog->parent) {
+          // Leaf catalog: list its siblings (incl. itself) under the parent.
+          $sidebarList = collect([$sidebarCatalog->parent])->merge($sidebarCatalog->parent->children);
+      } else {
+          $sidebarList = collect([$sidebarCatalog]);
+      }
+  }
+@endphp
+
 <div class="container mt-3 mt-md-5">
   <div class="row">
     <div class="col-12 col-md-9">
@@ -7,23 +23,23 @@
           <div class="newest-item">
             <div class="item-img">
               <a href="{{ $article->url }}">
-                <img src="{{ image_resize($article->image, 200, 150) }}" class="img-fluid">
+                <img src="{{ image_resize($article->translation->image ?? '', 200, 150) }}" class="img-fluid">
               </a>
             </div>
             <div class="item-content d-flex flex-column justify-content-between">
               <div class="content-top">
-                <div class="item-title"><a href="{{ $article->url }}">{{ $article->title }}</a></div>
+                <div class="item-title"><a href="{{ $article->url }}">{{ $article->translation->title ?? '' }}</a></div>
                 @if ($article->tags->count())
                 <div class="newes-tags">
                   <i class="bi bi-tags me-1"></i>
                   <div class="d-flex">
                     @foreach($article->tags as $tag)
-                      <a href="{{ front_route('tags.show', $tag->slug) }}">{{ $tag->name }}</a>
+                      <a href="{{ front_route('tags.show', ['slug' => $tag->slug]) }}">{{ $tag->translation->name ?? '' }}</a>
                     @endforeach
                   </div>
                 </div>
                 @endif
-                <div class="item-summary">{{ $article->summary }}</div>
+                <div class="item-summary">{{ $article->translation->summary ?? '' }}</div>
               </div>
               <div class="item-date text-secondary">
                 <span><i class="bi bi-clock"></i> {{ $article->created_at->format('Y-m-d') }}</span>
@@ -33,41 +49,40 @@
           </div>
           @endforeach
         </div>
+        <div class="d-flex justify-content-center mt-4">{{ $articles->links() }}</div>
       @else
-        @include('shared.no-data', ['text' => '没有数据 ~'])
+        @include('shared.no-data', ['text' => __('front::common.no_data')])
       @endif
     </div>
     <div class="col-12 col-md-3">
       <div class="newes-sidebar">
         <div class="search-box">
           <div class="input-group input-group-lg">
-            <input type="text" class="form-control" value="{{ request('keyword') }}" placeholder="请输入关键字">
-            <button class="btn btn-primary" type="button">搜索</button>
+            <input type="text" class="form-control" value="{{ request('keyword') }}" placeholder="{{ __('front::common.search_ph') }}">
+            <button class="btn btn-primary" type="button">{{ __('front::common.search') }}</button>
           </div>
         </div>
 
-        @if(isset($catalogs) && $catalogs)
+        @if($sidebarList)
           <div class="sidebar-item">
-            <div class="sidebar-title">新闻分类</div>
+            <div class="sidebar-title">{{ __('front::common.categories') }}</div>
             <div class="sidebar-list">
               <ul>
-                @foreach($catalogs as $catalog)
-                  <li><a
-                        href="{{ $catalog->url }}">{{ $catalog->title }}</a>
-                  </li>
+                @foreach($sidebarList as $cat)
+                  <li><a href="{{ $cat->url }}">{{ $cat->translation->title ?? '' }}</a></li>
                 @endforeach
               </ul>
             </div>
           </div>
         @endif
 
-        @if(isset($tags) && $tags)
+        @if(isset($tags) && $tags && $tags->count())
           <div class="sidebar-item">
-            <div class="sidebar-title">新闻标签</div>
+            <div class="sidebar-title">{{ __('front::common.tags') }}</div>
             <div class="sidebar-list">
               <ul>
                 @foreach($tags as $tag)
-                  <li><a href="{{ front_route('tags.show', $tag->slug ?? '') }}">{{ $tag->name }}</a></li>
+                  <li><a href="{{ front_route('tags.show', ['slug' => $tag->slug ?? '']) }}">{{ $tag->translation->name ?? '' }}</a></li>
                 @endforeach
               </ul>
             </div>

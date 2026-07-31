@@ -62,11 +62,12 @@ class CatalogController extends Controller
         $tags     = TagRepo::getInstance()->list(['active' => true]);
 
         $data = [
-            'slug'     => $slug,
-            'catalog'  => $catalog,
-            'catalogs' => $catalogs,
-            'articles' => $articles,
-            'tags'     => $tags,
+            'slug'           => $slug,
+            'catalog'        => $catalog,
+            'catalogs'       => $catalogs,
+            'articles'       => $articles,
+            'tags'           => $tags,
+            'sidebarCatalog' => $catalog,
         ];
 
         return inno_view('catalogs.show', $data);

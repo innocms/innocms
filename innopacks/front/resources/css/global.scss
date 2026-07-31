@@ -76,17 +76,36 @@ img {
 }
 
 .page-head {
-  padding: 40px 0;
-  background: #EFF1FE;
+  padding: 48px 0 40px;
+  background: linear-gradient(180deg, #eef2f8 0%, #f5f7fa 100%);
   text-align: center;
+  border-bottom: 1px solid #e3e8f0;
   @media (max-width: 768px) {
-    padding: 20px 0;
+    padding: 28px 0 22px;
   }
 
   .page-title {
-    font-size: 30px;
-    color: #333;
-    margin-bottom: 14px;
+    font-size: 32px;
+    font-weight: 800;
+    color: $primary;
+    letter-spacing: .5px;
+    margin-bottom: 16px;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 3px;
+      background: $accent;
+      margin: 14px auto 0;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
   }
 
   .breadcrumb {
@@ -316,5 +335,18 @@ img {
     background-color: #F9F9FC;
     background: linear-gradient(180deg, #F9F9FC 0%, #fff 100%);
     padding: 60px 0;
+  }
+}
+// CTA accent button (industrial orange)
+.btn-accent {
+  background-color: $accent;
+  border: 1px solid $accent;
+  color: #fff;
+  font-weight: 600;
+
+  &:hover, &:focus, &:active {
+    background-color: $accent-dark;
+    border-color: $accent-dark;
+    color: #fff;
   }
 }

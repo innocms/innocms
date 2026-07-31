@@ -7,105 +7,268 @@
     <link rel="stylesheet" href="{{ asset('vendor/aos/aos.css') }}">
   @endpush
 
-      @hookinsert('page.content.top')
+  @hookinsert('page.content.top')
 
-  <div class="home-banner">
+  {{-- Hero banner --}}
+  <div class="home-banner"
+       style="background-image: linear-gradient(rgba(244, 247, 253, .92), rgba(240, 243, 254, .88)), url('{{ asset('images/demo/industries/manufacturing.jpg') }}')">
     <div class="home-banner-info">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
             <div class="home-banner-left">
-              <h1 data-aos="fade-up" data-aos-duration="1000">InnoCMS</h1>
-              <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">轻量级
-                <span class="text-primary">企业官网CMS</span></p>
+              <h1 data-aos="fade-up" data-aos-duration="1000">{{ __('front::home.hero_title') }}</h1>
+              <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">
+                <span class="text-primary">{{ __('front::home.hero_highlight') }}</span>
+              </p>
               <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1800">
-                - 打造企业官网，从未如此简单！<br/>
-                - 轻量级CMS，专为快速开发和上线设计，从构想到现实，仅需几步!<br/>
-                - 易用性与高效性并存，让您的团队轻松上手，快速掌握。<br>
+                - {{ __('front::home.hero_point_1') }}<br/>
+                - {{ __('front::home.hero_point_2') }}<br/>
+                - {{ __('front::home.hero_point_3') }}<br/>
+                - {{ __('front::home.hero_point_4') }}<br>
               </p>
               <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
-                <button type="button" class="btn btn-lg btn-primary">立即探索</button>
+                <a href="{{ front_route('pages.slug_show', ['slug' => 'contact']) }}"
+                   class="btn btn-lg btn-primary">{{ __('front::home.cta_quote') }}</a>
+                @if($productsCatalog ?? null)
+                  <a href="{{ front_route('catalogs.slug_show', ['slug' => $productsCatalog->slug]) }}"
+                     class="btn btn-lg btn-outline-primary ms-md-3 mt-3 mt-md-0">{{ __('front::home.cta_products') }}</a>
+                @endif
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="home-banner-right">
-              <img src="{{ asset('images/cms/home/top-bg-4.png') }}" class="img-fluid" data-aos="fade-up" data-aos-duration="2000">
+              <img src="{{ asset('images/demo/company/factory.jpg') }}" class="img-fluid rounded shadow"
+                   data-aos="fade-up" data-aos-duration="2000" alt="{{ __('front::home.hero_highlight') }}">
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="bottom-bg">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none"><path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none">
+        <path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path>
+      </svg>
     </div>
   </div>
 
-  <div class="home-business">
-    <div class="container home-business-container">
-      <div class="business-top">
-        <div class="module-title" data-aos="fade-up">我们的产品</div>
-        <div class="module-sub-title" data-aos="fade-up">
-          InnoCMS 是一款专为企业官网快速建站而设计的轻量级内容管理系统（CMS）。它以其简洁、高效、易用的特性，帮助企业快速搭建起专业、美观且功能齐全的官方网站。InnoCMS 旨在提供一个稳定而灵活的平台，让企业能够轻松管理网站内容，同时保持网站界面的现代化和用户友好性。
+  {{-- Core manufacturing services --}}
+  @if(($serviceCatalogs ?? null) && $serviceCatalogs->isNotEmpty())
+    @php
+      $serviceIcons = [
+          'cnc-machining'     => 'bi-gear-wide-connected',
+          'sheet-metal'       => 'bi-layers-half',
+          'die-casting'       => 'bi-droplet-half',
+          'surface-finishing' => 'bi-paint-bucket',
+      ];
+    @endphp
+    <div class="home-business">
+      <div class="container home-business-container">
+        <div class="business-top">
+          <div class="module-title" data-aos="fade-up">{{ __('front::home.services_title') }}</div>
+          <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.services_sub') }}</div>
+        </div>
+        <div class="business-info">
+          <div class="row">
+            @foreach($serviceCatalogs as $catalog)
+              <div class="col-12 col-md-6 col-lg-3">
+                <a class="text-reset text-decoration-none"
+                   href="{{ front_route('catalogs.slug_show', ['slug' => $catalog->slug]) }}">
+                  <div data-aos="fade-up" class="business-item" data-aos-duration="{{ 300 + $loop->index * 300 }}">
+                    <div class="icon">
+                      <i class="bi {{ $serviceIcons[$catalog->slug] ?? 'bi-box-seam' }}"></i>
+                    </div>
+                    <div class="title">{{ $catalog->translation->title ?? $catalog->slug }}</div>
+                    <div class="sub-title">{{ $catalog->translation->summary ?? '' }}</div>
+                  </div>
+                </a>
+              </div>
+            @endforeach
+          </div>
         </div>
       </div>
-      <div class="business-info">
+    </div>
+  @endif
+
+  {{-- Featured products --}}
+  @if(($featuredProducts ?? null) && $featuredProducts->isNotEmpty())
+    <div class="container mt-5 pt-4">
+      <div class="module-title" data-aos="fade-up">{{ __('front::home.featured_title') }}</div>
+      <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.featured_sub') }}</div>
+      <div class="row g-4">
+        @foreach($featuredProducts as $article)
+          <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
+            <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+              <a href="{{ $article->url }}">
+                <img src="{{ image_resize($article->translation->image ?? '', 600, 450) }}"
+                     class="card-img-top" alt="{{ $article->translation->title ?? '' }}">
+              </a>
+              <div class="card-body d-flex flex-column">
+                <h3 class="h6 fw-bold mb-2">
+                  <a href="{{ $article->url }}" class="text-reset text-decoration-none">
+                    {{ $article->translation->title ?? '' }}
+                  </a>
+                </h3>
+                <p class="text-muted small mb-3 flex-grow-1">
+                  {{ \Illuminate\Support\Str::limit($article->translation->summary ?? '', 60) }}
+                </p>
+                <a href="{{ $article->url }}" class="small text-primary text-decoration-none">
+                  {{ __('front::home.learn_more') }} <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        @endforeach
+      </div>
+      <div class="text-center mt-4">
+        @if($productsCatalog ?? null)
+          <a href="{{ front_route('catalogs.slug_show', ['slug' => $productsCatalog->slug]) }}"
+             class="btn btn-outline-primary">{{ __('front::home.view_more') }}</a>
+        @endif
+      </div>
+    </div>
+  @endif
+
+  {{-- Industries --}}
+  @if(($industryArticles ?? null) && $industryArticles->isNotEmpty())
+    <div class="bg-light mt-5 pt-5 pb-5">
+      <div class="container">
+        <div class="module-title" data-aos="fade-up">{{ __('front::home.industries_title') }}</div>
+        <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.industries_sub') }}</div>
+        <div class="row g-4">
+          @foreach($industryArticles as $article)
+            <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
+              <a href="{{ front_route('catalogs.slug_show', ['slug' => $article->catalog->slug]) }}"
+                 class="text-reset text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                  <img src="{{ image_resize($article->translation->image ?? '', 600, 450) }}"
+                       class="card-img-top" alt="{{ $article->catalog->translation->title ?? '' }}">
+                  <div class="card-body">
+                    <h3 class="h6 fw-bold mb-1">{{ $article->catalog->translation->title ?? '' }}</h3>
+                    <p class="text-muted small mb-0">
+                      {{ \Illuminate\Support\Str::limit($article->translation->summary ?? '', 50) }}
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  @endif
+
+  {{-- Why choose us --}}
+  <div class="home-core-function mt-5 pt-4">
+    <div class="container">
+      <div class="module-title" data-aos="fade-up">{{ __('front::home.strengths_title') }}</div>
+      @php
+        $strengths = [
+            ['icon' => 'bi-bullseye', 'title' => __('front::home.strength_1_title'), 'sub' => __('front::home.strength_1_sub')],
+            ['icon' => 'bi-lightning-charge-fill', 'title' => __('front::home.strength_2_title'), 'sub' => __('front::home.strength_2_sub')],
+            ['icon' => 'bi-patch-check-fill', 'title' => __('front::home.strength_3_title'), 'sub' => __('front::home.strength_3_sub')],
+            ['icon' => 'bi-globe-americas', 'title' => __('front::home.strength_4_title'), 'sub' => __('front::home.strength_4_sub')],
+        ];
+      @endphp
+      <div class="function-info">
         <div class="row">
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item">
-              <div class="icon"><i class="bi bi-boxes"></i></div>
-              <div class="title">快速建站</div>
-              <div class="sub-title">
-                InnoCMS 提供了一套完整的网站模板和定制选项，企业可以根据自己的品牌形象和需求，快速搭建起一个全新的官网。
+          @foreach($strengths as $strength)
+            <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
+              <div class="core-function-item h-100">
+                <div class="icon"><i class="bi {{ $strength['icon'] }}"></i></div>
+                <div class="title fw-bold">{{ $strength['title'] }}</div>
+                <div class="sub-title">{{ $strength['sub'] }}</div>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{-- Latest news --}}
+  @if(($latestNews ?? null) && $latestNews->isNotEmpty())
+    <div class="container mt-5 pt-4">
+      <div class="module-title" data-aos="fade-up">{{ __('front::home.news_title') }}</div>
+      <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.news_sub') }}</div>
+      <div class="row g-4">
+        @foreach($latestNews as $news)
+          <div class="col-12 col-md-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
+            <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+              <a href="{{ $news->url }}">
+                <img src="{{ image_resize($news->translation->image ?? '', 800, 450) }}"
+                     class="card-img-top" alt="{{ $news->translation->title ?? '' }}">
+              </a>
+              <div class="card-body d-flex flex-column">
+                <div class="text-muted small mb-2">
+                  <i class="bi bi-calendar3"></i> {{ $news->created_at->format('Y-m-d') }}
+                  @if($news->catalog && $news->catalog->translation)
+                    <span class="ms-2"><i class="bi bi-folder2"></i> {{ $news->catalog->translation->title }}</span>
+                  @endif
+                </div>
+                <h3 class="h6 fw-bold mb-2">
+                  <a href="{{ $news->url }}" class="text-reset text-decoration-none">
+                    {{ $news->translation->title ?? '' }}
+                  </a>
+                </h3>
+                <p class="text-muted small mb-0 flex-grow-1">
+                  {{ \Illuminate\Support\Str::limit($news->translation->summary ?? '', 80) }}
+                </p>
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item" data-aos-duration="600">
-              <div class="icon"><i class="bi bi-bounding-box-circles"></i></div>
-              <div class="title">轻量级架构</div>
-              <div class="sub-title">
-                系统设计注重性能优化，确保网站加载速度快，用户体验流畅，尤其适合对速度和性能有较高要求的企业。
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item" data-aos-duration="1200">
-              <div class="icon"><i class="bi bi-graph-up-arrow"></i></div>
-              <div class="title">易于管理</div>
-              <div class="sub-title">
-                直观的后台管理界面，让非技术人员也能轻松上手，进行内容更新和管理。
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-3">
-            <div data-aos="fade-up" class="business-item" data-aos-duration="1800">
-              <div class="icon"><i class="bi bi-pencil-square"></i></div>
-              <div class="title">高度可定制</div>
-              <div class="sub-title">
-                提供丰富的插件和扩展，企业可以根据业务发展需要，灵活添加或调整网站功能。
+        @endforeach
+      </div>
+      <div class="text-center mt-4">
+        @if($newsCatalog ?? null)
+          <a href="{{ front_route('catalogs.slug_show', ['slug' => $newsCatalog->slug]) }}"
+             class="btn btn-outline-primary">{{ __('front::home.view_more') }}</a>
+        @endif
+      </div>
+    </div>
+  @endif
+
+  {{-- CTA banner --}}
+  <div class="home-customized"
+       style="background-image: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), url('{{ asset('images/demo/company/team.jpg') }}')">
+    <div class="home-banner-info">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="home-banner-left">
+              <h1 data-aos="fade-up" data-aos-duration="1000">{{ __('front::home.cta_banner_title') }}</h1>
+              <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1500">
+                {{ __('front::home.cta_banner_sub') }}
+              </p>
+              <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
+                <a href="{{ front_route('pages.slug_show', ['slug' => 'contact']) }}"
+                   class="btn btn-lg btn-primary">{{ __('front::home.cta_banner_btn') }}</a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="bottom-bg">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none">
+        <path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path>
+      </svg>
+    </div>
   </div>
 
+  {{-- Contact --}}
   <div class="home-contact" id="contactUsContent">
     <div class="container">
-      <div class="title" data-aos="fade-up">如果您需要与我们取得联系, 以下是我们的联系方式</div>
-      <div class="contact-icon">
-        <img src="{{ asset('images/front/home/home-3.png') }}" class="img-fluid" data-aos="fade-up">
-      </div>
+      <div class="title" data-aos="fade-up">{{ __('front::home.contact_title') }}</div>
       <div class="row">
         <div class="col-12 col-lg-3">
           <div class="contact-item" data-aos="fade-up">
             <div class="icon"><i class="bi bi-telephone-fill"></i></div>
             <div class="right">
-              <div class="text-1">联系电话</div>
+              <div class="text-1">{{ __('front::home.contact_phone') }}</div>
               <div class="text-2">
-                <a href="tel:17828469818"><i class="bi bi-telephone-fill text-primary"></i> 杨先生：17828469818</a>
+                <a href="tel:+8676981234567"><i class="bi bi-telephone-fill text-primary"></i> +86-769-8123-4567</a>
               </div>
             </div>
           </div>
@@ -114,122 +277,34 @@
           <div class="contact-item" data-aos="fade-up">
             <div class="icon"><i class="bi bi-envelope-fill"></i></div>
             <div class="right">
-              <div class="text-1">联系邮箱</div>
+              <div class="text-1">{{ __('front::home.contact_email') }}</div>
               <div class="text-2">
-                <a href="mailto:team@innoshop.com"><i class="bi bi-envelope-fill text-primary"></i> team@innoshop.com</a>
+                <a href="mailto:sales@apexprecision.cn"><i
+                    class="bi bi-envelope-fill text-primary"></i> sales@apexprecision.cn</a>
               </div>
             </div>
           </div>
         </div>
         <div class="col-12 col-lg-3">
-          <div class="contact-item wechat-box" data-aos="fade-up">
-            <div class="icon"><i class="bi bi-wechat"></i></div>
+          <div class="contact-item" data-aos="fade-up">
+            <div class="icon"><i class="bi bi-geo-alt-fill"></i></div>
             <div class="right">
-              <div class="text-1">微信联系</div>
-              <div class="text-2"><i class="bi bi-wechat text-primary"></i> innoshop666</div>
-              <div class="w-code">
-                <img src="{{ asset('images/front/home/w-code.png') }}" class="img-fluid">
-              </div>
+              <div class="text-1">{{ __('front::home.contact_address') }}</div>
+              <div class="text-2 text-muted">{{ __('front::home.contact_address_v') }}</div>
             </div>
           </div>
         </div>
-          <div class="col-12 col-lg-3">
-              <div class="contact-item wechat-box" data-aos="fade-up">
-                  <div class="icon"><i class="bi bi-tencent-qq"></i></div>
-                  <div class="right">
-                      <div class="text-1">QQ交流群</div>
-                      <div class="text-2"><i class="bi bi-tencent-qq text-primary"></i> 960062283</div>
-                      <div class="w-code">
-                          <img src="{{ asset('images/front/home/q-code.png') }}" class="img-fluid">
-                      </div>
-                  </div>
-              </div>
+        <div class="col-12 col-lg-3">
+          <div class="contact-item" data-aos="fade-up">
+            <div class="icon"><i class="bi bi-clock-fill"></i></div>
+            <div class="right">
+              <div class="text-1">{{ __('front::home.contact_hours') }}</div>
+              <div class="text-2 text-muted">{{ __('front::home.contact_hours_v') }}</div>
+            </div>
           </div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="home-customized">
-      <div class="home-banner-info">
-          <div class="container">
-              <div class="row">
-                  <div class="col-md-6">
-                      <div class="home-banner-right">
-                          <img src="{{ asset('images/cms/home/top-bg-5.png') }}" class="img-fluid" data-aos="fade-up" data-aos-duration="2000">
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="home-banner-left">
-                          <h1 data-aos="fade-up" data-aos-duration="1000">不想亲自动手？</h1>
-                          <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">私人订制
-                              <span class="text-primary">快速部署</span></p>
-                          <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1800">
-                              - 如果您不想亲自动手，或者不懂开发技术，不必担心！<br/>
-                              - SaaS托管，独立云服务器，一站式托管服务<br/>
-                              - 专人部署，避开繁杂，全程无忧，7*12小时服务<br/>
-                              - 备案、域名、解析、SSL、CDN...专业的事交给专业的人来做<br/>
-                              - 专业团队满足您个性功能需求定制开发<br>
-                          </p>
-                          <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
-                              <a href="#contactUsContent" type="button" class="btn btn-lg btn-primary">联系我们</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="bottom-bg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none"><path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path></svg>
-      </div>
-  </div>
-
-  <div class="home-contact" id="contactUsContent">
-      <div class="container">
-          <div class="title" data-aos="fade-up">加入开源社区，共建共享</div>
-          <div class="contact-icon">
-              <img src="{{ asset('images/front/home/home-4.png') }}" class="img-fluid" data-aos="fade-up">
-          </div>
-          <div class="row">
-              <div class="col-12 col-lg-3">
-                  <div class="contact-item" data-aos="fade-up">
-                      <div class="icon"><i class="bi bi-github"></i></div>
-                      <div class="right">
-                          <div class="text-1">GITHUB 给个<i class="bi bi-heart-fill"></i>吧！</div>
-                          <div class="text-2">
-                              <a href="https://github.com/innocms/innocms"><i class="bi bi-github text-primary"></i> innocms/innocms</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-12 col-lg-3">
-                  <div class="contact-item wechat-box" data-aos="fade-up">
-                      <div class="icon"><i class="bi bi-journal-code"></i></div>
-                      <div class="right">
-                          <div class="text-1">开发手册</div>
-                          <a href="#" class="text-2"><i class="bi bi-journal-code text-primary"></i> docs</a>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-12 col-lg-3">
-                  <div class="contact-item wechat-box" data-aos="fade-up">
-                      <div class="icon"><i class="bi bi-filter-square"></i></div>
-                      <div class="right">
-                          <div class="text-1">开源协议</div>
-                          <a href="https://github.com/innocms/innocms/blob/master/LICENSE.txt" class="text-2"><i class="bi bi-filter-square text-primary"></i> OSL-3.0</a>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-12 col-lg-3">
-                  <div class="contact-item wechat-box" data-aos="fade-up">
-                      <div class="icon"><i class="bi bi-chat-left-heart"></i></div>
-                      <div class="right">
-                          <div class="text-1">吐槽建议</div>
-                          <a href="https://github.com/innocms/innocms/issues" class="text-2"><i class="bi bi-chat-left-heart text-primary"></i> 提交issue</a>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
   </div>
 
   @hookinsert('page.content.bottom')
@@ -243,12 +318,6 @@
       easing: 'ease-in-out',
       once: true,
       mirror: false
-    });
-
-    $(".home-banner .left-btn button").click(function () {
-      $('html, body').animate({
-        scrollTop: $(".home-business").offset().top - 100
-      }, 200);
     });
   </script>
 @endpush

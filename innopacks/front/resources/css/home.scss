@@ -49,7 +49,7 @@ body.page-home {
   }
 
   .home-banner {
-    padding-top: 130px;
+    padding-top: 170px;
     padding-bottom: 140px;
     position: relative;
     background-image: url('/images/cms/home/top-bg-1.jpg');
@@ -600,4 +600,45 @@ body.page-home {
             transform: scale(1, 1);
         }
     }
+}
+
+// Card hover feedback on home (products / industries / news grids)
+body.page-home {
+  .card {
+    transition: transform .25s ease, box-shadow .25s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(13, 62, 115, .14) !important;
+    }
+
+    .card-img-top {
+      transition: transform .4s ease;
+    }
+
+    &:hover .card-img-top {
+      transform: scale(1.06);
+    }
+  }
+
+  .card .card-img-top {
+    overflow: hidden;
+  }
+
+  .business-item {
+    transition: transform .25s ease, box-shadow .25s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 34px rgba(13, 62, 115, .12);
+    }
+  }
+
+  .core-function-item {
+    transition: transform .25s ease, box-shadow .25s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
 }

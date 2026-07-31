@@ -10,14 +10,8 @@
   }
 
   &.active {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
     background-color: #fff;
     padding: 10px 0;
-    box-shadow: -2px 3px 90px -20px rgba(0, 0, 0, .25) !important;
   }
 
   .logo {
@@ -99,10 +93,14 @@
     padding: 0;
 
     .nav-link {
-      font-size: 1.1rem;
-      margin: 0 1.4rem;
+      font-size: 1rem;
+      margin: 0 0.85rem;
       position: relative;
       padding: .4rem .1rem;
+
+      @media (min-width: 1200px) {
+        margin: 0 1.1rem;
+      }
 
       &::after {
         content: '';
@@ -124,5 +122,74 @@
         }
       }
     }
+  }
+}
+// Top utility bar (desktop only; hidden on mobile)
+.header-topbar {
+  display: none;
+  background-color: $topbar-bg;
+  color: rgba(255, 255, 255, .85);
+  font-size: 13px;
+  height: 40px;
+  align-items: center;
+
+  @media (min-width: 992px) {
+    display: flex;
+  }
+
+  a {
+    color: rgba(255, 255, 255, .85);
+    text-decoration: none;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  i {
+    color: $accent;
+    margin-right: 4px;
+  }
+
+  .topbar-lang {
+    a {
+      margin: 0 4px;
+
+      &.active {
+        color: #fff;
+        font-weight: 600;
+      }
+    }
+
+    .divider {
+      color: rgba(255, 255, 255, .35);
+    }
+  }
+}
+
+// Wrap topbar + main header so the home page's fixed positioning keeps the topbar visible.
+body.page-home {
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    transition: all 0.3s;
+
+    .header-box {
+      box-shadow: none;
+    }
+  }
+
+  .site-header.active .header-box {
+    box-shadow: -2px 3px 90px -20px rgba(0, 0, 0, .25) !important;
+  }
+}
+
+// Non-home pages: subtle shadow under the header
+@media (min-width: 992px) {
+  body:not(.page-home) .header-box {
+    box-shadow: 0 2px 14px rgba(10, 37, 64, .08);
   }
 }
