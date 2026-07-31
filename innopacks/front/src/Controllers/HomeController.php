@@ -114,19 +114,19 @@ class HomeController extends Controller
     }
 
     /**
-     * Latest articles under the "news" catalog and its children.
+     * Latest articles under the "resources" catalog and its children.
      */
     private function latestNews(int $limit): Collection
     {
-        $news = $this->catalogBySlug('news');
-        if (! $news) {
+        $resources = $this->catalogBySlug('resources');
+        if (! $resources) {
             return collect();
         }
 
         $childIds = Catalog::query()
-            ->where('parent_id', $news->id)
+            ->where('parent_id', $resources->id)
             ->pluck('id')
-            ->push($news->id);
+            ->push($resources->id);
 
         return Article::query()
             ->with(['translation', 'catalog.translation'])
