@@ -40,6 +40,11 @@
             @if($article->catalog)<div class="newes-author"><i class="bi bi-ui-radios-grid"></i> {{ $article->catalog->translation->title ?? '' }}</div>@endif
             <div class="newes-author"><i class="bi bi-eye"></i> {{ $article->viewed }}</div>
           </div>
+          @if($article->image)
+            <div class="newes-cover">
+              <img src="{{ image_resize($article->image, 1200, 675) }}" class="img-fluid rounded" alt="{{ $article->translation->title ?? '' }}">
+            </div>
+          @endif
           <div class="content">
             {!! $article->translation->content ?? '' !!}
           </div>

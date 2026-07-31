@@ -12,14 +12,14 @@ body.page-news {
       padding-bottom: 20px;
 
       .item-img {
-        width: 150px;
-        flex: 0 0 150px;
-        margin-right: 20px;
+        width: 280px;
+        flex: 0 0 280px;
+        margin-right: 24px;
 
         @media (max-width: 768px) {
-          width: 90px;
-          flex: 0 0 90px;
-          margin-right: 10px;
+          width: 120px;
+          flex: 0 0 120px;
+          margin-right: 12px;
         }
       }
 
@@ -198,6 +198,19 @@ body.page-news, body.page-news-details {
     &:hover {
       color: $accent;
       padding-left: 4px;
+    }
+  }
+}
+
+body.page-news-details {
+  .newes-cover {
+    margin: 1.5rem 0 2rem;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(13, 62, 115, .08);
     }
   }
 }

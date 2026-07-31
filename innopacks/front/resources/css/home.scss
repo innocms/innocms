@@ -712,20 +712,21 @@ body.page-home {
     }
   }
 
-  .home-cta {
-    background: linear-gradient(135deg, $primary 0%, #1d4ed8 100%);
-    color: #fff;
-    padding: 4.5rem 0;
+}
 
-    h2 {
-      font-weight: 800;
-      margin-bottom: 1rem;
-    }
+.home-cta {
+  background: linear-gradient(135deg, $primary 0%, #1d4ed8 100%);
+  color: #fff;
+  padding: 4.5rem 0;
 
-    p {
-      color: rgba(255, 255, 255, .9);
-      max-width: 640px;
-      margin: 0 auto 2rem;
-    }
+  h2 {
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: rgba(255, 255, 255, .9);
+    max-width: 640px;
+    margin: 0 auto 2rem;
   }
 }

@@ -1,3 +1,13 @@
+<div class="home-cta">
+  <div class="container text-center">
+    <h2 data-aos="fade-up">{{ __('front::common.cta_title') }}</h2>
+    <p data-aos="fade-up" data-aos-duration="300">{{ __('front::common.cta_sub') }}</p>
+    <div data-aos="fade-up" data-aos-duration="500">
+      <a href="{{ front_route('pages.slug_show', ['slug' => 'get-started']) }}" class="btn btn-lg btn-accent">{{ __('front::common.cta_btn') }}</a>
+    </div>
+  </div>
+</div>
+
 @hookinsert('layouts.footer.top')
 
 @php
