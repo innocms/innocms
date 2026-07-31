@@ -730,3 +730,33 @@ body.page-home {
     margin: 0 auto 2rem;
   }
 }
+
+.home-stats {
+  padding: 5rem 0;
+  background: #fff;
+
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
+
+  .stat-number {
+    font-size: 3.6rem;
+    font-weight: 800;
+    color: $primary;
+    line-height: 1.1;
+
+    @media (max-width: 768px) {
+      font-size: 2.4rem;
+    }
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    color: #666;
+    margin-top: .8rem;
+
+    @media (max-width: 768px) {
+      font-size: .85rem;
+    }
+  }
+}

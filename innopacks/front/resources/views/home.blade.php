@@ -67,6 +67,30 @@
     </div>
   </div>
 
+  {{-- Stats --}}
+  <div class="home-stats">
+    <div class="container">
+      <div class="row g-4 text-center">
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-duration="300">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">{{ __('front::common.stat_businesses') }}</div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-duration="400">
+          <div class="stat-number">30+</div>
+          <div class="stat-label">{{ __('front::common.stat_countries') }}</div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-duration="500">
+          <div class="stat-number">99.9%</div>
+          <div class="stat-label">{{ __('front::common.stat_uptime') }}</div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-duration="600">
+          <div class="stat-number">10{{ __('front::common.unit_min') }}</div>
+          <div class="stat-label">{{ __('front::common.stat_launch') }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   {{-- Solutions --}}
   @if(($serviceCatalogs ?? null) && $serviceCatalogs->isNotEmpty())
     <div class="home-section home-section--alt">

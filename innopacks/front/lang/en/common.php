@@ -51,7 +51,14 @@ return [
     'resources_title'   => 'Resources & Updates',
     'resources_sub'     => 'Documentation, product news and website solutions to get you started fast.',
     'view_more'         => 'View More',
+    'stats_title'       => 'Trusted by Export Businesses Worldwide',
+    'stat_businesses'   => 'Export Businesses',
+    'stat_countries'    => 'Countries & Regions',
+    'stat_uptime'       => 'Platform Uptime',
+    'stat_launch'       => 'Launch Time',
+    'unit_min'          => ' min',
     'cta_title'         => 'Ready to build your website?',
     'cta_sub'           => 'Install and go, or choose turnkey SaaS hosting and leave the server and ops to us.',
     'cta_btn'           => 'Get Started',
+
 ];
