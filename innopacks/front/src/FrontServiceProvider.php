@@ -44,6 +44,8 @@ class FrontServiceProvider extends ServiceProvider
         $this->publishViewTemplates();
         $this->loadThemeViewPath();
         $this->loadViewComponents();
+        $this->loadThemeRoutes();
+        $this->bootTheme();
     }
 
     /**
@@ -228,5 +230,74 @@ class FrontServiceProvider extends ServiceProvider
         $this->loadViewComponentsAs('front', [
             'breadcrumb' => Components\Breadcrumb::class,
         ]);
+    }
+
+    /**
+     * Load theme routes (Routes/front.php with locale handling, Routes/root.php without).
+     *
+     * @return void
+     */
+    protected function loadThemeRoutes(): void
+    {
+        $currentTheme = system_setting('theme');
+        if (! $currentTheme) {
+            return;
+        }
+
+        $themeBasePath = base_path("themes/{$currentTheme}");
+
+        $rootRoutePath = "$themeBasePath/routes/root.php";
+        if (file_exists($rootRoutePath)) {
+            Route::middleware('front')
+                ->name('front.')
+                ->group(function () use ($rootRoutePath) {
+                    $this->loadRoutesFrom($rootRoutePath);
+                });
+        }
+
+        $frontRoutePath = "$themeBasePath/routes/front.php";
+        if (file_exists($frontRoutePath)) {
+            $locales = locales();
+            if (hide_url_locale() || $locales->isEmpty()) {
+                Route::middleware('front')
+                    ->name('front.')
+                    ->group(function () use ($frontRoutePath) {
+                        $this->loadRoutesFrom($frontRoutePath);
+                    });
+            } else {
+                foreach ($locales as $locale) {
+                    Route::middleware('front')
+                        ->prefix($locale->code)
+                        ->name($locale->code.'.front.')
+                        ->group(function () use ($frontRoutePath) {
+                            $this->loadRoutesFrom($frontRoutePath);
+                        });
+                }
+            }
+        }
+    }
+
+    /**
+     * Load theme boot file (setup/boot.php) for runtime hook registration.
+     * Same require → callable → call pattern as InnoShop Bundle.
+     *
+     * @return void
+     */
+    protected function bootTheme(): void
+    {
+        $currentTheme = system_setting('theme');
+        if (! $currentTheme) {
+            return;
+        }
+
+        $bootFile = base_path("themes/{$currentTheme}/setup/boot.php");
+        if (! is_file($bootFile)) {
+            return;
+        }
+
+        $boot = require $bootFile;
+        if (is_callable($boot)) {
+            $boot();
+        }
     }
 }
