@@ -113,7 +113,7 @@ class ArticleSeeder extends BaseSeeder
      */
     private function data(): array
     {
-        $pic = static fn (string $name): string => 'images/demo/news/'.$name.'.png';
+        $pic = static fn (string $name): string => 'images/demo/news/'.$name.'.webp';
 
         return [
             [
