@@ -44,15 +44,61 @@
                 </div>
               </div>
               <div class="mb-3"></div>
-              <x-panel-form-input title="Meta 标题" name="meta_title"
-                                  value="{{ old('meta_title', system_setting('meta_title')) }}" required
-                                  placeholder="Meta 标题"/>
-              <x-panel-form-input title="Meta 关键词" name="meta_keywords"
-                                  value="{{ old('meta_keywords', system_setting('meta_keywords')) }}"
-                                  placeholder="Meta 关键词"/>
-              <x-panel-form-textarea title="Meta 描述" name="meta_description"
-                                     value="{{ old('meta_description', system_setting('meta_description')) }}"
-                                     placeholder="Meta 描述"/>
+
+              {{-- 店铺 / 公司基础信息（文本类支持多语言） --}}
+              <x-common-form-locale-input
+                  name="store_name"
+                  type="input"
+                  nameFormat="single"
+                  label="{{ __('panel/setting.store_name') }}"
+                  :translations="system_setting_translations('store_name')"
+                  placeholder="{{ __('panel/setting.store_name') }}"/>
+              <x-common-form-locale-input
+                  name="store_description"
+                  type="textarea"
+                  nameFormat="single"
+                  :rows="4"
+                  label="{{ __('panel/setting.store_description') }}"
+                  :translations="system_setting_translations('store_description')"
+                  placeholder="{{ __('panel/setting.store_description') }}"/>
+              <x-common-form-locale-input
+                  name="address"
+                  type="input"
+                  nameFormat="single"
+                  label="{{ __('panel/setting.address') }}"
+                  :translations="system_setting_translations('address')"
+                  placeholder="{{ __('panel/setting.address') }}"/>
+              <x-panel-form-input title="{{ __('panel/setting.telephone') }}" name="telephone"
+                                  value="{{ old('telephone', system_setting('telephone')) }}"
+                                  placeholder="{{ __('panel/setting.telephone') }}"/>
+              <x-panel-form-input title="{{ __('panel/setting.email') }}" name="email"
+                                  value="{{ old('email', system_setting('email')) }}"
+                                  placeholder="{{ __('panel/setting.email') }}"/>
+
+              <div class="mb-3"></div>
+              <x-common-form-locale-input
+                  name="meta_title"
+                  type="input"
+                  nameFormat="single"
+                  :required="true"
+                  label="{{ __('panel/setting.meta_title') }}"
+                  :translations="system_setting_translations('meta_title')"
+                  placeholder="{{ __('panel/setting.meta_title') }}"/>
+              <x-common-form-locale-input
+                  name="meta_keywords"
+                  type="input"
+                  nameFormat="single"
+                  label="{{ __('panel/setting.meta_keywords') }}"
+                  :translations="system_setting_translations('meta_keywords')"
+                  placeholder="{{ __('panel/setting.meta_keywords') }}"/>
+              <x-common-form-locale-input
+                  name="meta_description"
+                  type="textarea"
+                  nameFormat="single"
+                  :rows="4"
+                  label="{{ __('panel/setting.meta_description') }}"
+                  :translations="system_setting_translations('meta_description')"
+                  placeholder="{{ __('panel/setting.meta_description') }}"/>
               <x-panel-form-switch-radio title="启用 html 后缀" name="has_suffix" :value="old('has_suffix', system_setting('has_suffix', 0))"
                                          placeholder="启用 html 后缀"/>
               <x-panel-form-switch-radio title="隐藏 URL 语言标识" name="hide_url_locale" :value="old('hide_url_locale', system_setting('hide_url_locale', 0))"
