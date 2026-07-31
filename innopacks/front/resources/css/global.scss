@@ -194,19 +194,22 @@ img {
 
 .page-service-content {
   margin-top: 3rem;
-  color: #606B86;
+  color: #333;
 
   .title-box {
-    margin-bottom: 60px;
+    text-align: center;
+    margin-bottom: 3rem;
 
     @media (max-width: 992px) {
-      margin-bottom: 30px;
+      margin-bottom: 2rem;
     }
 
     .title {
-      font-size: 26px;
-      color: #333;
-      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 16px;
+
       @media (max-width: 992px) {
         font-size: 22px;
         text-align: center;
@@ -215,69 +218,118 @@ img {
 
     .sub-title {
       font-size: 16px;
-      max-width: 550px;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+
       @media (max-width: 992px) {
-        font-size: 12px;
+        font-size: 14px;
         text-align: center;
       }
-
-      @media (min-width: 992px) {
-        line-height: 1.8;
-      }
     }
   }
 
-  .service-row-2 {
-    @media (min-width: 992px) {
-      padding-left: 64px;
-    }
-  }
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.9;
+    color: #333;
 
-  .service-icon {
-    max-width: 500px;
-
-    @media (max-width: 992px) {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      img {
-        max-width: 80%;
-      }
-    }
-  }
-
-  .service-item {
-    margin-bottom: 50px;
-
-    @media (max-width: 992px) {
-      margin-bottom: 20px;
+    @media (max-width: 768px) {
+      font-size: 15px;
+      line-height: 1.85;
     }
 
-    .icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #FCF3F4;
-      margin-bottom: 20px;
-      i {
-        font-size: 18px;
-        color: #FA4949;
-      }
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #eef0f4;
     }
 
-    .title {
-      margin-bottom: 10px;
+    h3 {
+      font-size: 19px;
+      font-weight: 700;
       color: #222;
-      font-size: 18px;
+      margin: 2rem 0 .8rem;
     }
 
-    .sub-title {
-      color: #606B86;
-      font-size: 14px;
-      line-height: 1.8;
+    h4 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333;
+      margin: 1.8rem 0 .6rem;
+    }
+
+    p {
+      margin-bottom: 1.2rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul, ol {
+      margin-bottom: 1.2rem;
+      padding-left: 1.6rem;
+
+      li {
+        margin-bottom: .5rem;
+        line-height: 1.85;
+      }
+    }
+
+    blockquote {
+      border-left: 4px solid $primary;
+      padding: .8rem 1.2rem;
+      margin: 1.5rem 0;
+      background: #f5f8ff;
+      border-radius: 0 6px 6px 0;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 14.5px;
+
+      th, td {
+        padding: 10px 14px;
+        border: 1px solid #e2e6ef;
+        text-align: left;
+      }
+
+      th {
+        background: #f5f7fb;
+        font-weight: 600;
+        color: #1a1a2e;
+      }
+
+      tr:nth-child(even) {
+        background: #fafbfc;
+      }
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    a {
+      color: $primary;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+
+      &:hover {
+        color: $accent;
+      }
     }
   }
 }

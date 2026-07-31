@@ -1,18 +1,9 @@
 @extends('layouts.app')
 
+@section('body-class', 'page-service-content')
+
 @section('content')
-  @php $pageTitle = $page->translation->title ?? ''; @endphp
-  <div class="page-head">
-    <div class="container">
-      <div class="page-title">{{ $pageTitle }}</div>
-      <nav>
-        <ol class="breadcrumb d-flex justify-content-center">
-          <li class="breadcrumb-item"><a href="{{ front_route('home.index') }}"><i class="bi bi-house-door-fill"></i> {{ __('front::common.home') }}</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ $pageTitle }}</li>
-        </ol>
-      </nav>
-    </div>
-  </div>
+  @include('shared.page-head', ['title' => $page->translation->title ?? ''])
 
   @if(isset($result))
     {!! $result !!}
