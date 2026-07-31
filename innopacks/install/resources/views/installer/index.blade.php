@@ -217,6 +217,36 @@
                 </div>
               </div>
             </div>
+
+            <div class="theme-setting mt-3">
+              <div class="bg-light py-2 mb-2 text-center fw-bold">{{ __('install/common.theme_config') }}</div>
+              <p class="text-muted small mb-2">{{ __('install/common.theme_config_help') }}</p>
+
+              <div class="form-check mb-2">
+                <input class="form-check-input theme-radio" type="radio" name="theme" id="theme_default" value="default" checked>
+                <label class="form-check-label" for="theme_default">
+                  <strong>{{ __('install/common.theme_default') }}</strong>
+                  <div class="text-muted small">{{ __('install/common.theme_default_desc') }}</div>
+                </label>
+              </div>
+
+              @foreach($themes as $theme)
+                <div class="form-check mb-2">
+                  <input class="form-check-input theme-radio" type="radio" name="theme" id="theme_{{ $theme['code'] }}" value="{{ $theme['code'] }}">
+                  <label class="form-check-label" for="theme_{{ $theme['code'] }}">
+                    <strong>{{ $theme['name'] }}</strong>
+                    <div class="text-muted small">{{ $theme['description'] }}</div>
+                  </label>
+                </div>
+              @endforeach
+
+              <div class="form-check form-switch mt-2">
+                <input class="form-check-input" type="checkbox" name="load_demo" id="load_demo" value="1" checked>
+                <label class="form-check-label" for="load_demo">{{ __('install/common.theme_load_demo') }}</label>
+                <div class="text-muted small">{{ __('install/common.theme_load_demo_help') }}</div>
+              </div>
+            </div>
+
             <button type="submit" class="d-none">{{ __('install/common.next_step') }}</button>
           </form>
         </div>
@@ -245,6 +275,13 @@
 </div>
 
 <script>
+  function syncDemoToggle() {
+    var isDefault = $('input[name="theme"]:checked').val() === 'default';
+    $('#load_demo').prop('disabled', isDefault).closest('.form-switch').toggleClass('opacity-50', isDefault);
+  }
+  $(document).on('change', '.theme-radio', syncDemoToggle);
+  syncDemoToggle();
+
   $('.next-btn').click(function () {
     var current = $('.install-item').filter('.active');
     var next = current.next('.install-item');

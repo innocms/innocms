@@ -34,6 +34,8 @@ class CompleteRequest extends FormRequest
             'type'           => 'required|string|in:mysql,sqlite',
             'admin_email'    => 'required|email',
             'admin_password' => 'required|string|min:6',
+            'theme'          => 'nullable|string',
+            'load_demo'      => 'nullable|string',
         ];
     }
 

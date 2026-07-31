@@ -1,14 +1,14 @@
-// Default (B2B) theme design tokens.
+// Default (official) theme design tokens.
 // Keep $primary in sync with bootstrap/bootstrap.scss, which feeds Bootstrap utilities.
-$primary: #0d3e73;
-$accent: #f4772e;
-$accent-dark: #d9611a;
+$primary: #2563eb;
+$accent: #f97316;
+$accent-dark: #ea580c;
 
-$topbar-bg: #0a2540;
-$footer-bg: #0b1f3a;
-$footer-bottom-bg: #081831;
+$topbar-bg: #0f172a;
+$footer-bg: #0f172a;
+$footer-bottom-bg: #0b1220;
 
-$text-strong: #1c2b3a;
-$text-body: #3d4a5a;
-$text-muted: #6b7280;
+$text-strong: #1e293b;
+$text-body: #475569;
+$text-muted: #64748b;
 $section-bg: #f5f7fa;

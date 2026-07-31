@@ -2,304 +2,173 @@
 @section('body-class', 'page-home')
 @section('content')
 
-  @push('header')
-    <script src="{{ asset('vendor/aos/aos.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('vendor/aos/aos.css') }}">
-  @endpush
-
   @hookinsert('page.content.top')
 
-  {{-- Hero banner --}}
-  <div class="home-banner"
-       style="background-image: linear-gradient(rgba(244, 247, 253, .92), rgba(240, 243, 254, .88)), url('{{ asset('images/demo/industries/manufacturing.jpg') }}')">
+  {{-- Hero --}}
+  <div class="home-banner">
     <div class="home-banner-info">
       <div class="container">
-        <div class="row">
-          <div class="col-md-6">
+        <div class="row align-items-center">
+          <div class="col-md-7">
             <div class="home-banner-left">
-              <h1 data-aos="fade-up" data-aos-duration="1000">{{ __('front::home.hero_title') }}</h1>
-              <p class="sub-title" data-aos="fade-up" data-aos-duration="1500">
-                <span class="text-primary">{{ __('front::home.hero_highlight') }}</span>
+              <h1 data-aos="fade-up">{{ __('front::common.hero_title') }}</h1>
+              <p class="sub-title" data-aos="fade-up" data-aos-duration="300">
+                <span class="text-accent">{{ __('front::common.hero_highlight') }}</span>
               </p>
-              <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1800">
-                - {{ __('front::home.hero_point_1') }}<br/>
-                - {{ __('front::home.hero_point_2') }}<br/>
-                - {{ __('front::home.hero_point_3') }}<br/>
-                - {{ __('front::home.hero_point_4') }}<br>
-              </p>
-              <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
-                <a href="{{ front_route('pages.slug_show', ['slug' => 'contact']) }}"
-                   class="btn btn-lg btn-primary">{{ __('front::home.cta_quote') }}</a>
-                @if($productsCatalog ?? null)
-                  <a href="{{ front_route('catalogs.slug_show', ['slug' => $productsCatalog->slug]) }}"
-                     class="btn btn-lg btn-outline-primary ms-md-3 mt-3 mt-md-0">{{ __('front::home.cta_products') }}</a>
-                @endif
+              <p class="sub-title-2" data-aos="fade-up" data-aos-duration="500">{{ __('front::common.hero_sub') }}</p>
+              <div data-aos="fade-up" data-aos-duration="700" class="left-btn">
+                <a href="{{ front_route('pages.slug_show', ['slug' => 'get-started']) }}" class="btn btn-lg btn-accent">{{ __('front::common.hero_cta_start') }}</a>
+                <a href="{{ front_route('pages.slug_show', ['slug' => 'features']) }}" class="btn btn-lg btn-outline-primary ms-md-3 mt-3 mt-md-0">{{ __('front::common.hero_cta_features') }}</a>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="home-banner-right">
-              <img src="{{ asset('images/demo/company/factory.jpg') }}" class="img-fluid rounded shadow"
-                   data-aos="fade-up" data-aos-duration="2000" alt="{{ __('front::home.hero_highlight') }}">
+          <div class="col-md-5 d-none d-md-block">
+            <div class="home-hero-visual" data-aos="fade-left" data-aos-duration="700">
+              <div class="hero-card hero-card--1"><i class="bi bi-boxes"></i><span>innopacks</span></div>
+              <div class="hero-card hero-card--2"><i class="bi bi-plug-fill"></i><span>Hook Plugins</span></div>
+              <div class="hero-card hero-card--3"><i class="bi bi-palette-fill"></i><span>Themes</span></div>
+              <div class="hero-card hero-card--4"><i class="bi bi-translate"></i><span>i18n</span></div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="bottom-bg">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none">
-        <path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path>
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none"><path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path></svg>
     </div>
   </div>
 
-  {{-- Core manufacturing services --}}
-  @if(($serviceCatalogs ?? null) && $serviceCatalogs->isNotEmpty())
-    @php
-      $serviceIcons = [
-          'cnc-machining'     => 'bi-gear-wide-connected',
-          'sheet-metal'       => 'bi-layers-half',
-          'die-casting'       => 'bi-droplet-half',
-          'surface-finishing' => 'bi-paint-bucket',
-      ];
-    @endphp
-    <div class="home-business">
-      <div class="container home-business-container">
-        <div class="business-top">
-          <div class="module-title" data-aos="fade-up">{{ __('front::home.services_title') }}</div>
-          <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.services_sub') }}</div>
-        </div>
-        <div class="business-info">
-          <div class="row">
-            @foreach($serviceCatalogs as $catalog)
-              <div class="col-12 col-md-6 col-lg-3">
-                <a class="text-reset text-decoration-none"
-                   href="{{ front_route('catalogs.slug_show', ['slug' => $catalog->slug]) }}">
-                  <div data-aos="fade-up" class="business-item" data-aos-duration="{{ 300 + $loop->index * 300 }}">
-                    <div class="icon">
-                      <i class="bi {{ $serviceIcons[$catalog->slug] ?? 'bi-box-seam' }}"></i>
-                    </div>
-                    <div class="title">{{ $catalog->translation->title ?? $catalog->slug }}</div>
-                    <div class="sub-title">{{ $catalog->translation->summary ?? '' }}</div>
-                  </div>
-                </a>
-              </div>
-            @endforeach
-          </div>
-        </div>
-      </div>
-    </div>
-  @endif
-
-  {{-- Featured products --}}
-  @if(($featuredProducts ?? null) && $featuredProducts->isNotEmpty())
-    <div class="container mt-5 pt-4">
-      <div class="module-title" data-aos="fade-up">{{ __('front::home.featured_title') }}</div>
-      <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.featured_sub') }}</div>
-      <div class="row g-4">
-        @foreach($featuredProducts as $article)
-          <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
-            <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
-              <a href="{{ $article->url }}">
-                <img src="{{ image_resize($article->translation->image ?? '', 600, 450) }}"
-                     class="card-img-top" alt="{{ $article->translation->title ?? '' }}">
-              </a>
-              <div class="card-body d-flex flex-column">
-                <h3 class="h6 fw-bold mb-2">
-                  <a href="{{ $article->url }}" class="text-reset text-decoration-none">
-                    {{ $article->translation->title ?? '' }}
-                  </a>
-                </h3>
-                <p class="text-muted small mb-3 flex-grow-1">
-                  {{ \Illuminate\Support\Str::limit($article->translation->summary ?? '', 60) }}
-                </p>
-                <a href="{{ $article->url }}" class="small text-primary text-decoration-none">
-                  {{ __('front::home.learn_more') }} <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        @endforeach
-      </div>
-      <div class="text-center mt-4">
-        @if($productsCatalog ?? null)
-          <a href="{{ front_route('catalogs.slug_show', ['slug' => $productsCatalog->slug]) }}"
-             class="btn btn-outline-primary">{{ __('front::home.view_more') }}</a>
-        @endif
-      </div>
-    </div>
-  @endif
-
-  {{-- Industries --}}
-  @if(($industryArticles ?? null) && $industryArticles->isNotEmpty())
-    <div class="bg-light mt-5 pt-5 pb-5">
-      <div class="container">
-        <div class="module-title" data-aos="fade-up">{{ __('front::home.industries_title') }}</div>
-        <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.industries_sub') }}</div>
-        <div class="row g-4">
-          @foreach($industryArticles as $article)
-            <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
-              <a href="{{ front_route('catalogs.slug_show', ['slug' => $article->catalog->slug]) }}"
-                 class="text-reset text-decoration-none">
-                <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
-                  <img src="{{ image_resize($article->translation->image ?? '', 600, 450) }}"
-                       class="card-img-top" alt="{{ $article->catalog->translation->title ?? '' }}">
-                  <div class="card-body">
-                    <h3 class="h6 fw-bold mb-1">{{ $article->catalog->translation->title ?? '' }}</h3>
-                    <p class="text-muted small mb-0">
-                      {{ \Illuminate\Support\Str::limit($article->translation->summary ?? '', 50) }}
-                    </p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          @endforeach
-        </div>
-      </div>
-    </div>
-  @endif
-
-  {{-- Why choose us --}}
-  <div class="home-core-function mt-5 pt-4">
+  {{-- Features --}}
+  <div class="home-business">
     <div class="container">
-      <div class="module-title" data-aos="fade-up">{{ __('front::home.strengths_title') }}</div>
+      <div class="business-top">
+        <div class="module-title" data-aos="fade-up">{{ __('front::common.features_title') }}</div>
+        <div class="module-sub-title" data-aos="fade-up">{{ __('front::common.features_sub') }}</div>
+      </div>
       @php
-        $strengths = [
-            ['icon' => 'bi-bullseye', 'title' => __('front::home.strength_1_title'), 'sub' => __('front::home.strength_1_sub')],
-            ['icon' => 'bi-lightning-charge-fill', 'title' => __('front::home.strength_2_title'), 'sub' => __('front::home.strength_2_sub')],
-            ['icon' => 'bi-patch-check-fill', 'title' => __('front::home.strength_3_title'), 'sub' => __('front::home.strength_3_sub')],
-            ['icon' => 'bi-globe-americas', 'title' => __('front::home.strength_4_title'), 'sub' => __('front::home.strength_4_sub')],
+        $features = [
+            ['bi-boxes', __('front::common.feature_1_title'), __('front::common.feature_1_sub')],
+            ['bi-plug-fill', __('front::common.feature_2_title'), __('front::common.feature_2_sub')],
+            ['bi-palette-fill', __('front::common.feature_3_title'), __('front::common.feature_3_sub')],
+            ['bi-translate', __('front::common.feature_4_title'), __('front::common.feature_4_sub')],
         ];
       @endphp
-      <div class="function-info">
-        <div class="row">
-          @foreach($strengths as $strength)
-            <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
-              <div class="core-function-item h-100">
-                <div class="icon"><i class="bi {{ $strength['icon'] }}"></i></div>
-                <div class="title fw-bold">{{ $strength['title'] }}</div>
-                <div class="sub-title">{{ $strength['sub'] }}</div>
-              </div>
+      <div class="row g-4">
+        @foreach($features as $i => $f)
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="business-item" data-aos="fade-up" data-aos-duration="{{ 300 + $i * 200 }}">
+              <div class="icon"><i class="bi {{ $f[0] }}"></i></div>
+              <div class="title">{{ $f[1] }}</div>
+              <div class="sub-title">{{ $f[2] }}</div>
+            </div>
+          </div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+
+  {{-- Solutions --}}
+  @if(($serviceCatalogs ?? null) && $serviceCatalogs->isNotEmpty())
+    <div class="home-section home-section--alt">
+      <div class="container">
+        <div class="module-title" data-aos="fade-up">{{ __('front::common.solutions_title') }}</div>
+        <div class="module-sub-title" data-aos="fade-up">{{ __('front::common.solutions_sub') }}</div>
+        <div class="row g-4">
+          @foreach($serviceCatalogs as $catalog)
+            <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
+              <a href="{{ front_route('catalogs.slug_show', ['slug' => $catalog->slug]) }}" class="solution-card text-reset text-decoration-none">
+                <h3 class="h5 fw-bold mb-2">{{ $catalog->translation->title ?? '' }}</h3>
+                <p class="text-muted small mb-0">{{ $catalog->translation->summary ?? '' }}</p>
+                <span class="solution-more mt-3 d-inline-block small">{{ __('front::common.read_more') }} <i class="bi bi-arrow-right"></i></span>
+              </a>
             </div>
           @endforeach
         </div>
       </div>
     </div>
-  </div>
+  @endif
 
-  {{-- Latest news --}}
+  {{-- Resources / latest articles --}}
   @if(($latestNews ?? null) && $latestNews->isNotEmpty())
-    <div class="container mt-5 pt-4">
-      <div class="module-title" data-aos="fade-up">{{ __('front::home.news_title') }}</div>
-      <div class="module-sub-title" data-aos="fade-up">{{ __('front::home.news_sub') }}</div>
-      <div class="row g-4">
-        @foreach($latestNews as $news)
-          <div class="col-12 col-md-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 300 }}">
-            <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
-              <a href="{{ $news->url }}">
-                <img src="{{ image_resize($news->translation->image ?? '', 800, 450) }}"
-                     class="card-img-top" alt="{{ $news->translation->title ?? '' }}">
-              </a>
-              <div class="card-body d-flex flex-column">
-                <div class="text-muted small mb-2">
-                  <i class="bi bi-calendar3"></i> {{ $news->created_at->format('Y-m-d') }}
-                  @if($news->catalog && $news->catalog->translation)
-                    <span class="ms-2"><i class="bi bi-folder2"></i> {{ $news->catalog->translation->title }}</span>
-                  @endif
+    <div class="home-section">
+      <div class="container">
+        <div class="module-title" data-aos="fade-up">{{ __('front::common.resources_title') }}</div>
+        <div class="module-sub-title" data-aos="fade-up">{{ __('front::common.resources_sub') }}</div>
+        <div class="row g-4">
+          @foreach($latestNews as $article)
+            <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
+              <div class="card h-100 shadow-sm rounded-3 overflow-hidden">
+                <a href="{{ $article->url }}">
+                  <img src="{{ image_resize($article->translation->image ?? '', 800, 450) }}" class="card-img-top" alt="{{ $article->translation->title ?? '' }}">
+                </a>
+                <div class="card-body d-flex flex-column">
+                  <div class="text-muted small mb-2">
+                    @if($article->catalog && $article->catalog->translation)<i class="bi bi-folder2"></i> {{ $article->catalog->translation->title }}@endif
+                  </div>
+                  <h3 class="h6 fw-bold mb-2"><a href="{{ $article->url }}" class="text-reset text-decoration-none">{{ $article->translation->title ?? '' }}</a></h3>
+                  <p class="text-muted small mb-0 flex-grow-1">{{ \Illuminate\Support\Str::limit($article->translation->summary ?? '', 90) }}</p>
                 </div>
-                <h3 class="h6 fw-bold mb-2">
-                  <a href="{{ $news->url }}" class="text-reset text-decoration-none">
-                    {{ $news->translation->title ?? '' }}
-                  </a>
-                </h3>
-                <p class="text-muted small mb-0 flex-grow-1">
-                  {{ \Illuminate\Support\Str::limit($news->translation->summary ?? '', 80) }}
-                </p>
               </div>
             </div>
-          </div>
-        @endforeach
-      </div>
-      <div class="text-center mt-4">
-        @if($newsCatalog ?? null)
-          <a href="{{ front_route('catalogs.slug_show', ['slug' => $newsCatalog->slug]) }}"
-             class="btn btn-outline-primary">{{ __('front::home.view_more') }}</a>
-        @endif
+          @endforeach
+        </div>
+        <div class="text-center mt-4">
+          @if($newsCatalog ?? null)
+            <a href="{{ front_route('catalogs.slug_show', ['slug' => $newsCatalog->slug]) }}" class="btn btn-outline-primary">{{ __('front::common.view_more') }}</a>
+          @endif
+        </div>
       </div>
     </div>
   @endif
 
-  {{-- CTA banner --}}
-  <div class="home-customized"
-       style="background-image: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), url('{{ asset('images/demo/company/team.jpg') }}')">
-    <div class="home-banner-info">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="home-banner-left">
-              <h1 data-aos="fade-up" data-aos-duration="1000">{{ __('front::home.cta_banner_title') }}</h1>
-              <p class="sub-title-2" data-aos="fade-up" data-aos-duration="1500">
-                {{ __('front::home.cta_banner_sub') }}
-              </p>
-              <div data-aos="fade-up" data-aos-duration="2000" class="left-btn">
-                <a href="{{ front_route('pages.slug_show', ['slug' => 'contact']) }}"
-                   class="btn btn-lg btn-primary">{{ __('front::home.cta_banner_btn') }}</a>
-              </div>
-            </div>
-          </div>
-        </div>
+  {{-- CTA --}}
+  <div class="home-cta">
+    <div class="container text-center">
+      <h2 data-aos="fade-up">{{ __('front::common.cta_title') }}</h2>
+      <p data-aos="fade-up" data-aos-duration="300">{{ __('front::common.cta_sub') }}</p>
+      <div data-aos="fade-up" data-aos-duration="500">
+        <a href="{{ front_route('pages.slug_show', ['slug' => 'get-started']) }}" class="btn btn-lg btn-accent">{{ __('front::common.cta_btn') }}</a>
       </div>
-    </div>
-    <div class="bottom-bg">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 140" preserveAspectRatio="none">
-        <path d="M320 28c320 0 320 84 640 84 160 0 240-21 320-42v70H0V70c80-21 160-42 320-42z"></path>
-      </svg>
     </div>
   </div>
 
-  {{-- Contact --}}
-  <div class="home-contact" id="contactUsContent">
+  {{-- Contact strip --}}
+  <div class="home-contact">
     <div class="container">
-      <div class="title" data-aos="fade-up">{{ __('front::home.contact_title') }}</div>
       <div class="row">
         <div class="col-12 col-lg-3">
-          <div class="contact-item" data-aos="fade-up">
+          <div class="contact-item">
             <div class="icon"><i class="bi bi-telephone-fill"></i></div>
             <div class="right">
-              <div class="text-1">{{ __('front::home.contact_phone') }}</div>
-              <div class="text-2">
-                <a href="tel:+8676981234567"><i class="bi bi-telephone-fill text-primary"></i> +86-769-8123-4567</a>
-              </div>
+              <div class="text-1">{{ __('front::common.contact_phone') }}</div>
+              <div class="text-2">{{ __('front::common.contact_phone_v') }}</div>
             </div>
           </div>
         </div>
         <div class="col-12 col-lg-3">
-          <div class="contact-item" data-aos="fade-up">
+          <div class="contact-item">
             <div class="icon"><i class="bi bi-envelope-fill"></i></div>
             <div class="right">
-              <div class="text-1">{{ __('front::home.contact_email') }}</div>
-              <div class="text-2">
-                <a href="mailto:sales@apexprecision.cn"><i
-                    class="bi bi-envelope-fill text-primary"></i> sales@apexprecision.cn</a>
-              </div>
+              <div class="text-1">{{ __('front::common.contact_email') }}</div>
+              <div class="text-2">{{ __('front::common.contact_email_v') }}</div>
             </div>
           </div>
         </div>
         <div class="col-12 col-lg-3">
-          <div class="contact-item" data-aos="fade-up">
+          <div class="contact-item">
             <div class="icon"><i class="bi bi-geo-alt-fill"></i></div>
             <div class="right">
-              <div class="text-1">{{ __('front::home.contact_address') }}</div>
-              <div class="text-2 text-muted">{{ __('front::home.contact_address_v') }}</div>
+              <div class="text-1">{{ __('front::common.contact_address') }}</div>
+              <div class="text-2 text-muted">{{ __('front::common.contact_address_v') }}</div>
             </div>
           </div>
         </div>
         <div class="col-12 col-lg-3">
-          <div class="contact-item" data-aos="fade-up">
+          <div class="contact-item">
             <div class="icon"><i class="bi bi-clock-fill"></i></div>
             <div class="right">
-              <div class="text-1">{{ __('front::home.contact_hours') }}</div>
-              <div class="text-2 text-muted">{{ __('front::home.contact_hours_v') }}</div>
+              <div class="text-1">{{ __('front::common.contact_hours') }}</div>
+              <div class="text-2 text-muted">{{ __('front::common.contact_hours_v') }}</div>
             </div>
           </div>
         </div>
@@ -310,14 +179,3 @@
   @hookinsert('page.content.bottom')
 
 @endsection
-
-@push('footer')
-  <script>
-    AOS.init({
-      duration: 300,
-      easing: 'ease-in-out',
-      once: true,
-      mirror: false
-    });
-  </script>
-@endpush

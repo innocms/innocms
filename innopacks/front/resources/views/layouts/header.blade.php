@@ -8,11 +8,11 @@
 <div class="header-topbar">
   <div class="container d-flex justify-content-between align-items-center">
     <div class="topbar-left">
-      <a href="tel:+8676981234567"><i class="bi bi-telephone-fill"></i> +86-769-8123-4567</a>
-      <a href="mailto:sales@apexprecision.cn" class="ms-4"><i class="bi bi-envelope-fill"></i> sales@apexprecision.cn</a>
+      <a href="tel:{{ preg_replace('/[^0-9+]/', '', __('front::common.contact_phone_v')) }}"><i class="bi bi-telephone-fill"></i> {{ __('front::common.contact_phone_v') }}</a>
+      <a href="mailto:{{ __('front::common.contact_email_v') }}" class="ms-4"><i class="bi bi-envelope-fill"></i> {{ __('front::common.contact_email_v') }}</a>
     </div>
     <div class="topbar-right">
-      <span class="me-3"><i class="bi bi-geo-alt-fill"></i> Dongguan, China</span>
+      <span class="me-3"><i class="bi bi-geo-alt-fill"></i> {{ __('front::common.contact_address_v') }}</span>
       @if($allLocales->count() > 1)
         <span class="topbar-lang">
           <i class="bi bi-globe2"></i>
@@ -42,7 +42,7 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link {{ equal_route_name('home.index') ? 'active' : '' }}" aria-current="page"
-               href="{{ front_route('home.index') }}">{{ __('front::header.home') }}</a>
+               href="{{ front_route('home.index') }}">{{ __('front::common.home') }}</a>
           </li>
           @foreach($menus as $menu)
             @if($menu['children'] ?? [])
@@ -69,7 +69,7 @@
       @if($contactUrl)
         <a href="{{ $contactUrl }}"
            class="btn btn-accent d-none d-lg-inline-flex align-items-center ms-3">
-          <i class="bi bi-send-fill me-1"></i> {{ __('front::header.get_quote') }}
+          <i class="bi bi-send-fill me-1"></i> {{ __('front::common.get_quote') }}
         </a>
       @endif
 
@@ -82,7 +82,7 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link {{ equal_route_name('home.index') ? 'active' : '' }}" aria-current="page"
-               href="{{ front_route('home.index') }}">{{ __('front::header.home') }}</a>
+               href="{{ front_route('home.index') }}">{{ __('front::common.home') }}</a>
           </li>
           @foreach($menus as $menu)
             @if($menu['children'] ?? [])
@@ -106,7 +106,7 @@
           @endforeach
           @if($contactUrl)
             <li class="nav-item p-3">
-              <a href="{{ $contactUrl }}" class="btn btn-accent w-100">{{ __('front::header.get_quote') }}</a>
+              <a href="{{ $contactUrl }}" class="btn btn-accent w-100">{{ __('front::common.get_quote') }}</a>
             </li>
           @endif
         </ul>

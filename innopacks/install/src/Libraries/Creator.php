@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InnoCMS\Common\Models\Admin;
+use InnoCMS\Common\Repositories\SettingRepo;
+use InnoCMS\Panel\Services\ThemeDemoService;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class Creator
@@ -44,10 +46,46 @@ class Creator
     {
         $this->migrate();
         $this->seedData();
+        $this->applyTheme($data);
         $this->setAdmin($data);
         $this->touchLockFile();
 
         return $this;
+    }
+
+    /**
+     * Honour the installer's theme choice: switch the active theme and, when the
+     * customer opts in, import the chosen theme's bundled demo data. A non-default
+     * theme always carries its demo (that is the point of picking a vertical theme);
+     * the checkbox additionally allows demo data on the default theme in future.
+     *
+     * @param  array  $data
+     * @return void
+     */
+    private function applyTheme($data): void
+    {
+        $theme    = trim((string) ($data['theme'] ?? 'default'));
+        $loadDemo = ! empty($data['load_demo']);
+
+        if ($theme === '' || $theme === 'default') {
+            return;
+        }
+
+        $dir = base_path('themes/'.$theme);
+        if (! is_dir($dir) || ! is_file($dir.'/demo/Seeder.php')) {
+            return;
+        }
+
+        try {
+            SettingRepo::getInstance()->updateSystemValue('theme', $theme);
+
+            if ($loadDemo) {
+                app(ThemeDemoService::class)->importDemo($theme, $dir, true);
+                $this->outputLog->write('Imported demo data for theme: '.$theme, 1);
+            }
+        } catch (Exception $e) {
+            $this->outputLog->write('Theme demo import skipped: '.$e->getMessage(), 1);
+        }
     }
 
     /**
