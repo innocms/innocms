@@ -31,7 +31,7 @@ class ShopIdentity
 
     public function name(): string
     {
-        return system_setting('meta_title') ?: config('app.name', 'InnoCMS');
+        return system_setting_locale('meta_title') ?: config('app.name', 'InnoCMS');
     }
 
     public function host(): string

@@ -16,7 +16,7 @@ class McpController
 {
     public function welcome(ToolRegistry $registry): View
     {
-        $name = system_setting('panel_name') ?: system_setting('meta_title') ?: config('app.name', 'InnoCMS');
+        $name = system_setting('panel_name') ?: system_setting_locale('meta_title') ?: config('app.name', 'InnoCMS');
 
         $locale = request()->query('lang') ?: front_locale_code();
         if ($locale) {

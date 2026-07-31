@@ -76,6 +76,20 @@
                                   <x-common-form-image title=""
                                                        name="slideshow[{{ $slide_index }}][image][{{ $locale->code }}]"
                                                        value="{{ $slide['image'][$locale->code] ?? '' }}"/>
+                                  <div class="mt-2">
+                                    <label class="form-label mb-1">{{ __('panel/setting.slide_title') }}</label>
+                                    <input type="text" class="form-control"
+                                           name="slideshow[{{ $slide_index }}][title][{{ $locale->code }}]"
+                                           value="{{ $slide['title'][$locale->code] ?? '' }}"
+                                           placeholder="{{ __('panel/setting.slide_title') }}">
+                                  </div>
+                                  <div class="mt-2">
+                                    <label class="form-label mb-1">{{ __('panel/setting.slide_subtitle') }}</label>
+                                    <input type="text" class="form-control"
+                                           name="slideshow[{{ $slide_index }}][subtitle][{{ $locale->code }}]"
+                                           value="{{ $slide['subtitle'][$locale->code] ?? '' }}"
+                                           placeholder="{{ __('panel/setting.slide_subtitle') }}">
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -181,6 +195,9 @@
                   </div>
                 </div>
               </div>
+
+              {{-- 主题 / 插件可向此页面追加自定义 tab 的右栏内容；与上面对应 --}}
+              @hookinsert('panel.themes.settings.tab.content')
             </div>
           </div>
         </div>
@@ -301,6 +318,14 @@
                         </div>
                         <input class="d-none" name="slideshow[${index}][image][${locale.code}]" value="">
                       </div>
+                    </div>
+                    <div class="mt-2">
+                      <label class="form-label mb-1">{{ __('panel/setting.slide_title') }}</label>
+                      <input type="text" class="form-control" name="slideshow[${index}][title][${locale.code}]" value="" placeholder="{{ __('panel/setting.slide_title') }}">
+                    </div>
+                    <div class="mt-2">
+                      <label class="form-label mb-1">{{ __('panel/setting.slide_subtitle') }}</label>
+                      <input type="text" class="form-control" name="slideshow[${index}][subtitle][${locale.code}]" value="" placeholder="{{ __('panel/setting.slide_subtitle') }}">
                     </div>
                   </div>
                 </div>

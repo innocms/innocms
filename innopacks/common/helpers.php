@@ -84,8 +84,41 @@ if (! function_exists('system_setting_locale')) {
     function system_setting_locale($key, $default = null): mixed
     {
         $localeCode = front_locale_code();
+        $value      = setting("system.{$key}.$localeCode");
+        if ($value !== null) {
+            return $value;
+        }
 
-        return setting("system.{$key}.$localeCode", $default);
+        // Backward compat: legacy single-value (non-JSON) settings
+        $raw = setting("system.{$key}");
+        if (is_string($raw)) {
+            return $raw;
+        }
+
+        return $default;
+    }
+}
+
+if (! function_exists('system_setting_translations')) {
+    /**
+     * Get a multilingual system setting as a [locale => value] array,
+     * for editing in the panel. Legacy single-value (non-JSON) settings
+     * are normalized into the default front locale so no data is lost.
+     *
+     * @param  string  $key
+     * @return array
+     */
+    function system_setting_translations(string $key): array
+    {
+        $value = system_setting($key);
+        if (is_array($value)) {
+            return $value;
+        }
+        if ($value === null || $value === '') {
+            return [];
+        }
+
+        return [setting_locale_code() => (string) $value];
     }
 }
 

@@ -86,6 +86,41 @@ class SettingSeeder extends BaseSeeder
                 'value' => 'default',
                 'json'  => 0,
             ],
+            [
+                'id'    => 9,
+                'space' => 'system',
+                'name'  => 'store_name',
+                'value' => json_encode(['zh-cn' => 'InnoCMS', 'en' => 'InnoCMS']),
+                'json'  => 1,
+            ],
+            [
+                'id'    => 10,
+                'space' => 'system',
+                'name'  => 'store_description',
+                'value' => json_encode(['zh-cn' => '专业的企业官网建站系统，简洁、高效、易用。', 'en' => 'A professional enterprise website CMS — clean, efficient and easy to use.']),
+                'json'  => 1,
+            ],
+            [
+                'id'    => 11,
+                'space' => 'system',
+                'name'  => 'address',
+                'value' => json_encode(['zh-cn' => '中国 北京市 朝阳区', 'en' => 'Chaoyang District, Beijing, China']),
+                'json'  => 1,
+            ],
+            [
+                'id'    => 12,
+                'space' => 'system',
+                'name'  => 'telephone',
+                'value' => '400-888-8888',
+                'json'  => 0,
+            ],
+            [
+                'id'    => 13,
+                'space' => 'system',
+                'name'  => 'email',
+                'value' => 'contact@example.com',
+                'json'  => 0,
+            ],
         ];
     }
 }
