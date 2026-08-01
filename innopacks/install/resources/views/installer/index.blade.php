@@ -67,61 +67,24 @@
       </div>
 
       <div class="install-2 install-item d-none">
-        <div class="head-title">{{ __('install/common.env_detection') }}</div>
-        <div class="install-content">
-          <table class="table">
-            <thead>
-            <tr>
-              <th colspan="3" class="bg-light">{{ __('install/common.env_detection') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>{{ __('install/common.environment') }}</td>
-              <td>{{ __('install/common.current') }}</td>
-              <td>{{ __('install/common.status') }}</td>
-            </tr>
-            <tr>
-              <td>{{ __('install/common.php_version') }}(8.2+)</td>
-              <td>{{ $php_version }}</td>
-              <td><i
-                    class="bi {{ $php_env ? 'text-success bi-check-circle-fill' : 'bi-x-circle-fill text-danger' }}"></i>
-              </td>
-            </tr>
-            @foreach($extensions as $key => $value)
-              <tr>
-                <td>{{ $key }}</td>
-                <td></td>
-                <td><i
-                      class="bi {{ $value ? 'text-success bi-check-circle-fill' : 'bi-x-circle-fill text-danger' }}"></i>
-                </td>
-              </tr>
-            @endforeach
-
-            </tbody>
-
-            <thead>
-            <tr>
-              <th colspan="3" class="bg-light">{{ __('install/common.perm_detection') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>{{ __('install/common.dir_file') }}</td>
-              <td>{{ __('install/common.config') }}</td>
-              <td>{{ __('install/common.status') }}</td>
-            </tr>
-            @foreach($permissions as $key => $value)
-              <tr>
-                <td>{{ $key }}</td>
-                <td>755</td>
-                <td><i
-                      class="bi {{ $value ? 'text-success bi-check-circle-fill' : 'bi-x-circle-fill text-danger' }}"></i>
-                </td>
-              </tr>
-            @endforeach
-            </tbody>
-          </table>
+        <div class="head-title">
+          <div class="row align-items-center">
+            <div class="col-6">{{ __('install/common.env_detection') }}</div>
+            <div class="col-6">
+              <div class="row align-items-center">
+                <div class="col-8 text-end"><span class="driver">{{ __('install/common.db_driver') }}:</span></div>
+                <div class="col-4">
+                  <select id="db-driver" class="form-select form-select-sm">
+                    <option value="mysql" selected>MySQL</option>
+                    <option value="sqlite">SQLite</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="install-content env-check">
+          @include('install::installer._env_check')
         </div>
 
         <div class="d-flex justify-content-center mt-4">
@@ -134,14 +97,15 @@
         <div class="head-title">{{ __('install/common.param_config') }}</div>
         <div class="install-content">
           <form class="needs-validation" novalidate>
+            <input type="hidden" name="type" value="mysql">
             <div class="bg-light py-2 mb-2 text-center fw-bold">{{ __('install/common.db_config') }}</div>
             <div class="row gx-2">
               <div class="col-6">
                 <div class="mb-3">
                   <label for="type" class="form-label">{{ __('install/common.db_type') }}</label>
                   <select class="form-select sql-type" id="type" name="type" required>
+                    <option value="mysql" selected>MySQL</option>
                     <option value="sqlite">SQLite</option>
-                    <option value="mysql">MySQL</option>
                   </select>
                   <div class="invalid-feedback">{{ __('install/common.select_db_type') }}</div>
                 </div>
@@ -203,7 +167,7 @@
                   <div class="mb-3">
                     <label for="admin_email" class="form-label">{{ __('install/common.admin_account') }}</label>
                     <input type="text" class="form-control" id="admin_email" name="admin_email" required
-                           placeholder="{{ __('install/common.admin_account') }}" value="root@innocms.com">
+                           placeholder="{{ __('install/common.admin_account') }}" value="admin@innocms.com">
                     <div class="invalid-feedback">{{ __('install/common.admin_account') }}</div>
                   </div>
                 </div>
@@ -249,6 +213,29 @@
 </div>
 
 <script>
+  var installLocale = $('html').attr('lang') || 'en';
+
+  $('#db-driver').on('change', function () {
+    layer.load(2, { shade: [0.3, '#fff'] });
+    $.ajax({
+      url: '{{ route("install.driver_detect") }}',
+      type: 'POST',
+      data: { db_code: $(this).val(), locale: installLocale },
+      success: function (res) {
+        $('.env-check').html(res);
+        checkStatus();
+      },
+      error: function (xhr) {
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          layer.msg(xhr.responseJSON.message);
+        }
+      },
+      complete: function () {
+        layer.closeAll('loading');
+      }
+    });
+  });
+
   $('.next-btn').click(function () {
     var current = $('.install-item').filter('.active');
     var next = current.next('.install-item');
@@ -261,7 +248,8 @@
     }
 
     if (next.hasClass('install-3')) {
-      $('.sql-type').trigger('change');
+      $('input[name="type"]').val($('#db-driver').val());
+      $('.sql-type').val($('#db-driver').val()).prop('disabled', true).trigger('change');
     }
 
     if (current.hasClass('install-3')) {

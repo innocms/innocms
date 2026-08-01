@@ -39,9 +39,39 @@ class InstallController extends Controller
 
         $data = Checker::getInstance()->getEnvironment();
 
+        // The installer's DB driver defaults to MySQL (see #db-driver in the
+        // view), so the first environment render must hide the SQLite-only
+        // extensions — otherwise a missing pdo_sqlite would show a red cross
+        // and wrongly block the "next" button. Mirrors driverDetect() below.
+        unset($data['extensions']['pdo_sqlite'], $data['extensions']['sqlite3']);
+
         $data['locale'] = $locale;
 
         return view('install::installer.index', $data);
+    }
+
+    /**
+     * Re-render the environment/permission table scoped to the chosen DB driver,
+     * so only the extensions that driver actually needs are checked.
+     *
+     * @param  Request  $request
+     * @return mixed
+     */
+    public function driverDetect(Request $request): mixed
+    {
+        $data   = Checker::getInstance()->getEnvironment();
+        $locale = $request->get('locale', app()->getLocale());
+        App::setLocale($locale);
+
+        $dbCode = $request->get('db_code');
+        if ($dbCode == 'mysql') {
+            unset($data['extensions']['pdo_sqlite']);
+            unset($data['extensions']['sqlite3']);
+        } elseif ($dbCode == 'sqlite') {
+            unset($data['extensions']['pdo_mysql']);
+        }
+
+        return view('install::installer._env_check', $data);
     }
 
     /**

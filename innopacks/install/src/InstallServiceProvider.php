@@ -32,10 +32,12 @@ class InstallServiceProvider extends ServiceProvider
      */
     protected function registerWebRoutes(): void
     {
-        Route::middleware('web')
-            ->name('install.')
+        Route::name('install.')
             ->group(function () {
-                $this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
+                $path = __DIR__.'/../routes/web.php';
+                if (is_file($path)) {
+                    $this->loadRoutesFrom($path);
+                }
             });
     }
 

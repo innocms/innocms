@@ -36,6 +36,7 @@ return [
     'config'               => '配置',
     'param_config'         => '参数配置',
     'db_config'            => '数据库配置',
+    'db_driver'            => '数据库驱动',
     'db_type'              => '数据库类型',
     'select_db_type'       => '请选择数据库类型',
     'host_address'         => '主机地址',

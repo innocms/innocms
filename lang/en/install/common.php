@@ -36,6 +36,7 @@ return [
     'config'               => 'Configuration',
     'param_config'         => 'Parameter Configuration',
     'db_config'            => 'Database Configuration',
+    'db_driver'            => 'DB Driver',
     'db_type'              => 'Database Type',
     'select_db_type'       => 'Select Database Type',
     'host_address'         => 'Host Address',
