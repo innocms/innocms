@@ -3,7 +3,7 @@
   $currentLocaleCode = front_locale_code();
   $currentLocale = $allLocales->firstWhere('code', $currentLocaleCode);
   $currentLocaleName = $currentLocale?->name ?? $currentLocaleCode;
-  $contactUrl = has_front_route('pages.slug_show') ? front_route('pages.slug_show', ['slug' => 'contact']) : null;
+  $contactUrl = has_front_route('contacts.index') ? front_route('contacts.index') : null;
 @endphp
 
 <div class="site-header">
@@ -11,7 +11,7 @@
   <div class="container d-flex justify-content-between align-items-center">
     <div class="topbar-left">
       @if($phone = system_setting('telephone'))
-        <a href="tel:{{ preg_replace('/[^0+]/', '', $phone) }}"><i class="bi bi-telephone-fill"></i> {{ $phone }}</a>
+        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}"><i class="bi bi-telephone-fill"></i> {{ $phone }}</a>
       @endif
       @if($email = system_setting('email'))
         <a href="mailto:{{ $email }}" class="ms-4"><i class="bi bi-envelope-fill"></i> {{ $email }}</a>

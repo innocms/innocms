@@ -136,7 +136,7 @@
       <h2 data-aos="fade-up">{{ __('front::common.about_cta_title') }}</h2>
       <p data-aos="fade-up" data-aos-duration="300">{{ __('front::common.about_cta_sub') }}</p>
       <div class="about-cta-btns" data-aos="fade-up" data-aos-duration="500">
-        <a href="{{ front_route('pages.slug_show', ['slug' => 'contact']) }}" class="btn btn-primary btn-lg">
+        <a href="{{ front_route('contacts.index') }}" class="btn btn-primary btn-lg">
           <i class="bi bi-envelope me-2"></i>{{ __('front::common.contact_us') }}
         </a>
         <a href="{{ front_route('products.index') }}" class="btn btn-outline-primary btn-lg ms-md-2 mt-2 mt-md-0">

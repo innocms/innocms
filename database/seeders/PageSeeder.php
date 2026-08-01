@@ -34,7 +34,8 @@ class PageSeeder extends BaseSeeder
     }
 
     /**
-     * Default (official) theme pages: about (company) + contact.
+     * Default (official) theme pages: about (company).
+     * Contact is a dedicated route (front.contacts.index), not a Page.
      * InnoCMS-specific intro / get-started / features live in articles + product detail.
      *
      * @return array[]
@@ -43,7 +44,6 @@ class PageSeeder extends BaseSeeder
     {
         return [
             ['id' => 1, 'slug' => 'about', 'position' => 1, 'viewed' => 720, 'active' => 1],
-            ['id' => 2, 'slug' => 'contact', 'position' => 2, 'viewed' => 610, 'active' => 1],
         ];
     }
 
@@ -63,17 +63,6 @@ class PageSeeder extends BaseSeeder
                 'page_id'    => 1, 'locale' => 'en', 'title' => 'About Us',
                 'content'    => '<p><strong>Chengdu FunnLink Technology Co., Ltd.</strong> builds full-stack digital products for cross-border ecommerce and export businesses, spanning independent sites, content management, customer operations and membership systems.</p><h3>What we build</h3><ul><li><strong>InnoCMS</strong>: a lightweight corporate CMS — modular architecture, hook plugins, launch a brand site in minutes</li><li><strong>InnoShop</strong>: open-source cross-border ecommerce with Community / Enterprise / Factory / B2B editions</li><li><strong>InnoCRM</strong>: intelligent customer relationship management, from lead to repeat purchase</li><li><strong>InnoCard</strong>: membership management for service industries — points, tier benefits and precision outreach</li><li><strong>TianfuTrade</strong>: a multi-supplier B2B procurement platform connecting buyers and suppliers</li></ul><h3>Our philosophy</h3><p>Executable products and professional services that connect great content to target customers through shorter paths. Open source and an open ecosystem, building long-term value together with developers, agencies and businesses.</p><h3>Contact</h3><p>Email: <a href="mailto:team@innoshop.com">team@innoshop.com</a>　Phone: +86 136-4808-9236</p>',
                 'meta_title' => 'About Us | FunnLink', 'meta_description' => 'FunnLink builds full-stack digital products for cross-border ecommerce: InnoCMS, InnoShop, InnoCRM, InnoCard and TianfuTrade.', 'meta_keywords' => 'FunnLink, about, InnoCMS, InnoShop, InnoCRM',
-            ],
-            // ---------- contact ----------
-            [
-                'page_id'    => 2, 'locale' => 'zh-cn', 'title' => '联系我们',
-                'content'    => '<p>需要技术咨询、合作洽谈或 SaaS 托管服务？欢迎通过以下方式联系我们。</p><h3>联系方式</h3><table class="table table-bordered"><tbody><tr><th>官网</th><td><a href="https://www.innocms.com">www.innocms.com</a></td></tr><tr><th>邮箱</th><td><a href="mailto:team@innoshop.com">team@innoshop.com</a></td></tr><tr><th>电话</th><td>+86 136-4808-9236</td></tr><tr><th>GitHub</th><td><a href="https://github.com/innocms/innocms">innocms/innocms</a></td></tr></tbody></table><h3>SaaS 托管</h3><p>不想自己动手？我们提供独立云服务器、专人部署、备案/域名/SSL/CDN 全托管与 7×12 小时服务。</p>',
-                'meta_title' => '联系我们｜FunnLink', 'meta_description' => '联系帆连科技：技术咨询、合作洽谈与 SaaS 托管服务。', 'meta_keywords' => 'FunnLink,联系,支持,托管',
-            ],
-            [
-                'page_id'    => 2, 'locale' => 'en', 'title' => 'Contact Us',
-                'content'    => '<p>Need technical advice, a partnership or managed hosting? Reach us through the channels below.</p><h3>Channels</h3><table class="table table-bordered"><tbody><tr><th>Website</th><td><a href="https://www.innocms.com">www.innocms.com</a></td></tr><tr><th>Email</th><td><a href="mailto:team@innoshop.com">team@innoshop.com</a></td></tr><tr><th>Phone</th><td>+86 136-4808-9236</td></tr><tr><th>GitHub</th><td><a href="https://github.com/innocms/innocms">innocms/innocms</a></td></tr></tbody></table><h3>Managed hosting</h3><p>Hands-off? We offer dedicated cloud servers, managed deployment, filing / domain / SSL / CDN and 7x12 support.</p>',
-                'meta_title' => 'Contact Us | FunnLink', 'meta_description' => 'Contact FunnLink for technical advice, partnerships and managed hosting.', 'meta_keywords' => 'FunnLink, contact, support, hosting',
             ],
         ];
     }

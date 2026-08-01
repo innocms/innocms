@@ -16,6 +16,19 @@ use InnoCMS\Front\Requests\ContactRequest;
 class ContactController
 {
     /**
+     * Show the contact page with contact info and message form.
+     */
+    public function index(): mixed
+    {
+        return inno_view('contacts.index', [
+            'telephone'      => system_setting('telephone'),
+            'email'          => system_setting('email'),
+            'address'        => system_setting_locale('address'),
+            'business_hours' => system_setting_locale('business_hours'),
+        ]);
+    }
+
+    /**
      * Submit a contact message.
      */
     public function store(ContactRequest $request): JsonResponse

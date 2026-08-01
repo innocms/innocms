@@ -35,7 +35,8 @@ class MenuRepo
         $catalogs = $this->getCatalogs();
         $pages    = $this->getPages();
         $products = $this->getProductsMenuItem();
-        $menus    = array_merge($products, $catalogs, $pages);
+        $contact  = $this->getContactMenuItem();
+        $menus    = array_merge($products, $catalogs, $pages, $contact);
 
         return fire_hook_filter('global.header.menus', $menus);
     }
@@ -56,6 +57,27 @@ class MenuRepo
                 'name'     => __('front::common.products_title'),
                 'url'      => front_route('products.index'),
                 'slug'     => 'products',
+                'children' => [],
+            ],
+        ];
+    }
+
+    /**
+     * Built-in "Contact Us" entry pointing to the contacts route.
+     *
+     * @return array
+     */
+    private function getContactMenuItem(): array
+    {
+        if (! has_front_route('contacts.index')) {
+            return [];
+        }
+
+        return [
+            [
+                'name'     => __('front::common.contact_us'),
+                'url'      => front_route('contacts.index'),
+                'slug'     => 'contact',
                 'children' => [],
             ],
         ];

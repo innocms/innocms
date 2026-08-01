@@ -18,6 +18,7 @@ Route::get('/', [Controllers\HomeController::class, 'index'])->name('home.index'
 Route::get('/locales/switch/{code}', [Controllers\LocaleController::class, 'switch'])->name('locales.switch');
 
 // Contact
+Route::get('/contact', [Controllers\ContactController::class, 'index'])->name('contacts.index');
 Route::post('/contacts', [Controllers\ContactController::class, 'store'])->name('contacts.store');
 
 // Upload
