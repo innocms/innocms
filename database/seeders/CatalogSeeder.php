@@ -43,10 +43,10 @@ class CatalogSeeder extends BaseSeeder
     private function getCatalogs(): array
     {
         return [
-            ['id' => 1, 'parent_id' => 0, 'slug' => 'resources', 'position' => 1, 'active' => 1],
+            ['id' => 1, 'parent_id' => 0, 'slug' => 'resources', 'position' => 2, 'active' => 1],
             ['id' => 2, 'parent_id' => 1, 'slug' => 'docs', 'position' => 1, 'active' => 1],
             ['id' => 3, 'parent_id' => 1, 'slug' => 'news', 'position' => 2, 'active' => 1],
-            ['id' => 4, 'parent_id' => 0, 'slug' => 'solutions', 'position' => 2, 'active' => 1],
+            ['id' => 4, 'parent_id' => 0, 'slug' => 'solutions', 'position' => 1, 'active' => 1],
         ];
     }
 

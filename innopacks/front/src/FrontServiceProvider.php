@@ -19,6 +19,7 @@ use InnoCMS\Common\Middleware\VisitTrackingMiddleware;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
 use InnoCMS\Front\Middleware\SetFrontLocale;
 use InnoCMS\Front\Repositories\MenuRepo;
+use InnoCMS\Front\Translation\MultiPathFileLoader;
 
 class FrontServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,7 @@ class FrontServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerMultiPathLoader();
         $this->loadTranslations();
 
         if (! has_install_lock()) {
@@ -46,6 +48,36 @@ class FrontServiceProvider extends ServiceProvider
         $this->loadViewComponents();
         $this->loadThemeRoutes();
         $this->bootTheme();
+    }
+
+    /**
+     * Override the translation loader so the `front::` namespace can stack
+     * multiple paths (universal lang/front/* + default theme innopacks/front/lang/*).
+     *
+     * Other service providers register namespaces on the original FileLoader
+     * (single path per namespace). We swap in a MultiPathFileLoader and copy
+     * those existing hints across via reflection so panel:: / common:: etc.
+     * keep working.
+     *
+     * @return void
+     */
+    protected function registerMultiPathLoader(): void
+    {
+        $this->app->extend('translation.loader', function ($loader, $app) {
+            $new = new MultiPathFileLoader(
+                $app->make('files'),
+                $app->make('path.lang')
+            );
+
+            // Copy hints registered by other providers before this swap.
+            $reflection = (new \ReflectionClass($loader))->getProperty('hints');
+            $reflection->setAccessible(true);
+            foreach ($reflection->getValue($loader) as $namespace => $hint) {
+                $new->addNamespace($namespace, $hint);
+            }
+
+            return $new;
+        });
     }
 
     /**
@@ -148,10 +180,16 @@ class FrontServiceProvider extends ServiceProvider
 
     /**
      * Register front language
+     *
+     * Two paths under the `front::` namespace (MultiPathFileLoader merges them):
+     *   1. lang/front/  — universal UI labels shared by every theme
+     *   2. innopacks/front/lang/  — default theme specific copy (overrides universal)
+     *
      * @return void
      */
     protected function loadTranslations(): void
     {
+        $this->loadTranslationsFrom(base_path('lang/front'), 'front');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'front');
     }
 

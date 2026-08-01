@@ -142,6 +142,8 @@ class CatalogRepo extends BaseRepo
      */
     public function create($data): Catalog
     {
+        $this->assertParentValid(null, (int) ($data['parent_id'] ?? 0));
+
         return DB::transaction(function () use ($data) {
             $item = new Catalog($this->handleData($data));
             $item->saveOrFail();
@@ -158,6 +160,8 @@ class CatalogRepo extends BaseRepo
      */
     public function update($item, $data): mixed
     {
+        $this->assertParentValid($item->id, (int) ($data['parent_id'] ?? 0));
+
         return DB::transaction(function () use ($item, $data) {
             $item->fill($this->handleData($data));
             $item->saveOrFail();
@@ -252,5 +256,131 @@ class CatalogRepo extends BaseRepo
         }
 
         return $builder->orderByDesc('id')->limit($limit)->get();
+    }
+
+    /**
+     * Catalogs in depth-first tree order, each model carrying a `level`
+     * attribute (0 = root). Orphans whose parent is missing are appended
+     * at root level so nothing vanishes from the panel list.
+     *
+     * @param  array  $filters
+     * @return \Illuminate\Support\Collection
+     */
+    public function treeList(array $filters = []): \Illuminate\Support\Collection
+    {
+        $all = $this->builder($filters)->orderBy('position')->orderBy('id')->get();
+
+        $sorted = collect();
+        $walk   = function (int $parentId, int $level) use (&$walk, $all, $sorted) {
+            foreach ($all->where('parent_id', $parentId)->sortBy('position') as $catalog) {
+                $catalog->level = $level;
+                $sorted->push($catalog);
+                $walk($catalog->id, $level + 1);
+            }
+        };
+        $walk(0, 0);
+
+        foreach ($all as $catalog) {
+            if (! $sorted->contains('id', $catalog->id)) {
+                $catalog->level = 0;
+                $sorted->push($catalog);
+            }
+        }
+
+        return $sorted;
+    }
+
+    /**
+     * Indented parent-select options for the panel form. When editing, the
+     * catalog itself and its descendants are excluded to prevent cycles.
+     *
+     * @param  int|null  $excludeId
+     * @return array
+     */
+    public function treeOptions(?int $excludeId = null): array
+    {
+        $skip = [];
+        if ($excludeId) {
+            $skip   = $this->descendantIds($excludeId);
+            $skip[] = $excludeId;
+        }
+
+        $options = [];
+        foreach ($this->treeList(['active' => 1]) as $catalog) {
+            if (in_array($catalog->id, $skip, true)) {
+                continue;
+            }
+            $options[] = [
+                'id'   => $catalog->id,
+                'name' => str_repeat('— ', $catalog->level).$catalog->fallbackName('title'),
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * Reorder catalogs by an ordered ID list (drag-and-drop).
+     *
+     * @param  array  $ids
+     * @return void
+     * @throws \Throwable
+     */
+    public function reorder(array $ids): void
+    {
+        $ids = array_values(array_filter(array_map('intval', $ids)));
+        if (empty($ids)) {
+            return;
+        }
+
+        DB::transaction(function () use ($ids) {
+            foreach ($ids as $position => $id) {
+                if ($id > 0) {
+                    Catalog::query()->where('id', $id)->update(['position' => $position]);
+                }
+            }
+        });
+    }
+
+    /**
+     * Guard against assigning a catalog as its own parent or under one of
+     * its descendants.
+     *
+     * @param  int|null  $selfId
+     * @param  int  $parentId
+     * @return void
+     *
+     * @throws \Exception
+     */
+    private function assertParentValid(?int $selfId, int $parentId): void
+    {
+        if ($parentId <= 0 || ! $selfId) {
+            return;
+        }
+
+        if ($parentId === $selfId) {
+            throw new \Exception(trans('panel/category.parent_self'));
+        }
+
+        if (in_array($parentId, $this->descendantIds($selfId), true)) {
+            throw new \Exception(trans('panel/category.circular_reference'));
+        }
+    }
+
+    /**
+     * @param  int  $id
+     * @return int[]
+     */
+    private function descendantIds(int $id): array
+    {
+        $ids   = [];
+        $queue = [$id];
+        while ($queue) {
+            $children = Catalog::query()->whereIn('parent_id', $queue)->pluck('id')->all();
+            $ids      = array_merge($ids, $children);
+            $queue    = $children;
+        }
+
+        return $ids;
     }
 }

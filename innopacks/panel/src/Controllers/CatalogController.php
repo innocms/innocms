@@ -13,7 +13,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Catalog;
 use InnoCMS\Common\Repositories\CatalogRepo;
-use InnoCMS\Common\Resources\CatalogSimple;
 use InnoCMS\Panel\Requests\CatalogRequest;
 
 class CatalogController extends BaseController
@@ -26,10 +25,15 @@ class CatalogController extends BaseController
     public function index(Request $request): mixed
     {
         $filters = $request->all();
-        $data    = [
+        $repo    = CatalogRepo::getInstance();
+
+        // Tree view by default; flat paginated list when searching/filtering.
+        $searching = $request->filled('keyword') || $request->filled('active');
+
+        $data = [
             'searchFields'  => CatalogRepo::getSearchFieldOptions(),
             'filterButtons' => CatalogRepo::getFilterButtonOptions(),
-            'catalogs'      => CatalogRepo::getInstance()->list($filters),
+            'catalogs'      => $searching ? $repo->list($filters) : $repo->treeList($filters),
         ];
 
         return view('panel::catalogs.index', $data);
@@ -80,10 +84,9 @@ class CatalogController extends BaseController
      */
     public function form($catalog): mixed
     {
-        $catalogs = CatalogSimple::collection(CatalogRepo::getInstance()->all(['active' => 1]))->jsonSerialize();
-        $data     = [
+        $data = [
             'catalog'  => $catalog,
-            'catalogs' => $catalogs,
+            'catalogs' => CatalogRepo::getInstance()->treeOptions($catalog->id ?: null),
         ];
 
         return view('panel::catalogs.form', $data);

@@ -1,0 +1,15 @@
+// Bootstrap (custom build with variables override)
+@import './bootstrap/bootstrap';
+
+// Base: variables -> global
+@import './base/_variables';
+@import './base/global';
+
+// Layout: header/footer (site chrome)
+@import './layout/header';
+@import './layout/footer';
+
+// Pages: page-scoped styles
+@import './pages/home';
+@import './pages/news';
+@import './pages/services';

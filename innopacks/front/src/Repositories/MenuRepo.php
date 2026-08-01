@@ -34,9 +34,31 @@ class MenuRepo
     {
         $catalogs = $this->getCatalogs();
         $pages    = $this->getPages();
-        $menus    = array_merge($catalogs, $pages);
+        $products = $this->getProductsMenuItem();
+        $menus    = array_merge($products, $catalogs, $pages);
 
         return fire_hook_filter('global.header.menus', $menus);
+    }
+
+    /**
+     * Built-in "Software Products" entry pointing to the products route.
+     *
+     * @return array
+     */
+    private function getProductsMenuItem(): array
+    {
+        if (! has_front_route('products.index')) {
+            return [];
+        }
+
+        return [
+            [
+                'name'     => __('front::common.products_title'),
+                'url'      => front_route('products.index'),
+                'slug'     => 'products',
+                'children' => [],
+            ],
+        ];
     }
 
     /**

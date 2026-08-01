@@ -7,18 +7,10 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
+// 默认主题专属文案。
+// 通用 UI 文案在 lang/front/{locale}/common.php，由 MultiPathFileLoader 自动合并。
 return [
-    'home'        => '首页',
-    'search'      => '搜索',
-    'search_ph'   => '请输入关键字',
-    'categories'  => '分类',
-    'tags'        => '标签',
-    'no_data'     => '暂无数据',
-    'read_more'   => '阅读更多',
-    'news'        => '新闻资讯',
-    'news_detail' => '新闻详情',
-
-    // Header / footer / contact (generic placeholders — edit after install)
+    // Header / footer / contact (default theme copy — edit after install)
     'get_quote'          => '免费试用',
     'footer_about'       => 'InnoCMS 是一款专为企业官网快速建站而设计的轻量级 CMS，模块化架构、Hook 插件、主题与多语言内置。',
     'footer_quick_links' => '快速链接',
@@ -26,7 +18,7 @@ return [
     'footer_rights'      => '版权所有',
     'company_name'       => '成都帆连科技有限公司',
 
-    // Default product landing (home)
+    // Default theme home page
     'hero_title'        => '外贸 B2B 独立站建站平台',
     'hero_highlight'    => '几分钟上线',
     'hero_sub'          => 'InnoCMS 基于 Laravel，模块化架构、Hook 插件、主题一键切换、内置多语言，帮助外贸工厂与品牌出海团队快速搭建高转化的 B2B 询盘独立站。',
@@ -50,7 +42,6 @@ return [
     'solutions_sub'     => '从 B2B 外贸独立站到品牌企业官网，一套系统覆盖。',
     'news_title'        => '新闻与资讯',
     'news_sub'          => '产品动态、操作指南与 B2B 外贸实战经验。',
-    'view_more'         => '查看更多',
     'stats_title'       => '全球外贸企业的信赖之选',
     'stat_businesses'   => '外贸企业客户',
     'stat_countries'    => '覆盖国家和地区',
@@ -70,8 +61,44 @@ return [
     'cta_btn'           => '立即开始',
     'products_title'    => '软件产品',
     'products_sub'      => '面向 B2B 外贸与数字化运营的完整软件产品体系。',
-    'learn_more'        => '了解更多',
-    'visit_site'        => '访问官网',
-    'related_products'  => '相关产品',
 
+    // Default theme About page
+    'about_label'              => '关于我们',
+    'about_heading'            => '帆连科技 FunnLink',
+    'about_sub'                => '我们自研 InnoCMS 企业官网、InnoShop 跨境电商独立站、InnoCRM 客户关系管理等软件产品，以开源、可落地的方式，陪中国企业把品牌卖向全球。',
+    'about_accent'             => '赋能中国企业，走向全球品牌化',
+    'about_char_fan'           => '帆',
+    'about_char_fan_mean'      => '扬帆启航',
+    'about_char_lian'          => '连',
+    'about_char_lian_mean'     => '连接全球',
+    'about_based'              => '成都',
+    'about_founded'            => '2020 成立',
+    'about_open_source'        => '开源优先',
+    'about_story_label'        => '我们的故事',
+    'about_values_label'       => '我们在意',
+    'about_values_title'       => '产品、开放与服务深度',
+    'about_value_1_t'          => '产品驱动',
+    'about_value_1_d'          => '可持续迭代的主体验与后台能力，每一次升级都让客户直观感知价值。',
+    'about_value_2_t'          => '开放协作',
+    'about_value_2_d'          => '与合作伙伴、上下游系统良性集成，共建健康的数字化生态。',
+    'about_value_3_t'          => '深度服务',
+    'about_value_3_d'          => '从共创到交付、运维的端到端衔接，确保产品价值真正落地。',
+    'about_products_title'     => '我们的产品',
+    'about_products_heading'   => '一套产品体系，覆盖运营全链路',
+    'about_products_sub'       => '从企业官网到电商独立站、从客户运营到会员管理，开箱即用',
+    'about_stat_products'      => '自研产品',
+    'about_stat_downloads'     => '总下载量',
+    'about_stat_clients'       => '企业客户',
+    'about_stat_countries'     => '覆盖国家',
+    'about_intro'              => '成都帆连科技有限公司（FunnLink）专注于为跨境电商与外贸企业提供全栈数字化产品与实施服务，围绕独立站、内容管理、客户运营与会员体系构建了一整套开源产品矩阵。',
+    'about_matrix_label'       => '产品矩阵',
+    'about_matrix_heading'     => '一套开源产品，覆盖出海全链路',
+    'about_matrix_sub'         => '从品牌官网到跨境独立站，从客户运营到会员与供应链，开箱即用、可持续迭代。',
+    'about_philosophy_heading' => '我们的理念',
+    'about_contact_heading'    => '联系方式',
+    'about_email_label'        => '邮箱',
+    'about_phone_label'        => '电话',
+    'about_product_view'       => '了解详情',
+    'about_cta_title'          => '聊聊您的业务需求',
+    'about_cta_sub'            => '不确定哪个产品最适合？联系我们的团队，获取专属方案推荐。',
 ];

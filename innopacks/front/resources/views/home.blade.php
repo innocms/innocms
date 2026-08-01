@@ -17,8 +17,8 @@
               </p>
               <p class="sub-title-2" data-aos="fade-up" data-aos-duration="500">{{ __('front::common.hero_sub') }}</p>
               <div data-aos="fade-up" data-aos-duration="700" class="left-btn">
-                <a href="{{ front_route('pages.slug_show', ['slug' => 'get-started']) }}" class="btn btn-lg btn-accent">{{ __('front::common.hero_cta_start') }}</a>
-                <a href="{{ front_route('pages.slug_show', ['slug' => 'features']) }}" class="btn btn-lg btn-outline-primary ms-md-3 mt-3 mt-md-0">{{ __('front::common.hero_cta_features') }}</a>
+                <a href="{{ front_route('products.index') }}" class="btn btn-lg btn-accent">{{ __('front::common.hero_cta_start') }}</a>
+                <a href="{{ front_route('articles.slug_show', ['slug' => 'innocms-features']) }}" class="btn btn-lg btn-outline-primary ms-md-3 mt-3 mt-md-0">{{ __('front::common.hero_cta_features') }}</a>
               </div>
             </div>
           </div>
@@ -157,15 +157,18 @@
           @foreach($softwareProducts as $product)
             @php $t = $product->translations->firstWhere('locale', app()->getLocale()) ?? $product->translations->first() @endphp
             <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
-              <a href="{{ front_route('products.show', ['slug' => $product->slug]) }}" class="product-card text-reset text-decoration-none h-100 d-flex flex-column">
+              <a href="{{ front_route('products.show', ['slug' => $product->slug]) }}" class="product-card text-reset text-decoration-none">
                 <div class="product-card-img">
                   <img src="{{ image_resize($product->image ?? '', 800, 500) }}" alt="{{ $t?->name ?? '' }}" loading="lazy">
+                  @if($product->spu_code)
+                    <span class="product-card-badge">{{ $product->spu_code }}</span>
+                  @endif
                 </div>
-                <div class="card-body d-flex flex-column flex-grow-1">
+                <div class="product-card-body">
                   <h3 class="h5 fw-bold mb-2">{{ $t?->name ?? '' }}</h3>
-                  <p class="text-muted small flex-grow-1 mb-0">{{ $t?->summary ?? '' }}</p>
+                  <p class="text-muted small mb-0">{{ $t?->summary ?? '' }}</p>
                   <div class="product-card-footer mt-3">
-                    <span class="text-primary fw-semibold small">{{ __('front::common.learn_more') }} <i class="bi bi-arrow-right"></i></span>
+                    {{ __('front::common.learn_more') }} <i class="bi bi-arrow-right"></i>
                   </div>
                 </div>
               </a>

@@ -65,10 +65,10 @@ class PageController extends Controller
     }
 
     /**
-     * Render page: theme blade > template field > content field.
-     *
-     * Pages in $forceStandardLayout skip theme overrides and always use
-     * pages.show so they get the shared.page-head + .content typography.
+     * Render page with InnoShop-style fallback chain:
+     *   1. Theme blade named pages.{slug} (custom design override)
+     *   2. Backend `template` field (Blade code string)
+     *   3. pages.show + backend `content` rich text (default)
      *
      * @param  Page  $page
      * @return mixed
@@ -83,16 +83,14 @@ class PageController extends Controller
         $page->increment('viewed');
         $slug = $page->slug;
 
-        $forceStandard = ['about'];
-
-        // Theme has a slug-specific blade → use it directly (unless forced to standard)
-        if (view()->exists("pages.$slug") && ! in_array($slug, $forceStandard, true)) {
+        // 1. Theme has a slug-specific blade → use it directly
+        if (view()->exists("pages.$slug")) {
             return inno_view("pages.$slug", ['page' => $page]);
         }
 
-        // Fallback: backend template field (Blade code) or content (rich text)
+        // 2-3. Backend template field (Blade code) → pages.show + rich text content
         $data = [
-            'slug' => $slug,
+            'slug' => $page->slug,
             'page' => $page,
         ];
         $template = $page->translation?->template ?? '';

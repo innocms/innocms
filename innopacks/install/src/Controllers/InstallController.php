@@ -40,40 +40,8 @@ class InstallController extends Controller
         $data = Checker::getInstance()->getEnvironment();
 
         $data['locale'] = $locale;
-        $data['themes'] = $this->discoverDemoThemes($locale);
 
         return view('install::installer.index', $data);
-    }
-
-    /**
-     * Themes bundled with the release that ship a runnable demo seeder.
-     * Each entry exposes code + localized name/description for the installer UI.
-     *
-     * @return array<int, array{code:string,name:string,description:string}>
-     */
-    private function discoverDemoThemes(string $locale): array
-    {
-        $dirs = glob(base_path('themes/*'), GLOB_ONLYDIR) ?: [];
-        $out  = [];
-        foreach ($dirs as $dir) {
-            if (! is_file($dir.'/config.json') || ! is_file($dir.'/demo/Seeder.php')) {
-                continue;
-            }
-            $config = json_decode((string) file_get_contents($dir.'/config.json'), true);
-            if (! is_array($config) || empty($config['code']) || empty($config['offer_on_install'])) {
-                continue;
-            }
-            $code  = (string) $config['code'];
-            $name  = $config['name'] ?? $code;
-            $desc  = $config['description'] ?? '';
-            $out[] = [
-                'code'        => $code,
-                'name'        => is_array($name) ? ($name[$locale] ?? $name['en'] ?? reset($name)) : $name,
-                'description' => is_array($desc) ? ($desc[$locale] ?? $desc['en'] ?? reset($desc)) : $desc,
-            ];
-        }
-
-        return $out;
     }
 
     /**

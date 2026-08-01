@@ -3,55 +3,104 @@
 @section('body-class', 'page-product-detail')
 @section('title', $product->translation?->meta_title ?: ($product->translation?->name ?? ''))
 
+@php
+  $t = $product->translation;
+  $content = $t?->content ?? '';
+  // Plain text → wrap in <p> for typography; HTML → render as-is
+  if ($content && ! preg_match('/<[a-z][^>]*>/i', $content)) {
+      $content = '<p>' . nl2br(e($content)) . '</p>';
+  }
+  $sellingPoints = array_filter(array_map('trim', preg_split('/[·,，、|]/u', $t?->selling_point ?? '')));
+@endphp
+
 @section('content')
   @include('shared.page-head', ['title' => $product->translation?->name ?? ''])
 
-  <div class="container">
-    <div class="row g-5">
-      <div class="col-lg-6">
-        <div class="product-detail-img">
-          <img src="{{ image_resize($product->image ?? '', 800, 500) }}" alt="{{ $product->translation?->name ?? '' }}" class="img-fluid rounded-3">
+  <section class="product-hero">
+    <div class="container">
+      <div class="row g-5 align-items-center">
+        <div class="col-lg-6" data-aos="fade-right">
+          <div class="product-hero-img">
+            <img src="{{ image_resize($product->image ?? '', 1000, 563) }}" alt="{{ $t?->name ?? '' }}" class="img-fluid">
+          </div>
         </div>
-      </div>
-      <div class="col-lg-6">
-        @if($product->spu_code)
-          <div class="product-spu text-muted small mb-2">{{ $product->spu_code }}</div>
-        @endif
-        <div class="content">
-          {!! $product->translation?->content ?? '' !!}
+        <div class="col-lg-6" data-aos="fade-left">
+          <div class="product-hero-info">
+            @if($product->spu_code)
+              <span class="product-spu-badge">{{ $product->spu_code }}</span>
+            @endif
+
+            <h1 class="product-hero-title">{{ $t?->name ?? '' }}</h1>
+
+            @if($t?->summary)
+              <p class="product-hero-summary">{{ $t->summary }}</p>
+            @endif
+
+            @if($sellingPoints)
+              <div class="product-hero-tags">
+                @foreach($sellingPoints as $sp)
+                  <span class="product-tag"><i class="bi bi-check-circle-fill"></i> {{ $sp }}</span>
+                @endforeach
+              </div>
+            @endif
+
+            @if($product->link)
+              <div class="product-hero-cta">
+                <a href="{{ $product->link }}" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+                  <i class="bi bi-globe2 me-2"></i>{{ __('front::common.visit_site') }}
+                </a>
+                <a href="{{ front_route('products.index') }}" class="btn btn-outline-secondary btn-lg ms-2">
+                  <i class="bi bi-arrow-left me-2"></i>{{ __('front::common.products_title') }}
+                </a>
+              </div>
+            @endif
+          </div>
         </div>
-        @if($product->link)
-          <a href="{{ $product->link }}" target="_blank" rel="noopener" class="btn btn-primary btn-lg mt-4">
-            {{ __('front::common.visit_site') }} <i class="bi bi-box-arrow-up-right ms-1"></i>
-          </a>
-        @endif
       </div>
     </div>
-  </div>
+  </section>
+
+  @if($content)
+    <section class="product-content-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="content product-detail-content">
+              {!! $content !!}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  @endif
 
   @if(($related ?? null) && $related->isNotEmpty())
-    <div class="home-section">
+    <section class="product-related">
       <div class="container">
-        <div class="module-title" data-aos="fade-up">{{ __('front::common.related_products') }}</div>
-        <div class="row g-4 mt-3">
+        <h2 class="product-section-title" data-aos="fade-up">{{ __('front::common.related_products') }}</h2>
+        <div class="row g-4 mt-1">
           @foreach($related as $rp)
-            @php $rt = $rp->translations->firstWhere('locale', app()->getLocale()) ?? $rp->translations->first() @endphp
+            @php
+              $rt = $rp->translations->firstWhere('locale', app()->getLocale()) ?? $rp->translations->first();
+              $rpContent = $rt?->content ?? '';
+            @endphp
             <div class="col-12 col-md-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
-              <a href="{{ front_route('products.show', ['slug' => $rp->slug]) }}" class="text-reset text-decoration-none h-100 d-flex flex-column">
-                <div class="card h-100 shadow-sm rounded-3 overflow-hidden product-card">
-                  <div class="product-card-img">
-                    <img src="{{ image_resize($rp->image ?? '', 800, 500) }}" alt="{{ $rt?->name ?? '' }}" class="card-img-top" loading="lazy">
-                  </div>
-                  <div class="card-body d-flex flex-column">
-                    <h3 class="h5 fw-bold mb-2">{{ $rt?->name ?? '' }}</h3>
-                    <p class="text-muted small flex-grow-1 mb-0">{{ $rt?->summary ?? '' }}</p>
-                  </div>
+              <a href="{{ front_route('products.show', ['slug' => $rp->slug]) }}" class="product-related-card text-reset text-decoration-none h-100 d-flex flex-column">
+                <div class="product-related-img">
+                  <img src="{{ image_resize($rp->image ?? '', 800, 500) }}" alt="{{ $rt?->name ?? '' }}" loading="lazy">
+                </div>
+                <div class="product-related-body">
+                  <h3 class="h5 fw-bold mb-2">{{ $rt?->name ?? '' }}</h3>
+                  <p class="text-muted small mb-0">{{ $rt?->summary ?? '' }}</p>
+                  <span class="product-related-link mt-3">
+                    {{ __('front::common.learn_more') }} <i class="bi bi-arrow-right"></i>
+                  </span>
                 </div>
               </a>
             </div>
           @endforeach
         </div>
       </div>
-    </div>
+    </section>
   @endif
 @endsection

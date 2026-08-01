@@ -93,7 +93,7 @@ class ProductSeeder extends BaseSeeder
             [
                 'id'       => 1,
                 'slug'     => 'innocms',
-                'images'   => ['https://picsum.photos/seed/innocms-cover/800/500'],
+                'images'   => ['images/demo/products/innocms-cover.webp'],
                 'spu_code' => 'INNO-CMS',
                 'position' => 1,
                 'active'   => 1,
@@ -102,7 +102,7 @@ class ProductSeeder extends BaseSeeder
             [
                 'id'       => 2,
                 'slug'     => 'innoshop',
-                'images'   => ['https://picsum.photos/seed/innoshop-cover/800/500'],
+                'images'   => ['images/demo/products/innoshop-cover.webp'],
                 'spu_code' => 'INNO-SHOP',
                 'position' => 2,
                 'active'   => 1,
@@ -111,7 +111,7 @@ class ProductSeeder extends BaseSeeder
             [
                 'id'       => 3,
                 'slug'     => 'innocrm',
-                'images'   => ['https://picsum.photos/seed/innocrm-cover/800/500'],
+                'images'   => ['images/demo/products/innocrm-cover.webp'],
                 'spu_code' => 'INNO-CRM',
                 'position' => 3,
                 'active'   => 1,
@@ -120,7 +120,7 @@ class ProductSeeder extends BaseSeeder
             [
                 'id'       => 4,
                 'slug'     => 'innocard',
-                'images'   => ['https://picsum.photos/seed/innocard-cover/800/500'],
+                'images'   => ['images/demo/products/innocard-cover.webp'],
                 'spu_code' => 'INNO-CARD',
                 'position' => 4,
                 'active'   => 1,
@@ -129,7 +129,7 @@ class ProductSeeder extends BaseSeeder
             [
                 'id'       => 5,
                 'slug'     => 'tianfutrade',
-                'images'   => ['https://picsum.photos/seed/tianfutrade-cover/800/500'],
+                'images'   => ['images/demo/products/tianfutrade-cover.webp'],
                 'spu_code' => 'TF-TRADE',
                 'position' => 5,
                 'active'   => 1,

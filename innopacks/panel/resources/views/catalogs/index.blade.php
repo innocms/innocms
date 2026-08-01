@@ -40,7 +40,11 @@
               <i class="bi bi-grip-vertical drag-handle text-muted" title="{{ __('panel/common.drag_sort_hint') }}"></i>
             </td>
             <td>{{ $item->id }}</td>
-            <td>{{ $item->title }}</td>
+            <td>
+              <span class="d-inline-block" style="padding-left: {{ ($item->level ?? 0) * 24 }}px">
+                @if($item->level ?? 0)<i class="bi bi-arrow-return-right text-muted me-1"></i>@endif{{ $item->title }}
+              </span>
+            </td>
             <td>{{ $item->parent->title ?? '-' }}</td>
             <td>{{ $item->slug }}</td>
             <td>{{ $item->position }}</td>
@@ -58,7 +62,9 @@
         </tbody>
       </table>
     </div>
-    {{ $catalogs->withQueryString()->links('panel::vendor/pagination/bootstrap-4') }}
+    @if($catalogs instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
+      {{ $catalogs->withQueryString()->links('panel::vendor/pagination/bootstrap-4') }}
+    @endif
     @else
       <x-common-no-data :width="200" />
     @endif

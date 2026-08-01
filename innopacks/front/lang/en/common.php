@@ -7,18 +7,10 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
+// Default theme copy.
+// Universal UI labels live in lang/front/{locale}/common.php, auto-merged by MultiPathFileLoader.
 return [
-    'home'        => 'Home',
-    'search'      => 'Search',
-    'search_ph'   => 'Enter keywords',
-    'categories'  => 'Categories',
-    'tags'        => 'Tags',
-    'no_data'     => 'No data',
-    'read_more'   => 'Read More',
-    'news'        => 'News',
-    'news_detail' => 'News Detail',
-
-    // Header / footer / contact (generic placeholders — edit after install)
+    // Header / footer / contact (default theme copy — edit after install)
     'get_quote'          => 'Try Free',
     'footer_about'       => 'InnoCMS is a lightweight CMS for fast corporate websites — modular architecture, hook plugins, themes and built-in multilingual.',
     'footer_quick_links' => 'Quick Links',
@@ -26,7 +18,7 @@ return [
     'footer_rights'      => 'All Rights Reserved',
     'company_name'       => 'Chengdu Funnlink Technology Co., Ltd.',
 
-    // Default product landing (home)
+    // Default theme home page
     'hero_title'        => 'B2B Export Independent Site Builder',
     'hero_highlight'    => 'live in minutes',
     'hero_sub'          => 'Built on Laravel with a modular architecture, hook-based plugins, one-click themes and built-in multilingual content — helping export factories and brand teams launch high-conversion B2B inquiry websites fast.',
@@ -50,7 +42,6 @@ return [
     'solutions_sub'     => 'From B2B export sites to brand corporate portals — one system covers it.',
     'news_title'        => 'Latest News & Insights',
     'news_sub'          => 'Product updates, how-to guides and B2B export know-how.',
-    'view_more'         => 'View More',
     'stats_title'       => 'Trusted by Export Businesses Worldwide',
     'stat_businesses'   => 'Export Businesses',
     'stat_countries'    => 'Countries & Regions',
@@ -70,8 +61,44 @@ return [
     'cta_btn'           => 'Get Started',
     'products_title'    => 'Software Products',
     'products_sub'      => 'A complete suite of enterprise software built for B2B export and digital operations.',
-    'learn_more'        => 'Learn More',
-    'visit_site'        => 'Visit Site',
-    'related_products'  => 'Related Products',
 
+    // Default theme About page
+    'about_label'              => 'About Us',
+    'about_heading'            => 'FunnLink Technology',
+    'about_sub'                => 'We build InnoCMS for corporate sites, InnoShop for cross-border ecommerce, InnoCRM for customer relationships and more — open-source, production-ready software that helps Chinese enterprises take their brands global.',
+    'about_accent'             => 'Empowering Chinese enterprises to build global brands',
+    'about_char_fan'           => '帆',
+    'about_char_fan_mean'      => 'Set Sail',
+    'about_char_lian'          => '连',
+    'about_char_lian_mean'     => 'Connect the World',
+    'about_based'              => 'Chengdu',
+    'about_founded'            => 'Founded 2020',
+    'about_open_source'        => 'Open Source First',
+    'about_story_label'        => 'Our Story',
+    'about_values_label'       => 'What We Care About',
+    'about_values_title'       => 'Product, Openness, Service Depth',
+    'about_value_1_t'          => 'Product-Driven',
+    'about_value_1_d'          => 'Iterative core experiences and admin capabilities — every upgrade makes value visible.',
+    'about_value_2_t'          => 'Open Collaboration',
+    'about_value_2_d'          => 'Healthy integration with partners and upstream systems, building a digital ecosystem together.',
+    'about_value_3_t'          => 'Deep Service',
+    'about_value_3_d'          => 'End-to-end from co-creation to delivery and ops — making product value land.',
+    'about_products_title'     => 'Our Products',
+    'about_products_heading'   => 'One product suite, the full operations chain',
+    'about_products_sub'       => 'From corporate sites to ecommerce, from customer ops to membership — works out of the box',
+    'about_stat_products'      => 'Self-built Products',
+    'about_stat_downloads'     => 'Total Downloads',
+    'about_stat_clients'       => 'Enterprise Clients',
+    'about_stat_countries'     => 'Countries Covered',
+    'about_intro'              => 'Chengdu FunnLink Technology Co., Ltd. (FunnLink) delivers full-stack digital products and implementation services for cross-border ecommerce and foreign-trade companies — an open-source product matrix spanning storefronts, content management, customer operations and membership.',
+    'about_matrix_label'       => 'Product Suite',
+    'about_matrix_heading'     => 'One open-source suite for the whole go-global journey',
+    'about_matrix_sub'         => 'From brand sites to cross-border storefronts, from customer ops to membership and supply chain — ready to ship, built to evolve.',
+    'about_philosophy_heading' => 'Our Philosophy',
+    'about_contact_heading'    => 'Get in Touch',
+    'about_email_label'        => 'Email',
+    'about_phone_label'        => 'Phone',
+    'about_product_view'       => 'Learn more',
+    'about_cta_title'          => 'Let\'s Talk About Your Needs',
+    'about_cta_sub'            => 'Not sure which product fits best? Talk to our team for a tailored recommendation.',
 ];

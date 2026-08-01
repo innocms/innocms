@@ -24,8 +24,8 @@ const target = process.env.TARGET || '';
 const startTime = Date.now();
 
 const coreEntries = [
-    { name: 'front/css', input: 'innopacks/front/resources/css/app.scss', outDir: 'public/themes/default/css', outputName: 'app', group: 'front' },
-    { name: 'front/js', input: 'innopacks/front/resources/js/app.js', outDir: 'public/themes/default/js', outputName: 'app', group: 'front' },
+    { name: 'front/css', input: 'innopacks/front/resources/assets/scss/app.scss', outDir: 'public/themes/default/css', outputName: 'app', group: 'front' },
+    { name: 'front/js', input: 'innopacks/front/resources/assets/js/app.js', outDir: 'public/themes/default/js', outputName: 'app', group: 'front' },
     { name: 'panel/css', input: 'innopacks/panel/resources/css/app.scss', outDir: 'public/build/panel/css', outputName: 'app', group: 'panel' },
     { name: 'panel/js', input: 'innopacks/panel/resources/js/app.js', outDir: 'public/build/panel/js', outputName: 'app', group: 'panel' },
     { name: 'install/css', input: 'innopacks/install/resources/css/app.scss', outDir: 'public/build/install/css', outputName: 'app', group: 'install' },
