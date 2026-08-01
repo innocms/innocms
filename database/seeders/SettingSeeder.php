@@ -104,7 +104,7 @@ class SettingSeeder extends BaseSeeder
                 'id'    => 11,
                 'space' => 'system',
                 'name'  => 'address',
-                'value' => json_encode(['zh-cn' => '中国 北京市 朝阳区', 'en' => 'Chaoyang District, Beijing, China']),
+                'value' => json_encode(['zh-cn' => '成都高新区吉泰路566号', 'en' => 'No. 566 Jitai Road, High-tech Zone, Chengdu']),
                 'json'  => 1,
             ],
             [
