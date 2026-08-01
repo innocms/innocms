@@ -401,3 +401,147 @@ img {
     color: #fff;
   }
 }
+
+// Product listing page
+.page-products {
+  .product-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e8ef;
+    transition: transform .25s ease, box-shadow .25s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(13, 62, 115, .08);
+    }
+
+    .product-card-img {
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      background: #f5f7fb;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .4s ease;
+      }
+    }
+
+    &:hover .product-card-img img {
+      transform: scale(1.04);
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+  }
+}
+
+// Product detail page
+.page-product-detail {
+  .product-detail-img {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f5f7fb;
+  }
+
+  .product-spu {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    letter-spacing: .04em;
+  }
+
+  .product-detail-content {
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2rem 0 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #eef0f4;
+    }
+
+    h3 {
+      font-size: 19px;
+      font-weight: 700;
+      color: #222;
+      margin: 1.8rem 0 .8rem;
+    }
+
+    h4 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333;
+      margin: 1.5rem 0 .6rem;
+    }
+
+    p {
+      margin-bottom: 1.2rem;
+      line-height: 1.85;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul, ol {
+      margin-bottom: 1.2rem;
+      padding-left: 1.6rem;
+
+      li {
+        margin-bottom: .5rem;
+        line-height: 1.85;
+      }
+    }
+
+    blockquote {
+      border-left: 4px solid $primary;
+      padding: .8rem 1.2rem;
+      margin: 1.5rem 0;
+      background: #f5f8ff;
+      border-radius: 0 6px 6px 0;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 14.5px;
+
+      th, td {
+        padding: 10px 14px;
+        border: 1px solid #e2e6ef;
+        text-align: left;
+      }
+
+      th {
+        background: #f5f7fb;
+        font-weight: 600;
+        color: #1a1a2e;
+      }
+
+      tr:nth-child(even) {
+        background: #fafbfc;
+      }
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    a {
+      color: $primary;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+
+      &:hover {
+        color: $accent;
+      }
+    }
+  }
+}

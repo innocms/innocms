@@ -68,5 +68,10 @@ return [
     'cta_title'         => 'Ready to build your website?',
     'cta_sub'           => 'Install and go, or choose turnkey SaaS hosting and leave the server and ops to us.',
     'cta_btn'           => 'Get Started',
+    'products_title'    => 'Software Products',
+    'products_sub'      => 'A complete suite of enterprise software built for B2B export and digital operations.',
+    'learn_more'        => 'Learn More',
+    'visit_site'        => 'Visit Site',
+    'related_products'  => 'Related Products',
 
 ];

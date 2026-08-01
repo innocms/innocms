@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             CatalogSeeder::class,
             LocaleSeeder::class,
             PageSeeder::class,
+            ProductSeeder::class,
             SettingSeeder::class,
             TagSeeder::class,
         ]);

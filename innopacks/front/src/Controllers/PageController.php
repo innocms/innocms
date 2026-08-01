@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use InnoCMS\Common\Models\Page;
+use InnoCMS\Common\Models\Product;
 use InnoCMS\Common\Repositories\PageRepo;
 
 class PageController extends Controller
@@ -66,6 +67,9 @@ class PageController extends Controller
     /**
      * Render page: theme blade > template field > content field.
      *
+     * Pages in $forceStandardLayout skip theme overrides and always use
+     * pages.show so they get the shared.page-head + .content typography.
+     *
      * @param  Page  $page
      * @return mixed
      * @throws \Exception
@@ -79,8 +83,10 @@ class PageController extends Controller
         $page->increment('viewed');
         $slug = $page->slug;
 
-        // Theme has a slug-specific blade → use it directly
-        if (view()->exists("pages.$slug")) {
+        $forceStandard = ['about'];
+
+        // Theme has a slug-specific blade → use it directly (unless forced to standard)
+        if (view()->exists("pages.$slug") && ! in_array($slug, $forceStandard, true)) {
             return inno_view("pages.$slug", ['page' => $page]);
         }
 
@@ -109,14 +115,20 @@ class PageController extends Controller
         $slug = $request->slug;
         switch ($slug) {
             case 'services':
-                return view('front::pages._sample_services');
-                break;
+                return inno_view('front::pages._sample_services');
             case 'about':
-                return view('front::pages._sample_about');
-                break;
+                return inno_view('front::pages._sample_about');
             case 'products':
-                return view('front::pages._sample_products');
-                break;
+                $products = Product::query()
+                    ->with(['translations', 'categories'])
+                    ->where('active', true)
+                    ->whereHas('categories', function ($q) {
+                        $q->where('slug', 'software-products');
+                    })
+                    ->orderBy('position')
+                    ->get();
+
+                return inno_view('front::pages._sample_products', ['products' => $products]);
             default:
                 return redirect()->route('home.index');
         }

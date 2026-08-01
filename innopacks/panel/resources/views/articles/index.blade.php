@@ -44,7 +44,7 @@
                   <i class="bi bi-box-arrow-up-right small"></i>
                 </a>
               </td>
-              <td class="d-none d-md-table-cell">{{ $item->catalog->title }}</td>
+              <td class="d-none d-md-table-cell">{{ $item->catalog?->title }}</td>
               <td>{{ $item->position }}</td>
               <td>@include('panel::shared.list_switch', ['value' => $item->active, 'url' => panel_route('articles.active', $item->id)])</td>
               <td>

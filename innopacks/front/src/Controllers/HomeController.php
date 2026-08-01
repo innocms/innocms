@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use InnoCMS\Common\Models\Article;
 use InnoCMS\Common\Models\Catalog;
+use InnoCMS\Common\Models\Product;
 
 class HomeController extends Controller
 {
@@ -34,6 +35,7 @@ class HomeController extends Controller
             'latestNews'       => $this->latestNews(3),
             'productsCatalog'  => $this->catalogBySlug('products'),
             'newsCatalog'      => $this->catalogBySlug('news'),
+            'softwareProducts' => $this->softwareProducts(4),
         ];
 
         $data = fire_hook_filter('home.index.data', $data);
@@ -133,6 +135,22 @@ class HomeController extends Controller
             ->whereIn('catalog_id', $childIds)
             ->where('active', true)
             ->orderByDesc('id')
+            ->take($limit)
+            ->get();
+    }
+
+    /**
+     * Active products under the "software-products" category.
+     */
+    private function softwareProducts(int $limit): Collection
+    {
+        return Product::query()
+            ->with(['translations', 'categories'])
+            ->where('active', true)
+            ->whereHas('categories', function ($q) {
+                $q->where('slug', 'software-products');
+            })
+            ->orderBy('position')
             ->take($limit)
             ->get();
     }

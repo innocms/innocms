@@ -147,6 +147,38 @@
     </div>
   @endif
 
+  {{-- Products --}}
+  @if(($softwareProducts ?? null) && $softwareProducts->isNotEmpty())
+    <div class="home-section home-section--alt">
+      <div class="container">
+        <div class="module-title" data-aos="fade-up">{{ __('front::common.products_title') }}</div>
+        <div class="module-sub-title" data-aos="fade-up">{{ __('front::common.products_sub') }}</div>
+        <div class="row g-4">
+          @foreach($softwareProducts as $product)
+            @php $t = $product->translations->firstWhere('locale', app()->getLocale()) ?? $product->translations->first() @endphp
+            <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
+              <a href="{{ front_route('products.show', ['slug' => $product->slug]) }}" class="product-card text-reset text-decoration-none h-100 d-flex flex-column">
+                <div class="product-card-img">
+                  <img src="{{ image_resize($product->image ?? '', 800, 500) }}" alt="{{ $t?->name ?? '' }}" loading="lazy">
+                </div>
+                <div class="card-body d-flex flex-column flex-grow-1">
+                  <h3 class="h5 fw-bold mb-2">{{ $t?->name ?? '' }}</h3>
+                  <p class="text-muted small flex-grow-1 mb-0">{{ $t?->summary ?? '' }}</p>
+                  <div class="product-card-footer mt-3">
+                    <span class="text-primary fw-semibold small">{{ __('front::common.learn_more') }} <i class="bi bi-arrow-right"></i></span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          @endforeach
+        </div>
+        <div class="text-center mt-4">
+          <a href="{{ front_route('products.index') }}" class="btn btn-outline-primary">{{ __('front::common.view_more') }}</a>
+        </div>
+      </div>
+    </div>
+  @endif
+
   {{-- News --}}
   @if(($latestNews ?? null) && $latestNews->isNotEmpty())
     <div class="home-section">

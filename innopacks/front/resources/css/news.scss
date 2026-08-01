@@ -164,11 +164,9 @@ body.page-news-details {
     }
 
     .content {
-      max-width: 740px;
       font-size: 16.5px;
       line-height: 1.9;
       color: #333;
-      margin: 0 auto;
 
       @media (max-width: 768px) {
         font-size: 15px;
@@ -263,6 +261,7 @@ body.page-news-details {
         padding: 1.2rem 1.4rem;
         border-radius: 8px;
         overflow-x: auto;
+        max-width: 100%;
         margin: 1.5rem 0;
         font-size: 14px;
         line-height: 1.7;

@@ -68,4 +68,10 @@ return [
     'cta_title'         => '准备好搭建你的官网了吗？',
     'cta_sub'           => '安装即用，或选择一站式 SaaS 托管，把服务器与运维交给我们。',
     'cta_btn'           => '立即开始',
+    'products_title'    => '软件产品',
+    'products_sub'      => '面向 B2B 外贸与数字化运营的完整软件产品体系。',
+    'learn_more'        => '了解更多',
+    'visit_site'        => '访问官网',
+    'related_products'  => '相关产品',
+
 ];

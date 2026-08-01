@@ -1,6 +1,6 @@
 <div class="tab-pane fade show active mt-3" id="basic-tab-pane" role="tabpanel" aria-labelledby="basic-tab" tabindex="0">
 
-  <div class="col-12 col-md-6">
+  <div class="col-12">
     <x-common-form-locale-input
       name="name"
       type="input"

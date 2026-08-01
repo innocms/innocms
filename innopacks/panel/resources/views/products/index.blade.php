@@ -41,9 +41,9 @@
               <td>{{ $item->id }}</td>
               <td><img src="{{ image_resize($item->image, 30, 30) }}" class="wh-30"></td>
               <td>
-                <a href="{{ panel_route('products.edit', [$item->id]) }}" class="text-decoration-none"
+                <a href="{{ front_route('products.show', ['slug' => $item->slug]) }}" target="_blank" class="text-decoration-none"
                    data-bs-toggle="tooltip" title="{{ $item->fallbackName() }}">
-                  {{ sub_string($item->fallbackName(), 32) }}
+                  {{ sub_string($item->fallbackName(), 32) }} <i class="bi bi-box-arrow-up-right text-muted small"></i>
                 </a>
                 @if ($item->spu_code)
                   <div class="small text-secondary">{{ $item->spu_code }}</div>

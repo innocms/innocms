@@ -68,3 +68,7 @@ Route::prefix('official_demo')
     ->group(function () {
         Route::get('/{slug}', 'InnoCMS\Front\Controllers\PageController@showOfficialDemoPage')->name('pages.show');
     });
+
+// Products
+Route::get('/products', [Controllers\ProductController::class, 'index'])->name('products.index');
+Route::get('/product-{slug}', [Controllers\ProductController::class, 'show'])->name('products.show');
