@@ -7,11 +7,11 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\DevTools\Console\Commands;
+namespace InnoCMS\Devtools\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use InnoCMS\DevTools\Services\ScaffoldService;
+use InnoCMS\Devtools\Services\ScaffoldService;
 
 class MakeMigration extends Command
 {

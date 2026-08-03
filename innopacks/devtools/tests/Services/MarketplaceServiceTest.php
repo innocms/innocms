@@ -7,9 +7,9 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\DevTools\Tests\Services;
+namespace InnoCMS\Devtools\Tests\Services;
 
-use InnoCMS\DevTools\Services\MarketplaceService;
+use InnoCMS\Devtools\Services\MarketplaceService;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

@@ -17,13 +17,13 @@
     },
     "autoload": {
         "psr-4": {
-            "InnoCMS\\DevTools\\": "src/"
+            "InnoCMS\\Devtools\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "InnoCMS\\DevTools\\DevToolsServiceProvider"
+                "InnoCMS\\Devtools\\DevtoolsServiceProvider"
             ]
         }
     },

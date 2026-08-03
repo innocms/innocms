@@ -7,11 +7,11 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\DevTools\Tests;
+namespace InnoCMS\Devtools\Tests;
 
 use Tests\TestCase as CommonTestCase;
 
 abstract class TestCase extends CommonTestCase
 {
-    // DevTools module specific test setup
+    // Devtools module specific test setup
 }

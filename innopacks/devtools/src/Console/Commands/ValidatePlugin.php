@@ -7,10 +7,10 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\DevTools\Console\Commands;
+namespace InnoCMS\Devtools\Console\Commands;
 
 use Illuminate\Console\Command;
-use InnoCMS\DevTools\Services\ValidationService;
+use InnoCMS\Devtools\Services\ValidationService;
 
 class ValidatePlugin extends Command
 {
