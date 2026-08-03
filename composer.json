@@ -20,6 +20,7 @@
         "overtrue/easy-sms": "^3.2",
         "spatie/laravel-permission": "^6.9",
         "tormjens/eventy": "^0.9.3",
+        "w7corp/easywechat": "^6.0",
         "wikimedia/composer-merge-plugin": "^2.1"
     },
     "require-dev": {
@@ -42,11 +43,10 @@
             "Database\\Seeders\\": "database/seeders/",
             "InnoCMS\\Common\\": "innopacks/common/src",
             "InnoCMS\\Aicore\\": "innopacks/aicore/src",
-            "InnoCMS\\Mcp\\": "innopacks/mcp/src",
             "InnoCMS\\Front\\": "innopacks/front/src",
             "InnoCMS\\Panel\\": "innopacks/panel/src",
-            "InnoCMS\\DevTools\\": "innopacks/devtools/src",
-            "InnoCMS\\RestAPI\\": "innopacks/restapi/src",
+            "InnoCMS\\Devtools\\": "innopacks/devtools/src",
+            "InnoCMS\\Restapi\\": "innopacks/restapi/src",
             "InnoCMS\\Install\\": "innopacks/install/src",
             "InnoCMS\\Plugin\\": "innopacks/plugin/src"
         },
@@ -60,9 +60,8 @@
         "psr-4": {
             "Tests\\": "tests/",
             "InnoCMS\\Aicore\\Tests\\": "innopacks/aicore/tests",
-            "InnoCMS\\Mcp\\Tests\\": "innopacks/mcp/tests",
-            "InnoCMS\\DevTools\\Tests\\": "innopacks/devtools/tests",
-            "InnoCMS\\RestAPI\\Tests\\": "innopacks/restapi/tests",
+            "InnoCMS\\Devtools\\Tests\\": "innopacks/devtools/tests",
+            "InnoCMS\\Restapi\\Tests\\": "innopacks/restapi/tests",
             "InnoCMS\\Common\\Tests\\": "innopacks/common/tests"
         }
     },

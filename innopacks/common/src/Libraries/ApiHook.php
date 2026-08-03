@@ -35,7 +35,7 @@ class ApiHook
             return '';
         }
 
-        if (! str_starts_with($class, 'InnoCMS\RestAPI')) {
+        if (! str_starts_with($class, 'InnoCMS\Restapi')) {
             return '';
         }
 

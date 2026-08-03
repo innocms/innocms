@@ -21,8 +21,8 @@ use InnoCMS\Panel\Middleware\AdminAuthenticate;
 use InnoCMS\Panel\Middleware\GlobalPanelData;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
 use InnoCMS\Panel\Services\ThemeService;
-use InnoCMS\RestAPI\Services\FileManagerInterface;
-use InnoCMS\RestAPI\Services\FileManagerService;
+use InnoCMS\Restapi\Services\FileManagerInterface;
+use InnoCMS\Restapi\Services\FileManagerService;
 
 class PanelServiceProvider extends ServiceProvider
 {

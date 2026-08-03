@@ -96,5 +96,27 @@ if (theme) {
     });
 }
 
+// Ensure build outputs are owned by the web user so the runtime (PHP-FPM as www)
+// can overwrite them via theme_asset()/should_copy_static_file(). chown only
+// succeeds when this script runs as root; when run as www the outputs are
+// already www-owned, so this block is skipped entirely.
+const WEB_USER = process.env.WEB_USER || 'www';
+if (!/^[a-z_][a-z0-9_-]*$/i.test(WEB_USER)) {
+    throw new Error(`Invalid WEB_USER: ${WEB_USER}`);
+}
+if (typeof process.getuid === 'function' && process.getuid() === 0) {
+    const ownershipDirs = ['public/themes', 'public/build'];
+    if (theme) ownershipDirs.push(`themes/${theme}/public`);
+    let chowned = 0;
+    for (const dir of ownershipDirs) {
+        if (!fs.existsSync(dir)) continue;
+        try {
+            execSync(`chown -R ${WEB_USER}:${WEB_USER} "${dir}"`, { stdio: 'pipe' });
+            chowned++;
+        } catch {}
+    }
+    console.log(`  ✓ ownership → ${WEB_USER} (${chowned} dir${chowned === 1 ? '' : 's'})`);
+}
+
 const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
 console.log(`\nDone in ${elapsed}s${failed ? ` (${failed} failed)` : ''}`);
