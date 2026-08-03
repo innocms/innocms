@@ -7,11 +7,11 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\FrontApiControllers;
+namespace InnoCMS\Restapi\FrontApiControllers;
 
 use InnoCMS\Common\Requests\UploadFileRequest;
 use InnoCMS\Common\Requests\UploadImageRequest;
-use InnoCMS\RestAPI\Services\UploadService;
+use InnoCMS\Restapi\Services\UploadService;
 use Knuckles\Scribe\Attributes\Authenticated;
 use Knuckles\Scribe\Attributes\BodyParam;
 use Knuckles\Scribe\Attributes\Endpoint;

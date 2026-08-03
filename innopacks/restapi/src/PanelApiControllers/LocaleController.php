@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\PanelApiControllers;
+namespace InnoCMS\Restapi\PanelApiControllers;
 
 use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Locale;

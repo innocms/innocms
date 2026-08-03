@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\FrontApiControllers;
+namespace InnoCMS\Restapi\FrontApiControllers;
 
 use Exception;
 use Knuckles\Scribe\Attributes\Endpoint;

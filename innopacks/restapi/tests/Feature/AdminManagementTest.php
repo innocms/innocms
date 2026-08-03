@@ -7,13 +7,13 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\Tests\Feature;
+namespace InnoCMS\Restapi\Tests\Feature;
 
-use InnoCMS\RestAPI\PanelApiControllers\AuthController;
-use InnoCMS\RestAPI\PanelApiControllers\CustomerController;
-use InnoCMS\RestAPI\PanelApiControllers\DashboardController;
-use InnoCMS\RestAPI\PanelApiControllers\OrderController;
-use InnoCMS\RestAPI\PanelApiControllers\ProductController;
+use InnoCMS\Restapi\PanelApiControllers\AuthController;
+use InnoCMS\Restapi\PanelApiControllers\CustomerController;
+use InnoCMS\Restapi\PanelApiControllers\DashboardController;
+use InnoCMS\Restapi\PanelApiControllers\OrderController;
+use InnoCMS\Restapi\PanelApiControllers\ProductController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -106,7 +106,7 @@ class AdminManagementTest extends TestCase
 
             $this->assertNotFalse($parentClass, "$controllerClass should have a parent class");
             $this->assertEquals(
-                'InnoCMS\RestAPI\PanelApiControllers\BaseController',
+                'InnoCMS\Restapi\PanelApiControllers\BaseController',
                 $parentClass->getName(),
                 "$controllerClass should extend BaseController"
             );
@@ -177,7 +177,7 @@ class AdminManagementTest extends TestCase
         foreach ($controllers as $controllerClass) {
             $reflection = new ReflectionClass($controllerClass);
             $this->assertEquals(
-                'InnoCMS\RestAPI\PanelApiControllers',
+                'InnoCMS\Restapi\PanelApiControllers',
                 $reflection->getNamespaceName(),
                 "$controllerClass should be in PanelApiControllers namespace"
             );

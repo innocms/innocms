@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\Services;
+namespace InnoCMS\Restapi\Services;
 
 use Exception;
 use Illuminate\Http\UploadedFile;

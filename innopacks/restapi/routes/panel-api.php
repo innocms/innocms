@@ -8,8 +8,8 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use InnoCMS\RestAPI\Middleware\EnsureUserIsAdmin;
-use InnoCMS\RestAPI\PanelApiControllers;
+use InnoCMS\Restapi\Middleware\EnsureUserIsAdmin;
+use InnoCMS\Restapi\PanelApiControllers;
 
 Route::get('/', [PanelApiControllers\IntroductionController::class, 'index'])->name('base.index');
 Route::post('/login', [PanelApiControllers\AuthController::class, 'login'])->name('auth.login');

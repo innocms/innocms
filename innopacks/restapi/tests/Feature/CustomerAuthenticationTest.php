@@ -7,10 +7,10 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\Tests\Feature;
+namespace InnoCMS\Restapi\Tests\Feature;
 
-use InnoCMS\RestAPI\FrontApiControllers\AccountController;
-use InnoCMS\RestAPI\FrontApiControllers\AuthController;
+use InnoCMS\Restapi\FrontApiControllers\AccountController;
+use InnoCMS\Restapi\FrontApiControllers\AuthController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -54,7 +54,7 @@ class CustomerAuthenticationTest extends TestCase
         $parentClass = $reflection->getParentClass();
 
         $this->assertNotFalse($parentClass);
-        $this->assertEquals('InnoCMS\RestAPI\FrontApiControllers\BaseController', $parentClass->getName());
+        $this->assertEquals('InnoCMS\Restapi\FrontApiControllers\BaseController', $parentClass->getName());
     }
 
     #[Test]
@@ -64,7 +64,7 @@ class CustomerAuthenticationTest extends TestCase
         $parentClass = $reflection->getParentClass();
 
         $this->assertNotFalse($parentClass);
-        $this->assertEquals('InnoCMS\RestAPI\FrontApiControllers\BaseController', $parentClass->getName());
+        $this->assertEquals('InnoCMS\Restapi\FrontApiControllers\BaseController', $parentClass->getName());
     }
 
     #[Test]
@@ -140,13 +140,13 @@ class CustomerAuthenticationTest extends TestCase
     public function test_auth_controller_in_correct_namespace(): void
     {
         $reflection = new ReflectionClass(AuthController::class);
-        $this->assertEquals('InnoCMS\RestAPI\FrontApiControllers', $reflection->getNamespaceName());
+        $this->assertEquals('InnoCMS\Restapi\FrontApiControllers', $reflection->getNamespaceName());
     }
 
     #[Test]
     public function test_account_controller_in_correct_namespace(): void
     {
         $reflection = new ReflectionClass(AccountController::class);
-        $this->assertEquals('InnoCMS\RestAPI\FrontApiControllers', $reflection->getNamespaceName());
+        $this->assertEquals('InnoCMS\Restapi\FrontApiControllers', $reflection->getNamespaceName());
     }
 }

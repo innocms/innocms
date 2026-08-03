@@ -8,7 +8,7 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use InnoCMS\RestAPI\FrontApiControllers;
+use InnoCMS\Restapi\FrontApiControllers;
 
 Route::get('/', [FrontApiControllers\HomeController::class, 'base'])->name('home.base');
 Route::get('/home', [FrontApiControllers\HomeController::class, 'index'])->name('home.index');

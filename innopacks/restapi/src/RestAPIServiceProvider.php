@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI;
+namespace InnoCMS\Restapi;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -17,11 +17,11 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use InnoCMS\Common\Middleware\ContentFilterHook;
 use InnoCMS\Common\Middleware\EventActionHook;
-use InnoCMS\RestAPI\Commands\SyncApifoxCommand;
-use InnoCMS\RestAPI\Middleware\SetAPILocale;
+use InnoCMS\Restapi\Commands\SyncApifoxCommand;
+use InnoCMS\Restapi\Middleware\SetAPILocale;
 use Knuckles\Scribe\Scribe;
 
-class RestAPIServiceProvider extends ServiceProvider
+class RestapiServiceProvider extends ServiceProvider
 {
     protected array $commands = [
         SyncApifoxCommand::class,

@@ -1,6 +1,6 @@
 <?php
 
-namespace InnoCMS\RestAPI\Services;
+namespace InnoCMS\Restapi\Services;
 
 use Illuminate\Http\UploadedFile;
 

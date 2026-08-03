@@ -7,9 +7,9 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\Tests\Middleware;
+namespace InnoCMS\Restapi\Tests\Middleware;
 
-use InnoCMS\RestAPI\Middleware\SetAPILocale;
+use InnoCMS\Restapi\Middleware\SetAPILocale;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -44,6 +44,6 @@ class RateLimitTest extends TestCase
     public function test_locale_middleware_namespace_is_correct(): void
     {
         $reflection = new ReflectionClass(SetAPILocale::class);
-        $this->assertEquals('InnoCMS\RestAPI\Middleware', $reflection->getNamespaceName());
+        $this->assertEquals('InnoCMS\Restapi\Middleware', $reflection->getNamespaceName());
     }
 }

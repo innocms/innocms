@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-use InnoCMS\RestAPI\Middleware\EnsureApiDocumentationEnabled;
+use InnoCMS\Restapi\Middleware\EnsureApiDocumentationEnabled;
 use Knuckles\Scribe\Config\Defaults;
 use Knuckles\Scribe\Extracting\Strategies;
 

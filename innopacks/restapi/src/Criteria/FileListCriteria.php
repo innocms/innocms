@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\Criteria;
+namespace InnoCMS\Restapi\Criteria;
 
 use Illuminate\Http\Request;
 

@@ -14,7 +14,7 @@
  * 41016: base64解密失败
  */
 
-namespace InnoCMS\RestAPI\Libraries\MiniApp;
+namespace InnoCMS\Restapi\Libraries\MiniApp;
 
 class ErrorCode
 {

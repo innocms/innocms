@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\PanelApiControllers;
+namespace InnoCMS\Restapi\PanelApiControllers;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -18,13 +18,13 @@ use InnoCMS\Common\Models\MediaFile;
 use InnoCMS\Common\Repositories\SettingRepo;
 use InnoCMS\Common\Requests\UploadFileRequest;
 use InnoCMS\Panel\Controllers\BaseController;
-use InnoCMS\RestAPI\Requests\DeleteFilesRequest;
-use InnoCMS\RestAPI\Requests\FileRequest;
-use InnoCMS\RestAPI\Requests\MoveFilesRequest;
-use InnoCMS\RestAPI\Requests\RenameFileRequest;
-use InnoCMS\RestAPI\Services\FileManagerInterface;
-use InnoCMS\RestAPI\Services\FileManagerService;
-use InnoCMS\RestAPI\Services\OSSService;
+use InnoCMS\Restapi\Requests\DeleteFilesRequest;
+use InnoCMS\Restapi\Requests\FileRequest;
+use InnoCMS\Restapi\Requests\MoveFilesRequest;
+use InnoCMS\Restapi\Requests\RenameFileRequest;
+use InnoCMS\Restapi\Services\FileManagerInterface;
+use InnoCMS\Restapi\Services\FileManagerService;
+use InnoCMS\Restapi\Services\OSSService;
 use Knuckles\Scribe\Attributes\BodyParam;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;

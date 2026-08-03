@@ -7,9 +7,9 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\RestAPI\Tests\FrontApiControllers;
+namespace InnoCMS\Restapi\Tests\FrontApiControllers;
 
-use InnoCMS\RestAPI\FrontApiControllers\OrderController;
+use InnoCMS\Restapi\FrontApiControllers\OrderController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -41,7 +41,7 @@ class OrderControllerTest extends TestCase
         $parentClass = $reflection->getParentClass();
 
         $this->assertNotFalse($parentClass);
-        $this->assertEquals('InnoCMS\RestAPI\FrontApiControllers\BaseController', $parentClass->getName());
+        $this->assertEquals('InnoCMS\Restapi\FrontApiControllers\BaseController', $parentClass->getName());
     }
 
     #[Test]
