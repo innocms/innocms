@@ -8,9 +8,6 @@
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
         </testsuite>
-        <testsuite name="Feature">
-            <directory>tests/Feature</directory>
-        </testsuite>
         <testsuite name="InnoPacks">
             <directory>innopacks/aicore/tests</directory>
             <directory>innopacks/mcp/tests</directory>

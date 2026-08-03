@@ -12,7 +12,7 @@ use InnoCMS\Mcp\Http\Controllers\McpController;
 use InnoCMS\Mcp\Http\Middleware\EnsureMcpEnabled;
 use InnoCMS\Mcp\Http\Middleware\ValidateMcpOrigin;
 use InnoCMS\Mcp\Server\InnoCmsMcpServer;
-use InnoCMS\RestAPI\Middleware\EnsureUserIsAdmin;
+use InnoCMS\Restapi\Middleware\EnsureUserIsAdmin;
 use Laravel\Mcp\Facades\Mcp;
 
 Mcp::web('/mcp', InnoCmsMcpServer::class)

@@ -46,6 +46,8 @@ All PHP class files in `innopacks/` MUST have the following copyright header aft
 
 Blade template files (`.blade.php`) do NOT need this header.
 
+`bootstrap/providers.php` must return fully qualified class names (`InnoCMS\Mcp\McpServiceProvider::class`) directly — do NOT add `use` imports at the top. `pint.json` already excludes `bootstrap/` (and `app`, `config`, `resources`, `themes`); never pass files from those directories explicitly to pint, or the exclusion is bypassed.
+
 ## Git Workflow
 
 ### Commit Rules
