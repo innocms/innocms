@@ -13,6 +13,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use InnoCMS\Common\Handlers\TranslationHandler;
 use InnoCMS\Common\Models\Catalog;
 
 class CatalogRepo extends BaseRepo
@@ -136,6 +137,26 @@ class CatalogRepo extends BaseRepo
     }
 
     /**
+     * Normalize + filter translations: drop optional-locale rows left blank and
+     * cast nulls to '' (shared handler, same path as Category/Product).
+     *
+     * @param  array  $translations
+     * @return array
+     */
+    private function handleTranslations(array $translations): array
+    {
+        if (empty($translations)) {
+            return [];
+        }
+
+        $fieldMap = [
+            'title' => ['summary', 'meta_title', 'meta_keywords', 'meta_description'],
+        ];
+
+        return TranslationHandler::process($translations, $fieldMap);
+    }
+
+    /**
      * @param  $data
      * @return Catalog
      * @throws \Exception|\Throwable
@@ -147,7 +168,7 @@ class CatalogRepo extends BaseRepo
         return DB::transaction(function () use ($data) {
             $item = new Catalog($this->handleData($data));
             $item->saveOrFail();
-            $item->translations()->createMany($data['translations']);
+            $item->translations()->createMany($this->handleTranslations($data['translations'] ?? []));
 
             return $item;
         });
@@ -165,8 +186,11 @@ class CatalogRepo extends BaseRepo
         return DB::transaction(function () use ($item, $data) {
             $item->fill($this->handleData($data));
             $item->saveOrFail();
-            $item->translations()->delete();
-            $item->translations()->createMany($data['translations']);
+            $translations = $this->handleTranslations($data['translations'] ?? []);
+            if ($translations) {
+                $item->translations()->delete();
+                $item->translations()->createMany($translations);
+            }
 
             return $item;
         });
@@ -231,9 +255,9 @@ class CatalogRepo extends BaseRepo
     private function handleData($requestData): array
     {
         return [
-            'parent_id' => $requestData['parent_id'] ?? 0,
+            'parent_id' => (int) ($requestData['parent_id'] ?? 0),
             'slug'      => $requestData['slug'] ?? '',
-            'position'  => $requestData['position'] ?? 0,
+            'position'  => (int) ($requestData['position'] ?? 0),
             'active'    => $requestData['active'] ?? true,
         ];
     }
@@ -305,7 +329,9 @@ class CatalogRepo extends BaseRepo
             $skip[] = $excludeId;
         }
 
-        $options = [];
+        $options = [
+            ['id' => 0, 'name' => __('panel/catalog.top_level')],
+        ];
         foreach ($this->treeList(['active' => 1]) as $catalog) {
             if (in_array($catalog->id, $skip, true)) {
                 continue;

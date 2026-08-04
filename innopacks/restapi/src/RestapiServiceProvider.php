@@ -21,7 +21,7 @@ use InnoCMS\Restapi\Commands\SyncApifoxCommand;
 use InnoCMS\Restapi\Middleware\SetAPILocale;
 use Knuckles\Scribe\Scribe;
 
-class RestapiServiceProvider extends ServiceProvider
+class RestAPIServiceProvider extends ServiceProvider
 {
     protected array $commands = [
         SyncApifoxCommand::class,

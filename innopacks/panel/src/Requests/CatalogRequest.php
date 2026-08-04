@@ -11,10 +11,11 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
+use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class CatalogRequest extends FormRequest
 {
-    use PatchRequestTrait;
+    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -34,17 +35,19 @@ class CatalogRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'parent_id' => 'integer',
-            'position'  => 'integer',
+            'parent_id' => 'nullable|integer',
+            'position'  => 'nullable|integer',
             'active'    => 'bool',
 
             'translations.*.locale'           => 'required',
-            'translations.*.title'            => 'required',
+            'translations.*.title'            => 'nullable',
             'translations.*.summary'          => 'nullable|string|max:500',
             'translations.*.meta_title'       => 'nullable|string|max:500',
             'translations.*.meta_keywords'    => 'nullable|string|max:500',
             'translations.*.meta_description' => 'nullable|string|max:1000',
         ];
+
+        $rules = $this->adjustTranslationRules($rules, 'title');
 
         if ($this->slug) {
             if ($this->catalog) {
@@ -60,5 +63,39 @@ class CatalogRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * Get custom attribute names for validator error messages.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'parent_id'                       => __('panel/catalog.parent'),
+            'position'                        => __('panel/common.position'),
+            'translations.*.title'            => __('panel/catalog.title'),
+            'translations.*.summary'          => __('panel/catalog.summary'),
+            'translations.*.meta_title'       => __('panel/common.meta_title'),
+            'translations.*.meta_keywords'    => __('panel/common.meta_keywords'),
+            'translations.*.meta_description' => __('panel/common.meta_description'),
+        ];
+    }
+
+    /**
+     * Get custom validation messages.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        $primary = $this->primaryLocaleCode();
+        $field   = __('panel/catalog.title');
+
+        return [
+            "translations.{$primary}.title" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
+            'parent_id.integer'             => __('panel/catalog.parent_invalid'),
+        ];
     }
 }

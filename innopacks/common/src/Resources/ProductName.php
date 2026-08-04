@@ -11,7 +11,6 @@ namespace InnoCMS\Common\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Throwable;
 
 class ProductName extends JsonResource
 {
@@ -20,11 +19,7 @@ class ProductName extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        try {
-            $url = $this->url;
-        } catch (Throwable) {
-            $url = '#';
-        }
+        $url = $this->front_url;
 
         $data = [
             'id'          => $this->id,

@@ -11,6 +11,7 @@ namespace InnoCMS\Common\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use InnoCMS\Common\Traits\Translatable;
+use Throwable;
 
 class Tag extends BaseModel
 {
@@ -28,5 +29,24 @@ class Tag extends BaseModel
     public function getNameAttribute(): string
     {
         return $this->fallbackName('name');
+    }
+
+    /**
+     * Get tag url link. Tags only expose /tags-{slug}, so a missing slug
+     * degrades to '#' instead of throwing UrlGenerationException.
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        try {
+            if ($this->slug) {
+                return front_route('tags.show', ['slug' => $this->slug], false);
+            }
+
+            return '#';
+        } catch (Throwable) {
+            return '#';
+        }
     }
 }

@@ -16,7 +16,7 @@
               <i class="bi bi-tags me-1"></i>
               <div class="d-flex">
                 @foreach($article->tags as $tag)
-                  <a href="{{ front_route('tags.show', ['slug' => $tag->slug]) }}">{{ $tag->translation->name ?? '' }}</a>
+                  <a href="{{ $tag->url }}">{{ $tag->translation->name ?? '' }}</a>
                 @endforeach
               </div>
             </div>

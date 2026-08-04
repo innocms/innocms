@@ -70,7 +70,7 @@ Route::prefix('official_demo')
         Route::get('/{slug}', 'InnoCMS\Front\Controllers\PageController@showOfficialDemoPage')->name('pages.show');
     });
 
-// Products
+// Products (category storefront is /products?cat=<slug>)
 Route::get('/products', [Controllers\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [Controllers\ProductController::class, 'show'])->name('products.show');
 Route::get('/product-{slug}', [Controllers\ProductController::class, 'slugShow'])->name('products.slug_show');

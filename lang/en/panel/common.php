@@ -69,6 +69,9 @@ return [
 
     'enable_breadcrumb' => 'Enable Breadcrumb',
 
+    'content'  => 'Content',
+    'template' => 'Page Template',
+
     'whether_enable' => 'Active',
 
     'seo' => 'SEO',
@@ -80,4 +83,6 @@ return [
     'no_empty_languages' => 'No empty languages to fill',
     'copied_languages'   => 'Filled :count languages',
     'drag_sort_hint'     => 'Drag to sort',
+
+    'primary_name_required' => 'The :field in the default language (:locale) is required.',
 ];

@@ -11,10 +11,11 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
+use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class ProductRequest extends FormRequest
 {
-    use PatchRequestTrait;
+    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -36,8 +37,6 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        $defaultLocale = setting_locale_code();
-
         $rules = [
             'position'    => 'integer',
             'viewed'      => 'integer',
@@ -51,15 +50,17 @@ class ProductRequest extends FormRequest
             'categories'  => 'nullable|array',
             'related_ids' => 'nullable|array',
 
-            "translations.$defaultLocale.locale" => 'required',
-            "translations.$defaultLocale.name"   => 'required',
-            'translations.*.summary'             => 'nullable|string|max:1000',
-            'translations.*.selling_point'       => 'nullable|string|max:1000',
-            'translations.*.content'             => 'nullable',
-            'translations.*.meta_title'          => 'nullable|string|max:500',
-            'translations.*.meta_keywords'       => 'nullable|string|max:500',
-            'translations.*.meta_description'    => 'nullable|string|max:1000',
+            'translations.*.locale'           => 'required',
+            'translations.*.name'             => 'nullable',
+            'translations.*.summary'          => 'nullable|string|max:1000',
+            'translations.*.selling_point'    => 'nullable|string|max:1000',
+            'translations.*.content'          => 'nullable',
+            'translations.*.meta_title'       => 'nullable|string|max:500',
+            'translations.*.meta_keywords'    => 'nullable|string|max:500',
+            'translations.*.meta_description' => 'nullable|string|max:1000',
         ];
+
+        $rules = $this->adjustTranslationRules($rules, 'name');
 
         if ($this->slug) {
             if ($this->product) {
@@ -78,16 +79,35 @@ class ProductRequest extends FormRequest
     }
 
     /**
-     * Get human-friendly attribute names for error messages.
+     * Get custom attribute names for validator error messages.
      *
      * @return array
      */
     public function attributes(): array
     {
-        $defaultLocale = setting_locale_code();
+        return [
+            'translations.*.name'             => __('panel/product.name'),
+            'translations.*.summary'          => __('panel/product.summary'),
+            'translations.*.selling_point'    => __('panel/product.selling_point'),
+            'translations.*.content'          => __('panel/product.content'),
+            'translations.*.meta_title'       => __('panel/common.meta_title'),
+            'translations.*.meta_keywords'    => __('panel/common.meta_keywords'),
+            'translations.*.meta_description' => __('panel/common.meta_description'),
+        ];
+    }
+
+    /**
+     * Get custom validation messages.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        $primary = $this->primaryLocaleCode();
+        $field   = __('panel/product.name');
 
         return [
-            "translations.$defaultLocale.name" => __('panel/product.name'),
+            "translations.{$primary}.name" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
         ];
     }
 }

@@ -1,6 +1,16 @@
 @pushOnce('footer')
 <script>
 $(function() {
+  // Remove name attributes from modal primary-locale inputs so they are not
+  // submitted alongside the main input (which would create duplicate keys
+  // and cause PHP to build an array instead of a string value).
+  $('.locale-field-wrapper').each(function() {
+    var $wrapper = $(this);
+    var primaryLocale = $wrapper.data('panel-locale');
+    var $modalPrimaryRow = $wrapper.find('.locale-modal-row[data-locale="' + primaryLocale + '"]');
+    $modalPrimaryRow.find('input, textarea').removeAttr('name');
+  });
+
   // Sync main input ↔ modal on show/close
   $(document).on('show.bs.modal', '.locale-field-wrapper .modal', function() {
     var $modal = $(this);

@@ -11,7 +11,7 @@ namespace InnoCMS\Devtools;
 
 use Illuminate\Support\ServiceProvider;
 
-class DevtoolsServiceProvider extends ServiceProvider
+class DevToolsServiceProvider extends ServiceProvider
 {
     /**
      * config path.

@@ -8,10 +8,13 @@
  */
 
 return [
-    'list'        => 'Catalog List',
-    'create'      => 'New Catalog',
-    'title'       => 'Title',
-    'summary'     => 'Summary',
-    'content_tab' => 'Content',
-    'extra_tab'   => 'Extra Info',
+    'list'           => 'Catalog List',
+    'create'         => 'New Catalog',
+    'title'          => 'Title',
+    'summary'        => 'Summary',
+    'content_tab'    => 'Content',
+    'extra_tab'      => 'Extra Info',
+    'parent'         => 'Parent Catalog',
+    'top_level'      => 'Top Level',
+    'parent_invalid' => 'Please select a valid parent catalog',
 ];

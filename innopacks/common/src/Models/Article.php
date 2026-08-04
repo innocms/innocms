@@ -78,11 +78,15 @@ class Article extends BaseModel
      */
     public function getUrlAttribute(): string
     {
-        if ($this->slug) {
-            return front_route('articles.slug_show', ['slug' => $this->slug]);
-        }
+        try {
+            if ($this->slug) {
+                return front_route('articles.slug_show', ['slug' => $this->slug], false);
+            }
 
-        return front_route('articles.show', $this);
+            return front_route('articles.show', $this, false);
+        } catch (Exception $e) {
+            return '#';
+        }
     }
 
     /**

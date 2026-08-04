@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "InnoCMS\\Devtools\\DevtoolsServiceProvider"
+                "InnoCMS\\Devtools\\DevToolsServiceProvider"
             ]
         }
     },

@@ -10,26 +10,44 @@
 namespace InnoCMS\Front\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use InnoCMS\Common\Models\Category;
 use InnoCMS\Common\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index(): mixed
+    public function index(Request $request): mixed
     {
-        $products = Product::query()
+        $cat      = trim((string) $request->query('cat', ''));
+        $category = null;
+        $query    = Product::query()
             ->with(['translations', 'categories'])
-            ->where('active', true)
-            ->whereHas('categories', function ($q) {
-                $q->where('slug', 'software-products');
-            })
-            ->orderBy('position')
-            ->get();
+            ->where('active', true);
 
-        $category = Category::query()
-            ->where('slug', 'software-products')
-            ->where('active', true)
-            ->first();
+        // ?cat=<slug|id> filters the list to one category; absent = all active products.
+        if ($cat !== '') {
+            $category = Category::query()
+                ->where('active', true)
+                ->where(function ($q) use ($cat): void {
+                    $q->where('slug', $cat);
+                    if (ctype_digit($cat)) {
+                        $q->orWhere('id', (int) $cat);
+                    }
+                })
+                ->first();
+
+            if ($category) {
+                $query->whereHas('categories', function ($q) use ($category): void {
+                    $q->where('categories.id', $category->id);
+                });
+            } else {
+                // An explicit but invalid ?cat= (typo / deleted / deactivated) must
+                // not degrade into the full catalog — 404 the storefront archive.
+                abort(404);
+            }
+        }
+
+        $products = $query->orderBy('position')->get();
 
         return inno_view('products.index', [
             'products' => $products,
@@ -50,8 +68,14 @@ class ProductController extends Controller
     {
         $product = Product::query()
             ->with(['translations', 'categories', 'relationProducts'])
-            ->where('slug', $slug)
             ->where('active', true)
+            ->where(function ($q) use ($slug): void {
+                $q->where('slug', $slug);
+                // Resolve the ID fallback used by Product::front_url for slug-less products.
+                if (ctype_digit($slug)) {
+                    $q->orWhere('id', (int) $slug);
+                }
+            })
             ->firstOrFail();
 
         return $this->renderShow($product);
@@ -61,11 +85,14 @@ class ProductController extends Controller
     {
         $product->increment('viewed');
 
-        $related = Product::query()
+        $categoryIds = $product->categories->pluck('id');
+        $related     = Product::query()
             ->with('translations')
             ->where('active', true)
-            ->whereHas('categories', function ($q) {
-                $q->where('slug', 'software-products');
+            ->when($categoryIds->isNotEmpty(), function ($q) use ($categoryIds) {
+                $q->whereHas('categories', function ($cq) use ($categoryIds): void {
+                    $cq->whereIn('categories.id', $categoryIds);
+                });
             })
             ->where('id', '!=', $product->id)
             ->inRandomOrder()
