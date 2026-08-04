@@ -13,11 +13,11 @@
 
   const { defineComponent, ref, computed, watch } = Vue;
 
+  // brand omitted: no Brand model/table exists yet. Re-add if brands get storefront pages.
   const DEFAULT_LINK_TYPE_OPTIONS = [
     { value: "custom", label: "Custom URL" },
     { value: "product", label: "Product" },
     { value: "category", label: "Category" },
-    { value: "brand", label: "Brand" },
     { value: "page", label: "Page" },
     { value: "article", label: "Article" },
     { value: "catalog", label: "Catalog" },

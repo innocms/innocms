@@ -135,7 +135,7 @@
         <div class="row g-4">
           @foreach($serviceCatalogs as $catalog)
             <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
-              <a href="{{ front_route('catalogs.slug_show', ['slug' => $catalog->slug]) }}" class="solution-card text-reset text-decoration-none">
+              <a href="{{ $catalog->url }}" class="solution-card text-reset text-decoration-none">
                 <h3 class="h5 fw-bold mb-2">{{ $catalog->translation->title ?? '' }}</h3>
                 <p class="text-muted small mb-0">{{ $catalog->translation->summary ?? '' }}</p>
                 <span class="solution-more mt-3 d-inline-block small">{{ __('front::common.read_more') }} <i class="bi bi-arrow-right"></i></span>
@@ -212,7 +212,7 @@
         </div>
         <div class="text-center mt-4">
           @if($newsCatalog ?? null)
-            <a href="{{ front_route('catalogs.slug_show', ['slug' => $newsCatalog->slug]) }}" class="btn btn-outline-primary">{{ __('front::common.view_more') }}</a>
+            <a href="{{ $newsCatalog->url }}" class="btn btn-outline-primary">{{ __('front::common.view_more') }}</a>
           @endif
         </div>
       </div>

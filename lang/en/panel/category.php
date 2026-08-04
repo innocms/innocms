@@ -20,4 +20,5 @@ return [
     'parent_self'        => 'A category cannot be its own parent',
     'circular_reference' => 'Cannot select itself or a descendant as parent',
     'has_children'       => 'Please delete or reassign child categories first',
+    'parent_invalid'     => 'Please select a valid parent category',
 ];

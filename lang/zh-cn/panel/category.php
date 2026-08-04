@@ -20,4 +20,5 @@ return [
     'parent_self'        => '上级分类不能是自身',
     'circular_reference' => '不能选择自身或下级分类作为上级',
     'has_children'       => '请先删除或转移该分类下的子分类',
+    'parent_invalid'     => '请选择有效的上级分类',
 ];
