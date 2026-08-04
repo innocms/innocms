@@ -37,7 +37,16 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show(string $slug): mixed
+    public function show(Product $product): mixed
+    {
+        abort_unless($product->active, 404);
+
+        $product->load(['translations', 'categories', 'relationProducts']);
+
+        return $this->renderShow($product);
+    }
+
+    public function slugShow(string $slug): mixed
     {
         $product = Product::query()
             ->with(['translations', 'categories', 'relationProducts'])
@@ -45,6 +54,11 @@ class ProductController extends Controller
             ->where('active', true)
             ->firstOrFail();
 
+        return $this->renderShow($product);
+    }
+
+    private function renderShow(Product $product): mixed
+    {
         $product->increment('viewed');
 
         $related = Product::query()

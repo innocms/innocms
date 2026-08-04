@@ -72,4 +72,5 @@ Route::prefix('official_demo')
 
 // Products
 Route::get('/products', [Controllers\ProductController::class, 'index'])->name('products.index');
-Route::get('/product-{slug}', [Controllers\ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{product}', [Controllers\ProductController::class, 'show'])->name('products.show');
+Route::get('/product-{slug}', [Controllers\ProductController::class, 'slugShow'])->name('products.slug_show');

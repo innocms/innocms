@@ -36,6 +36,8 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        $defaultLocale = setting_locale_code();
+
         $rules = [
             'position'    => 'integer',
             'viewed'      => 'integer',
@@ -49,14 +51,14 @@ class ProductRequest extends FormRequest
             'categories'  => 'nullable|array',
             'related_ids' => 'nullable|array',
 
-            'translations.*.locale'           => 'required',
-            'translations.*.name'             => 'required',
-            'translations.*.summary'          => 'nullable|string|max:1000',
-            'translations.*.selling_point'    => 'nullable|string|max:1000',
-            'translations.*.content'          => 'nullable',
-            'translations.*.meta_title'       => 'nullable|string|max:500',
-            'translations.*.meta_keywords'    => 'nullable|string|max:500',
-            'translations.*.meta_description' => 'nullable|string|max:1000',
+            "translations.$defaultLocale.locale" => 'required',
+            "translations.$defaultLocale.name"   => 'required',
+            'translations.*.summary'             => 'nullable|string|max:1000',
+            'translations.*.selling_point'       => 'nullable|string|max:1000',
+            'translations.*.content'             => 'nullable',
+            'translations.*.meta_title'          => 'nullable|string|max:500',
+            'translations.*.meta_keywords'       => 'nullable|string|max:500',
+            'translations.*.meta_description'    => 'nullable|string|max:1000',
         ];
 
         if ($this->slug) {
@@ -73,5 +75,19 @@ class ProductRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * Get human-friendly attribute names for error messages.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        $defaultLocale = setting_locale_code();
+
+        return [
+            "translations.$defaultLocale.name" => __('panel/product.name'),
+        ];
     }
 }

@@ -21,7 +21,7 @@ class ProductName extends JsonResource
     public function toArray(Request $request): array
     {
         try {
-            $url = front_route('products.show', ['product' => $this->slug ?: (string) $this->id]);
+            $url = $this->url;
         } catch (Throwable) {
             $url = '#';
         }

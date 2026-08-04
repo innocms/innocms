@@ -13,7 +13,7 @@
           @foreach($products as $product)
             @php $t = $product->translations->firstWhere('locale', app()->getLocale()) ?? $product->translations->first() @endphp
             <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
-              <a href="{{ front_route('products.show', ['slug' => $product->slug]) }}" class="product-card text-reset text-decoration-none">
+              <a href="{{ $product->url }}" class="product-card text-reset text-decoration-none">
                 <div class="product-card-img">
                   <img src="{{ image_resize($product->image ?? '', 800, 500) }}" alt="{{ $t?->name ?? '' }}" loading="lazy">
                   @if($product->spu_code)

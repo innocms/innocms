@@ -127,7 +127,9 @@ final class EntityLinkPayload
 
         try {
             return match ($type) {
-                'product'  => front_route('products.show', ['product' => $value]),
+                'product' => ctype_digit($value)
+                    ? front_route('products.show', ['product' => $value])
+                    : front_route('products.slug_show', ['slug' => $value]),
                 'category' => front_route('categories.show', ['category' => $value]),
                 'brand'    => front_route('brands.show', ['brand' => $value]),
                 'page'     => front_route('pages.show', ['page' => $value]),

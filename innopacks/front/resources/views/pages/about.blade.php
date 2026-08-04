@@ -69,7 +69,7 @@
             ];
             $pm = $pmap[strtolower($slug)] ?? ['bi-box-fill', 'blue'];
           @endphp
-          <a href="{{ front_route('products.show', ['slug' => $slug]) }}" class="about-mcard about-mcard--{{ $pm[1] }}" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 90 }}">
+          <a href="{{ $product->url }}" class="about-mcard about-mcard--{{ $pm[1] }}" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 90 }}">
             <span class="about-mcard__icon"><i class="bi {{ $pm[0] }}"></i></span>
             <h3 class="about-mcard__name">{{ $t?->name ?? '' }}</h3>
             <p class="about-mcard__desc">{{ $t?->summary ?? '' }}</p>
