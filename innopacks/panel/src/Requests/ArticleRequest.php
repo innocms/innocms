@@ -11,10 +11,11 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
+use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class ArticleRequest extends FormRequest
 {
-    use PatchRequestTrait;
+    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -43,7 +44,7 @@ class ArticleRequest extends FormRequest
             'created_at' => 'nullable|date',
 
             'translations.*.locale'           => 'required',
-            'translations.*.title'            => 'required',
+            'translations.*.title'            => 'nullable',
             'translations.*.content'          => 'nullable',
             'translations.*.summary'          => 'nullable|string|max:500',
             'translations.*.image'            => 'nullable|string|max:500',
@@ -51,6 +52,8 @@ class ArticleRequest extends FormRequest
             'translations.*.meta_keywords'    => 'nullable|string|max:500',
             'translations.*.meta_description' => 'nullable|string|max:1000',
         ];
+
+        $rules = $this->adjustTranslationRules($rules, 'title');
 
         if ($this->slug) {
             if ($this->article) {
@@ -66,5 +69,38 @@ class ArticleRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * Get custom attribute names for validator error messages.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'translations.*.title'            => __('panel/article.title'),
+            'translations.*.content'          => __('panel/article.content'),
+            'translations.*.summary'          => __('panel/article.summary'),
+            'translations.*.image'            => __('panel/article.image'),
+            'translations.*.meta_title'       => __('panel/common.meta_title'),
+            'translations.*.meta_keywords'    => __('panel/common.meta_keywords'),
+            'translations.*.meta_description' => __('panel/common.meta_description'),
+        ];
+    }
+
+    /**
+     * Get custom validation messages.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        $primary = $this->primaryLocaleCode();
+        $field   = __('panel/article.title');
+
+        return [
+            "translations.{$primary}.title" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
+        ];
     }
 }

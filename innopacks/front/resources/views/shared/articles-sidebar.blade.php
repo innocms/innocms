@@ -69,7 +69,7 @@
       <div class="sidebar-title">{{ __('front::common.tags') }}</div>
       <div class="sidebar-tag-list">
         @foreach($tags as $tag)
-          <a href="{{ front_route('tags.show', ['slug' => $tag->slug ?? '']) }}" class="tag-chip">{{ $tag->translation->name ?? '' }}</a>
+          <a href="{{ $tag->url }}" class="tag-chip">{{ $tag->translation->name ?? '' }}</a>
         @endforeach
       </div>
     </div>

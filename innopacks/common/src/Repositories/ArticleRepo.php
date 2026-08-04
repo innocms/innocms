@@ -12,6 +12,7 @@ namespace InnoCMS\Common\Repositories;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use InnoCMS\Common\Handlers\TranslationHandler;
 use InnoCMS\Common\Models\Article;
 
 class ArticleRepo extends BaseRepo
@@ -125,6 +126,26 @@ class ArticleRepo extends BaseRepo
     }
 
     /**
+     * Normalize + filter translations: drop optional-locale rows left blank and
+     * cast nulls to '' (shared handler, same path as Category/Product).
+     *
+     * @param  array  $translations
+     * @return array
+     */
+    private function handleTranslations(array $translations): array
+    {
+        if (empty($translations)) {
+            return [];
+        }
+
+        $fieldMap = [
+            'title' => ['summary', 'content', 'meta_title', 'meta_keywords', 'meta_description'],
+        ];
+
+        return TranslationHandler::process($translations, $fieldMap);
+    }
+
+    /**
      * @param  $data
      * @return Article
      * @throws \Exception|\Throwable
@@ -134,7 +155,7 @@ class ArticleRepo extends BaseRepo
         $item = new Article($data);
         $item->saveOrFail();
 
-        $translations = array_values($data['translations']);
+        $translations = $this->handleTranslations($data['translations'] ?? []);
         $item->translations()->createMany($translations);
 
         $tagIds = $data['tag_ids'] ?? [];
@@ -153,7 +174,7 @@ class ArticleRepo extends BaseRepo
         $item->fill($data);
         $item->saveOrFail();
 
-        $translations = array_values($data['translations']);
+        $translations = $this->handleTranslations($data['translations'] ?? []);
         if ($translations) {
             $item->translations()->delete();
             $item->translations()->createMany($translations);

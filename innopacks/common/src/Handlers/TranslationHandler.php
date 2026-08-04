@@ -44,6 +44,12 @@ class TranslationHandler
         $fillLang = $options['fill_lang'] ?? system_setting('auto_fill_lang', false);
         $fillTDK  = $options['fill_tdk'] ?? system_setting('title_to_tdk', false);
 
+        // Rows whose primary fields are all empty are dropped, so optional locales
+        // left blank by the editor are not stored. This keeps the translations table
+        // free of empty rows and prevents NOT NULL violations on the primary column.
+        $dropEmptyPrimary = $options['drop_empty_primary'] ?? true;
+        $primaryFields    = $options['primary_fields'] ?? array_keys($fieldMap);
+
         // Get default translation
         $defaultTranslation = self::getDefaultTranslation($translations);
         $translationItems   = [];
@@ -80,6 +86,22 @@ class TranslationHandler
                             }
                         }
                     }
+                }
+            }
+
+            // Drop rows without any primary-field content (e.g. an optional locale
+            // the editor left blank). fillLang may have just populated it from the
+            // default translation, so this check runs after auto-fill + TDK mapping.
+            if ($dropEmptyPrimary && ! empty($primaryFields)) {
+                $hasPrimary = false;
+                foreach ($primaryFields as $primaryField) {
+                    if (isset($result[$primaryField]) && trim((string) $result[$primaryField]) !== '') {
+                        $hasPrimary = true;
+                        break;
+                    }
+                }
+                if (! $hasPrimary) {
+                    continue;
                 }
             }
 

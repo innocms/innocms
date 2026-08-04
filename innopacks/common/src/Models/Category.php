@@ -139,4 +139,19 @@ class Category extends BaseModel
 
         return $this->products()->count();
     }
+
+    /**
+     * Get slug url link.
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getUrlAttribute(): string
+    {
+        if ($this->slug) {
+            return front_route('categories.slug_show', ['slug' => $this->slug]);
+        }
+
+        return front_route('categories.show', $this);
+    }
 }

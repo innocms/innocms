@@ -69,6 +69,9 @@ return [
 
     'enable_breadcrumb' => '启用面包屑',
 
+    'content'  => '内容',
+    'template' => '页面模板',
+
     'whether_enable' => '是否启用',
 
     'seo' => 'SEO',
@@ -80,4 +83,6 @@ return [
     'no_empty_languages' => '没有空语言需要填充',
     'copied_languages'   => '已填充 :count 个语言',
     'drag_sort_hint'     => '拖拽排序',
+
+    'primary_name_required' => '默认语言（:locale）的 :field 为必填项。',
 ];

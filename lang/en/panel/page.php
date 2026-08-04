@@ -10,4 +10,5 @@
 return [
     'list'   => 'Page List',
     'create' => 'New Page',
+    'title'  => 'Title',
 ];

@@ -21,7 +21,7 @@ class CategoryName extends JsonResource
     public function toArray(Request $request): array
     {
         try {
-            $url = front_route('categories.show', ['category' => $this->slug ?: (string) $this->id]);
+            $url = (string) ($this->resource?->url ?? '#');
         } catch (Throwable) {
             $url = '#';
         }

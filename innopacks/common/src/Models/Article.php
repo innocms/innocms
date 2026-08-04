@@ -9,7 +9,6 @@
 
 namespace InnoCMS\Common\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use InnoCMS\Common\Traits\Translatable;
@@ -74,7 +73,7 @@ class Article extends BaseModel
      * Get slug url link.
      *
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
     public function getUrlAttribute(): string
     {
