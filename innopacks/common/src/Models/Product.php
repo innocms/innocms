@@ -82,20 +82,6 @@ class Product extends BaseModel
     }
 
     /**
-     * Get product frontend URL.
-     *
-     * @return string
-     */
-    public function getUrlAttribute(): string
-    {
-        if ($this->slug) {
-            return front_route('products.slug_show', ['slug' => $this->slug]);
-        }
-
-        return front_route('products.show', $this);
-    }
-
-    /**
      * Get cover image URL.
      *
      * @return string
