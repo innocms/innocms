@@ -101,7 +101,13 @@ class ImageService
         } catch (Exception $e) {
             Log::error($e->getMessage());
 
-            return $this->originUrl();
+            // If original file is directly servable from public, return it
+            if (is_file(public_path($this->image))) {
+                return $this->originUrl();
+            }
+
+            // Otherwise fall back to placeholder (e.g. plugin SVG icons with no public symlink)
+            return asset($this->placeholderImage);
         }
     }
 
