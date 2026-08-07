@@ -50,10 +50,10 @@ class Page extends BaseModel
     {
         try {
             if ($this->slug) {
-                return front_route('pages.slug_show', ['slug' => $this->slug], false);
+                return front_route('pages.slug_show', ['slug' => $this->slug]);
             }
 
-            return front_route('pages.show', $this, false);
+            return front_route('pages.show', $this);
         } catch (Exception $e) {
             return '';
         }

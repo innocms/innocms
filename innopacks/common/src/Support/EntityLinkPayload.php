@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace InnoCMS\Common\Support;
 
-use InnoCMS\Common\Models\Category;
 use Throwable;
 
 /**
@@ -106,24 +105,19 @@ final class EntityLinkPayload
      */
     public static function urlFromRow(array $row): string
     {
-        $type  = strtolower((string) ($row['type'] ?? ''));
-        $value = (string) ($row['value'] ?? '');
-        $link  = trim((string) ($row['link'] ?? ''));
-
-        // Custom links keep their raw URL (internal or external) as entered.
-        if ($type === 'custom') {
-            return $link !== '' ? $link : ($value !== '' ? $value : '#');
-        }
-
-        // For entity links an explicit external URL override wins; an internal
-        // cached link is ignored so the URL is regenerated from the current route
-        // (keeps slugs/format current and avoids environment-bound absolute URLs).
-        if ($link !== '' && self::isExternalUrl($link)) {
+        $link = trim((string) ($row['link'] ?? ''));
+        if ($link !== '') {
             return $link;
         }
 
+        $type  = strtolower((string) ($row['type'] ?? ''));
+        $value = (string) ($row['value'] ?? '');
         if ($value === '') {
             return '#';
+        }
+
+        if ($type === 'custom') {
+            return $value;
         }
 
         $canonical = EntityLinkEnricher::storefrontUrlForEntity($type, $value);
@@ -133,83 +127,16 @@ final class EntityLinkPayload
 
         try {
             return match ($type) {
-                'product'  => self::entityUrl('products.show', 'product', $value),
-                'category' => self::categoryUrl($value),
-                'brand'    => front_route('brands.show', ['brand' => $value], false),
-                'page'     => front_route('pages.show', ['page' => $value], false),
-                'article'  => front_route('articles.show', ['article' => $value], false),
-                'catalog'  => front_route('catalogs.show', ['catalog' => $value], false),
+                'product'  => front_route('products.show', ['product' => $value]),
+                'category' => front_route('categories.show', ['category' => $value]),
+                'page'     => front_route('pages.show', ['page' => $value]),
+                'article'  => front_route('articles.show', ['article' => $value]),
+                'catalog'  => front_route('catalogs.show', ['catalog' => $value]),
                 default    => '#',
             };
         } catch (Throwable) {
             return '#';
         }
-    }
-
-    /**
-     * Resolve a storefront URL for an entity route, falling back to a direct
-     * path build when front_route() cannot resolve the locale-prefixed route name.
-     *
-     * @param  string  $route  Route name (e.g. 'products.show')
-     * @param  string  $prefix  URL path segment (e.g. 'product')
-     * @param  string  $value  Slug or ID value
-     * @return string
-     */
-    private static function entityUrl(string $route, string $prefix, string $value): string
-    {
-        try {
-            return front_route($route, ['slug' => $value], false);
-        } catch (Throwable) {
-            // fallback: build URL directly
-        }
-
-        $localePrefix = hide_url_locale() || locales()->isEmpty() ? '' : '/'.front_locale_code();
-
-        return $localePrefix.'/'.$prefix.'-'.$value;
-    }
-
-    /**
-     * Category storefront = product list filtered by ?cat=. Relative path.
-     *
-     * @param  string  $value  Category ID or slug
-     */
-    private static function categoryUrl(string $value): string
-    {
-        try {
-            $resolved = EntityLinkEnricher::resolveByIdOrSlug(Category::class, $value);
-            $cat      = $resolved ? ((string) ($resolved->slug ?: $resolved->id)) : $value;
-            if ($cat === '') {
-                return '#';
-            }
-
-            return front_route('products.index', [], false).'?cat='.urlencode($cat);
-        } catch (Throwable) {
-            return '#';
-        }
-    }
-
-    /**
-     * Whether a URL points off-site (host differs from app/request host).
-     */
-    private static function isExternalUrl(string $url): bool
-    {
-        if ($url === '' || $url[0] === '/') {
-            return false;
-        }
-        $host = parse_url($url, PHP_URL_HOST);
-        if (! $host) {
-            return false;
-        }
-        $appHost = (string) (parse_url((string) config('app.url'), PHP_URL_HOST) ?? '');
-        $reqHost = (string) (request()?->getHost() ?? '');
-        if ($appHost !== '' && strcasecmp($host, $appHost) === 0) {
-            return false;
-        }
-        if ($reqHost !== '' && strcasecmp($host, $reqHost) === 0) {
-            return false;
-        }
-
-        return true;
     }
 
     /**

@@ -12,7 +12,6 @@ namespace InnoCMS\Common\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use InnoCMS\Common\Traits\Translatable;
-use Throwable;
 
 class Catalog extends BaseModel
 {
@@ -65,14 +64,10 @@ class Catalog extends BaseModel
      */
     public function getUrlAttribute(): string
     {
-        try {
-            if ($this->slug) {
-                return front_route('catalogs.slug_show', ['slug' => $this->slug], false);
-            }
-
-            return front_route('catalogs.show', $this, false);
-        } catch (Throwable) {
-            return '#';
+        if ($this->slug) {
+            return front_route('catalogs.slug_show', ['slug' => $this->slug]);
         }
+
+        return front_route('catalogs.show', $this);
     }
 }

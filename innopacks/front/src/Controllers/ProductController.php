@@ -10,49 +10,19 @@
 namespace InnoCMS\Front\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use InnoCMS\Common\Models\Category;
 use InnoCMS\Common\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index(Request $request): mixed
+    public function index(): mixed
     {
-        $cat      = trim((string) $request->query('cat', ''));
-        $category = null;
-        $query    = Product::query()
+        $products = Product::query()
             ->with(['translations', 'categories'])
-            ->where('active', true);
+            ->where('active', true)
+            ->orderBy('position')
+            ->get();
 
-        // ?cat=<slug|id> filters the list to one category; absent = all active products.
-        if ($cat !== '') {
-            $category = Category::query()
-                ->where('active', true)
-                ->where(function ($q) use ($cat): void {
-                    $q->where('slug', $cat);
-                    if (ctype_digit($cat)) {
-                        $q->orWhere('id', (int) $cat);
-                    }
-                })
-                ->first();
-
-            if ($category) {
-                $query->whereHas('categories', function ($q) use ($category): void {
-                    $q->where('categories.id', $category->id);
-                });
-            } else {
-                // An explicit but invalid ?cat= (typo / deleted / deactivated) must
-                // not degrade into the full catalog — 404 the storefront archive.
-                abort(404);
-            }
-        }
-
-        $products = $query->orderBy('position')->get();
-
-        return inno_view('products.index', [
-            'products' => $products,
-            'category' => $category,
-        ]);
+        return inno_view('products.index', ['products' => $products, 'category' => null]);
     }
 
     public function show(Product $product): mixed

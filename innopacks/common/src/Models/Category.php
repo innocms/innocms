@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use InnoCMS\Common\Traits\HasPackageFactory;
 use InnoCMS\Common\Traits\Translatable;
-use Throwable;
 
 class Category extends BaseModel
 {
@@ -142,29 +141,17 @@ class Category extends BaseModel
     }
 
     /**
-     * Storefront URL: lists products in this category.
-     * Falls back to the category ID when the slug is empty, so list/panel views
-     * never throw UrlGenerationException for slug-less categories.
+     * Get slug url link.
      *
      * @return string
+     * @throws Exception
      */
     public function getUrlAttribute(): string
     {
-        $slug = $this->slug ?: ((string) $this->id ?: '');
-        if ($slug === '') {
-            return '#';
+        if ($this->slug) {
+            return front_route('categories.slug_show', ['slug' => $this->slug]);
         }
 
-        // Category storefront = product list filtered by ?cat=<slug>. Relative
-        // path so the link works across environments (dev/staging/prod).
-        try {
-            return front_route('products.index', [], false).'?cat='.urlencode($slug);
-        } catch (Throwable) {
-            // fallback: build path directly when route resolution fails
-        }
-
-        $prefix = hide_url_locale() || locales()->isEmpty() ? '' : '/'.front_locale_code();
-
-        return $prefix.'/products?cat='.urlencode($slug);
+        return front_route('categories.show', $this);
     }
 }

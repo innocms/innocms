@@ -9,7 +9,6 @@
 
 namespace InnoCMS\Common\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use InnoCMS\Common\Traits\Translatable;
@@ -74,19 +73,15 @@ class Article extends BaseModel
      * Get slug url link.
      *
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
     public function getUrlAttribute(): string
     {
-        try {
-            if ($this->slug) {
-                return front_route('articles.slug_show', ['slug' => $this->slug], false);
-            }
-
-            return front_route('articles.show', $this, false);
-        } catch (Exception $e) {
-            return '#';
+        if ($this->slug) {
+            return front_route('articles.slug_show', ['slug' => $this->slug]);
         }
+
+        return front_route('articles.show', $this);
     }
 
     /**

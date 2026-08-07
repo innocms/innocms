@@ -15,7 +15,6 @@ use InnoCMS\Common\Models\Product\Relation;
 use InnoCMS\Common\Traits\HasPackageFactory;
 use InnoCMS\Common\Traits\Replicate;
 use InnoCMS\Common\Traits\Translatable;
-use Throwable;
 
 class Product extends BaseModel
 {
@@ -102,50 +101,26 @@ class Product extends BaseModel
     }
 
     /**
-     * Storefront detail URL. Falls back to the product ID when the slug is empty,
-     * so list/panel views never throw UrlGenerationException for slug-less products.
-     *
-     * @return string
-     */
-    public function getFrontUrlAttribute(): string
-    {
-        return $this->storefrontUrl();
-    }
-
-    /**
-     * Alias for themes that use $product->url instead of $product->front_url.
+     * Get URL.
      *
      * @return string
      */
     public function getUrlAttribute(): string
     {
-        return $this->storefrontUrl();
+        if ($this->slug) {
+            return front_route('products.slug_show', ['slug' => $this->slug]);
+        }
+
+        return front_route('products.show', $this);
     }
 
     /**
-     * Build the storefront detail URL with slug-or-ID fallback.
+     * Alias for templates that use $product->front_url.
      *
      * @return string
      */
-    private function storefrontUrl(): string
+    public function getFrontUrlAttribute(): string
     {
-        $slug = $this->slug ?: ((string) $this->id ?: '');
-
-        try {
-            if ($slug !== '') {
-                return front_route('products.show', ['slug' => $slug], false);
-            }
-        } catch (Throwable) {
-            // fallback: build URL directly to avoid RouteNotFoundException
-            // when front_route() cannot resolve the locale-prefixed route name
-        }
-
-        if ($slug !== '') {
-            $prefix = hide_url_locale() || locales()->isEmpty() ? '' : '/'.front_locale_code();
-
-            return $prefix.'/product-'.$slug;
-        }
-
-        return '#';
+        return $this->url;
     }
 }

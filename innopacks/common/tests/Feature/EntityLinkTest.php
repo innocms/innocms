@@ -255,12 +255,12 @@ class EntityLinkTest extends TestCase
         // Plain string stays as-is
         $this->assertSame('https://example.com', entity_link_url('https://example.com'));
 
-        // Product without slug falls back to ID-based storefront URL
+        // Product without slug falls back to the ID-based products.show route
         $product = $this->createProduct('Phone');
         // createProduct sets slug; remove it to exercise the ID fallback
         $product->update(['slug' => null]);
         $url = entity_link_url(json_encode(['type' => 'product', 'value' => (string) $product->id, 'entity_label' => '', 'link' => '', 'entity_image' => '', 'entity_price' => '']));
-        $this->assertStringContainsString('product-'.$product->id, $url);
+        $this->assertStringContainsString('products/'.$product->id, $url);
     }
 
     #[Test]
@@ -274,25 +274,29 @@ class EntityLinkTest extends TestCase
     }
 
     #[Test]
-    public function test_category_url_degrades_when_slug_missing(): void
+    public function test_category_url_falls_back_to_id_route_when_slug_missing(): void
     {
-        // Slug-less category never throws UrlGenerationException
-        $this->assertSame('#', (new Category(['slug' => null]))->url);
+        // A persisted slug-less category resolves via the id-based categories.show
+        // route (enterprise pattern — no '#' fallback).
+        $category = $this->createCategory('No Slug');
+        $category->update(['slug' => null]);
+
+        $url = $category->fresh()->url;
+
+        $this->assertStringContainsString('categories/'.$category->id, $url);
     }
 
     #[Test]
-    public function test_category_url_uses_storefront_products_cat_format(): void
+    public function test_category_url_uses_category_slug_route(): void
     {
-        // Category storefront = /products?cat=<slug>; relative (no host) so the
-        // link works across dev/staging/prod. Stable even when front routes are
-        // not loaded (accessor has a direct-path fallback that keeps the format).
+        // Category storefront uses the categories.slug_show route (/category-<slug>),
+        // aligned with enterprise Category::getUrlAttribute() — never /products?cat=.
         $category = $this->createCategory('Three Dee Wall');
 
         $url = $category->url;
 
-        $this->assertStringContainsString('products?cat=', $url);
-        $this->assertStringContainsString('three-dee-wall', $url);
-        $this->assertStringNotContainsString('://', $url);
+        $this->assertStringContainsString('category-three-dee-wall', $url);
+        $this->assertStringNotContainsString('products?cat=', $url);
     }
 
     #[Test]

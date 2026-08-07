@@ -48,18 +48,15 @@ class PageController extends Controller
     /**
      * Show page by ID.
      *
-     * @param  Request  $request
+     * @param  Page  $page
      * @return mixed
      * @throws \Exception
      */
-    public function show(Request $request): mixed
+    public function show(Page $page): mixed
     {
-        $slug    = str_replace(['/', '.html'], '', $request->getRequestUri());
-        $filters = [
-            'slug'   => $slug,
-            'active' => true,
-        ];
-        $page = PageRepo::getInstance()->builder($filters)->firstOrFail();
+        if (! $page->active) {
+            abort(404);
+        }
 
         return $this->renderPage($page);
     }
