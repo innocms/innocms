@@ -43,6 +43,7 @@ if ($hasSuffix) {
     // Pages - Use page-{slug} pattern consistent with other resources
     Route::get('/pages.html', [Controllers\PageController::class, 'index'])->name('pages.index');
     Route::get('/page-{slug}.html', [Controllers\PageController::class, 'slugShow'])->name('pages.slug_show');
+    Route::get('/pages/{page}.html', [Controllers\PageController::class, 'show'])->name('pages.show');
 } else {
     // Catalogs
     Route::get('/catalogs', [Controllers\CatalogController::class, 'index'])->name('catalogs.index');
@@ -61,6 +62,7 @@ if ($hasSuffix) {
     // Pages - Use page-{slug} pattern consistent with other resources
     Route::get('/pages', [Controllers\PageController::class, 'index'])->name('pages.index');
     Route::get('/page-{slug}', [Controllers\PageController::class, 'slugShow'])->name('pages.slug_show');
+    Route::get('/pages/{page}', [Controllers\PageController::class, 'show'])->name('pages.show');
 }
 
 // Official service demo pages
@@ -74,3 +76,8 @@ Route::prefix('official_demo')
 Route::get('/products', [Controllers\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [Controllers\ProductController::class, 'show'])->name('products.show');
 Route::get('/product-{slug}', [Controllers\ProductController::class, 'slugShow'])->name('products.slug_show');
+
+// Categories
+Route::get('/categories', [Controllers\CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{category}', [Controllers\CategoryController::class, 'show'])->name('categories.show');
+Route::get('/category-{slug}', [Controllers\CategoryController::class, 'slugShow'])->name('categories.slug_show');

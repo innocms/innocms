@@ -85,7 +85,7 @@
               $rpContent = $rt?->content ?? '';
             @endphp
             <div class="col-12 col-md-4" data-aos="fade-up" data-aos-duration="{{ 300 + $loop->index * 200 }}">
-              <a href="{{ $rp->url }}" class="product-related-card text-reset text-decoration-none h-100 d-flex flex-column">
+              <a href="{{ $rp->front_url }}" class="product-related-card text-reset text-decoration-none h-100 d-flex flex-column">
                 <div class="product-related-img">
                   <img src="{{ image_resize($rp->image ?? '', 800, 500) }}" alt="{{ $rt?->name ?? '' }}" loading="lazy">
                 </div>

@@ -21,7 +21,7 @@ class ProductName extends JsonResource
     public function toArray(Request $request): array
     {
         try {
-            $url = $this->url;
+            $url = (string) $this->front_url;
         } catch (Throwable) {
             $url = '#';
         }

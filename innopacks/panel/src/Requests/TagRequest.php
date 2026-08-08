@@ -11,10 +11,11 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
+use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class TagRequest extends FormRequest
 {
-    use PatchRequestTrait;
+    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -38,8 +39,10 @@ class TagRequest extends FormRequest
             'active'   => 'bool',
 
             'translations.*.locale' => 'required',
-            'translations.*.name'   => 'required',
+            'translations.*.name'   => 'nullable',
         ];
+
+        $rules = $this->adjustTranslationRules($rules, 'name');
 
         if ($this->slug) {
             if ($this->tag) {
@@ -55,5 +58,20 @@ class TagRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    /**
+     * Get custom validation messages.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        $primary = $this->primaryLocaleCode();
+        $field   = __('panel/tag.name');
+
+        return [
+            "translations.{$primary}.name" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
+        ];
     }
 }

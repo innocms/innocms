@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('body-class', 'page-products')
-@section('title', $category?->translation?->meta_title ?: __('front::common.products_title'))
+@section('body-class', 'page-category')
+@section('title', $category->translation->meta_title ?: $category->translation->name)
 
 @section('content')
-  @include('shared.page-head', ['title' => $category?->translation?->name ?? __('front::common.products_title')])
+  @include('shared.page-head', ['title' => $category->translation->name])
 
-  @if(($products ?? null) && $products->isNotEmpty())
+  @if($products->isNotEmpty())
     <section class="products-list-section">
       <div class="container">
         <div class="row g-4">
@@ -31,6 +31,12 @@
             </div>
           @endforeach
         </div>
+      </div>
+    </section>
+  @else
+    <section class="products-list-section">
+      <div class="container">
+        <p class="text-muted text-center py-5">{{ __('front::common.no_data') }}</p>
       </div>
     </section>
   @endif

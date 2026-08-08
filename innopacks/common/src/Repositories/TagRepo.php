@@ -12,6 +12,7 @@ namespace InnoCMS\Common\Repositories;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use InnoCMS\Common\Handlers\TranslationHandler;
 use InnoCMS\Common\Models\Tag;
 
 class TagRepo extends BaseRepo
@@ -110,6 +111,22 @@ class TagRepo extends BaseRepo
     }
 
     /**
+     * Normalize + filter translations: drop optional-locale rows left blank and
+     * cast nulls to '' (shared handler, same path as Category/Product).
+     *
+     * @param  array  $translations
+     * @return array
+     */
+    private function handleTranslations(array $translations): array
+    {
+        if (empty($translations)) {
+            return [];
+        }
+
+        return TranslationHandler::process($translations, ['name' => []]);
+    }
+
+    /**
      * @param  $data
      * @return Tag
      * @throws \Exception|\Throwable
@@ -118,7 +135,7 @@ class TagRepo extends BaseRepo
     {
         $item = new Tag($data);
         $item->saveOrFail();
-        $item->translations()->createMany($data['translations']);
+        $item->translations()->createMany($this->handleTranslations($data['translations'] ?? []));
 
         return $item;
     }
@@ -132,8 +149,11 @@ class TagRepo extends BaseRepo
     {
         $item->fill($data);
         $item->saveOrFail();
-        $item->translations()->delete();
-        $item->translations()->createMany($data['translations']);
+        $translations = $this->handleTranslations($data['translations'] ?? []);
+        if ($translations) {
+            $item->translations()->delete();
+            $item->translations()->createMany($translations);
+        }
 
         return $item;
     }

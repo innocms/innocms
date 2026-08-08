@@ -314,7 +314,25 @@ class ProductRepo extends BaseRepo
             $product->saveOrFail();
 
             if (isset($data['translations'])) {
-                $translations = $this->handleTranslations($data['translations']);
+                // Seed the product's existing translation rows so the primary field
+                // (name) is always present and partial PATCH entries survive
+                // TranslationHandler's drop-empty-primary check (matches sibling repos).
+                $base = [];
+                foreach ($product->translations as $tr) {
+                    $base[$tr->locale] = $tr->only($tr->getFillable());
+                }
+                foreach ($data['translations'] as $key => $fields) {
+                    if (! is_array($fields)) {
+                        continue;
+                    }
+                    $locale        = $fields['locale'] ?? $key;
+                    $base[$locale] = array_merge(
+                        $base[$locale] ?? [],
+                        $fields,
+                        ['locale' => $locale]
+                    );
+                }
+                $translations = $this->handleTranslations(array_values($base));
                 foreach ($translations as $translation) {
                     $existTranslation = $product->translations()->where('locale', $translation['locale'])->first();
                     if ($existTranslation) {

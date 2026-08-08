@@ -29,4 +29,21 @@ class Tag extends BaseModel
     {
         return $this->fallbackName('name');
     }
+
+    /**
+     * Get tag url link.
+     *
+     * CMS tags only expose a slug route (tags.show = /tags-{slug}); there is no
+     * id-based tag route, so a missing slug degrades to '#' instead of throwing.
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        if ($this->slug) {
+            return front_route('tags.show', ['slug' => $this->slug]);
+        }
+
+        return '#';
+    }
 }

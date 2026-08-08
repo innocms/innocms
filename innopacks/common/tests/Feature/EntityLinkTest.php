@@ -255,10 +255,48 @@ class EntityLinkTest extends TestCase
         // Plain string stays as-is
         $this->assertSame('https://example.com', entity_link_url('https://example.com'));
 
-        // Product without front route falls back to '#' gracefully
+        // Product without slug falls back to the ID-based products.show route
         $product = $this->createProduct('Phone');
-        $url     = entity_link_url(json_encode(['type' => 'product', 'value' => (string) $product->id, 'entity_label' => '', 'link' => '', 'entity_image' => '', 'entity_price' => '']));
-        $this->assertSame('#', $url);
+        // createProduct sets slug; remove it to exercise the ID fallback
+        $product->update(['slug' => null]);
+        $url = entity_link_url(json_encode(['type' => 'product', 'value' => (string) $product->id, 'entity_label' => '', 'link' => '', 'entity_image' => '', 'entity_price' => '']));
+        $this->assertStringContainsString('products/'.$product->id, $url);
+    }
+
+    #[Test]
+    public function test_category_entity_link_url_does_not_throw(): void
+    {
+        // Storefront category page resolves via Category::getUrlAttribute() without
+        // throwing, regardless of whether front routes are loaded in the test env.
+        $category = $this->createCategory('Gadgets');
+        $url      = entity_link_url(json_encode(['type' => 'category', 'value' => (string) $category->id, 'entity_label' => '', 'link' => '', 'entity_image' => '', 'entity_price' => '']));
+        $this->assertIsString($url);
+    }
+
+    #[Test]
+    public function test_category_url_falls_back_to_id_route_when_slug_missing(): void
+    {
+        // A persisted slug-less category resolves via the id-based categories.show
+        // route (enterprise pattern — no '#' fallback).
+        $category = $this->createCategory('No Slug');
+        $category->update(['slug' => null]);
+
+        $url = $category->fresh()->url;
+
+        $this->assertStringContainsString('categories/'.$category->id, $url);
+    }
+
+    #[Test]
+    public function test_category_url_uses_category_slug_route(): void
+    {
+        // Category storefront uses the categories.slug_show route (/category-<slug>),
+        // aligned with enterprise Category::getUrlAttribute() — never /products?cat=.
+        $category = $this->createCategory('Three Dee Wall');
+
+        $url = $category->url;
+
+        $this->assertStringContainsString('category-three-dee-wall', $url);
+        $this->assertStringNotContainsString('products?cat=', $url);
     }
 
     #[Test]
@@ -287,5 +325,53 @@ class EntityLinkTest extends TestCase
         $this->assertNotNull($byId);
         $this->assertNotNull($bySlug);
         $this->assertSame($article->id, $bySlug->id);
+    }
+
+    #[Test]
+    public function test_catalog_repo_drops_empty_title_translation_rows(): void
+    {
+        // Reproduces the "Column 'title' cannot be null" bug: an optional locale
+        // left blank by the editor is dropped instead of inserted with a null title.
+        $catalog = CatalogRepo::getInstance()->create([
+            'parent_id'    => 0,
+            'slug'         => 'test-catalog-'.uniqid(),
+            'position'     => 0,
+            'active'       => true,
+            'translations' => [
+                ['locale' => 'en', 'title' => null, 'summary' => null, 'meta_title' => '', 'meta_keywords' => '', 'meta_description' => ''],
+                ['locale' => 'zh-cn', 'title' => '测试分类', 'summary' => '', 'meta_title' => '', 'meta_keywords' => '', 'meta_description' => ''],
+            ],
+        ]);
+
+        $locales = $catalog->translations->pluck('locale')->all();
+        $this->assertNotContains('en', $locales);
+        $this->assertContains('zh-cn', $locales);
+        $this->assertSame('测试分类', $catalog->translate('zh-cn', 'title'));
+    }
+
+    #[Test]
+    public function test_catalog_repo_update_without_translations_keeps_existing_rows(): void
+    {
+        // update() without a translations key must NOT wipe existing rows (regression
+        // guard for the unguarded delete-then-rebuild that silently destroyed data).
+        $catalog = CatalogRepo::getInstance()->create([
+            'parent_id'    => 0,
+            'slug'         => 'test-keep-'.uniqid(),
+            'position'     => 0,
+            'active'       => true,
+            'translations' => [
+                ['locale' => 'zh-cn', 'title' => '保留', 'summary' => '', 'meta_title' => '', 'meta_keywords' => '', 'meta_description' => ''],
+            ],
+        ]);
+
+        CatalogRepo::getInstance()->update($catalog, [
+            'parent_id' => 0,
+            'slug'      => $catalog->slug,
+            'position'  => 0,
+            'active'    => true,
+        ]);
+
+        $this->assertCount(1, $catalog->fresh()->translations);
+        $this->assertSame('保留', $catalog->fresh()->translate('zh-cn', 'title'));
     }
 }

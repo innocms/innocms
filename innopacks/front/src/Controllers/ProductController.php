@@ -10,7 +10,6 @@
 namespace InnoCMS\Front\Controllers;
 
 use App\Http\Controllers\Controller;
-use InnoCMS\Common\Models\Category;
 use InnoCMS\Common\Models\Product;
 
 class ProductController extends Controller
@@ -20,21 +19,10 @@ class ProductController extends Controller
         $products = Product::query()
             ->with(['translations', 'categories'])
             ->where('active', true)
-            ->whereHas('categories', function ($q) {
-                $q->where('slug', 'software-products');
-            })
             ->orderBy('position')
             ->get();
 
-        $category = Category::query()
-            ->where('slug', 'software-products')
-            ->where('active', true)
-            ->first();
-
-        return inno_view('products.index', [
-            'products' => $products,
-            'category' => $category,
-        ]);
+        return inno_view('products.index', ['products' => $products, 'category' => null]);
     }
 
     public function show(Product $product): mixed
@@ -50,8 +38,14 @@ class ProductController extends Controller
     {
         $product = Product::query()
             ->with(['translations', 'categories', 'relationProducts'])
-            ->where('slug', $slug)
             ->where('active', true)
+            ->where(function ($q) use ($slug): void {
+                $q->where('slug', $slug);
+                // Resolve the ID fallback used by Product::front_url for slug-less products.
+                if (ctype_digit($slug)) {
+                    $q->orWhere('id', (int) $slug);
+                }
+            })
             ->firstOrFail();
 
         return $this->renderShow($product);
@@ -61,11 +55,14 @@ class ProductController extends Controller
     {
         $product->increment('viewed');
 
-        $related = Product::query()
+        $categoryIds = $product->categories->pluck('id');
+        $related     = Product::query()
             ->with('translations')
             ->where('active', true)
-            ->whereHas('categories', function ($q) {
-                $q->where('slug', 'software-products');
+            ->when($categoryIds->isNotEmpty(), function ($q) use ($categoryIds) {
+                $q->whereHas('categories', function ($cq) use ($categoryIds): void {
+                    $cq->whereIn('categories.id', $categoryIds);
+                });
             })
             ->where('id', '!=', $product->id)
             ->inRandomOrder()
