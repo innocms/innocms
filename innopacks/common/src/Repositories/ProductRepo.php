@@ -135,6 +135,10 @@ class ProductRepo extends BaseRepo
         if ($sort && $order) {
             $builder->orderBy($sort, $order);
         }
+
+        // Stable tiebreaker so pagination is deterministic when many rows share
+        // the same sort value (e.g. identical created_at from bulk imports).
+        $builder->orderBy('id', $order);
     }
 
     /**

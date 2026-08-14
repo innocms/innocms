@@ -36,15 +36,20 @@ class ProductController extends BaseController
      */
     #[Endpoint('List products')]
     #[QueryParam('tag_ids', 'string', required: false, description: 'Comma-separated product IDs (used by the related-product picker)')]
+    #[QueryParam('per_page', 'integer', required: false, description: 'Items per page')]
     public function index(Request $request): AnonymousResourceCollection
     {
         $filters = $request->all();
         if (isset($filters['tag_ids'])) {
             $filters['product_ids'] = array_filter(explode(',', $filters['tag_ids']), 'is_numeric');
             unset($filters['tag_ids']);
+
+            $products = ProductRepo::getInstance()->builder($filters)->limit(20)->get();
+
+            return ProductSimple::collection($products);
         }
 
-        $products = ProductRepo::getInstance()->builder($filters)->limit(20)->get();
+        $products = ProductRepo::getInstance()->list($filters);
 
         return ProductSimple::collection($products);
     }
