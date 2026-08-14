@@ -48,6 +48,13 @@ Blade template files (`.blade.php`) do NOT need this header.
 
 `bootstrap/providers.php` must return fully qualified class names (`InnoCMS\Mcp\McpServiceProvider::class`) directly — do NOT add `use` imports at the top. `pint.json` already excludes `bootstrap/` (and `app`, `config`, `resources`, `themes`); never pass files from those directories explicitly to pint, or the exclusion is bypassed.
 
+## Theme Development
+
+- **完整主题开发指南见 [`docs/theme-development.md`](docs/theme-development.md)**（结构 / 视图覆盖 / 辅助函数 / 校验发布）。
+- 主题 = 独立 git 仓库放 `themes/{code}/`（不 fork core），托管在 Gitea `cmsthemes` 组织。
+- 激活：`SettingRepo::updateSystemValue('theme', code)`；视图同名覆盖 front 默认视图。
+- `themes/*` 不入 innocms 主仓库 git（各主题自带 .git），参考 `themes/aurora`、`themes/gallery`。
+
 ## Git Workflow
 
 ### Commit Rules
