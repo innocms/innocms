@@ -21,7 +21,11 @@ trait PatchRequestTrait
     protected function applySometimesToRules(array $rules): array
     {
         foreach ($rules as $key => $rule) {
-            $rules[$key] = 'sometimes|'.$rule;
+            if (is_array($rule)) {
+                $rules[$key] = array_merge(['sometimes'], $rule);
+            } else {
+                $rules[$key] = 'sometimes|'.$rule;
+            }
         }
 
         return $rules;

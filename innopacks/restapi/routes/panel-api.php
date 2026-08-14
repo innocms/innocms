@@ -62,13 +62,23 @@ Route::middleware($middlewares)->group(function () {
     Route::patch('/tags/{tag}', [PanelApiControllers\TagController::class, 'patch'])->name('tags.patch');
     Route::delete('/tags/{tag}', [PanelApiControllers\TagController::class, 'destroy'])->name('tags.destroy');
 
-    // Products (display-only CMS) — picker endpoints for the product form
+    // Products
     Route::get('/products', [PanelApiControllers\ProductController::class, 'index'])->name('products.index');
     Route::get('/products/autocomplete', [PanelApiControllers\ProductController::class, 'autocomplete'])->name('products.autocomplete');
+    Route::post('/products', [PanelApiControllers\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}', [PanelApiControllers\ProductController::class, 'show'])->name('products.show');
+    Route::put('/products/{product}', [PanelApiControllers\ProductController::class, 'update'])->name('products.update');
+    Route::patch('/products/{product}', [PanelApiControllers\ProductController::class, 'patch'])->name('products.patch');
+    Route::delete('/products/{product}', [PanelApiControllers\ProductController::class, 'destroy'])->name('products.destroy');
 
-    // Product categories — picker endpoints for the product form
+    // Product categories
     Route::get('/categories', [PanelApiControllers\CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/autocomplete', [PanelApiControllers\CategoryController::class, 'autocomplete'])->name('categories.autocomplete');
+    Route::post('/categories', [PanelApiControllers\CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}', [PanelApiControllers\CategoryController::class, 'show'])->name('categories.show');
+    Route::put('/categories/{category}', [PanelApiControllers\CategoryController::class, 'update'])->name('categories.update');
+    Route::patch('/categories/{category}', [PanelApiControllers\CategoryController::class, 'patch'])->name('categories.patch');
+    Route::delete('/categories/{category}', [PanelApiControllers\CategoryController::class, 'destroy'])->name('categories.destroy');
 
     // Contacts
     Route::get('/contacts', [PanelApiControllers\ContactController::class, 'index'])->name('contacts.index');

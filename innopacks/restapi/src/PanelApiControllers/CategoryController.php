@@ -9,14 +9,19 @@
 
 namespace InnoCMS\Restapi\PanelApiControllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use InnoCMS\Common\Models\Category;
 use InnoCMS\Common\Repositories\CategoryRepo;
 use InnoCMS\Common\Resources\CategoryName;
 use InnoCMS\Common\Resources\CategorySimple;
+use InnoCMS\Panel\Requests\CategoryRequest;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\QueryParam;
+use Knuckles\Scribe\Attributes\UrlParam;
+use Throwable;
 
 #[Group('Panel - Product Categories')]
 class CategoryController extends BaseController
@@ -59,5 +64,111 @@ class CategoryController extends BaseController
         $categories = CategoryRepo::getInstance()->autocomplete($keyword, 50);
 
         return CategoryName::collection($categories);
+    }
+
+    /**
+     * Create a product category.
+     * POST /api/panel/categories
+     *
+     * @param  CategoryRequest  $request
+     * @return mixed
+     * @throws Throwable
+     */
+    #[Endpoint('Create product category')]
+    public function store(CategoryRequest $request): mixed
+    {
+        try {
+            $data     = $request->all();
+            $category = CategoryRepo::getInstance()->create($data);
+
+            return json_success(common_trans('base.updated_success'), $category);
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * Get product category detail.
+     * GET /api/panel/categories/{category}
+     *
+     * @param  Category  $category
+     * @return mixed
+     */
+    #[Endpoint('Get product category detail')]
+    #[UrlParam('category', 'integer', description: 'Category ID')]
+    public function show(Category $category): mixed
+    {
+        $category->load(['translations', 'parent', 'children.translations']);
+
+        return read_json_success($category);
+    }
+
+    /**
+     * Update a product category.
+     * PUT /api/panel/categories/{category}
+     *
+     * @param  CategoryRequest  $request
+     * @param  Category  $category
+     * @return mixed
+     * @throws Throwable
+     */
+    #[Endpoint('Update product category')]
+    #[UrlParam('category', 'integer', description: 'Category ID')]
+    public function update(CategoryRequest $request, Category $category): mixed
+    {
+        try {
+            $data = $request->all();
+            CategoryRepo::getInstance()->update($category, $data);
+
+            return update_json_success($category);
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * Partial update a product category.
+     * PATCH /api/panel/categories/{category}
+     *
+     * @param  CategoryRequest  $request
+     * @param  Category  $category
+     * @return mixed
+     * @throws Throwable
+     */
+    #[Endpoint('Partial update product category')]
+    #[UrlParam('category', 'integer', description: 'Category ID')]
+    public function patch(CategoryRequest $request, Category $category): mixed
+    {
+        try {
+            $data = $request->validated();
+            CategoryRepo::getInstance()->patch($category, $data);
+
+            return update_json_success($category);
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    /**
+     * Delete a product category. Refuses when the category still has children.
+     * DELETE /api/panel/categories/{category}
+     *
+     * @param  Category  $category
+     * @return mixed
+     */
+    #[Endpoint('Delete product category')]
+    #[UrlParam('category', 'integer', description: 'Category ID')]
+    public function destroy(Category $category): mixed
+    {
+        try {
+            if ($category->children()->count()) {
+                throw new Exception(trans('panel/category.has_children'));
+            }
+            CategoryRepo::getInstance()->destroy($category);
+
+            return json_success(common_trans('base.deleted_success'));
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
     }
 }
