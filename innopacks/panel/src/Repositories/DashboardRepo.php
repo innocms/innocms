@@ -80,6 +80,39 @@ class DashboardRepo
     }
 
     /**
+     * Daily report for the panel API (restapi DashboardController).
+     *
+     * @param  string|null  $date  Y-m-d, defaults to today
+     * @return array
+     */
+    public function getDailyReport(?string $date = null): array
+    {
+        $date = $date ?: today()->toDateString();
+
+        try {
+            $stats = VisitRepo::getInstance()->getStatistics([
+                'start_date' => $date,
+                'end_date'   => $date,
+            ]);
+            $visitStats = [
+                'pv' => $stats['total_visits'] ?? 0,
+                'uv' => $stats['unique_sessions'] ?? 0,
+                'ip' => $stats['unique_visitors'] ?? 0,
+            ];
+        } catch (\Exception $e) {
+            $visitStats = ['pv' => 0, 'uv' => 0, 'ip' => 0];
+        }
+
+        return [
+            'date'    => $date,
+            'pv'      => $visitStats['pv'],
+            'uv'      => $visitStats['uv'],
+            'ip'      => $visitStats['ip'],
+            'article' => Article::query()->count(),
+        ];
+    }
+
+    /**
      * 获取最近30天的 PV/UV/IP 趋势数据
      */
     public function getVisitTrendLatestMonth(): array
