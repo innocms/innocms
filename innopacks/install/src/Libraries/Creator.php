@@ -72,7 +72,7 @@ class Creator
         }
 
         $dir = base_path('themes/'.$theme);
-        if (! is_dir($dir) || ! is_file($dir.'/demo/Seeder.php')) {
+        if (! is_dir($dir) || ! app(ThemeDemoService::class)->hasDemo($dir)) {
             return;
         }
 

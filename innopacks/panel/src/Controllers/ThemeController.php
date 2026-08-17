@@ -102,7 +102,7 @@ class ThemeController extends BaseController
     }
 
     /**
-     * Import theme demo data from themes/{code}/demo/Seeder.php (and optional images).
+     * Import theme demo data from themes/{code}/setup/seeder.php (and optional images).
      *
      * Body JSON: { "clear_default_catalog": 0|1 } clears CMS articles/catalogs/pages/tags before import when truthy.
      *
