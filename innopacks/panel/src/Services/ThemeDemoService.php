@@ -13,7 +13,7 @@ use Exception;
 use Illuminate\Support\Facades\File;
 
 /**
- * Theme demo package: resolves themes/{code}/setup/seeder.php (callable), copies images to public/static/themes/{code}/images.
+ * Theme demo package: resolves themes/{code}/demo/seeder.php (callable), copies images to public/static/themes/{code}/images.
  *
  * Mirrors InnoShop Factory behaviour adapted for InnoCMS CMS tables only.
  */
@@ -89,7 +89,7 @@ class ThemeDemoService
 
     public function resolveDemoSeederPath(string $themeDirectory): ?string
     {
-        $seeder = $themeDirectory.'/setup/seeder.php';
+        $seeder = $themeDirectory.'/demo/seeder.php';
 
         return is_file($seeder) ? $seeder : null;
     }

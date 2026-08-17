@@ -26,8 +26,8 @@ themes/{code}/
 │   └── css|js|images
 ├── lang/{locale}/       # 主题翻译，用 theme_trans() 访问
 ├── assets/              # 构建源（可选）
-├── demo/Seeder.php      # 演示数据（可选）
-├── setup/boot.php       # 启动钩子（可选，require 返回 callable）
+├── demo/                # 演示包（可选）：seeder.php + images/
+├── setup/boot.php       # 运行时钩子（可选，require 返回 callable）
 └── routes/              # 自定义路由（可选）
     ├── root.php         #   无 locale 前缀
     └── front.php        #   自动按 locale 前缀注册
