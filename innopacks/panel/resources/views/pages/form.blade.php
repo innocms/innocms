@@ -71,8 +71,7 @@
                         <div class="tab-pane fade show" id="tab-code-{{ $localeCode }}">
                           <x-panel-form-codemirror title="模板" name="translations[{{$localeCode}}][template]"
                             value="{{ old('translations.' . $localeCode . '.template', $page->translate($localeCode, 'template')) }}"
-                            required
-                            placeholder="模板"/>
+                            placeholder="整页 HTML(原样输出,不编译)"/>
                         </div>
                       </div>
 

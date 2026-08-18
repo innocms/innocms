@@ -11,7 +11,6 @@ namespace InnoCMS\Front\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Blade;
 use InnoCMS\Common\Models\Page;
 use InnoCMS\Common\Models\Product;
 use InnoCMS\Common\Repositories\PageRepo;
@@ -62,9 +61,9 @@ class PageController extends Controller
     }
 
     /**
-     * Render page with InnoShop-style fallback chain:
+     * Render page with fallback chain:
      *   1. Theme blade named pages.{slug} (custom design override)
-     *   2. Backend `template` field (Blade code string)
+     *   2. pages.show + backend `template` field (raw full-page HTML)
      *   3. pages.show + backend `content` rich text (default)
      *
      * @param  Page  $page
@@ -85,15 +84,14 @@ class PageController extends Controller
             return inno_view("pages.$slug", ['page' => $page]);
         }
 
-        // 2-3. Backend template field (Blade code) → pages.show + rich text content
+        // 2-3. Backend template field (raw HTML) → pages.show + rich text content
         $data = [
-            'slug' => $page->slug,
+            'slug' => $slug,
             'page' => $page,
         ];
-        $template = $page->translation?->template ?? '';
-        if ($template) {
-            $result         = Blade::render($template, $data);
-            $data['result'] = $result;
+        if ($template = $page->translation?->template ?? '') {
+            // Security invariant: DB content is echoed raw and must never be compiled through Blade.
+            $data['result'] = $template;
         }
 
         return inno_view('pages.show', $data);
