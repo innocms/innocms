@@ -9,6 +9,7 @@
 
 namespace InnoCMS\Front;
 
+use Exception;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -19,7 +20,6 @@ use InnoCMS\Common\Middleware\VisitTrackingMiddleware;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
 use InnoCMS\Front\Middleware\SetFrontLocale;
 use InnoCMS\Front\Repositories\MenuRepo;
-use InnoCMS\Front\Translation\MultiPathFileLoader;
 
 class FrontServiceProvider extends ServiceProvider
 {
@@ -27,57 +27,26 @@ class FrontServiceProvider extends ServiceProvider
      * Boot front service provider.
      *
      * @return void
+     * @throws Exception
      */
     public function boot(): void
     {
-        $this->registerMultiPathLoader();
-        $this->loadTranslations();
-
         if (! has_install_lock()) {
             return;
         }
 
         load_settings();
-        $this->loadThemeTranslations();
-        $this->shareGlobalViewData();
-        $this->registerSitemapRoute();
         $this->registerWebRoutes();
+        $this->loadTranslations();
         $this->registerApiRoutes();
+        $this->registerSitemapRoute();
+        $this->shareGlobalViewData();
         $this->publishViewTemplates();
         $this->loadThemeViewPath();
         $this->loadViewComponents();
+        $this->loadThemeTranslations();
         $this->loadThemeRoutes();
         $this->bootTheme();
-    }
-
-    /**
-     * Override the translation loader so the `front::` namespace can stack
-     * multiple paths (universal lang/front/* + default theme innopacks/front/lang/*).
-     *
-     * Other service providers register namespaces on the original FileLoader
-     * (single path per namespace). We swap in a MultiPathFileLoader and copy
-     * those existing hints across via reflection so panel:: / common:: etc.
-     * keep working.
-     *
-     * @return void
-     */
-    protected function registerMultiPathLoader(): void
-    {
-        $this->app->extend('translation.loader', function ($loader, $app) {
-            $new = new MultiPathFileLoader(
-                $app->make('files'),
-                $app->make('path.lang')
-            );
-
-            // Copy hints registered by other providers before this swap.
-            $reflection = (new \ReflectionClass($loader))->getProperty('hints');
-            $reflection->setAccessible(true);
-            foreach ($reflection->getValue($loader) as $namespace => $hint) {
-                $new->addNamespace($namespace, $hint);
-            }
-
-            return $new;
-        });
     }
 
     /**
@@ -111,6 +80,7 @@ class FrontServiceProvider extends ServiceProvider
      * Register admin front routes.
      *
      * @return void
+     * @throws Exception
      */
     protected function registerWebRoutes(): void
     {
@@ -127,7 +97,6 @@ class FrontServiceProvider extends ServiceProvider
             $router->pushMiddlewareToGroup('front', $middleware);
         }
 
-        // Root routes (no locale prefix)
         Route::middleware('front')
             ->name('front.')
             ->group(function () {
@@ -137,7 +106,6 @@ class FrontServiceProvider extends ServiceProvider
                 }
             });
 
-        // Locale-prefixed routes
         $locales   = locales();
         $webRoutes = __DIR__.'/../routes/web.php';
         if (hide_url_locale() || $locales->isEmpty()) {
@@ -163,7 +131,7 @@ class FrontServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register admin api routes.
+     * Register front api routes (CMS specific).
      *
      * @return void
      */
@@ -180,17 +148,18 @@ class FrontServiceProvider extends ServiceProvider
 
     /**
      * Register front language
-     *
-     * Two paths under the `front::` namespace (MultiPathFileLoader merges them):
-     *   1. lang/front/  — universal UI labels shared by every theme
-     *   2. innopacks/front/lang/  — default theme specific copy (overrides universal)
-     *
      * @return void
      */
     protected function loadTranslations(): void
     {
-        $this->loadTranslationsFrom(base_path('lang/front'), 'front');
+        if (! is_dir(__DIR__.'/../lang')) {
+            return;
+        }
+
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'front');
+        $this->publishes([
+            __DIR__.'/../lang' => $this->app->langPath('vendor/front'),
+        ], 'lang');
     }
 
     /**
@@ -210,41 +179,22 @@ class FrontServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load theme translations from themes/{theme}/lang/.
-     *
-     * @return void
-     */
-    protected function loadThemeTranslations(): void
-    {
-        $currentTheme = system_setting('theme');
-        if (! $currentTheme) {
-            return;
-        }
-
-        $themeLangPath = base_path("themes/{$currentTheme}/lang");
-        if (! is_dir($themeLangPath)) {
-            return;
-        }
-
-        $this->loadTranslationsFrom($themeLangPath, "theme-{$currentTheme}");
-    }
-
-    /**
-     * Load theme view path (same idea as InnoShop Factory).
-     *
-     * `view.finder` is a container bind: new instance per `make('view.finder')`, but the View
-     * factory keeps the finder from when `view` was first resolved. Prepend paths on that finder
-     * so package + theme views work without rebinding or forgetting `view`.
+     * Load theme view path.
      *
      * @return void
      */
     protected function loadThemeViewPath(): void
     {
+        // `view.finder` is a container `bind`, not a singleton: each `make('view.finder')` is a new
+        // instance. The View factory keeps the one it got when `view` was first resolved — mutating
+        // a separately resolved finder does nothing. Always prepend on the factory's finder.
         $finder = $this->app->make('view')->getFinder();
         if (! $finder instanceof FileViewFinder) {
             return;
         }
 
+        // Prepend search paths in place (do not replace finder or forget `view`) so package engines
+        // and namespaces stay intact.
         $packViews = realpath(__DIR__.'/../resources/views') ?: (__DIR__.'/../resources/views');
         if (is_dir($packViews)) {
             $finder->prependLocation($packViews);
@@ -271,6 +221,26 @@ class FrontServiceProvider extends ServiceProvider
     }
 
     /**
+     * Load theme languages.
+     *
+     * @return void
+     */
+    protected function loadThemeTranslations(): void
+    {
+        $currentTheme = system_setting('theme');
+        if (! $currentTheme) {
+            return;
+        }
+
+        $themeLangPath = base_path("themes/{$currentTheme}/lang");
+        if (! is_dir($themeLangPath)) {
+            return;
+        }
+
+        $this->loadTranslationsFrom($themeLangPath, "theme-{$currentTheme}");
+    }
+
+    /**
      * Load theme routes (Routes/front.php with locale handling, Routes/root.php without).
      *
      * @return void
@@ -284,6 +254,7 @@ class FrontServiceProvider extends ServiceProvider
 
         $themeBasePath = base_path("themes/{$currentTheme}");
 
+        // Root routes (no locale prefix)
         $rootRoutePath = "$themeBasePath/routes/root.php";
         if (file_exists($rootRoutePath)) {
             Route::middleware('front')
@@ -293,6 +264,7 @@ class FrontServiceProvider extends ServiceProvider
                 });
         }
 
+        // Front routes (with locale prefix handling)
         $frontRoutePath = "$themeBasePath/routes/front.php";
         if (file_exists($frontRoutePath)) {
             $locales = locales();
@@ -317,9 +289,7 @@ class FrontServiceProvider extends ServiceProvider
 
     /**
      * Load theme boot file (setup/boot.php) for runtime hook registration.
-     * Same require → callable → call pattern as InnoShop Bundle.
-     *
-     * @return void
+     * Follows the same require → callable → call pattern as demo seeder.
      */
     protected function bootTheme(): void
     {

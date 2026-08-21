@@ -8,6 +8,6 @@
  */
 
 return [
-    'name'   => 'Italiano',
-    'locale' => 'Lingua',
+    'cannot_disable_default_locale'   => '기본 언어는 비활성화할 수 없습니다',
+    'cannot_uninstall_default_locale' => '기본 언어는 제거할 수 없습니다',
 ];

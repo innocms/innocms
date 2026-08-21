@@ -69,6 +69,7 @@ return [
     'all_languages'      => 'Alle Sprachen',
     'panel_locale'       => 'Panel-Sprache',
     'front_locale'       => 'Frontend-Sprache',
+    'locale'             => 'Sprache',
     'copy_empty'         => 'Leere füllen',
     'no_empty_languages' => 'Keine leeren Sprachen zum Füllen',
     'copied_languages'   => ':count Sprachen gefüllt',

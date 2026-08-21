@@ -9,8 +9,8 @@
 
 namespace InnoCMS\Restapi\PanelApiControllers;
 
+use Exception;
 use Illuminate\Http\Request;
-use InnoCMS\Common\Models\Locale;
 use InnoCMS\Common\Repositories\LocaleRepo;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
@@ -20,37 +20,71 @@ use Knuckles\Scribe\Attributes\UrlParam;
 #[Group('Panel - Locales')]
 class LocaleController extends BaseController
 {
-    /**
-     * List locales installed on the system.
-     * Merges disk-available locales (lang/<code>/common/base.php) with DB records,
-     * so the response reflects what users actually see in the locale switcher.
-     *
-     * @param  Request  $request
-     * @return mixed
-     * @throws \Exception
-     */
     #[Endpoint('List locales')]
-    #[QueryParam('active', 'bool', required: false, description: 'Only active locales')]
+    #[QueryParam('per_page', 'integer', required: false, example: 15)]
     public function index(Request $request): mixed
     {
-        $locales = LocaleRepo::getInstance()->getListWithPath();
-        if ($request->boolean('active')) {
-            $locales = array_values(array_filter($locales, fn ($l) => $l['active']));
-        }
+        try {
+            $filters = $request->all();
+            $perPage = $request->get('per_page', 15);
+            $locales = LocaleRepo::getInstance()->builder($filters)->paginate($perPage);
 
-        return read_json_success($locales);
+            return read_json_success($locales);
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
     }
 
-    /**
-     * Get a single locale by ID.
-     *
-     * @param  Locale  $locale
-     * @return mixed
-     */
     #[Endpoint('Get locale detail')]
-    #[UrlParam('locale', 'integer', description: 'Locale ID')]
-    public function show(Locale $locale): mixed
+    #[UrlParam('id', 'integer', description: 'Locale ID', example: 1)]
+    public function show(int $id): mixed
     {
-        return read_json_success($locale);
+        try {
+            $locale = LocaleRepo::getInstance()->builder()->findOrFail($id);
+
+            return read_json_success($locale);
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    #[Endpoint('Create locale')]
+    public function store(Request $request): mixed
+    {
+        try {
+            $locale = LocaleRepo::getInstance()->create($request->all());
+
+            return create_json_success($locale);
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    #[Endpoint('Update locale')]
+    #[UrlParam('id', 'integer', description: 'Locale ID', example: 1)]
+    public function update(Request $request, int $id): mixed
+    {
+        try {
+            $locale = LocaleRepo::getInstance()->builder()->findOrFail($id);
+            LocaleRepo::getInstance()->update($locale, $request->all());
+
+            return update_json_success($locale->fresh());
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
+    }
+
+    #[Endpoint('Delete locale')]
+    #[UrlParam('id', 'integer', description: 'Locale ID', example: 1)]
+    public function destroy(int $id): mixed
+    {
+        try {
+            $locale = LocaleRepo::getInstance()->builder()->findOrFail($id);
+            LocaleRepo::getInstance()->destroy($locale);
+
+            return json_success('Locale deleted successfully');
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
+        }
     }
 }

@@ -76,6 +76,7 @@ return [
     'all_languages'      => 'Все языки',
     'panel_locale'       => 'Язык панели',
     'front_locale'       => 'Язык сайта',
+    'locale'             => 'Язык',
     'copy_empty'         => 'Заполнить пустые',
     'no_empty_languages' => 'Нет пустых языков для заполнения',
     'copied_languages'   => 'Заполнено :count языков',

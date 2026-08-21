@@ -45,7 +45,20 @@ if (! function_exists('panel_locale_code')) {
      */
     function panel_locale_code(): string
     {
-        return current_admin()->locale ?? session('panel_locale', setting_locale_code());
+        return current_admin()->locale ?? panel_session_locale();
+    }
+}
+
+if (! function_exists('panel_session_locale')) {
+    /**
+     * Get panel locale code from session
+     *
+     * @return string
+     * @throws Exception
+     */
+    function panel_session_locale(): string
+    {
+        return session('panel_locale', setting_locale_code());
     }
 }
 
@@ -70,23 +83,13 @@ if (! function_exists('panel_lang_path_codes')) {
      */
     function panel_lang_path_codes(): array
     {
-        $localeCodes = array_values(array_diff(scandir(lang_path()), ['..', '.', '.DS_Store']));
+        $packages = language_codes();
 
-        return array_values(array_filter($localeCodes, function ($code) {
+        $panelLangCodes = collect($packages)->filter(function ($code) {
             return file_exists(lang_path("{$code}/panel"));
-        }));
-    }
-}
+        })->toArray();
 
-if (! function_exists('panel_lang_dir')) {
-    /**
-     * Get all panel languages
-     *
-     * @return string
-     */
-    function panel_lang_dir(): string
-    {
-        return lang_path('panel');
+        return array_values($panelLangCodes);
     }
 }
 
@@ -146,16 +149,6 @@ if (! function_exists('has_translator')) {
     function has_translator(): bool
     {
         return false;
-    }
-}
-
-if (! function_exists('is_setting_locale')) {
-    /**
-     * Check if locale is the default setting locale.
-     */
-    function is_setting_locale($localeCode): bool
-    {
-        return setting_locale_code() == $localeCode;
     }
 }
 

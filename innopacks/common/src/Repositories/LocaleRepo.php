@@ -18,15 +18,24 @@ class LocaleRepo extends BaseRepo
     public static ?Collection $enabledLocales = null;
 
     /**
+     * @param  $data
+     * @return mixed
+     */
+    public function create($data): mixed
+    {
+        return Locale::query()->create($data);
+    }
+
+    /**
      * @throws \Exception
      */
-    public function getListWithPath(): array
+    public function getFrontListWithPath(): array
     {
         $languages = Locale::all()->keyBy('code')->toArray();
 
         $result = [];
         foreach (front_lang_path_codes() as $localeCode) {
-            $langFile = lang_path("$localeCode/common/base.php");
+            $langFile = lang_path("/$localeCode/common/base.php");
             if (! is_file($langFile)) {
                 throw new \Exception("File ($langFile) not exist!");
             }
@@ -63,7 +72,19 @@ class LocaleRepo extends BaseRepo
             $builder->where('active', (bool) $filters['active']);
         }
 
-        return $builder;
+        // Handle new search filters (keyword + search_field)
+        $keyword     = $filters['keyword'] ?? '';
+        $searchField = $filters['search_field'] ?? '';
+        if ($keyword && $searchField) {
+            $builder->where($searchField, 'like', "%{$keyword}%");
+        } elseif ($keyword) {
+            $builder->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', "%{$keyword}%")
+                    ->orWhere('code', 'like', "%{$keyword}%");
+            });
+        }
+
+        return fire_hook_filter('repo.locale.builder', $builder);
     }
 
     /**

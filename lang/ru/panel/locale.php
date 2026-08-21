@@ -8,6 +8,6 @@
  */
 
 return [
-    'name'   => 'Italiano',
-    'locale' => 'Lingua',
+    'cannot_disable_default_locale'   => 'Нельзя отключить язык по умолчанию',
+    'cannot_uninstall_default_locale' => 'Нельзя удалить язык по умолчанию',
 ];

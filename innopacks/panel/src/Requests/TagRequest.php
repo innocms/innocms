@@ -11,11 +11,10 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
-use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class TagRequest extends FormRequest
 {
-    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
+    use PatchRequestTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -34,15 +33,15 @@ class TagRequest extends FormRequest
      */
     public function rules(): array
     {
+        $panelLocale = panel_locale_code();
+
         $rules = [
-            'position' => 'integer',
-            'active'   => 'bool',
+            'position' => 'nullable|integer',
+            'active'   => 'nullable|bool',
 
-            'translations.*.locale' => 'required',
-            'translations.*.name'   => 'nullable',
+            "translations.$panelLocale.locale" => 'required',
+            "translations.$panelLocale.name"   => 'required',
         ];
-
-        $rules = $this->adjustTranslationRules($rules, 'name');
 
         if ($this->slug) {
             if ($this->tag) {
@@ -61,17 +60,17 @@ class TagRequest extends FormRequest
     }
 
     /**
-     * Get custom validation messages.
+     * Get custom attribute names for validator error messages.
      *
      * @return array
      */
-    public function messages(): array
+    public function attributes(): array
     {
-        $primary = $this->primaryLocaleCode();
-        $field   = __('panel/tag.name');
+        $panelLocale = panel_locale_code();
 
         return [
-            "translations.{$primary}.name" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
+            "translations.$panelLocale.locale" => __('panel/common.locale'),
+            "translations.$panelLocale.name"   => __('panel/tag.name'),
         ];
     }
 }

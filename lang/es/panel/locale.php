@@ -8,6 +8,6 @@
  */
 
 return [
-    'name'   => 'Italiano',
-    'locale' => 'Lingua',
+    'cannot_disable_default_locale'   => 'No se puede desactivar el idioma predeterminado',
+    'cannot_uninstall_default_locale' => 'No se puede desinstalar el idioma predeterminado',
 ];

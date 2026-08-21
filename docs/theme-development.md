@@ -105,6 +105,7 @@ themes/{code}/
 |---|---|
 | `theme_asset('css/app.css')` | 主题 `public/` 资源 URL |
 | `theme_trans('front.xxx')` | 主题翻译（`lang/{locale}/front.php`，命名空间 `theme-{code}`），注意 `$replace` 是第 3 参 |
+| `__('front::common.xxx')` | 前台全部文案（通用 UI + 默认主题，`innopacks/front/lang/{locale}/`）；root `lang/` 只放后台/系统文案 |
 | `image_resize($path, w, h)` | 本地图缩放缓存（**远程 http URL 原样返回，不缩放**） |
 | `image_origin($path)` | 原图 URL |
 | `front_route('products.slug_show', ['slug' => …])` | 前端路由，自动带 locale 前缀 |

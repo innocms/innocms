@@ -11,11 +11,10 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
-use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class CategoryRequest extends FormRequest
 {
-    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
+    use PatchRequestTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -34,22 +33,22 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $panelLocale = panel_locale_code();
+
         $rules = [
             'parent_id' => 'nullable|integer',
             'position'  => 'nullable|integer',
-            'active'    => 'bool',
+            'active'    => 'nullable|bool',
             'image'     => 'nullable|string|max:500',
 
-            'translations.*.locale'           => 'required',
-            'translations.*.name'             => 'nullable',
-            'translations.*.summary'          => 'nullable|string|max:500',
-            'translations.*.content'          => 'nullable|string',
-            'translations.*.meta_title'       => 'nullable|string|max:500',
-            'translations.*.meta_keywords'    => 'nullable|string|max:500',
-            'translations.*.meta_description' => 'nullable|string|max:1000',
+            "translations.$panelLocale.locale"           => 'required',
+            "translations.$panelLocale.name"             => 'required',
+            "translations.$panelLocale.summary"          => 'nullable|string|max:500',
+            "translations.$panelLocale.content"          => 'nullable|string',
+            "translations.$panelLocale.meta_title"       => 'nullable|string|max:500',
+            "translations.$panelLocale.meta_keywords"    => 'nullable|string|max:500',
+            "translations.$panelLocale.meta_description" => 'nullable|string|max:1000',
         ];
-
-        $rules = $this->adjustTranslationRules($rules, 'name');
 
         if ($this->slug) {
             if ($this->category) {
@@ -68,18 +67,25 @@ class CategoryRequest extends FormRequest
     }
 
     /**
-     * Get custom validation messages.
+     * Get custom attribute names for validator error messages.
      *
      * @return array
      */
-    public function messages(): array
+    public function attributes(): array
     {
-        $primary = $this->primaryLocaleCode();
-        $field   = __('panel/category.name');
+        $panelLocale = panel_locale_code();
 
         return [
-            "translations.{$primary}.name" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
-            'parent_id.integer'            => __('panel/category.parent_invalid'),
+            'parent_id' => __('panel/category.parent'),
+            'slug'      => __('panel/common.slug'),
+
+            "translations.$panelLocale.locale"           => __('panel/common.locale'),
+            "translations.$panelLocale.name"             => __('panel/category.name'),
+            "translations.$panelLocale.summary"          => __('panel/category.summary'),
+            "translations.$panelLocale.content"          => __('panel/category.content'),
+            "translations.$panelLocale.meta_title"       => __('panel/common.meta_title'),
+            "translations.$panelLocale.meta_keywords"    => __('panel/common.meta_keywords'),
+            "translations.$panelLocale.meta_description" => __('panel/common.meta_description'),
         ];
     }
 }

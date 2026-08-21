@@ -58,7 +58,11 @@
       <div class="install-1 install-item active">
         <div class="head-title">{{ __('install/common.open_source') }}</div>
         <div class="install-content" id="content">
-          @include("install::license.".$locale)
+          @if (view()->exists("install::license.{$locale}"))
+            @include("install::license.{$locale}")
+          @else
+            @include("install::license.en")
+          @endif
         </div>
 
         <div class="d-flex justify-content-center mt-4">
@@ -218,7 +222,7 @@
   $('#db-driver').on('change', function () {
     layer.load(2, { shade: [0.3, '#fff'] });
     $.ajax({
-      url: '{{ route("install.driver_detect") }}',
+      url: '{{ route("install.install.driver_detect") }}',
       type: 'POST',
       data: { db_code: $(this).val(), locale: installLocale },
       success: function (res) {

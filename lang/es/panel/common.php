@@ -76,6 +76,7 @@ return [
     'all_languages'      => 'Todos los idiomas',
     'panel_locale'       => 'Idioma del panel',
     'front_locale'       => 'Idioma del sitio',
+    'locale'             => 'Idioma',
     'copy_empty'         => 'Rellenar vacíos',
     'no_empty_languages' => 'No hay idiomas vacíos para rellenar',
     'copied_languages'   => 'Rellenados :count idiomas',

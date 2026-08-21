@@ -146,6 +146,19 @@ if (! function_exists('setting_locale_code')) {
     }
 }
 
+if (! function_exists('is_setting_locale')) {
+    /**
+     * Check if setting locale.
+     *
+     * @param  $localeCode
+     * @return bool
+     */
+    function is_setting_locale($localeCode): bool
+    {
+        return setting_locale_code() == $localeCode;
+    }
+}
+
 if (! function_exists('hide_url_locale')) {
     /**
      * @return bool
@@ -435,10 +448,12 @@ if (! function_exists('locale_code')) {
             $locale = current_admin()->locale ?? $configLocale;
             if (locales()->contains('code', $locale)) {
                 return $locale;
+            } else {
+                return setting_locale_code();
             }
         }
 
-        return \session('locale') ?? system_setting('front_locale', $configLocale);
+        return session('locale', setting_locale_code());
     }
 }
 
@@ -455,9 +470,22 @@ if (! function_exists('current_locale')) {
     }
 }
 
+if (! function_exists('language_codes')) {
+    /**
+     * Get language package list
+     * @return array
+     */
+    function language_codes(): array
+    {
+        $languageDir = lang_path();
+
+        return array_values(array_diff(scandir($languageDir), ['..', '.', '.DS_Store']));
+    }
+}
+
 if (! function_exists('front_lang_path_codes')) {
     /**
-     * Get all panel languages
+     * Get front language codes that have a lang package directory
      *
      * @return array
      */
@@ -465,21 +493,7 @@ if (! function_exists('front_lang_path_codes')) {
     {
         $localeCodes = array_values(array_diff(scandir(lang_path()), ['..', '.', '.DS_Store']));
 
-        return array_values(array_filter($localeCodes, function ($code) {
-            return is_dir(lang_path($code));
-        }));
-    }
-}
-
-if (! function_exists('front_lang_dir')) {
-    /**
-     * Get all panel languages
-     *
-     * @return string
-     */
-    function front_lang_dir(): string
-    {
-        return lang_path('front');
+        return array_values(array_filter($localeCodes, fn ($code) => is_dir(lang_path($code)) && is_file(lang_path("{$code}/common/base.php"))));
     }
 }
 

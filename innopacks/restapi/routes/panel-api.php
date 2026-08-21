@@ -21,7 +21,10 @@ Route::middleware($middlewares)->group(function () {
 
     // Locales
     Route::get('/locales', [PanelApiControllers\LocaleController::class, 'index'])->name('locales.index');
-    Route::get('/locales/{locale}', [PanelApiControllers\LocaleController::class, 'show'])->name('locales.show');
+    Route::get('/locales/{id}', [PanelApiControllers\LocaleController::class, 'show'])->name('locales.show');
+    Route::post('/locales', [PanelApiControllers\LocaleController::class, 'store'])->name('locales.store');
+    Route::put('/locales/{id}', [PanelApiControllers\LocaleController::class, 'update'])->name('locales.update');
+    Route::delete('/locales/{id}', [PanelApiControllers\LocaleController::class, 'destroy'])->name('locales.destroy');
 
     Route::get('/dashboard', [PanelApiControllers\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/{date}', [PanelApiControllers\DashboardController::class, 'daily'])->name('dashboard.daily');

@@ -79,10 +79,9 @@ return [
     'all_languages'      => 'All Languages',
     'panel_locale'       => 'Panel Locale',
     'front_locale'       => 'Front Locale',
+    'locale'             => 'Locale',
     'copy_empty'         => 'Fill Empty',
     'no_empty_languages' => 'No empty languages to fill',
     'copied_languages'   => 'Filled :count languages',
     'drag_sort_hint'     => 'Drag to sort',
-
-    'primary_name_required' => 'The :field in the default language (:locale) is required.',
 ];

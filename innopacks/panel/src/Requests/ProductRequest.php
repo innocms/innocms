@@ -11,11 +11,10 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
-use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class ProductRequest extends FormRequest
 {
-    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
+    use PatchRequestTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -37,10 +36,12 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        $panelLocale = panel_locale_code();
+
         $rules = [
-            'position'    => 'integer',
-            'viewed'      => 'integer',
-            'active'      => 'bool',
+            'position'    => 'nullable|integer',
+            'viewed'      => 'nullable|integer',
+            'active'      => 'nullable|bool',
             'price'       => 'nullable|numeric|min:0',
             'link'        => ['nullable', 'string', 'max:500', 'regex:#^https?://#i'],
             'spu_code'    => 'nullable|string|max:128',
@@ -50,17 +51,15 @@ class ProductRequest extends FormRequest
             'categories'  => 'nullable|array',
             'related_ids' => 'nullable|array',
 
-            'translations.*.locale'           => 'required',
-            'translations.*.name'             => 'nullable',
-            'translations.*.summary'          => 'nullable|string|max:1000',
-            'translations.*.selling_point'    => 'nullable|string|max:1000',
-            'translations.*.content'          => 'nullable',
-            'translations.*.meta_title'       => 'nullable|string|max:500',
-            'translations.*.meta_keywords'    => 'nullable|string|max:500',
-            'translations.*.meta_description' => 'nullable|string|max:1000',
+            "translations.$panelLocale.locale"           => 'required',
+            "translations.$panelLocale.name"             => 'required',
+            "translations.$panelLocale.summary"          => 'nullable|string|max:1000',
+            "translations.$panelLocale.selling_point"    => 'nullable|string|max:1000',
+            "translations.$panelLocale.content"          => 'nullable|string',
+            "translations.$panelLocale.meta_title"       => 'nullable|string|max:500',
+            "translations.$panelLocale.meta_keywords"    => 'nullable|string|max:500',
+            "translations.$panelLocale.meta_description" => 'nullable|string|max:1000',
         ];
-
-        $rules = $this->adjustTranslationRules($rules, 'name');
 
         if ($this->slug) {
             if ($this->product) {
@@ -85,29 +84,19 @@ class ProductRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return [
-            'translations.*.name'             => __('panel/product.name'),
-            'translations.*.summary'          => __('panel/product.summary'),
-            'translations.*.selling_point'    => __('panel/product.selling_point'),
-            'translations.*.content'          => __('panel/product.content'),
-            'translations.*.meta_title'       => __('panel/common.meta_title'),
-            'translations.*.meta_keywords'    => __('panel/common.meta_keywords'),
-            'translations.*.meta_description' => __('panel/common.meta_description'),
-        ];
-    }
-
-    /**
-     * Get custom validation messages.
-     *
-     * @return array
-     */
-    public function messages(): array
-    {
-        $primary = $this->primaryLocaleCode();
-        $field   = __('panel/product.name');
+        $panelLocale = panel_locale_code();
 
         return [
-            "translations.{$primary}.name" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
+            'slug' => __('panel/common.slug'),
+
+            "translations.$panelLocale.locale"           => __('panel/common.locale'),
+            "translations.$panelLocale.name"             => __('panel/product.name'),
+            "translations.$panelLocale.summary"          => __('panel/product.summary'),
+            "translations.$panelLocale.selling_point"    => __('panel/product.selling_point'),
+            "translations.$panelLocale.content"          => __('panel/product.content'),
+            "translations.$panelLocale.meta_title"       => __('panel/common.meta_title'),
+            "translations.$panelLocale.meta_keywords"    => __('panel/common.meta_keywords'),
+            "translations.$panelLocale.meta_description" => __('panel/common.meta_description'),
         ];
     }
 }

@@ -8,8 +8,45 @@
  */
 
 // 默认主题专属文案。
-// 通用 UI 文案在 lang/front/{locale}/common.php，由 MultiPathFileLoader 自动合并。
+// 通用 UI 文案已并入；前台全部文案统一用 front::common.* 调用。
 return [
+    'home'             => '首页',
+    'search'           => '搜索',
+    'search_ph'        => '请输入关键字',
+    'categories'       => '分类',
+    'tags'             => '标签',
+    'no_data'          => '暂无数据',
+    'read_more'        => '阅读更多',
+    'view_more'        => '查看更多',
+    'learn_more'       => '了解更多',
+    'news'             => '新闻资讯',
+    'news_detail'      => '新闻详情',
+    'contact_us'       => '联系我们',
+    'visit_site'       => '访问官网',
+    'related_products' => '相关产品',
+    'hot_articles'     => '热门文章',
+
+    // 联系我们
+    'contact_page_title'    => '联系我们',
+    'contact_phone_label'   => '联系电话',
+    'contact_email_label'   => '联系邮箱',
+    'contact_address_label' => '公司地址',
+    'contact_hours_label'   => '工作时间',
+    'contact_form_title'    => '在线留言',
+    'contact_name'          => '姓名',
+    'contact_phone'         => '电话',
+    'contact_email'         => '邮箱',
+    'contact_company'       => '公司',
+    'contact_content'       => '留言内容',
+    'contact_submit'        => '提交留言',
+    'contact_sending'       => '提交中…',
+    'contact_submit_fail'   => '提交失败，请稍后再试',
+    'contact_name_ph'       => '请输入您的姓名',
+    'contact_phone_ph'      => '请输入您的电话',
+    'contact_email_ph'      => '请输入您的邮箱',
+    'contact_company_ph'    => '请输入您的公司名称',
+    'contact_content_ph'    => '请输入您想咨询的内容',
+
     // Header / footer / contact (default theme copy — edit after install)
     'get_quote'          => '免费试用',
     'footer_about'       => 'InnoCMS 是一款专为企业官网快速建站而设计的轻量级 CMS，模块化架构、Hook 插件、主题与多语言内置。',
@@ -101,4 +138,8 @@ return [
     'about_product_view'       => '了解详情',
     'about_cta_title'          => '聊聊您的业务需求',
     'about_cta_sub'            => '不确定哪个产品最适合？联系我们的团队，获取专属方案推荐。',
+
+    // Contact page copy
+    'contact_page_summary' => '需要技术咨询、合作洽谈或 SaaS 托管服务？欢迎通过以下方式联系我们。',
+    'contact_form_sub'     => '留下您的联系方式，我们会尽快与您取得联系。',
 ];

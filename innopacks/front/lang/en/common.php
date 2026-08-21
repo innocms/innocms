@@ -8,8 +8,45 @@
  */
 
 // Default theme copy.
-// Universal UI labels live in lang/front/{locale}/common.php, auto-merged by MultiPathFileLoader.
+// Universal UI labels merged in; all front copy addressed as front::common.*.
 return [
+    'home'             => 'Home',
+    'search'           => 'Search',
+    'search_ph'        => 'Enter keywords',
+    'categories'       => 'Categories',
+    'tags'             => 'Tags',
+    'no_data'          => 'No data',
+    'read_more'        => 'Read More',
+    'view_more'        => 'View More',
+    'learn_more'       => 'Learn More',
+    'news'             => 'News',
+    'news_detail'      => 'News Detail',
+    'contact_us'       => 'Contact Us',
+    'visit_site'       => 'Visit Site',
+    'related_products' => 'Related Products',
+    'hot_articles'     => 'Hot Articles',
+
+    // Contact us
+    'contact_page_title'    => 'Contact Us',
+    'contact_phone_label'   => 'Phone',
+    'contact_email_label'   => 'Email',
+    'contact_address_label' => 'Address',
+    'contact_hours_label'   => 'Business Hours',
+    'contact_form_title'    => 'Send Us a Message',
+    'contact_name'          => 'Name',
+    'contact_phone'         => 'Phone',
+    'contact_email'         => 'Email',
+    'contact_company'       => 'Company',
+    'contact_content'       => 'Message',
+    'contact_submit'        => 'Send Message',
+    'contact_sending'       => 'Sending…',
+    'contact_submit_fail'   => 'Submission failed, please try again later',
+    'contact_name_ph'       => 'Your name',
+    'contact_phone_ph'      => 'Your phone number',
+    'contact_email_ph'      => 'Your email address',
+    'contact_company_ph'    => 'Your company name',
+    'contact_content_ph'    => 'What would you like to ask about?',
+
     // Header / footer / contact (default theme copy — edit after install)
     'get_quote'          => 'Try Free',
     'footer_about'       => 'InnoCMS is a lightweight CMS for fast corporate websites — modular architecture, hook plugins, themes and built-in multilingual.',
@@ -101,4 +138,8 @@ return [
     'about_product_view'       => 'Learn more',
     'about_cta_title'          => 'Let\'s Talk About Your Needs',
     'about_cta_sub'            => 'Not sure which product fits best? Talk to our team for a tailored recommendation.',
+
+    // Contact page copy
+    'contact_page_summary' => 'Need technical advice, a partnership or managed hosting? Reach us through the channels below.',
+    'contact_form_sub'     => 'Leave your contact details and we will get back to you shortly.',
 ];

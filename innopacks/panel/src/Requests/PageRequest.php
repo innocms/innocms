@@ -11,11 +11,10 @@ namespace InnoCMS\Panel\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InnoCMS\Common\Traits\PatchRequestTrait;
-use InnoCMS\Common\Traits\PrimaryLocaleRequiredTrait;
 
 class PageRequest extends FormRequest
 {
-    use PatchRequestTrait, PrimaryLocaleRequiredTrait;
+    use PatchRequestTrait;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -34,22 +33,22 @@ class PageRequest extends FormRequest
      */
     public function rules(): array
     {
+        $panelLocale = panel_locale_code();
+
         $rules = [
-            'viewed'          => 'integer',
-            'position'        => 'integer',
-            'show_breadcrumb' => 'bool',
-            'active'          => 'bool',
+            'viewed'          => 'nullable|integer',
+            'position'        => 'nullable|integer',
+            'show_breadcrumb' => 'nullable|bool',
+            'active'          => 'nullable|bool',
 
-            'translations.*.locale'           => 'required',
-            'translations.*.title'            => 'nullable',
-            'translations.*.content'          => 'nullable',
-            'translations.*.template'         => 'nullable|string|max:65535',
-            'translations.*.meta_title'       => 'nullable|string|max:500',
-            'translations.*.meta_keywords'    => 'nullable|string|max:500',
-            'translations.*.meta_description' => 'nullable|string|max:1000',
+            "translations.$panelLocale.locale"           => 'required',
+            "translations.$panelLocale.title"            => 'required',
+            "translations.$panelLocale.content"          => 'nullable|string',
+            "translations.$panelLocale.template"         => 'nullable|string|max:65535',
+            "translations.$panelLocale.meta_title"       => 'nullable|string|max:500',
+            "translations.$panelLocale.meta_keywords"    => 'nullable|string|max:500',
+            "translations.$panelLocale.meta_description" => 'nullable|string|max:1000',
         ];
-
-        $rules = $this->adjustTranslationRules($rules, 'title');
 
         if ($this->slug) {
             if ($this->page) {
@@ -74,28 +73,16 @@ class PageRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return [
-            'translations.*.title'            => __('panel/page.title'),
-            'translations.*.content'          => __('panel/common.content'),
-            'translations.*.template'         => __('panel/common.template'),
-            'translations.*.meta_title'       => __('panel/common.meta_title'),
-            'translations.*.meta_keywords'    => __('panel/common.meta_keywords'),
-            'translations.*.meta_description' => __('panel/common.meta_description'),
-        ];
-    }
-
-    /**
-     * Get custom validation messages.
-     *
-     * @return array
-     */
-    public function messages(): array
-    {
-        $primary = $this->primaryLocaleCode();
-        $field   = __('panel/page.title');
+        $panelLocale = panel_locale_code();
 
         return [
-            "translations.{$primary}.title" => __('panel/common.primary_name_required', ['field' => $field, 'locale' => $primary]),
+            "translations.$panelLocale.locale"           => __('panel/common.locale'),
+            "translations.$panelLocale.title"            => __('panel/page.title'),
+            "translations.$panelLocale.content"          => __('panel/common.content'),
+            "translations.$panelLocale.template"         => __('panel/common.template'),
+            "translations.$panelLocale.meta_title"       => __('panel/common.meta_title'),
+            "translations.$panelLocale.meta_keywords"    => __('panel/common.meta_keywords'),
+            "translations.$panelLocale.meta_description" => __('panel/common.meta_description'),
         ];
     }
 }

@@ -9,6 +9,7 @@
 
 namespace InnoCMS\Panel\Controllers;
 
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -20,12 +21,12 @@ class LocaleController extends BaseController
 {
     /**
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function index(): mixed
     {
         $data = [
-            'locales' => LocaleRepo::getInstance()->getListWithPath(),
+            'locales' => LocaleRepo::getInstance()->getFrontListWithPath(),
         ];
 
         return view('panel::locales.index', $data);
@@ -37,9 +38,10 @@ class LocaleController extends BaseController
      */
     public function switch(Request $request): RedirectResponse
     {
-        $admin         = current_admin();
-        $destCode      = $request->code;
-        $refererUrl    = $request->headers->get('referer');
+        $admin      = current_admin();
+        $destCode   = $request->code;
+        $refererUrl = $request->headers->get('referer');
+
         $admin->locale = $destCode;
         $admin->save();
         App::setLocale($destCode);
@@ -55,13 +57,15 @@ class LocaleController extends BaseController
     public function install(Request $request): RedirectResponse
     {
         try {
-            $code = $request->get('code');
-            $list = LocaleRepo::getInstance()->getListWithPath();
-            $data = collect($list)->where('code', $code)->first();
-            LocaleRepo::getInstance()->create($data);
+            $code   = $request->get('code');
+            $list   = LocaleRepo::getInstance()->getFrontListWithPath();
+            $data   = collect($list)->where('code', $code)->first();
+            $locale = LocaleRepo::getInstance()->create($data);
 
-            return redirect(panel_route('locales.index'))->with('success', trans('panel/common.install_success'));
-        } catch (\Exception $e) {
+            return redirect(panel_route('locales.index'))
+                ->with('instance', $locale)
+                ->with('success', trans('panel/common.install_success'));
+        } catch (Exception $e) {
             return redirect(panel_route('locales.index'))->withErrors(['error' => $e->getMessage()]);
         }
     }
@@ -91,25 +95,32 @@ class LocaleController extends BaseController
             LocaleRepo::getInstance()->update($locale, $data);
 
             return back()->with('success', trans('panel/common.updated_success'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
     /**
      * @param  Request  $request
-     * @return RedirectResponse
+     * @return mixed
      */
-    public function uninstall(Request $request): RedirectResponse
+    public function uninstall(Request $request): mixed
     {
         try {
             $code   = $request->code;
             $locale = LocaleRepo::getInstance()->builder(['code' => $code])->firstOrFail();
+            if ($locale->code == system_setting('front_locale')) {
+                throw new Exception(trans('panel/locale.cannot_uninstall_default_locale'));
+            }
             LocaleRepo::getInstance()->destroy($locale);
 
-            return redirect(panel_route('locales.index'))->with('success', trans('panel/common.uninstall_success'));
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
+            if (session('locale') == $code) {
+                session()->forget('locale');
+            }
+
+            return json_success(trans('panel/common.updated_success'));
+        } catch (Exception $e) {
+            return json_fail($e->getMessage());
         }
     }
 }

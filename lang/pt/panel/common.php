@@ -76,6 +76,7 @@ return [
     'all_languages'      => 'Todos os Idiomas',
     'panel_locale'       => 'Idioma do Painel',
     'front_locale'       => 'Idioma do Site',
+    'locale'             => 'Idioma',
     'copy_empty'         => 'Preencher Vazio',
     'no_empty_languages' => 'Nenhum idioma vazio para preencher',
     'copied_languages'   => ':count idiomas preenchidos',

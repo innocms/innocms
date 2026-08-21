@@ -76,6 +76,7 @@ return [
     'all_languages'      => 'すべての言語',
     'panel_locale'       => '管理画面の言語',
     'front_locale'       => 'フロント画面の言語',
+    'locale'             => '言語',
     'copy_empty'         => '空欄を補完',
     'no_empty_languages' => '補完する空欄の言語がありません',
     'copied_languages'   => ':count 言語を補完しました',
