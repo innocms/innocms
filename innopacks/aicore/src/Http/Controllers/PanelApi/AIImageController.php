@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoCMS <team@innocms.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -98,8 +98,14 @@ class AIImageController extends BaseController
             $options = [
                 'size'      => $request->input('size'),
                 'quality'   => $request->input('quality'),
+                'n'         => max(1, (int) $request->input('count', 1)),
                 'save_path' => $request->input('save_path', ''),
             ];
+
+            $negativePrompt = trim((string) $request->input('negative_prompt', ''));
+            if ($negativePrompt !== '') {
+                $options['negative_prompt'] = $negativePrompt;
+            }
 
             $referenceImage = $request->input('reference_image');
             if ($referenceImage) {
@@ -133,7 +139,7 @@ class AIImageController extends BaseController
                 'message' => $e->getMessage(),
                 'file'    => $e->getFile(),
                 'line'    => $e->getLine(),
-                'trace'   => array_slice($e->getTraceAsString(), 0, 800),
+                'trace'   => substr($e->getTraceAsString(), 0, 2000),
             ]);
 
             return json_fail($e->getMessage());

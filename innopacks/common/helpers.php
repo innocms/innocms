@@ -984,7 +984,9 @@ if (! function_exists('innocms_version')) {
      */
     function innocms_version(): string
     {
-        return 'v'.config('innocms.version').'('.config('innocms.build').')';
+        $default = ucfirst(config('innocms.edition')).' v'.config('innocms.version').'('.config('innocms.build').')';
+
+        return fire_hook_filter('innocms.version.display', $default);
     }
 }
 
