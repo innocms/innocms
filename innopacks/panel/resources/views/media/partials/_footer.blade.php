@@ -1637,7 +1637,7 @@
 
         showMediaDetail(file) {
           const mediaId = file?.media_id;
-          console.log('[media library] showMediaDetail', { mediaId, path: file?.path, name: file?.name, mediaReference: file?.media_reference });
+          console.log('[file manager] showMediaDetail', { mediaId, path: file?.path, name: file?.name, mediaReference: file?.media_reference });
           if (!mediaId) {
             this.$message.warning("{{ __('panel/media.media_not_found') }}");
             return;

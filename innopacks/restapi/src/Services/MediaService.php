@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoCMS <team@innocms.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -11,14 +11,15 @@ namespace InnoCMS\Restapi\Services;
 
 use Exception;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use InnoCMS\Common\Models\MediaFile;
 use InnoCMS\Common\Services\FileSecurityValidator;
 use InnoCMS\Common\Services\MediaUrlResolver;
 use InnoCMS\Common\Services\StorageService;
+use InnoCMS\Restapi\Criteria\FileListCriteria;
 
-class FileManagerService implements FileManagerInterface
+class MediaService implements MediaInterface
 {
     protected string $fileBasePath = '';
 
@@ -62,12 +63,36 @@ class FileManagerService implements FileManagerInterface
             return [];
         }
 
+        // Root request: return tree root with top-level children for initial load
+        if ($baseFolder === '/' || $baseFolder === '') {
+            $currentBasePath = rtrim($this->fileBasePath, '/');
+            $directories     = glob("$currentBasePath/*", GLOB_ONLYDIR) ?: [];
+
+            $children = [];
+            foreach ($directories as $directory) {
+                $processed = $this->processDirectorySingleLevel($directory, $realBasePath);
+                if ($processed !== null) {
+                    $children[] = $processed;
+                }
+            }
+
+            return [[
+                'id'       => '/',
+                'name'     => '/',
+                'path'     => '/',
+                'parent'   => null,
+                'isRoot'   => true,
+                'children' => $children,
+            ]];
+        }
+
+        // Sub-directory request: return flat list of immediate children (for lazy loading)
         $currentBasePath = rtrim($this->fileBasePath.$baseFolder, '/');
         $directories     = glob("$currentBasePath/*", GLOB_ONLYDIR) ?: [];
 
         $result = [];
         foreach ($directories as $directory) {
-            $processed = $this->processDirectoryIterative($directory, $realBasePath);
+            $processed = $this->processDirectorySingleLevel($directory, $realBasePath);
             if ($processed !== null) {
                 $result[] = $processed;
             }
@@ -88,10 +113,16 @@ class FileManagerService implements FileManagerInterface
      * @return array Paginated file list with metadata
      * @throws Exception If an error occurs during retrieval
      */
-    public function getFiles(string $baseFolder, string $keyword = '', string $sort = self::SORT_FIELD_CREATED, string $order = self::SORT_ORDER_DESC, int $page = 1, int $perPage = 20, bool $includeDirectories = false): array
+    public function getFiles(FileListCriteria $c): array
     {
-        $baseFolder   = FileSecurityValidator::validateDirectoryPath($baseFolder);
-        $realBasePath = $this->getRealBasePath();
+        $baseFolder         = FileSecurityValidator::validateDirectoryPath($c->baseFolder);
+        $keyword            = $c->keyword;
+        $sort               = $c->sort;
+        $order              = $c->order;
+        $page               = $c->page;
+        $perPage            = $c->perPage;
+        $includeDirectories = $c->includeDirectories;
+        $realBasePath       = $this->getRealBasePath();
         if ($realBasePath === false) {
             return $this->getEmptyFileList($page);
         }
@@ -164,6 +195,7 @@ class FileManagerService implements FileManagerInterface
             $sourceDirPath = $this->getFullPath($sourcePath);
             $destDirPath   = $this->getFullPath($destPath);
             $destFullPath  = rtrim($destDirPath, '/').'/'.basename($sourcePath);
+            $newRelDir     = rtrim($destPath, '/').'/'.basename($sourcePath);
 
             $this->ensureDirectoryExists($sourceDirPath);
             $this->ensureDirectoryExists($destDirPath);
@@ -176,7 +208,6 @@ class FileManagerService implements FileManagerInterface
                 throw new Exception(trans('panel/media.move_failed'));
             }
 
-            $newRelDir = rtrim($destPath, '/').'/'.basename($sourcePath);
             $this->relocateMediaUnderDirectory($sourcePath, $newRelDir);
 
             return true;
@@ -324,14 +355,10 @@ class FileManagerService implements FileManagerInterface
                 throw new Exception(trans('panel/media.rename_failed'));
             }
 
-            // Sync MediaFile DB records: file = relocate single key; dir = relocate under prefix.
             if (is_dir($newFullPath)) {
                 $this->relocateMediaUnderDirectory($originPath, $newPath);
             } else {
-                $this->relocateMediaByKey(
-                    StorageService::storageKey($originPath),
-                    StorageService::storageKey($newPath)
-                );
+                $this->relocateMedia($originPath, $newPath);
             }
 
             return true;
@@ -361,99 +388,26 @@ class FileManagerService implements FileManagerInterface
         // Validate save path security
         $savePath = FileSecurityValidator::validateDirectoryPath($savePath);
 
-        $originName = $this->getUniqueFileName($savePath, $originName);
-        $filePath   = $file->storeAs($savePath, $originName, 'media');
+        $resolver = MediaUrlResolver::getInstance();
+        $storeAs  = $resolver->shouldRenameToHash()
+            ? $resolver->resolveStoreFileName($file)
+            : $this->getUniqueFileName($savePath, $originName);
+
+        $options  = [];
+        $mimeType = $file->getMimeType();
+        if ($mimeType) {
+            $options['ContentType'] = $mimeType;
+        }
+        $filePath   = Storage::disk('media')->putFileAs($savePath, $file, $storeAs, $options);
         $storageKey = StorageService::storageKey($filePath);
 
-        $this->registerMediaFromUpload($file, $storageKey);
+        try {
+            $resolver->registerFromUploadedFile($file, $storageKey, 'local');
+        } catch (\Throwable $e) {
+            Log::warning('Media register failed: '.$e->getMessage(), ['storage_key' => $storageKey]);
+        }
 
         return $storageKey;
-    }
-
-    /**
-     * Download a remote file from URL and save to the specified directory.
-     *
-     * @param  string  $url  Remote file URL
-     * @param  string  $savePath  Target directory path in file manager
-     * @param  string|null  $fileName  Optional file name (defaults to URL basename)
-     * @return string Storage key of the saved file
-     *
-     * @throws Exception
-     */
-    public function downloadRemoteFile(string $url, string $savePath, ?string $fileName = null): string
-    {
-        if (! filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new Exception(trans('panel/media.invalid_url'));
-        }
-
-        $savePath = FileSecurityValidator::validateDirectoryPath($savePath);
-
-        // Download the file first
-        $response = Http::timeout(60)->get($url);
-        if (! $response->successful()) {
-            throw new Exception(trans('panel/media.download_failed'));
-        }
-
-        // Determine file name: explicit > URL path > content-type based
-        if (empty($fileName)) {
-            $fileName = basename(parse_url($url, PHP_URL_PATH));
-        }
-        if (empty($fileName) || ! str_contains($fileName, '.')) {
-            $extension = $this->getExtensionFromResponse($response, $url);
-            $fileName  = md5($url).'.'.$extension;
-        }
-
-        FileSecurityValidator::validateFile($fileName);
-
-        // Ensure target directory exists
-        $dirFullPath = $this->getFullPath($savePath);
-        if (! is_dir($dirFullPath)) {
-            create_directories("$this->mediaDir/$savePath");
-        }
-
-        $fileName = $this->getUniqueFileName($savePath, $fileName);
-        $filePath = ltrim($savePath, '/').'/'.ltrim($fileName, '/');
-        $fullPath = $this->getFullPath("$savePath/$fileName");
-
-        file_put_contents($fullPath, $response->body());
-
-        $storageKey = StorageService::storageKey($filePath);
-        $this->registerMediaFromLocalPath($storageKey, $fullPath, $fileName);
-
-        return $storageKey;
-    }
-
-    /**
-     * Guess file extension from response Content-Type or URL.
-     */
-    protected function getExtensionFromResponse($response, string $url): string
-    {
-        $contentType = $response->header('Content-Type') ?? '';
-        $mimeToExt   = [
-            'image/jpeg'      => 'jpg',
-            'image/png'       => 'png',
-            'image/gif'       => 'gif',
-            'image/webp'      => 'webp',
-            'image/svg+xml'   => 'svg',
-            'image/bmp'       => 'bmp',
-            'video/mp4'       => 'mp4',
-            'application/pdf' => 'pdf',
-        ];
-
-        $mime = strtolower(strtok($contentType, ';'));
-        if (isset($mimeToExt[$mime])) {
-            return $mimeToExt[$mime];
-        }
-
-        // Fallback: try to guess from URL query params
-        parse_str(parse_url($url, PHP_URL_QUERY) ?? '', $query);
-        $format    = $query['fm'] ?? '';
-        $formatMap = ['jpg' => 'jpg', 'jpeg' => 'jpg', 'png' => 'png', 'gif' => 'gif', 'webp' => 'webp'];
-        if (isset($formatMap[$format])) {
-            return $formatMap[$format];
-        }
-
-        return 'jpg';
     }
 
     /**
@@ -644,6 +598,32 @@ class FileManagerService implements FileManagerInterface
     }
 
     /**
+     * Process a single directory entry without recursing into children.
+     * Used for lazy loading — only returns the directory itself, no nested children.
+     */
+    protected function processDirectorySingleLevel(string $directory, string $realBasePath): ?array
+    {
+        $realDirectory = realpath($directory);
+        if ($realDirectory === false || ! str_starts_with($realDirectory, $realBasePath)) {
+            return null;
+        }
+
+        if (! is_dir($realDirectory)) {
+            return null;
+        }
+
+        $baseName = basename($directory);
+        $dirName  = str_replace($this->fileBasePath, '', $directory);
+        if (! str_starts_with($dirName, '/')) {
+            $dirName = '/'.$dirName;
+        }
+
+        return array_merge($this->handleFolder($dirName, $baseName), [
+            'hasChildren' => ! empty(glob(rtrim($directory, '/').'/*', GLOB_ONLYDIR)),
+        ]);
+    }
+
+    /**
      * Collect folders from a directory path.
      *
      * @param  string  $currentBasePath  Current base path
@@ -748,16 +728,16 @@ class FileManagerService implements FileManagerInterface
         if ($mime === 'application/pdf') {
             return 'bi bi-file-earmark-pdf';
         }
-        if (in_array($mime, ['application/zip', 'application/x-rar-compressed', 'application/x-tar', 'application/gzip', 'application/x-gzip', 'application/x-7z-compressed'], true)) {
+        if (in_array($mime, ['application/zip', 'application/x-rar-compressed', 'application/x-tar', 'application/gzip', 'application/x-7z-compressed'], true)) {
             return 'bi bi-file-earmark-zip';
         }
-        if (in_array($mime, ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.oasis.opendocument.text'], true)) {
+        if (in_array($mime, ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'], true)) {
             return 'bi bi-file-earmark-word';
         }
-        if (in_array($mime, ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.oasis.opendocument.spreadsheet', 'text/csv'], true)) {
+        if (in_array($mime, ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], true)) {
             return 'bi bi-file-earmark-spreadsheet';
         }
-        if (in_array($mime, ['application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.oasis.opendocument.presentation'], true)) {
+        if (in_array($mime, ['application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'], true)) {
             return 'bi bi-file-earmark-slides';
         }
         if (in_array($mime, ['application/json', 'application/javascript', 'application/x-php', 'text/html', 'text/css', 'text/xml', 'application/xml'], true)) {
@@ -776,7 +756,24 @@ class FileManagerService implements FileManagerInterface
      */
     protected function enrichFileMetadata(array $items): array
     {
-        return array_map(function ($item) {
+        // Batch-resolve media_ids for all files on this page to avoid N+1.
+        $storageKeys = [];
+        foreach ($items as $item) {
+            if (! ($item['is_dir'] ?? false) && ! empty($item['path'])) {
+                $storageKeys[] = $item['path'];
+            }
+        }
+        $mediaIdMap = [];
+        if (! empty($storageKeys)) {
+            $rows = MediaFile::query()
+                ->whereIn('storage_key', array_unique($storageKeys))
+                ->pluck('id', 'storage_key');
+            foreach ($rows as $storageKey => $id) {
+                $mediaIdMap[$storageKey] = (int) $id;
+            }
+        }
+
+        return array_map(function ($item) use ($mediaIdMap) {
             if (($item['is_dir'] ?? false) || empty($item['_realPath'])) {
                 unset($item['_realPath'], $item['created_time']);
 
@@ -795,11 +792,17 @@ class FileManagerService implements FileManagerInterface
                 }
             }
 
-            $item['mime']       = $mime;
-            $item['icon']       = $this->mimeToIcon($mime);
-            $item['origin_url'] = storage_url($path);
-            $item['url']        = str_starts_with($mime, 'image/') ? image_resize($path) : '';
-            $item['thumb']      = str_starts_with($mime, 'image/') ? storage_url($path) : '';
+            $mediaId = $mediaIdMap[$path] ?? null;
+
+            $item['mime']            = $mime;
+            $item['icon']            = $this->mimeToIcon($mime);
+            $item['origin_url']      = storage_url($path);
+            $item['url']             = str_starts_with($mime, 'image/') ? image_resize($path, 300, 300, 'contain') : '';
+            $item['thumb']           = str_starts_with($mime, 'image/') ? storage_url($path) : '';
+            $item['media_id']        = $mediaId;
+            $item['media_reference'] = $mediaId
+                ? MediaUrlResolver::buildReference($mediaId)
+                : null;
 
             unset($item['_realPath'], $item['created_time']);
 
@@ -951,11 +954,7 @@ class FileManagerService implements FileManagerInterface
             throw new Exception(trans('panel/media.move_failed'));
         }
 
-        $newRelKey = ltrim(rtrim($destPath, '/'), '/').'/'.basename($fileName);
-        $this->relocateMediaByKey(
-            StorageService::storageKey($fileName),
-            StorageService::storageKey($newRelKey)
-        );
+        $this->relocateMedia($fileName, rtrim($destPath, '/').'/'.basename($fileName));
     }
 
     /**
@@ -971,16 +970,17 @@ class FileManagerService implements FileManagerInterface
     {
         $sourcePath   = $this->getFullPath($fileName);
         $destFilePath = rtrim($destFullPath, '/').'/'.basename($fileName);
-        $newName      = basename($fileName);
 
         if (! file_exists($sourcePath)) {
             Log::warning('Source file not found:', ['path' => $sourcePath]);
             throw new Exception(trans('panel/media.source_file_not_exist'));
         }
 
+        $newRelName = basename($fileName);
         if (file_exists($destFilePath)) {
             $newName      = $this->getUniqueFileName($destPath, basename($fileName));
             $destFilePath = rtrim($destFullPath, '/').'/'.$newName;
+            $newRelName   = $newName;
         }
 
         if (! @copy($sourcePath, $destFilePath)) {
@@ -992,9 +992,7 @@ class FileManagerService implements FileManagerInterface
             throw new Exception(trans('panel/media.copy_failed'));
         }
 
-        $newRelKey     = ltrim(rtrim($destPath, '/'), '/').'/'.$newName;
-        $newStorageKey = StorageService::storageKey($newRelKey);
-        $this->registerMediaCopy($newStorageKey, $destFilePath, $newName);
+        $this->registerMediaCopy(rtrim($destPath, '/').'/'.$newRelName, $sourcePath);
     }
 
     /**
@@ -1056,9 +1054,6 @@ class FileManagerService implements FileManagerInterface
         }
 
         $relPath = $this->relativePathFromFull($dirPath);
-        if ($relPath !== null) {
-            $this->removeMediaUnderDirectory($relPath);
-        }
 
         if (! @rmdir($dirPath)) {
             Log::error('Failed to delete directory:', [
@@ -1066,6 +1061,10 @@ class FileManagerService implements FileManagerInterface
                 'error' => error_get_last(),
             ]);
             throw new Exception(trans('panel/media.delete_failed'));
+        }
+
+        if ($relPath !== null && $relPath !== '') {
+            $this->removeMediaUnderDirectory($relPath);
         }
     }
 
@@ -1079,9 +1078,6 @@ class FileManagerService implements FileManagerInterface
     protected function deleteFile(string $filePath): void
     {
         $relPath = $this->relativePathFromFull($filePath);
-        if ($relPath !== null) {
-            $this->removeMediaByKey(StorageService::storageKey($relPath));
-        }
 
         if (! @unlink($filePath)) {
             Log::error('Failed to delete file:', [
@@ -1090,28 +1086,28 @@ class FileManagerService implements FileManagerInterface
             ]);
             throw new Exception(trans('panel/media.delete_failed'));
         }
+
+        if ($relPath !== null) {
+            $this->removeMedia($relPath);
+        }
     }
 
     /**
-     * Convert an absolute filesystem path back to a path relative to the media
-     * base directory. Returns null when the path is outside the media tree.
+     * Convert a full filesystem path back to a media-relative path (without leading slash).
+     * Returns null if the path is outside the media base path.
      */
     protected function relativePathFromFull(string $fullPath): ?string
     {
-        $realBase = $this->getRealBasePath();
-        if (! is_string($realBase) || $realBase === '') {
-            return null;
+        $base = $this->fileBasePath;
+        $real = realpath($fullPath);
+        if ($real === false) {
+            $real = $fullPath;
         }
-        $realBase = rtrim($realBase, '/').'/';
-        $realFull = realpath($fullPath);
-        if ($realFull === false) {
-            $realFull = rtrim($fullPath, '/');
-        }
-        if (! str_starts_with($realFull, $realBase)) {
+        if (! str_starts_with($real, $base)) {
             return null;
         }
 
-        return ltrim(substr($realFull, strlen($realBase)), '/');
+        return ltrim(substr($real, strlen($base)), '/');
     }
 
     /**
@@ -1129,47 +1125,15 @@ class FileManagerService implements FileManagerInterface
         ], $context));
     }
 
-    /**
-     * Register a media record after a fresh upload (dedups by checksum).
-     */
-    protected function registerMediaFromUpload(UploadedFile $file, string $storageKey): void
-    {
-        try {
-            MediaUrlResolver::getInstance()->registerFromUploadedFile($file, $storageKey, 'local');
-        } catch (\Throwable $e) {
-            Log::warning('Media register (upload) failed: '.$e->getMessage(), ['key' => $storageKey]);
-        }
-    }
+    // ==================== Media Library Sync ====================
 
     /**
-     * Register a media record for a file that landed on disk via a non-upload
-     * path (e.g. downloadRemoteFile). Reads size/mime from the stored file.
+     * Sync media_files after renaming / moving a single file.
      */
-    protected function registerMediaFromLocalPath(string $storageKey, string $absolutePath, ?string $originalName = null): void
+    protected function relocateMedia(string $oldRelPath, string $newRelPath): void
     {
-        try {
-            if (! is_file($absolutePath)) {
-                return;
-            }
-            MediaUrlResolver::getInstance()->register([
-                'disk'          => 'local',
-                'storage_key'   => $storageKey,
-                'original_name' => $originalName ?? basename($absolutePath),
-                'checksum'      => hash_file('sha256', $absolutePath) ?: null,
-                'mime'          => mime_content_type($absolutePath) ?: null,
-                'size'          => filesize($absolutePath) ?: 0,
-                'source'        => 'url_import',
-            ]);
-        } catch (\Throwable $e) {
-            Log::warning('Media register (local) failed: '.$e->getMessage(), ['key' => $storageKey]);
-        }
-    }
-
-    /**
-     * Update a single media record's storage_key after a file rename/move.
-     */
-    protected function relocateMediaByKey(string $oldKey, string $newKey): void
-    {
+        $oldKey = StorageService::storageKey(ltrim($oldRelPath, '/'));
+        $newKey = StorageService::storageKey(ltrim($newRelPath, '/'));
         try {
             MediaUrlResolver::getInstance()->relocateByKey($oldKey, $newKey);
         } catch (\Throwable $e) {
@@ -1178,37 +1142,40 @@ class FileManagerService implements FileManagerInterface
     }
 
     /**
-     * Register a media record for a freshly-copied file.
+     * Sync media_files after copying a single file (creates a new record).
      */
-    protected function registerMediaCopy(string $storageKey, string $absolutePath, ?string $originalName = null): void
+    protected function registerMediaCopy(string $relPath, string $sourceRealPath): void
     {
+        $key = StorageService::storageKey(ltrim($relPath, '/'));
         try {
-            MediaUrlResolver::getInstance()->registerCopy($storageKey, 'local', [
-                'original_name' => $originalName ?? basename($absolutePath),
-                'checksum'      => is_file($absolutePath) ? hash_file('sha256', $absolutePath) ?: null : null,
-                'mime'          => is_file($absolutePath) ? (mime_content_type($absolutePath) ?: null) : null,
-                'size'          => is_file($absolutePath) ? (filesize($absolutePath) ?: 0) : 0,
-                'source'        => 'copy',
+            $checksum = file_exists($sourceRealPath) ? hash_file('sha256', $sourceRealPath) : null;
+            $mime     = file_exists($sourceRealPath) ? (mime_content_type($sourceRealPath) ?: null) : null;
+            MediaUrlResolver::getInstance()->registerCopy($key, 'local', [
+                'original_name' => basename($relPath),
+                'checksum'      => $checksum,
+                'mime'          => $mime,
+                'size'          => file_exists($sourceRealPath) ? (int) filesize($sourceRealPath) : 0,
             ]);
         } catch (\Throwable $e) {
-            Log::warning('Media copy register failed: '.$e->getMessage(), ['key' => $storageKey]);
+            Log::warning('Media copy register failed: '.$e->getMessage(), ['key' => $key]);
         }
     }
 
     /**
-     * Soft-delete a single media record after its file is removed.
+     * Soft delete media_files record for a single file.
      */
-    protected function removeMediaByKey(string $storageKey): void
+    protected function removeMedia(string $relPath): void
     {
+        $key = StorageService::storageKey(ltrim($relPath, '/'));
         try {
-            MediaUrlResolver::getInstance()->removeByKey($storageKey);
+            MediaUrlResolver::getInstance()->removeByKey($key);
         } catch (\Throwable $e) {
-            Log::warning('Media remove failed: '.$e->getMessage(), ['key' => $storageKey]);
+            Log::warning('Media remove failed: '.$e->getMessage(), ['key' => $key]);
         }
     }
 
     /**
-     * Soft-delete every media record under a directory (used by deleteDirectory).
+     * Soft delete all media records under a directory (recursive).
      */
     protected function removeMediaUnderDirectory(string $relDirPath): void
     {
@@ -1223,7 +1190,7 @@ class FileManagerService implements FileManagerInterface
     }
 
     /**
-     * Rewrite storage_key for every media record under a directory (used by moveDirectory).
+     * Relocate all media records under a directory to a new prefix (used by moveDirectory).
      */
     protected function relocateMediaUnderDirectory(string $oldRelDirPath, string $newRelDirPath): void
     {

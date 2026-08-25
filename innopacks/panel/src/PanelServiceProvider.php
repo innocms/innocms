@@ -21,8 +21,9 @@ use InnoCMS\Panel\Middleware\AdminAuthenticate;
 use InnoCMS\Panel\Middleware\GlobalPanelData;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
 use InnoCMS\Panel\Services\ThemeService;
-use InnoCMS\Restapi\Services\FileManagerInterface;
-use InnoCMS\Restapi\Services\FileManagerService;
+use InnoCMS\Restapi\Services\MediaInterface;
+use InnoCMS\Restapi\Services\MediaService;
+use InnoCMS\Restapi\Services\OSSService;
 
 class PanelServiceProvider extends ServiceProvider
 {
@@ -38,7 +39,7 @@ class PanelServiceProvider extends ServiceProvider
         $this->registerUploadFileSystem();
         $this->registerCommands();
         $this->registerWebRoutes();
-        $this->registerFileManagerService();
+        $this->registerMediaService();
         $this->loadViewTemplates();
         $this->loadViewComponents();
     }
@@ -145,13 +146,22 @@ class PanelServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bind FileManagerInterface to the appropriate implementation.
+     * Bind MediaInterface to the appropriate implementation.
      */
-    protected function registerFileManagerService(): void
+    protected function registerMediaService(): void
     {
-        $this->app->singleton(FileManagerInterface::class, function () {
-            return new FileManagerService;
-        });
+        $driver    = system_setting('media_driver', 'local');
+        $s3Drivers = ['oss', 'cos', 'qiniu', 's3', 'obs', 'r2', 'minio'];
+
+        if (in_array($driver, $s3Drivers)) {
+            $this->app->singleton(MediaInterface::class, function () {
+                return new OSSService;
+            });
+        } else {
+            $this->app->singleton(MediaInterface::class, function () {
+                return new MediaService;
+            });
+        }
     }
 
     /**

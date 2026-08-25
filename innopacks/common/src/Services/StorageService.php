@@ -9,6 +9,8 @@
 
 namespace InnoCMS\Common\Services;
 
+use InnoCMS\Common\Models\MediaFile;
+
 class StorageService
 {
     /**
@@ -72,6 +74,11 @@ class StorageService
             return $baseUrl;
         }
 
+        // "media://{id}" reference — resolve via MediaUrlResolver.
+        if (MediaUrlResolver::isMediaReference($path)) {
+            return MediaUrlResolver::getInstance()->resolve($path);
+        }
+
         if (str_starts_with($path, 'http')) {
             return $path;
         }
@@ -115,7 +122,16 @@ class StorageService
     public function resize(?string $image, int $width = 100, int $height = 100, ?string $mode = null): string
     {
         if (empty($image)) {
-            return (new ImageService(''))->resize($width, $height, $mode);
+            return (new ImageService('images/placeholder.svg'))->resize($width, $height, $mode);
+        }
+
+        // "media://{id}" reference — resolve to storage_key first, then resize normally.
+        if (MediaUrlResolver::isMediaReference($image)) {
+            $resolved = $this->resolveMediaReferenceToKey($image);
+            if ($resolved === null) {
+                return (new ImageService('images/placeholder.svg'))->resize($width, $height, $mode);
+            }
+            $image = $resolved;
         }
 
         if (str_starts_with($image, 'http')) {
@@ -153,6 +169,23 @@ class StorageService
         }
 
         return $url;
+    }
+
+    /**
+     * Resolve a "media://{id}" reference back to a storage_key (legacy path),
+     * so resize/url helpers can treat it like any other stored asset.
+     * Returns null if the media record was deleted.
+     */
+    protected function resolveMediaReferenceToKey(string $mediaRef): ?string
+    {
+        $mediaId = MediaUrlResolver::extractMediaId($mediaRef);
+        if ($mediaId === null) {
+            return null;
+        }
+
+        $media = MediaFile::query()->find($mediaId);
+
+        return $media?->storage_key;
     }
 
     protected function mapResizeMode(?string $mode): string

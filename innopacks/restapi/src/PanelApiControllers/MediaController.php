@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoCMS <team@innocms.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -18,35 +18,36 @@ use InnoCMS\Common\Models\MediaFile;
 use InnoCMS\Common\Repositories\SettingRepo;
 use InnoCMS\Common\Requests\UploadFileRequest;
 use InnoCMS\Panel\Controllers\BaseController;
+use InnoCMS\Restapi\Criteria\FileListCriteria;
 use InnoCMS\Restapi\Requests\DeleteFilesRequest;
 use InnoCMS\Restapi\Requests\FileRequest;
 use InnoCMS\Restapi\Requests\MoveFilesRequest;
 use InnoCMS\Restapi\Requests\RenameFileRequest;
-use InnoCMS\Restapi\Services\FileManagerInterface;
-use InnoCMS\Restapi\Services\FileManagerService;
+use InnoCMS\Restapi\Services\MediaInterface;
+use InnoCMS\Restapi\Services\MediaService;
 use InnoCMS\Restapi\Services\OSSService;
-use Knuckles\Scribe\Attributes\BodyParam;
-use Knuckles\Scribe\Attributes\Endpoint;
-use Knuckles\Scribe\Attributes\Group;
-use Knuckles\Scribe\Attributes\QueryParam;
 
-#[Group('Panel - Media Library')]
-class FileManagerController extends BaseController
+class MediaController extends BaseController
 {
-    protected function getService(): FileManagerInterface
+    public function __construct()
     {
-        $service = app(FileManagerInterface::class);
+        parent::__construct();
+    }
+
+    protected function getService(): MediaInterface
+    {
+        $service = app(MediaInterface::class);
 
         return fire_hook_filter('media.service', $service);
     }
 
     /**
-     * 获取媒体库的基础配置数据
-     * Get basic configuration data for media library
+     * 获取文件管理器的基础配置数据
+     * Get basic configuration data for file manager
      *
      * @return array
      */
-    protected function getFileManagerData(): array
+    protected function getMediaData(): array
     {
         $uploadMaxFileSize = ini_get('upload_max_filesize');
         $postMaxSize       = ini_get('post_max_size');
@@ -83,32 +84,34 @@ class FileManagerController extends BaseController
     }
 
     /**
-     * Display the media library index view.
+     * Display the file manager index view.
      *
      * @return mixed
      */
-    #[Endpoint('Media library index page')]
     public function index(): mixed
     {
-        $data = $this->getFileManagerData();
+        $data = $this->getMediaData();
 
-        return inno_view('panel::media.index', $data);
+        return response(inno_view('panel::media.index', $data))
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache');
     }
 
     /**
-     * Display the media library iframe view.
+     * Display the file manager iframe view.
      *
      * @return mixed
      */
-    #[Endpoint('Media library iframe view')]
     public function iframe(): mixed
     {
-        $data = $this->getFileManagerData();
+        $data = $this->getMediaData();
 
         // Override isIframe to true for iframe view
         $data['isIframe'] = true;
 
-        return inno_view('panel::media.iframe', $data);
+        return response(inno_view('panel::media.iframe', $data))
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache');
     }
 
     /**
@@ -118,27 +121,12 @@ class FileManagerController extends BaseController
      * @return mixed
      * @throws Exception
      */
-    #[Endpoint('List files')]
-    #[QueryParam('base_folder', type: 'string', required: false, example: '/')]
-    #[QueryParam('page', type: 'integer', required: false, example: 1)]
-    #[QueryParam('per_page', type: 'integer', required: false, example: 20)]
-    #[QueryParam('keyword', type: 'string', required: false, description: 'Search keyword')]
-    #[QueryParam('sort', type: 'string', required: false, example: 'created')]
-    #[QueryParam('order', type: 'string', required: false, example: 'desc')]
     public function getFiles(Request $request): mixed
     {
         try {
-            $baseFolder         = (string) $request->input('base_folder', '/');
-            $page               = (int) $request->input('page', 1);
-            $perPage            = (int) $request->input('per_page', 20);
-            $keyword            = (string) $request->input('keyword', '');
-            $sort               = (string) $request->input('sort', 'created');  // 默认按创建时间排序
-            $order              = (string) $request->input('order', 'desc');    // 默认降序，最新的在前面
-            $includeDirectories = (bool) $request->input('include_directories', false);
-
             $service = $this->getService();
 
-            return $service->getFiles($baseFolder, $keyword, $sort, $order, $page, $perPage, $includeDirectories);
+            return $service->getFiles(FileListCriteria::fromRequest($request));
 
         } catch (Exception $e) {
             Log::error('Get files failed:', [
@@ -156,8 +144,6 @@ class FileManagerController extends BaseController
      * @param  Request  $request
      * @return mixed
      */
-    #[Endpoint('List directories')]
-    #[QueryParam('base_folder', type: 'string', required: false, example: '/')]
     public function getDirectories(Request $request): mixed
     {
         $service    = $this->getService();
@@ -176,9 +162,6 @@ class FileManagerController extends BaseController
      * @param  FileRequest  $request
      * @return mixed
      */
-    #[Endpoint('Create directory')]
-    #[BodyParam('name', type: 'string', required: true, description: 'Directory name')]
-    #[BodyParam('parent_id', type: 'string', required: false, example: '/')]
     public function createDirectory(FileRequest $request): mixed
     {
         try {
@@ -202,7 +185,6 @@ class FileManagerController extends BaseController
      * @param  Request  $request
      * @return mixed
      */
-    #[Endpoint('Rename file or folder')]
     public function rename(RenameFileRequest $request): mixed
     {
         try {
@@ -247,7 +229,6 @@ class FileManagerController extends BaseController
      * @param  Request  $request
      * @return mixed
      */
-    #[Endpoint('Delete files')]
     public function destroyFiles(DeleteFilesRequest $request): mixed
     {
         try {
@@ -270,8 +251,6 @@ class FileManagerController extends BaseController
      * @return mixed
      * @throws Exception
      */
-    #[Endpoint('Delete directory')]
-    #[BodyParam('name', type: 'string', required: true, description: 'Directory path to delete')]
     public function destroyDirectories(Request $request): mixed
     {
         try {
@@ -291,9 +270,6 @@ class FileManagerController extends BaseController
      * @param  Request  $request
      * @return mixed
      */
-    #[Endpoint('Move directory')]
-    #[BodyParam('source_path', type: 'string', required: true, description: 'Source directory path')]
-    #[BodyParam('dest_path', type: 'string', required: true, description: 'Destination directory path')]
     public function moveDirectories(Request $request): mixed
     {
         try {
@@ -314,7 +290,6 @@ class FileManagerController extends BaseController
      * @param  Request  $request
      * @return mixed
      */
-    #[Endpoint('Move files')]
     public function moveFiles(MoveFilesRequest $request): mixed
     {
         try {
@@ -340,14 +315,11 @@ class FileManagerController extends BaseController
      * @param  UploadFileRequest  $request
      * @return mixed
      */
-    #[Endpoint('Upload file')]
-    #[BodyParam('file', type: 'file', required: true, description: 'File to upload')]
-    #[BodyParam('path', type: 'string', required: false, description: 'Target directory path')]
     public function uploadFiles(UploadFileRequest $request): mixed
     {
         $service  = $this->getService();
         $file     = $request->file('file');
-        $savePath = $request->get('path');
+        $savePath = $request->get('path', '');
 
         $originName = $file->getClientOriginalName();
         $storageKey = $service->uploadFile($file, $savePath, $originName);
@@ -368,7 +340,6 @@ class FileManagerController extends BaseController
      * @param  Request  $request
      * @return mixed
      */
-    #[Endpoint('Copy files')]
     public function copyFiles(MoveFilesRequest $request): mixed
     {
         try {
@@ -393,7 +364,6 @@ class FileManagerController extends BaseController
      *
      * @return mixed
      */
-    #[Endpoint('Get storage configuration')]
     public function getStorageConfig(): mixed
     {
         try {
@@ -418,8 +388,6 @@ class FileManagerController extends BaseController
      * @return mixed
      * @throws \Throwable
      */
-    #[Endpoint('Save storage configuration')]
-    #[BodyParam('driver', type: 'string', required: true, example: 'local')]
     public function saveStorageConfig(Request $request): mixed
     {
         try {
@@ -430,16 +398,16 @@ class FileManagerController extends BaseController
             Artisan::call('config:clear');
             load_settings();
 
-            // Rebind the FileManagerInterface singleton with the new driver
+            // Rebind the MediaInterface singleton with the new driver
             $s3Drivers = ['oss', 'cos', 'qiniu', 's3', 'obs', 'r2', 'minio'];
-            app()->forgetInstance(FileManagerInterface::class);
+            app()->forgetInstance(MediaInterface::class);
             if (in_array($driver, $s3Drivers)) {
-                app()->singleton(FileManagerInterface::class, function () {
+                app()->singleton(MediaInterface::class, function () {
                     return new OSSService;
                 });
             } else {
-                app()->singleton(FileManagerInterface::class, function () {
-                    return new FileManagerService;
+                app()->singleton(MediaInterface::class, function () {
+                    return new MediaService;
                 });
             }
 
@@ -481,54 +449,29 @@ class FileManagerController extends BaseController
     }
 
     /**
-     * Download a remote file and save to the media library.
-     *
-     * @param  Request  $request
-     * @return mixed
+     * Get list of enabled cloud drivers from settings.
+     * Always includes 'local'.
      */
-    #[Endpoint('Download remote file')]
-    #[BodyParam('url', type: 'string', required: true, description: 'Remote file URL')]
-    #[BodyParam('path', type: 'string', required: false, description: 'Target directory path')]
-    #[BodyParam('file_name', type: 'string', required: false, description: 'Custom file name')]
-    public function downloadRemoteFile(Request $request): mixed
+    private function getEnabledDrivers(): array
     {
-        try {
-            $url      = $request->input('url');
-            $savePath = $request->input('path', '/');
-            $fileName = $request->input('file_name');
+        $valid   = ['oss', 'cos', 'qiniu', 's3', 'obs', 'r2', 'minio'];
+        $drivers = ['local'];
 
-            if (empty($url)) {
-                throw new Exception(trans('panel/media.invalid_url'));
+        foreach ($valid as $driver) {
+            if (system_setting("storage_{$driver}_enabled", '0') === '1') {
+                $drivers[] = $driver;
             }
-
-            $service    = $this->getService();
-            $storageKey = $service->downloadRemoteFile($url, $savePath, $fileName);
-
-            $data = [
-                'name'       => $fileName ?? basename(parse_url($url, PHP_URL_PATH)),
-                'path'       => $storageKey,
-                'url'        => storage_url($storageKey),
-                'origin_url' => storage_url($storageKey),
-            ];
-
-            return json_success(trans('panel/media.download_success'), $data);
-        } catch (Exception $e) {
-            Log::error('Download remote file failed:', [
-                'error' => $e->getMessage(),
-                'url'   => $url ?? '',
-            ]);
-
-            return json_fail($e->getMessage());
         }
+
+        return $drivers;
     }
 
     /**
-     * Get detail for a single MediaFile record (drawer panel data).
+     * Get a media record with full metadata (original_name, checksum, mime, size, dimensions, alt, usage).
      *
      * @param  int  $id
      * @return mixed
      */
-    #[Endpoint('Get media detail')]
     public function getMediaDetail(int $id): mixed
     {
         try {
@@ -593,8 +536,6 @@ class FileManagerController extends BaseController
      * @param  Request  $request
      * @return mixed
      */
-    #[Endpoint('Update media')]
-    #[BodyParam('alt', type: 'string', required: false, example: 'Alt text')]
     public function updateMedia(int $id, Request $request): mixed
     {
         try {
@@ -627,10 +568,11 @@ class FileManagerController extends BaseController
      *
      * @return mixed
      */
-    #[Endpoint('Get media stats')]
     public function getMediaStats(): mixed
     {
         try {
+            // Totals follow the active media driver so the file manager
+            // reflects what the user is actually browsing.
             $driver    = system_setting('media_driver', 'local');
             $baseQuery = MediaFile::query()->where('disk', $driver);
 
@@ -691,21 +633,35 @@ class FileManagerController extends BaseController
         return round($bytes / (1024 ** $exp), $precision).' '.$units[$exp];
     }
 
-    /**
-     * Get list of enabled cloud drivers from settings.
-     * Always includes 'local'.
-     */
-    private function getEnabledDrivers(): array
+    public function downloadRemoteFile(Request $request): mixed
     {
-        $valid   = ['oss', 'cos', 'qiniu', 's3', 'obs', 'r2', 'minio'];
-        $drivers = ['local'];
+        try {
+            $url      = $request->input('url');
+            $savePath = $request->input('path', '/');
+            $fileName = $request->input('file_name');
 
-        foreach ($valid as $driver) {
-            if (system_setting("storage_{$driver}_enabled", '0') === '1') {
-                $drivers[] = $driver;
+            if (empty($url)) {
+                throw new Exception(trans('panel/media.invalid_url'));
             }
-        }
 
-        return $drivers;
+            $service    = $this->getService();
+            $storageKey = $service->downloadRemoteFile($url, $savePath, $fileName);
+
+            $data = [
+                'name'       => $fileName ?? basename(parse_url($url, PHP_URL_PATH)),
+                'path'       => $storageKey,
+                'url'        => storage_url($storageKey),
+                'origin_url' => storage_url($storageKey),
+            ];
+
+            return json_success(trans('panel/media.download_success'), $data);
+        } catch (Exception $e) {
+            Log::error('Download remote file failed:', [
+                'error' => $e->getMessage(),
+                'url'   => $url ?? '',
+            ]);
+
+            return json_fail($e->getMessage());
+        }
     }
 }

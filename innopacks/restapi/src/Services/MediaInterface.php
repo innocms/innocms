@@ -3,13 +3,14 @@
 namespace InnoCMS\Restapi\Services;
 
 use Illuminate\Http\UploadedFile;
+use InnoCMS\Restapi\Criteria\FileListCriteria;
 
-interface FileManagerInterface
+interface MediaInterface
 {
     /**
      * Get files list
      */
-    public function getFiles(string $baseFolder, string $keyword = '', string $sort = 'created', string $order = 'desc', int $page = 1, int $perPage = 20, bool $includeDirectories = false): array;
+    public function getFiles(FileListCriteria $c): array;
 
     /**
      * Get directories list
@@ -55,9 +56,4 @@ interface FileManagerInterface
      * Rename file or directory
      */
     public function updateName(string $originPath, string $newPath): bool;
-
-    /**
-     * Download a remote file from URL and save to the specified path.
-     */
-    public function downloadRemoteFile(string $url, string $savePath, ?string $fileName = null): string;
 }

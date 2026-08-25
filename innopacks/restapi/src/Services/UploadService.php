@@ -3,16 +3,18 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoCMS <team@innocms.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
 namespace InnoCMS\Restapi\Services;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use InnoCMS\Common\Requests\UploadFileRequest;
 use InnoCMS\Common\Requests\UploadImageRequest;
 use InnoCMS\Common\Services\FileSecurityValidator;
+use InnoCMS\Common\Services\MediaUrlResolver;
 use InnoCMS\Common\Services\StorageService;
 use InnoCMS\Front\Services\BaseService;
 
@@ -33,11 +35,27 @@ class UploadService extends BaseService
         $filePath   = $file->store("/{$type}", 'media');
         $storageKey = StorageService::storageKey($filePath);
 
+        $this->registerMediaFile($file, $storageKey);
+
         return [
             'url'        => storage_url($storageKey),
             'origin_url' => storage_url($storageKey),
             'value'      => $storageKey,
         ];
+    }
+
+    /**
+     * Write a media_files record for the uploaded file.
+     * Failures are logged but do not block the upload.
+     */
+    protected function registerMediaFile($file, string $storageKey): void
+    {
+        try {
+            $disk = system_setting('media_driver', 'local');
+            MediaUrlResolver::getInstance()->registerFromUploadedFile($file, $storageKey, $disk);
+        } catch (\Throwable $e) {
+            Log::warning('Media register failed: '.$e->getMessage(), ['storage_key' => $storageKey]);
+        }
     }
 
     /**

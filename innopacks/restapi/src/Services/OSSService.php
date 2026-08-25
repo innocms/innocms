@@ -3,7 +3,7 @@
  * Copyright (c) Since 2024 InnoCMS - All Rights Reserved
  *
  * @link       https://www.innocms.com
- * @author     InnoCMS <team@innoshop.com>
+ * @author     InnoCMS <team@innocms.com>
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
@@ -11,12 +11,17 @@ namespace InnoCMS\Restapi\Services;
 
 use Aws\S3\S3Client;
 use Exception;
+use GuzzleHttp\Promise\Utils;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use InnoCMS\Common\Models\MediaFile;
 use InnoCMS\Common\Services\FileSecurityValidator;
+use InnoCMS\Common\Services\MediaUrlResolver;
 use InnoCMS\Common\Services\StorageService;
+use InnoCMS\Restapi\Criteria\FileListCriteria;
+use Psr\Http\Message\StreamInterface;
 
-class OSSService implements FileManagerInterface
+class OSSService implements MediaInterface
 {
     protected S3Client $s3Client;
 
@@ -139,13 +144,20 @@ class OSSService implements FileManagerInterface
             ],
             'endpoint'                => $this->config['endpoint'],
             'use_path_style_endpoint' => false,
+            // Tencent COS returns a non-standard Content-Encoding on GetObject;
+            // disabling Guzzle decoding avoids cURL error 61.
+            'http' => ['decode_content' => false],
         ]);
     }
 
     public function uploadFile($file, $savePath, $originName): string
     {
         try {
-            $key = $this->getObjectKey($savePath, $originName);
+            $resolver = MediaUrlResolver::getInstance();
+            $storeAs  = $resolver->shouldRenameToHash()
+                ? $resolver->resolveStoreFileName($file)
+                : $originName;
+            $key = $this->getObjectKey($savePath, $storeAs);
 
             $this->s3Client->putObject([
                 'Bucket'      => $this->bucket,
@@ -157,7 +169,15 @@ class OSSService implements FileManagerInterface
 
             $this->invalidateCDN([$key]);
 
-            return StorageService::storageKey($key);
+            $storageKey = StorageService::storageKey($key);
+
+            try {
+                $resolver->registerFromUploadedFile($file, $storageKey, $this->config['driver']);
+            } catch (\Throwable $e) {
+                Log::warning('Media register failed: '.$e->getMessage(), ['storage_key' => $storageKey]);
+            }
+
+            return $storageKey;
         } catch (Exception $e) {
             Log::error('OSS upload failed:', [
                 'error' => $e->getMessage(),
@@ -172,10 +192,10 @@ class OSSService implements FileManagerInterface
      * For keyword search or non-name sort, falls back to full scan (required by S3 limitations).
      * Otherwise uses S3 MaxKeys for server-side limiting.
      */
-    public function getFiles(string $baseFolder, ?string $keyword = '', string $sort = 'name', string $order = 'asc', int $page = 1, int $perPage = 20, bool $includeDirectories = false): array
+    public function getFiles(FileListCriteria $c): array
     {
         try {
-            $prefix = trim($baseFolder, '/');
+            $prefix = trim($c->baseFolder, '/');
             $prefix = $prefix ? $prefix.'/' : '';
 
             $result = $this->s3Client->listObjectsV2([
@@ -185,20 +205,23 @@ class OSSService implements FileManagerInterface
             ]);
 
             // Format directories (always complete via CommonPrefixes)
-            $directories = array_map(function ($prefix) {
-                $name = basename(rtrim($prefix['Prefix'], '/'));
+            $directories = [];
+            if ($c->includeDirectories) {
+                $directories = array_map(function ($prefix) {
+                    $name = basename(rtrim($prefix['Prefix'], '/'));
 
-                return [
-                    'name'          => $name,
-                    'path'          => StorageService::storageKey(rtrim($prefix['Prefix'], '/')),
-                    'is_dir'        => true,
-                    'thumb'         => url('/images/icons/folder.png'),
-                    'url'           => '',
-                    'mime'          => 'directory',
-                    'size'          => 0,
-                    'last_modified' => null,
-                ];
-            }, $result['CommonPrefixes'] ?? []);
+                    return [
+                        'name'          => $name,
+                        'path'          => StorageService::storageKey(rtrim($prefix['Prefix'], '/')),
+                        'is_dir'        => true,
+                        'thumb'         => url('/images/icons/folder.png'),
+                        'url'           => '',
+                        'mime'          => 'directory',
+                        'size'          => 0,
+                        'last_modified' => null,
+                    ];
+                }, $result['CommonPrefixes'] ?? []);
+            }
 
             // Format files — use extension-based MIME (no headObject)
             $files = array_map(function ($object) {
@@ -223,16 +246,40 @@ class OSSService implements FileManagerInterface
             // Filter nulls and merge
             $items = array_merge($directories, array_filter($files));
 
+            // Batch-resolve media_ids for all file items (avoid N+1).
+            $storageKeys = array_filter(array_map(fn ($i) => $i['path'] ?? null, $files));
+            $mediaIdMap  = [];
+            if (! empty($storageKeys)) {
+                $rows = MediaFile::query()
+                    ->whereIn('storage_key', array_unique(array_values($storageKeys)))
+                    ->pluck('id', 'storage_key');
+                foreach ($rows as $storageKey => $id) {
+                    $mediaIdMap[$storageKey] = (int) $id;
+                }
+            }
+            foreach ($items as &$item) {
+                if ($item['is_dir'] ?? false) {
+                    continue;
+                }
+                $mediaId = $mediaIdMap[$item['path']] ?? null;
+
+                $item['media_id']        = $mediaId;
+                $item['media_reference'] = $mediaId
+                    ? MediaUrlResolver::buildReference($mediaId)
+                    : null;
+            }
+            unset($item);
+
             // Apply search filter
-            if ($keyword) {
-                $items = array_filter($items, function ($item) use ($keyword) {
-                    return stripos($item['name'], $keyword) !== false;
+            if ($c->keyword) {
+                $items = array_filter($items, function ($item) use ($c) {
+                    return stripos($item['name'], $c->keyword) !== false;
                 });
                 $items = array_values($items);
             }
 
             // Sort: directories first, then by specified field
-            usort($items, function ($a, $b) use ($sort, $order) {
+            usort($items, function ($a, $b) use ($c) {
                 if ($a['is_dir'] && ! $b['is_dir']) {
                     return -1;
                 }
@@ -241,26 +288,26 @@ class OSSService implements FileManagerInterface
                 }
 
                 $cmp = 0;
-                if ($sort === 'name') {
+                if ($c->sort === 'name') {
                     $cmp = strcmp($a['name'], $b['name']);
-                } elseif ($sort === 'size') {
+                } elseif ($c->sort === 'size') {
                     $cmp = ($a['size'] ?? 0) <=> ($b['size'] ?? 0);
-                } elseif ($sort === 'created') {
+                } elseif ($c->sort === 'created') {
                     $cmp = ($a['last_modified'] ?? 0) <=> ($b['last_modified'] ?? 0);
                 }
 
-                return $order === 'desc' ? -$cmp : $cmp;
+                return $c->order === 'desc' ? -$cmp : $cmp;
             });
 
             $total  = count($items);
-            $offset = ($page - 1) * $perPage;
-            $items  = array_slice($items, $offset, $perPage);
+            $offset = ($c->page - 1) * $c->perPage;
+            $items  = array_slice($items, $offset, $c->perPage);
 
             return [
                 'items'    => $items,
                 'total'    => $total,
-                'page'     => $page,
-                'per_page' => $perPage,
+                'page'     => $c->page,
+                'per_page' => $c->perPage,
                 'success'  => true,
             ];
         } catch (Exception $e) {
@@ -337,47 +384,22 @@ class OSSService implements FileManagerInterface
     public function getDirectories(string $baseFolder = '/'): array
     {
         try {
-            $root = [
-                'id'     => '/',
-                'name'   => '/',
-                'path'   => '/',
-                'parent' => null,
-                'isRoot' => true,
-            ];
+            // Root request: return tree root with top-level children for initial load
+            if ($baseFolder === '/' || $baseFolder === '') {
+                $root = [
+                    'id'       => '/',
+                    'name'     => '/',
+                    'path'     => '/',
+                    'parent'   => null,
+                    'isRoot'   => true,
+                    'children' => $this->fetchChildDirectories(''),
+                ];
 
-            // Collect all prefixes recursively
-            $allPrefixes = $this->collectAllPrefixes('');
-
-            if (empty($allPrefixes)) {
                 return [$root];
             }
 
-            // Build flat node list
-            $nodes = ['/' => $root];
-            foreach ($allPrefixes as $prefix) {
-                $path   = rtrim($prefix, '/');
-                $name   = basename($path);
-                $parent = dirname($path);
-                $parent = $parent === '.' ? '/' : $parent;
-
-                $nodes[$path] = [
-                    'id'     => $path,
-                    'name'   => $name,
-                    'path'   => $path,
-                    'parent' => $parent,
-                    'isRoot' => false,
-                ];
-            }
-
-            // Build tree with children
-            foreach ($nodes as $key => &$node) {
-                if (isset($node['parent']) && isset($nodes[$node['parent']])) {
-                    $nodes[$node['parent']]['children'][] = &$node;
-                }
-            }
-            unset($node);
-
-            return [$nodes['/']];
+            // Sub-directory request: return flat list of immediate children (for lazy loading)
+            return $this->fetchChildDirectories($baseFolder);
         } catch (Exception $e) {
             Log::error('OSS get directories failed:', [
                 'error' => $e->getMessage(),
@@ -387,26 +409,76 @@ class OSSService implements FileManagerInterface
     }
 
     /**
-     * Recursively collect all directory prefixes from S3.
-     * Uses Delimiter to get CommonPrefixes at each level.
+     * Fetch immediate child directories with hasChildren flag (parallel check).
      */
-    protected function collectAllPrefixes(string $prefix): array
+    protected function fetchChildDirectories(string $prefix): array
     {
-        $result = $this->s3Client->listObjectsV2([
+        $params = [
             'Bucket'    => $this->bucket,
-            'Prefix'    => $prefix,
             'Delimiter' => '/',
-        ]);
-
-        $prefixes = [];
-        foreach ($result['CommonPrefixes'] ?? [] as $commonPrefix) {
-            $p          = $commonPrefix['Prefix'];
-            $prefixes[] = $p;
-            // Recurse into subdirectory
-            $prefixes = array_merge($prefixes, $this->collectAllPrefixes($p));
+        ];
+        if ($prefix !== '') {
+            $params['Prefix'] = rtrim($prefix, '/').'/';
         }
 
-        return $prefixes;
+        $result = $this->s3Client->listObjectsV2($params);
+
+        $children = [];
+        foreach ($result['CommonPrefixes'] ?? [] as $commonPrefix) {
+            $fullPath            = rtrim($commonPrefix['Prefix'], '/');
+            $name                = basename($fullPath);
+            $children[$fullPath] = [
+                'id'     => $fullPath,
+                'name'   => $name,
+                'path'   => $fullPath,
+                'parent' => $prefix === '' ? '/' : rtrim($prefix, '/'),
+                'isRoot' => false,
+            ];
+        }
+
+        // Parallel check hasChildren for all directories
+        if (! empty($children)) {
+            $hasChildrenMap = $this->batchCheckHasChildren(array_keys($children));
+            foreach ($children as $path => &$child) {
+                $child['hasChildren'] = $hasChildrenMap[$path] ?? false;
+            }
+            unset($child);
+        }
+
+        return array_values($children);
+    }
+
+    /**
+     * Check multiple directories in parallel for sub-directory existence.
+     * Uses async S3 calls via Guzzle promises — N checks take ~1 round-trip.
+     *
+     * @return array<string, bool> Map of path => hasChildren
+     */
+    protected function batchCheckHasChildren(array $paths): array
+    {
+        $promises = [];
+        foreach ($paths as $path) {
+            $prefix          = rtrim($path, '/').'/';
+            $promises[$path] = $this->s3Client->listObjectsV2Async([
+                'Bucket'    => $this->bucket,
+                'Prefix'    => $prefix,
+                'Delimiter' => '/',
+                'MaxKeys'   => 1,
+            ]);
+        }
+
+        $results = Utils::settle($promises)->wait();
+
+        $map = [];
+        foreach ($results as $path => $result) {
+            if ($result['state'] === 'fulfilled') {
+                $map[$path] = ! empty($result['value']['CommonPrefixes']);
+            } else {
+                $map[$path] = false;
+            }
+        }
+
+        return $map;
     }
 
     public function createDirectory($path): bool
@@ -449,6 +521,8 @@ class OSSService implements FileManagerInterface
                     'Bucket' => $this->bucket,
                     'Key'    => ltrim($filePath, '/'),
                 ]);
+
+                $this->relocateMedia($filePath, $newKey);
             }
 
             $keys = array_map(fn ($f) => ltrim($f, '/'), $files);
@@ -478,6 +552,16 @@ class OSSService implements FileManagerInterface
                     'Key'        => $newKey,
                     'ACL'        => 'public-read',
                 ]);
+
+                try {
+                    $newStorageKey = $this->normalizeMediaKey($newKey);
+                    MediaUrlResolver::getInstance()->registerCopy($newStorageKey, $this->config['driver'], [
+                        'original_name' => $fileName,
+                        'source'        => 'copy',
+                    ]);
+                } catch (\Throwable $e) {
+                    Log::warning('OSS media copy register failed: '.$e->getMessage(), ['key' => $newKey]);
+                }
             }
 
             $keys = array_map(fn ($f) => trim($destPath, '/').'/'.basename($f), $files);
@@ -513,6 +597,8 @@ class OSSService implements FileManagerInterface
                     'Bucket' => $this->bucket,
                     'Key'    => $key.'/',
                 ]);
+
+                $this->removeMedia($key);
             }
 
             $this->invalidateCDN($keys);
@@ -567,6 +653,7 @@ class OSSService implements FileManagerInterface
             ]);
 
             $this->invalidateCDN($keys);
+            $this->removeMediaUnderPrefix($prefix);
 
             return true;
         } catch (Exception $e) {
@@ -609,6 +696,7 @@ class OSSService implements FileManagerInterface
             }
 
             $this->invalidateCDN([trim($sourcePath, '/').'/']);
+            $this->relocateMediaUnderPrefix($sourcePath, $destPath);
 
             return true;
         } catch (Exception $e) {
@@ -641,6 +729,7 @@ class OSSService implements FileManagerInterface
             ]);
 
             $this->invalidateCDN([ltrim($originPath, '/'), ltrim($newPath, '/')]);
+            $this->relocateMedia($originPath, $newPath);
 
             return true;
         } catch (Exception $e) {
@@ -702,6 +791,91 @@ class OSSService implements FileManagerInterface
         }
     }
 
+    /**
+     * Cloud metadata for the media detail panel: bucket config plus a live
+     * headObject probe (etag / last modified / existence on the bucket).
+     */
+    public function getCloudMeta(string $rawKey): array
+    {
+        $meta = [
+            'driver'        => $this->config['driver'],
+            'bucket'        => $this->bucket,
+            'region'        => $this->config['region'],
+            'endpoint'      => $this->endpoint,
+            'cdn_domain'    => $this->cdnDomain ?: null,
+            'object_key'    => $rawKey,
+            'object_url'    => $this->getFileUrl($rawKey),
+            'exists'        => false,
+            'etag'          => null,
+            'last_modified' => null,
+            'cloud_size'    => null,
+            'content_type'  => null,
+        ];
+
+        try {
+            $result = $this->s3Client->headObject([
+                'Bucket' => $this->bucket,
+                'Key'    => ltrim($rawKey, '/'),
+            ]);
+
+            $meta['exists']        = true;
+            $meta['etag']          = trim((string) ($result['ETag'] ?? ''), '"') ?: null;
+            $meta['last_modified'] = isset($result['LastModified']) ? (string) $result['LastModified'] : null;
+            $meta['cloud_size']    = (int) ($result['ContentLength'] ?? 0);
+            $meta['content_type']  = $result['ContentType'] ?? null;
+        } catch (Exception $e) {
+            Log::warning('OSS headObject failed:', [
+                'key'   => $rawKey,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        return $meta;
+    }
+
+    /**
+     * Yield every object in the bucket with continuation-token pagination.
+     * Used by maintenance commands (e.g. media:register-existing) needing a full inventory.
+     *
+     * @return \Generator<int, array{key: string, size: int, last_modified: mixed}>
+     */
+    public function listAllObjects(): \Generator
+    {
+        $token = null;
+        do {
+            $params = [
+                'Bucket'  => $this->bucket,
+                'MaxKeys' => 1000,
+            ];
+            if ($token) {
+                $params['ContinuationToken'] = $token;
+            }
+
+            $result = $this->s3Client->listObjectsV2($params);
+            foreach ($result['Contents'] ?? [] as $object) {
+                yield [
+                    'key'           => $object['Key'],
+                    'size'          => (int) ($object['Size'] ?? 0),
+                    'last_modified' => $object['LastModified'] ?? null,
+                ];
+            }
+            $token = $result['NextContinuationToken'] ?? null;
+        } while ($token);
+    }
+
+    /**
+     * Open a readable stream for an object's contents (caller must close).
+     *
+     * @return StreamInterface
+     */
+    public function getObjectStream(string $key)
+    {
+        return $this->s3Client->getObject([
+            'Bucket' => $this->bucket,
+            'Key'    => ltrim($key, '/'),
+        ])['Body'];
+    }
+
     public function getFileInfo(string $path): array
     {
         try {
@@ -742,6 +916,79 @@ class OSSService implements FileManagerInterface
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         return in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+    }
+
+    // ==================== Media Library Sync ====================
+
+    /**
+     * Normalize a key used in S3 operations to a storage_key (with static/media/ prefix).
+     * S3 keys may or may not include the prefix; storage_key in DB always has it.
+     */
+    protected function normalizeMediaKey(string $key): string
+    {
+        $key = ltrim($key, '/');
+
+        return StorageService::isStoragePath($key) ? $key : StorageService::storageKey($key);
+    }
+
+    /**
+     * Sync media_files after renaming / moving a single object.
+     */
+    protected function relocateMedia(string $oldKey, string $newKey): void
+    {
+        $oldFull = $this->normalizeMediaKey($oldKey);
+        $newFull = $this->normalizeMediaKey($newKey);
+        try {
+            MediaUrlResolver::getInstance()->relocateByKey($oldFull, $newFull, $this->config['driver']);
+        } catch (\Throwable $e) {
+            Log::warning('OSS media relocate failed: '.$e->getMessage(), ['old' => $oldFull, 'new' => $newFull]);
+        }
+    }
+
+    /**
+     * Soft delete a media record after deleting a single object.
+     */
+    protected function removeMedia(string $key): void
+    {
+        $fullKey = $this->normalizeMediaKey($key);
+        try {
+            MediaUrlResolver::getInstance()->removeByKey($fullKey);
+        } catch (\Throwable $e) {
+            Log::warning('OSS media remove failed: '.$e->getMessage(), ['key' => $fullKey]);
+        }
+    }
+
+    /**
+     * Soft delete all media records under a directory prefix.
+     */
+    protected function removeMediaUnderPrefix(string $prefix): void
+    {
+        $normalized = $this->normalizeMediaKey(rtrim($prefix, '/').'/');
+        try {
+            foreach (MediaFile::query()->where('storage_key', 'like', $normalized.'%')->cursor() as $media) {
+                $media->delete();
+            }
+        } catch (\Throwable $e) {
+            Log::warning('OSS media remove under prefix failed: '.$e->getMessage(), ['prefix' => $normalized]);
+        }
+    }
+
+    /**
+     * Relocate all media records under a directory prefix (used by moveDirectory).
+     */
+    protected function relocateMediaUnderPrefix(string $oldPrefix, string $newPrefix): void
+    {
+        $oldFull = $this->normalizeMediaKey(rtrim($oldPrefix, '/').'/');
+        $newFull = $this->normalizeMediaKey(rtrim($newPrefix, '/').'/');
+        try {
+            $resolver = MediaUrlResolver::getInstance();
+            foreach (MediaFile::query()->where('storage_key', 'like', $oldFull.'%')->cursor() as $media) {
+                $newKey = $newFull.substr($media->storage_key, strlen($oldFull));
+                $resolver->relocate($media->id, $newKey, $this->config['driver']);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('OSS media relocate under prefix failed: '.$e->getMessage(), ['old' => $oldFull, 'new' => $newFull]);
+        }
     }
 
     /**

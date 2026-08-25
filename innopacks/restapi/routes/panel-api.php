@@ -90,20 +90,20 @@ Route::middleware($middlewares)->group(function () {
     Route::delete('/contacts/{contact}', [PanelApiControllers\ContactController::class, 'destroy'])->name('contacts.destroy');
 
     // Media Library
-    Route::get('/media/files', [PanelApiControllers\FileManagerController::class, 'getFiles'])->name('media.files');
-    Route::get('/media/directories', [PanelApiControllers\FileManagerController::class, 'getDirectories'])->name('media.directories');
-    Route::post('/media/directories', [PanelApiControllers\FileManagerController::class, 'createDirectory'])->name('media.create_directory');
-    Route::post('/media/upload', [PanelApiControllers\FileManagerController::class, 'uploadFiles'])->name('media.upload');
-    Route::post('/media/rename', [PanelApiControllers\FileManagerController::class, 'rename'])->name('media.rename');
-    Route::delete('/media/files', [PanelApiControllers\FileManagerController::class, 'destroyFiles'])->name('media.delete_files');
-    Route::delete('/media/directories', [PanelApiControllers\FileManagerController::class, 'destroyDirectories'])->name('media.delete_directories');
-    Route::post('/media/move_directories', [PanelApiControllers\FileManagerController::class, 'moveDirectories'])->name('media.move_directories');
-    Route::post('/media/move_files', [PanelApiControllers\FileManagerController::class, 'moveFiles'])->name('media.move_files');
-    Route::post('/media/copy_files', [PanelApiControllers\FileManagerController::class, 'copyFiles'])->name('media.copy_files');
-    Route::post('/media/download_remote', [PanelApiControllers\FileManagerController::class, 'downloadRemoteFile'])->name('media.download_remote');
-    Route::get('/media/storage_config', [PanelApiControllers\FileManagerController::class, 'getStorageConfig'])->name('media.storage_config');
-    Route::post('/media/storage_config', [PanelApiControllers\FileManagerController::class, 'saveStorageConfig'])->name('media.save_storage_config');
-    Route::get('/media/media/{id}', [PanelApiControllers\FileManagerController::class, 'getMediaDetail'])->name('media.media_detail');
-    Route::patch('/media/media/{id}', [PanelApiControllers\FileManagerController::class, 'updateMedia'])->name('media.media_update');
-    Route::get('/media/stats', [PanelApiControllers\FileManagerController::class, 'getMediaStats'])->name('media.stats');
+    Route::get('/media/files', [PanelApiControllers\MediaController::class, 'getFiles'])->name('media.files');
+    Route::get('/media/directories', [PanelApiControllers\MediaController::class, 'getDirectories'])->name('media.directories');
+    Route::post('/media/directories', [PanelApiControllers\MediaController::class, 'createDirectory'])->name('media.create_directory');
+    Route::post('/media/upload', [PanelApiControllers\MediaController::class, 'uploadFiles'])->name('media.upload');
+    Route::post('/media/rename', [PanelApiControllers\MediaController::class, 'rename'])->name('media.rename');
+    Route::delete('/media/files', [PanelApiControllers\MediaController::class, 'destroyFiles'])->name('media.delete_files');
+    Route::delete('/media/directories', [PanelApiControllers\MediaController::class, 'destroyDirectories'])->name('media.delete_directories');
+    Route::post('/media/move_directories', [PanelApiControllers\MediaController::class, 'moveDirectories'])->name('media.move_directories');
+    Route::post('/media/move_files', [PanelApiControllers\MediaController::class, 'moveFiles'])->name('media.move_files');
+    Route::post('/media/copy_files', [PanelApiControllers\MediaController::class, 'copyFiles'])->name('media.copy_files');
+    Route::post('/media/download_remote', [PanelApiControllers\MediaController::class, 'downloadRemoteFile'])->name('media.download_remote');
+    Route::get('/media/storage_config', [PanelApiControllers\MediaController::class, 'getStorageConfig'])->name('media.storage_config');
+    Route::post('/media/storage_config', [PanelApiControllers\MediaController::class, 'saveStorageConfig'])->name('media.save_storage_config');
+    Route::get('/media/media/{id}', [PanelApiControllers\MediaController::class, 'getMediaDetail'])->name('media.media_detail');
+    Route::patch('/media/media/{id}', [PanelApiControllers\MediaController::class, 'updateMedia'])->name('media.media_update');
+    Route::get('/media/stats', [PanelApiControllers\MediaController::class, 'getMediaStats'])->name('media.stats');
 });

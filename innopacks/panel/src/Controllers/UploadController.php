@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\Front\Controllers;
+namespace InnoCMS\Panel\Controllers;
 
 use InnoCMS\Common\Requests\UploadFileRequest;
 use InnoCMS\Common\Requests\UploadImageRequest;
@@ -23,20 +23,10 @@ class UploadController
      */
     public function images(UploadImageRequest $request): mixed
     {
-        $data = UploadService::getInstance()->images($request);
+        $image = $request->file('image');
+        $type  = $request->file('type', 'common');
 
-        return json_success(trans('common/upload.upload_success'), $data);
-    }
-
-    /**
-     * Upload document files
-     *
-     * @param  UploadFileRequest  $request
-     * @return mixed
-     */
-    public function docs(UploadFileRequest $request): mixed
-    {
-        $data = UploadService::getInstance()->files($request);
+        $data = UploadService::getInstance()->uploadFile($image, $type);
 
         return json_success(trans('common/upload.upload_success'), $data);
     }
@@ -49,7 +39,10 @@ class UploadController
      */
     public function files(UploadFileRequest $request): mixed
     {
-        $data = UploadService::getInstance()->files($request);
+        $file = $request->file('file');
+        $type = $request->file('type', 'files');
+
+        $data = UploadService::getInstance()->uploadFile($file, $type);
 
         return json_success(trans('common/upload.upload_success'), $data);
     }

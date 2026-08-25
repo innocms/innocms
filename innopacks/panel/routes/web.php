@@ -20,6 +20,9 @@ Route::middleware(['admin_auth:admin'])
     ->group(function () {
         Route::get('logout', [Controllers\LogoutController::class, 'index'])->name('logout.index');
 
+        Route::post('/upload/images', [Controllers\UploadController::class, 'images'])->name('upload.images');
+        Route::post('/upload/files', [Controllers\UploadController::class, 'files'])->name('upload.files');
+
         Route::get('/', [Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
         Route::get('/analytics', [Controllers\AnalyticsController::class, 'index'])->name('analytics.index');

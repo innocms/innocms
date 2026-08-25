@@ -11,7 +11,7 @@ namespace InnoCMS\Common\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadFileRequest extends FormRequest
+class UploadImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,8 +30,9 @@ class UploadFileRequest extends FormRequest
      */
     public function rules(): array
     {
-        // Unified security policy - no dangerous file types including SVG
-        $allowedMimes = 'jpg,png,jpeg,gif,webp,zip,doc,docx,xls,xlsx,ppt,pptx,pdf,mp4';
+        // Unified security policy for all contexts
+        // No SVG support for security reasons
+        $allowedMimes = 'jpg,png,jpeg,gif,webp';
 
         // Dynamic file size limits based on context
         if (request()->is('panel/*') || request()->is('api/panel/*') || is_admin()) {
@@ -54,8 +55,8 @@ class UploadFileRequest extends FormRequest
         }
 
         return [
-            'file' => "required|file|mimes:{$allowedMimes}|max:{$maxSize}",
-            'type' => 'required|alpha_dash',
+            'image' => "required|image|mimes:{$allowedMimes}|max:{$maxSize}",
+            'type'  => 'required|alpha_dash',
         ];
     }
 
@@ -67,13 +68,13 @@ class UploadFileRequest extends FormRequest
     public function bodyParameters(): array
     {
         return [
-            'file' => [
-                'description' => 'File upload (multipart). Allowed types include images, zip, office docs, pdf, mp4.',
+            'image' => [
+                'description' => 'Image file (multipart). Allowed: jpg, png, jpeg, gif, webp.',
                 'example'     => null,
             ],
             'type' => [
-                'description' => 'Upload context slug (alphanumeric + dash/underscore).',
-                'example'     => 'document',
+                'description' => 'Upload context slug (alphanumeric + dash/underscore), e.g. product, avatar.',
+                'example'     => 'product',
             ],
         ];
     }

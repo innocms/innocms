@@ -25,7 +25,7 @@
       position: relative;
     }
 
-    /* Media library content area */
+    /* File manager content area */
     .media {
       height: 100%;
       display: flex;
@@ -77,30 +77,25 @@
 @push('footer')
   <script>
     // Create Vue instance for bottom buttons
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof Vue === 'undefined') return;
-      const __btnApp = Vue.createApp({
-        methods: {
-          handleConfirm() {
-            // Get main Vue instance and call its method
-            const appEl = document.querySelector('#app');
-            if (appEl && appEl.__vue_app__) {
-              const mainApp = appEl.__vue_app__._instance.proxy;
-              if (mainApp && typeof mainApp.confirmSelection === 'function') {
-                mainApp.confirmSelection();
-              }
+    const __btnApp = Vue.createApp({
+      methods: {
+        handleConfirm() {
+          // Get main Vue instance and call its method
+          const appEl = document.querySelector('#app');
+          if (appEl && appEl.__vue_app__) {
+            const mainApp = appEl.__vue_app__._instance.proxy;
+            if (mainApp && typeof mainApp.confirmSelection === 'function') {
+              mainApp.confirmSelection();
             }
           }
         }
-      });
-      __btnApp.use(window.ElementPlus, window.ElementPlusLocaleZhCn ? { locale: window.ElementPlusLocaleZhCn } : {});
-      if (window.ElementPlusIconsVue) {
-        for (const [key, component] of Object.entries(window.ElementPlusIconsVue)) {
-          __btnApp.component(key, component);
-        }
       }
-      __btnApp.mount('#bottom-btns');
     });
+    __btnApp.use(ElementPlus, window.ElementPlusLocaleZhCn ? { locale: ElementPlusLocaleZhCn } : {});
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      __btnApp.component(key, component);
+    }
+    __btnApp.mount('#bottom-btns');
 
     // Get token from parent window, falling back to this iframe's own meta token.
     window.getApiToken = () => {

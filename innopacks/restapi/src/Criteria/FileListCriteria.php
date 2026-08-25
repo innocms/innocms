@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 /**
  * Query parameters for listing files in the media manager. Aggregating them
- * into a DTO keeps FileManagerService::getFiles() signature stable as new
+ * into a DTO keeps MediaService::getFiles() signature stable as new
  * listing dimensions are added (sort, filters, pagination, ...).
  */
 final class FileListCriteria

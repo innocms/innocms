@@ -15,6 +15,7 @@
         "laravel/mcp": "^0.9.1",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "league/flysystem-aws-s3-v3": "^3.32",
         "mobiledetect/mobiledetectlib": "^4.8",
         "nelexa/zip": "^4.0",
         "overtrue/easy-sms": "^3.2",
