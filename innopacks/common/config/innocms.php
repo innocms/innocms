@@ -9,8 +9,8 @@
 
 return [
     'edition'      => 'community',
-    'version'      => '0.4.8',
-    'build'        => '20260802',
+    'version'      => '0.5.0',
+    'build'        => '20260826',
     'api_url'      => env('INNO_API_URL', 'https://www.innocms.com'),
     'locale_force' => env('APP_LOCALE_FORCE'),
 ];
