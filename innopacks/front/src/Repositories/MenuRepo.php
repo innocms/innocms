@@ -14,6 +14,7 @@ use InnoCMS\Common\Repositories\PageRepo;
 use InnoCMS\Common\Resources\CatalogSimple;
 use InnoCMS\Common\Resources\PageSimple;
 
+/** @phpstan-consistent-constructor */
 class MenuRepo
 {
     /**

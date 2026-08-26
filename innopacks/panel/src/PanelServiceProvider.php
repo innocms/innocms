@@ -111,7 +111,7 @@ class PanelServiceProvider extends ServiceProvider
             Config::set('filesystems.disks.media', [
                 'driver'      => 'local',
                 'root'        => public_path(rtrim(StorageService::STORAGE_PREFIX, '/')),
-                'url'         => env('APP_URL').'/'.ltrim(StorageService::STORAGE_PREFIX, '/'),
+                'url'         => config('app.url').'/'.ltrim(StorageService::STORAGE_PREFIX, '/'),
                 'visibility'  => 'public',
                 'throw'       => true,
                 'permissions' => [

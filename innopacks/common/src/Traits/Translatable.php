@@ -11,6 +11,7 @@ namespace InnoCMS\Common\Traits;
 
 use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait Translatable
 {
@@ -39,10 +40,9 @@ trait Translatable
     /**
      * Locale translation object.
      *
-     * @return mixed
      * @throws Exception
      */
-    public function translation(): mixed
+    public function translation(): HasOne
     {
         $class = $this->getDescriptionModelClass();
 

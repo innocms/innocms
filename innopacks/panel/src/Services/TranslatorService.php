@@ -12,7 +12,7 @@ namespace InnoCMS\Panel\Services;
 use Exception;
 use InnoCMS\Panel\Interfaces\Translator;
 
-class TranslatorService extends BaseService
+class TranslatorService
 {
     /**
      * @param  string  $source

@@ -1,0 +1,20 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 1
+    paths:
+        - innopacks
+    tmpDir: storage/framework/cache/phpstan
+    databaseMigrationsPath:
+        - database/migrations
+        - innopacks/common/database/migrations
+        - innopacks/plugin/database/migrations
+    configDirectories:
+        - config
+        - innopacks/common/config
+        - innopacks/devtools/config
+        - innopacks/restapi/config
+    excludePaths:
+        analyse:
+            - innopacks/*/tests

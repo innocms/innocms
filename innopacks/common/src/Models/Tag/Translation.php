@@ -11,6 +11,7 @@ namespace InnoCMS\Common\Models\Tag;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use InnoCMS\Common\Models\BaseModel;
+use InnoCMS\Common\Models\Tag;
 
 class Translation extends BaseModel
 {

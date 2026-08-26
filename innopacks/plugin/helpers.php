@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-use Barryvdh\Debugbar\Facades\Debugbar;
+use Fruitcake\LaravelDebugbar\Facades\Debugbar;
 use Illuminate\Support\Str;
 use InnoCMS\Common\Services\ImageService;
 use InnoCMS\Plugin\Core\Blade\Hook;

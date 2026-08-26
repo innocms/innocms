@@ -9,6 +9,7 @@
 
 namespace InnoCMS\Common\Repositories;
 
+/** @phpstan-consistent-constructor */
 class SmsRepo
 {
     /**

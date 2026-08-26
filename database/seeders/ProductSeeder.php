@@ -145,10 +145,10 @@ class ProductSeeder extends BaseSeeder
     {
         $rows = [
             // InnoCMS
-            [1, 'zh-cn', 'InnoCMS', '轻量化企业内容管理系统，模块化架构 + 插件扩展，适合企业官网与多语言内容运营。',
-                '基于 Laravel 构建，采用模块化 innopacks 架构与 Hook 插件系统，安装即用、加载飞快。支持多语言、主题定制和 SEO 优化。', '轻量·可扩展·面向 B2B', 'InnoCMS 下载使用 | 帆连科技', 'InnoCMS 是一款专为企业官网快速建站而设计的轻量级 CMS。', 'InnoCMS,CMS,企业官网,开源CMS,Laravel'],
-            [1, 'en', 'InnoCMS', 'Lightweight enterprise CMS with modular architecture and plugin ecosystem for corporate websites and multilingual content.',
-                'Built on Laravel with modular innopacks architecture and a Hook-based plugin system. Ready out of the box, blazing fast. Supports multilingual, theme customization and SEO.', 'Lightweight·Extensible·B2B-ready', 'InnoCMS Download | FunnLink', 'InnoCMS is a lightweight CMS designed for rapid corporate website building.', 'InnoCMS,CMS,enterprise,open source,Laravel'],
+            [1, 'zh-cn', 'InnoCMS', '轻量级 B2B 独立站系统，模块化架构 + 插件扩展，内置商品与多语言，适合品牌独立站与外贸网站。',
+                '基于 Laravel 构建，采用模块化 innopacks 架构与 Hook 插件系统，安装即用、加载飞快。内置商品管理，支持多语言、主题定制和 SEO 优化。', '轻量·可扩展·面向 B2B 独立站', 'InnoCMS 下载使用 | 帆连科技', 'InnoCMS 是一款轻量级 B2B 独立站系统，几分钟即可上线品牌独立站。', 'InnoCMS,B2B独立站,独立站系统,外贸网站,开源CMS,Laravel'],
+            [1, 'en', 'InnoCMS', 'Lightweight B2B standalone website system with modular architecture and plugin ecosystem, built-in products and multilingual for brand independent sites and foreign trade websites.',
+                'Built on Laravel with modular innopacks architecture and a Hook-based plugin system. Ready out of the box, blazing fast. Built-in product management, supports multilingual, theme customization and SEO.', 'Lightweight·Extensible·B2B-ready', 'InnoCMS Download | FunnLink', 'InnoCMS is a lightweight B2B standalone website system — launch your brand independent site in minutes.', 'InnoCMS,B2B standalone website,independent site,foreign trade,open source,Laravel'],
 
             // InnoShop
             [2, 'zh-cn', 'InnoShop', '开源跨境电商独立站系统，支持多版本、多语言、多币种，Laravel + Vue 技术栈。',

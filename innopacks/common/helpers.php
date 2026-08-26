@@ -1117,3 +1117,31 @@ if (! function_exists('entity_link_resolve')) {
         return EntityLinkEnricher::resolveByIdOrSlug($modelClass, $value, $with);
     }
 }
+
+if (! function_exists('has_set_value')) {
+    /**
+     * Determine whether any value in the given data is set (non-empty).
+     *
+     * @param  array<mixed>  $data
+     */
+    function has_set_value(array $data): bool
+    {
+        foreach ($data as $value) {
+            if ($value !== null && $value !== '' && $value !== []) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (! function_exists('api_docs_enabled')) {
+    /**
+     * Whether Scribe API documentation routes are enabled.
+     */
+    function api_docs_enabled(): bool
+    {
+        return (bool) system_setting('api_docs_enabled', true);
+    }
+}

@@ -9,6 +9,7 @@
 
 namespace InnoCMS\Common\Services;
 
+/** @phpstan-consistent-constructor */
 class BaseService
 {
     public static function getInstance(): static

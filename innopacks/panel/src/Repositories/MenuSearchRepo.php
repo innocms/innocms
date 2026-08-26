@@ -12,6 +12,7 @@ namespace InnoCMS\Panel\Repositories;
 use Illuminate\Support\Facades\Cache;
 use InnoCMS\Plugin\Core\Plugin;
 
+/** @phpstan-consistent-constructor */
 class MenuSearchRepo
 {
     /**

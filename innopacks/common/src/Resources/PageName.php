@@ -11,8 +11,12 @@ namespace InnoCMS\Common\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use InnoCMS\Common\Models\Page;
 use Throwable;
 
+/**
+ * @mixin Page
+ */
 class PageName extends JsonResource
 {
     /**

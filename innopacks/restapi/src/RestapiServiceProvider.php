@@ -38,6 +38,8 @@ class RestapiServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/apifox.php', 'apifox');
+
         // Only load Scribe config if the package is installed
         if (class_exists(Scribe::class)) {
             try {

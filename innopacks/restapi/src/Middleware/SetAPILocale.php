@@ -35,8 +35,8 @@ class SetAPILocale
             $currentLocale = setting_locale_code();
         }
 
-        if (env('APP_LOCALE_FORCE')) {
-            $currentLocale = env('APP_LOCALE_FORCE');
+        if (config('inno.locale_force')) {
+            $currentLocale = config('inno.locale_force');
         }
 
         app()->setLocale($currentLocale);

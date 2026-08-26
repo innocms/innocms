@@ -11,7 +11,7 @@
 
 namespace InnoCMS\Plugin\Core\Blade;
 
-use Barryvdh\Debugbar\Facades\Debugbar;
+use Fruitcake\LaravelDebugbar\Facades\Debugbar;
 use Illuminate\Support\Arr;
 
 class Hook

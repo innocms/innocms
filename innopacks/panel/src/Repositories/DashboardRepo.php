@@ -184,7 +184,7 @@ class DashboardRepo
         try {
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::FILES
+                \RecursiveIteratorIterator::LEAVES_ONLY
             );
 
             return iterator_count($iterator);

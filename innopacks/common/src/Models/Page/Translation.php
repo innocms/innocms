@@ -10,6 +10,7 @@
 namespace InnoCMS\Common\Models\Page;
 
 use InnoCMS\Common\Models\BaseModel;
+use InnoCMS\Common\Models\Page;
 
 class Translation extends BaseModel
 {

@@ -11,7 +11,11 @@ namespace InnoCMS\Plugin\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use InnoCMS\Plugin\Core\Plugin;
 
+/**
+ * @mixin Plugin
+ */
 class PluginResource extends JsonResource
 {
     /**
@@ -30,7 +34,7 @@ class PluginResource extends JsonResource
             'path'        => $this->getPath(),
             'version'     => $this->getVersion(),
             'priority'    => $this->getPriority(),
-            'dir_name'    => $this->getDirName(),
+            'dir_name'    => $this->getDirname(),
             'type'        => $this->getType(),
             'author'      => $this->getAuthor(),
             'enabled'     => $this->getEnabled(),

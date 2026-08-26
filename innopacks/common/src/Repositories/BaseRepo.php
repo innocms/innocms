@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 
+/** @phpstan-consistent-constructor */
 class BaseRepo implements RepoInterface
 {
     protected string $model;
@@ -147,7 +148,7 @@ class BaseRepo implements RepoInterface
     /**
      * @return Builder
      */
-    private function modelQuery(): Builder
+    protected function modelQuery(): Builder
     {
         return $this->model::query();
     }

@@ -14,7 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use ZanySoft\Zip\Zip;
+use PhpZip\ZipFile;
 
 class PluginManager
 {
@@ -186,7 +186,6 @@ class PluginManager
         $newFilePath  = $destPath.'/'.$originalName;
         $file->move($destPath, $originalName);
 
-        $zipFile = Zip::open($newFilePath);
-        $zipFile->extract(base_path('plugins'));
+        (new ZipFile)->openFile($newFilePath)->extractTo(base_path('plugins'));
     }
 }

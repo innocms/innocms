@@ -83,8 +83,6 @@ class CommonServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                Commands\UpdateCountries::class,
-                Commands\UpdateStates::class,
                 Commands\PublishFrontTheme::class,
                 Commands\NormalizeLocales::class,
                 Commands\MigrateImagePaths::class,

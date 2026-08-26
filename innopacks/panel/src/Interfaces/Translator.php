@@ -7,10 +7,11 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-return [
-    'edition'      => 'community',
-    'version'      => '0.4.8',
-    'build'        => '20260802',
-    'api_url'      => env('INNO_API_URL', 'https://www.innocms.com'),
-    'locale_force' => env('APP_LOCALE_FORCE'),
-];
+namespace InnoCMS\Panel\Interfaces;
+
+interface Translator
+{
+    public function translate(string $source, string $target, string $text): string;
+
+    public function batchTranslate(string $source, string $target, array $text): array;
+}

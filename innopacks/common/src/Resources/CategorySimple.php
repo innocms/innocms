@@ -11,7 +11,11 @@ namespace InnoCMS\Common\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use InnoCMS\Common\Models\Category;
 
+/**
+ * @mixin Category
+ */
 class CategorySimple extends JsonResource
 {
     /**

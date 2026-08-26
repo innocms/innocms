@@ -15,6 +15,7 @@ use InnoCMS\Plugin\Core\Plugin as CPlugin;
 use InnoCMS\Plugin\Models\Plugin;
 use InnoCMS\Plugin\Repositories\PluginRepo;
 
+/** @phpstan-consistent-constructor */
 class PluginService
 {
     private PluginRepo $pluginRepo;

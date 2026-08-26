@@ -96,7 +96,6 @@ class VisitStatisticsService
             ->whereBetween('created_at', [$dateStart, $dateEnd])
             ->groupBy('session_id')
             ->having('event_count', '=', 1)
-            ->get()
             ->count();
 
         // Calculate average session duration

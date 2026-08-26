@@ -32,12 +32,12 @@
 ---
 
 # InnoCMS
-InnoCMS - Lightweight Enterprise CMS
+InnoCMS - Lightweight B2B Standalone Website System
 
-InnoCMS is a lightweight enterprise CMS based on Laravel 12, featuring a modular architecture with hook-based plugin system, multi-language support, visitor tracking with GeoIP2, and theme development capabilities.
+InnoCMS is a lightweight B2B standalone website system based on Laravel 13, with built-in product management, featuring a modular architecture with hook-based plugin system, multi-language support, visitor tracking with GeoIP2, and theme development capabilities.
 
 ## Introduction
-- Lightweight enterprise CMS designed for rapid development and deployment.
+- Lightweight B2B standalone website system with built-in products and multilingual, designed for rapid development and deployment.
 - Modular `innopacks` architecture with hook-based plugin extensibility.
 - Multi-language support with built-in locale management.
 - Visitor tracking with GeoIP2 geographic location integration.
