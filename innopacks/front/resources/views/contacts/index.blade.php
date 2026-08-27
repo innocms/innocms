@@ -2,7 +2,7 @@
 
 @section('body-class', 'page-contact')
 
-@section('title', __('front::common.contact_page_title').' - '.system_setting('meta_title', 'InnoCMS'))
+@section('title', __('front::common.contact_page_title').' - '.system_setting_locale('meta_title', 'InnoCMS'))
 
 @section('content')
   @include('shared.page-head', ['title' => __('front::common.contact_page_title')])
