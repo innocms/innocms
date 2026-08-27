@@ -11,6 +11,7 @@ namespace InnoCMS\Front\Repositories;
 
 use InnoCMS\Common\Repositories\CatalogRepo;
 use InnoCMS\Common\Repositories\PageRepo;
+use InnoCMS\Common\Repositories\ProductRepo;
 use InnoCMS\Common\Resources\CatalogSimple;
 use InnoCMS\Common\Resources\PageSimple;
 
@@ -43,13 +44,19 @@ class MenuRepo
     }
 
     /**
-     * Built-in "Software Products" entry pointing to the products route.
+     * Built-in products entry. Only shown when the site actually has
+     * product rows — the route existing alone made every site nav
+     * carry a default entry regardless of whether they use the module.
      *
      * @return array
      */
     private function getProductsMenuItem(): array
     {
         if (! has_front_route('products.index')) {
+            return [];
+        }
+
+        if (! ProductRepo::getInstance()->builder()->exists()) {
             return [];
         }
 
@@ -65,12 +72,18 @@ class MenuRepo
 
     /**
      * Built-in "Contact Us" entry pointing to the contacts route.
+     * Skipped when a contact page already covers it (otherwise nav
+     * shows duplicate contact entries).
      *
      * @return array
      */
     private function getContactMenuItem(): array
     {
         if (! has_front_route('contacts.index')) {
+            return [];
+        }
+
+        if (PageRepo::getInstance()->builder(['active' => true, 'slug' => 'contact'])->exists()) {
             return [];
         }
 
