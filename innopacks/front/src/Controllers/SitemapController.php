@@ -15,7 +15,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use InnoCMS\Common\Repositories\ArticleRepo;
 use InnoCMS\Common\Repositories\CatalogRepo;
+use InnoCMS\Common\Repositories\CategoryRepo;
 use InnoCMS\Common\Repositories\PageRepo;
+use InnoCMS\Common\Repositories\ProductRepo;
 use InnoCMS\Common\Repositories\TagRepo;
 
 class SitemapController
@@ -96,6 +98,38 @@ class SitemapController
         foreach ($tags as $item) {
             if ($item->slug) {
                 $url = $this->localeRoute($locale, 'tags.show', ['slug' => $item->slug]);
+                $this->addUrl($urls, $url, $item->updated_at?->format('Y-m-d'));
+            }
+        }
+
+        // Products, only when the products module has active rows (same
+        // guard as the built-in nav entry in MenuRepo)
+        if (has_front_route('products.index') && ProductRepo::getInstance()->builder()->where('active', true)->exists()) {
+            // Products list
+            $this->addUrl($urls, $this->localeRoute($locale, 'products.index'));
+
+            // Products
+            $products = ProductRepo::getInstance()->builder()->where('active', true)->limit(1000)->get();
+            foreach ($products as $item) {
+                if ($item->slug) {
+                    $url = $this->localeRoute($locale, 'products.slug_show', ['slug' => $item->slug]);
+                } else {
+                    $url = $this->localeRoute($locale, 'products.show', $item);
+                }
+                $this->addUrl($urls, $url, $item->updated_at?->format('Y-m-d'));
+            }
+
+            // Product categories list
+            $this->addUrl($urls, $this->localeRoute($locale, 'categories.index'));
+
+            // Product categories
+            $categories = CategoryRepo::getInstance()->withActive()->builder()->limit(1000)->get();
+            foreach ($categories as $item) {
+                if ($item->slug) {
+                    $url = $this->localeRoute($locale, 'categories.slug_show', ['slug' => $item->slug]);
+                } else {
+                    $url = $this->localeRoute($locale, 'categories.show', $item);
+                }
                 $this->addUrl($urls, $url, $item->updated_at?->format('Y-m-d'));
             }
         }
