@@ -10,6 +10,8 @@
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
 use InnoCMS\Panel\Repositories\LocaleRepo;
+use InnoCMS\Panel\Services\TranslatorService;
+use Throwable;
 
 if (! function_exists('panel_name')) {
     /**
@@ -148,7 +150,11 @@ if (! function_exists('has_translator')) {
      */
     function has_translator(): bool
     {
-        return false;
+        try {
+            return TranslatorService::getTranslator() !== null;
+        } catch (Throwable $e) {
+            return false;
+        }
     }
 }
 

@@ -73,12 +73,15 @@ return [
 
     'seo' => 'SEO',
 
-    'all_languages'      => '전체 언어',
-    'panel_locale'       => '관리 패널 언어',
-    'front_locale'       => '프론트 언어',
-    'locale'             => '언어',
-    'copy_empty'         => '빈 값 채우기',
-    'no_empty_languages' => '채울 빈 값이 없습니다',
-    'copied_languages'   => ':count개 언어에 채웠습니다',
-    'drag_sort_hint'     => '드래그하여 정렬',
+    'all_languages'        => '전체 언어',
+    'panel_locale'         => '관리 패널 언어',
+    'front_locale'         => '프론트 언어',
+    'locale'               => '언어',
+    'copy_empty'           => '빈 값 채우기',
+    'no_empty_languages'   => '채울 빈 값이 없습니다',
+    'copied_languages'     => ':count개 언어에 채웠습니다',
+    'translate_fill'       => '번역하여 채우기',
+    'translated_languages' => ':count개 언어를 번역했습니다',
+    'translate_failed'     => ':count개 언어 번역에 실패했습니다',
+    'drag_sort_hint'       => '드래그하여 정렬',
 ];

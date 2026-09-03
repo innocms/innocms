@@ -10,10 +10,10 @@
 namespace InnoCMS\Panel\Controllers;
 
 use App\Http\Controllers\Controller;
-use Exception;
 use InnoCMS\Common\Support\Registry;
 use InnoCMS\Panel\Requests\TranslateRequest;
 use InnoCMS\Panel\Services\TranslatorService;
+use Throwable;
 
 class TranslationController extends Controller
 {
@@ -58,7 +58,7 @@ class TranslationController extends Controller
             $response = TranslatorService::translate($source, $target, $text);
 
             return create_json_success($response);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return json_fail($e->getMessage());
         }
     }

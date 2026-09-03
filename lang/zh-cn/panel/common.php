@@ -76,12 +76,15 @@ return [
 
     'seo' => 'SEO',
 
-    'all_languages'      => '所有语言',
-    'panel_locale'       => '后台语言',
-    'front_locale'       => '前台语言',
-    'locale'             => '语言',
-    'copy_empty'         => '填充空语言',
-    'no_empty_languages' => '没有空语言需要填充',
-    'copied_languages'   => '已填充 :count 个语言',
-    'drag_sort_hint'     => '拖拽排序',
+    'all_languages'        => '所有语言',
+    'panel_locale'         => '后台语言',
+    'front_locale'         => '前台语言',
+    'locale'               => '语言',
+    'copy_empty'           => '填充空语言',
+    'no_empty_languages'   => '没有空语言需要填充',
+    'copied_languages'     => '已填充 :count 个语言',
+    'translate_fill'       => '翻译填充',
+    'translated_languages' => '已翻译 :count 个语言',
+    'translate_failed'     => ':count 个语言翻译失败',
+    'drag_sort_hint'       => '拖拽排序',
 ];

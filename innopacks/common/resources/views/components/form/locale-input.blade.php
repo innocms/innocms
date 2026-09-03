@@ -144,9 +144,12 @@ $modalId = 'locale-modal-' . $uid;
           <div class="modal-footer d-flex justify-content-between">
             <button type="button" class="btn btn-outline-secondary locale-smart-fill-btn"
                     data-primary-locale="{{ $primaryCode }}"
+                    data-has-translator="{{ $translate ? 1 : 0 }}"
                     data-msg-no-empty="{{ __('panel/common.no_empty_languages') }}"
-                    data-msg-copied="{{ __('panel/common.copied_languages') }}">
-              <i class="bi bi-arrow-right-circle me-1"></i>{{ __('panel/common.copy_empty') }}
+                    data-msg-copied="{{ __('panel/common.copied_languages') }}"
+                    data-msg-translated="{{ __('panel/common.translated_languages') }}"
+                    data-msg-failed="{{ __('panel/common.translate_failed') }}">
+              <i class="bi {{ $translate ? 'bi-translate' : 'bi-arrow-right-circle' }} me-1"></i>{{ $translate ? __('panel/common.translate_fill') : __('panel/common.copy_empty') }}
             </button>
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ __('common/base.confirm') }}</button>
           </div>

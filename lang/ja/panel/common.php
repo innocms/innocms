@@ -73,12 +73,15 @@ return [
 
     'seo' => 'SEO',
 
-    'all_languages'      => 'すべての言語',
-    'panel_locale'       => '管理画面の言語',
-    'front_locale'       => 'フロント画面の言語',
-    'locale'             => '言語',
-    'copy_empty'         => '空欄を補完',
-    'no_empty_languages' => '補完する空欄の言語がありません',
-    'copied_languages'   => ':count 言語を補完しました',
-    'drag_sort_hint'     => 'ドラッグで並べ替え',
+    'all_languages'        => 'すべての言語',
+    'panel_locale'         => '管理画面の言語',
+    'front_locale'         => 'フロント画面の言語',
+    'locale'               => '言語',
+    'copy_empty'           => '空欄を補完',
+    'no_empty_languages'   => '補完する空欄の言語がありません',
+    'copied_languages'     => ':count 言語を補完しました',
+    'translate_fill'       => '翻訳して補完',
+    'translated_languages' => ':count 言語を翻訳しました',
+    'translate_failed'     => ':count 言語の翻訳に失敗しました',
+    'drag_sort_hint'       => 'ドラッグで並べ替え',
 ];
