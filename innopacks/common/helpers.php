@@ -25,6 +25,7 @@ use InnoCMS\Common\Services\ImageService;
 use InnoCMS\Common\Services\StorageService;
 use InnoCMS\Common\Support\EntityLinkEnricher;
 use InnoCMS\Common\Support\EntityLinkPayload;
+use InnoCMS\Common\Support\Registry;
 
 if (! function_exists('load_settings')) {
     /**
@@ -1133,6 +1134,20 @@ if (! function_exists('has_set_value')) {
         }
 
         return false;
+    }
+}
+
+if (! function_exists('registry')) {
+    /**
+     * Get data from registry
+     *
+     * @param  string  $key
+     * @param  mixed|null  $default
+     * @return mixed
+     */
+    function registry(string $key, mixed $default = null): mixed
+    {
+        return Registry::get($key, $default);
     }
 }
 

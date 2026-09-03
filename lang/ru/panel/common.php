@@ -73,12 +73,15 @@ return [
 
     'seo' => 'SEO',
 
-    'all_languages'      => 'Все языки',
-    'panel_locale'       => 'Язык панели',
-    'front_locale'       => 'Язык сайта',
-    'locale'             => 'Язык',
-    'copy_empty'         => 'Заполнить пустые',
-    'no_empty_languages' => 'Нет пустых языков для заполнения',
-    'copied_languages'   => 'Заполнено :count языков',
-    'drag_sort_hint'     => 'Перетащите для сортировки',
+    'all_languages'        => 'Все языки',
+    'panel_locale'         => 'Язык панели',
+    'front_locale'         => 'Язык сайта',
+    'locale'               => 'Язык',
+    'copy_empty'           => 'Заполнить пустые',
+    'no_empty_languages'   => 'Нет пустых языков для заполнения',
+    'copied_languages'     => 'Заполнено :count языков',
+    'translate_fill'       => 'Перевести и заполнить',
+    'translated_languages' => 'Переведено :count языков',
+    'translate_failed'     => 'Не удалось перевести :count языков',
+    'drag_sort_hint'       => 'Перетащите для сортировки',
 ];

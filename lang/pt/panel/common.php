@@ -73,12 +73,15 @@ return [
 
     'seo' => 'SEO',
 
-    'all_languages'      => 'Todos os Idiomas',
-    'panel_locale'       => 'Idioma do Painel',
-    'front_locale'       => 'Idioma do Site',
-    'locale'             => 'Idioma',
-    'copy_empty'         => 'Preencher Vazio',
-    'no_empty_languages' => 'Nenhum idioma vazio para preencher',
-    'copied_languages'   => ':count idiomas preenchidos',
-    'drag_sort_hint'     => 'Arraste para ordenar',
+    'all_languages'        => 'Todos os Idiomas',
+    'panel_locale'         => 'Idioma do Painel',
+    'front_locale'         => 'Idioma do Site',
+    'locale'               => 'Idioma',
+    'copy_empty'           => 'Preencher Vazio',
+    'no_empty_languages'   => 'Nenhum idioma vazio para preencher',
+    'copied_languages'     => ':count idiomas preenchidos',
+    'translate_fill'       => 'Traduzir e preencher',
+    'translated_languages' => ':count idiomas traduzidos',
+    'translate_failed'     => 'Falha ao traduzir :count idiomas',
+    'drag_sort_hint'       => 'Arraste para ordenar',
 ];

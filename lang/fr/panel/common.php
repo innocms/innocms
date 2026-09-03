@@ -73,12 +73,15 @@ return [
 
     'seo' => 'SEO',
 
-    'all_languages'      => 'Toutes les langues',
-    'panel_locale'       => 'Langue du panneau',
-    'front_locale'       => 'Langue du site',
-    'locale'             => 'Langue',
-    'copy_empty'         => 'Remplir les vides',
-    'no_empty_languages' => 'Aucune langue vide à remplir',
-    'copied_languages'   => ':count langue(s) remplie(s)',
-    'drag_sort_hint'     => 'Glisser pour trier',
+    'all_languages'        => 'Toutes les langues',
+    'panel_locale'         => 'Langue du panneau',
+    'front_locale'         => 'Langue du site',
+    'locale'               => 'Langue',
+    'copy_empty'           => 'Remplir les vides',
+    'no_empty_languages'   => 'Aucune langue vide à remplir',
+    'copied_languages'     => ':count langue(s) remplie(s)',
+    'translate_fill'       => 'Traduire et remplir',
+    'translated_languages' => ':count langue(s) traduite(s)',
+    'translate_failed'     => 'Échec de la traduction de :count langue(s)',
+    'drag_sort_hint'       => 'Glisser pour trier',
 ];
