@@ -69,7 +69,7 @@ const tinymceInit = () => {
         icon: 'image',
         onAction:function() {
           window.inno.fileManagerIframe((file) => {
-            let url = file.url || file.origin_url;
+            let url = file.origin_url || file.url;
             ed.insertContent('<img src="' + url + '" class="img-fluid" />');
           }, {
             multiple: false,
