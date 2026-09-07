@@ -11,7 +11,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
 use InnoCMS\Panel\Repositories\LocaleRepo;
 use InnoCMS\Panel\Services\TranslatorService;
-use Throwable;
 
 if (! function_exists('panel_name')) {
     /**
