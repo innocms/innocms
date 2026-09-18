@@ -11,5 +11,11 @@ namespace InnoCMS\Front\Services;
 
 class BaseService
 {
-    public static function getInstance() {}
+    /**
+     * @return static
+     */
+    public static function getInstance(): static
+    {
+        return new static;
+    }
 }

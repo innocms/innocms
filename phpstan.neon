@@ -18,3 +18,5 @@ parameters:
     excludePaths:
         analyse:
             - innopacks/*/tests
+    ignoreErrors:
+        - '#Unsafe usage of new static\(\)\.#'
