@@ -303,10 +303,69 @@ class CategoryRepo extends BaseRepo
         return [
             'parent_id' => $data['parent_id'] ?? 0,
             'slug'      => $data['slug'] ?? null,
-            'image'     => $data['image'] ?? null,
+            'image'     => self::normalizeImage($data['image'] ?? null),
             'position'  => $data['position'] ?? 0,
             'active'    => (bool) ($data['active'] ?? true),
         ];
+    }
+
+    /**
+     * Strip signing/query residue off a panel-uploaded image value before save.
+     *
+     * The `<x-panel-form-image>` upload widget occasionally submits a Tencent
+     * COS-style signed URL (relative path + `?content_id=…&ts=…&sig=…`) into
+     * `categories.image`. The column is VARCHAR(255) and is meant to store a
+     * path, not a URL — so MySQL throws 1406 "Data too long for column 'image'".
+     *
+     * Heuristics (defensive, in order):
+     *   1. Absolute URL → keep only the path (drops scheme + host + fragment).
+     *   2. Contains `?` → cut everything from `?` onward (normal query string).
+     *   3. Still contains `&` → cut at the first `&`. Targets a query tail
+     *      that landed in the path with `?` already gone.
+     *   4. Still contains `_[a-z]+=` (the COS pattern when `?` is replaced by
+     *      `_` upstream) → cut at the first `_` before such a key. Cheap and
+     *      safe: filenames whose tail matches `_<word>=…` are essentially
+     *      never legitimate (years like `_2024` don't have `=`).
+     *
+     * Anything else (clean relative path, empty, null) passes through unchanged.
+     *
+     * Regression coverage lives in CategoryImageNormalizationTest under the
+     * common package's tests/Feature directory.
+     */
+    private static function normalizeImage(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return $value;
+        }
+
+        if (preg_match('#^https?://#i', $value)) {
+            $parsed = parse_url($value);
+            if (is_array($parsed) && isset($parsed['path']) && $parsed['path'] !== '') {
+                $value = $parsed['path'];
+            }
+        }
+
+        // parse_url keeps the leading `/` on absolute-URL paths; InnoCMS stores
+        // paths without one (see the failing SQL: `static/media/...`, no slash).
+        if (str_starts_with($value, '/')) {
+            $value = ltrim($value, '/');
+        }
+
+        $queryPos = strpos($value, '?');
+        if ($queryPos !== false) {
+            $value = substr($value, 0, $queryPos);
+        }
+
+        $ampPos = strpos($value, '&');
+        if ($ampPos !== false) {
+            $value = substr($value, 0, $ampPos);
+        }
+
+        if (preg_match('/_[a-z][a-z0-9_]*=/i', $value, $m, PREG_OFFSET_CAPTURE)) {
+            $value = substr($value, 0, $m[0][1]);
+        }
+
+        return $value;
     }
 
     /**
