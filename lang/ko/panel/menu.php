@@ -32,7 +32,10 @@ return [
     'analytics'    => '리포트',
     'visits'       => '방문',
 
-    'media' => '파일 관리자',
+    'media'        => '파일 관리자',
+    'cli-login'    => 'CLI 로그인',
+    'upload'       => '파일 업로드',
+    'translations' => '번역',
 
     'top_plugin' => '플러그인',
     'plugins'    => '플러그인',
