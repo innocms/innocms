@@ -18,14 +18,17 @@
 提示：
   - 只改了主题 blade / scss → push 对应 themes 子仓库后跑 envoy run pull_themes
   - 改了主仓库代码 → push github 后跑 envoy run pull 或 deploy
+  - 部署 funnlink.cn：加 --site=funnlink（如 envoy run pull_themes --site=funnlink）
   - migrate 前会自动备份数据库，保留最近 30 份。--}}
 
 @servers([
-    'production' => 'innocn',
+    'production' => 'gz1-innocn',
 ])
 
 @setup
-    $app_dir    = '/www/wwwroot/www.innocms.com';
+    // --site=funnlink 部署 funnlink.cn，默认 www.innocms.com
+    $site       = isset($site) ? $site : 'innocms';
+    $app_dir    = $site === 'funnlink' ? '/www/wwwroot/www.funnlink.cn' : '/www/wwwroot/www.innocms.com';
     $backup_dir = '/home/ubuntu/backups';
 @endsetup
 
