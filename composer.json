@@ -66,7 +66,8 @@
             "InnoCMS\\Mcp\\Tests\\": "innopacks/mcp/tests",
             "InnoCMS\\Devtools\\Tests\\": "innopacks/devtools/tests",
             "InnoCMS\\Restapi\\Tests\\": "innopacks/restapi/tests",
-            "InnoCMS\\Common\\Tests\\": "innopacks/common/tests"
+            "InnoCMS\\Common\\Tests\\": "innopacks/common/tests",
+            "InnoCMS\\Panel\\Tests\\": "innopacks/panel/tests"
         }
     },
     "scripts": {

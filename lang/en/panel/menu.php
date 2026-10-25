@@ -32,7 +32,10 @@ return [
     'analytics'    => 'Reports',
     'visits'       => 'Visits',
 
-    'media' => 'Media Library',
+    'media'        => 'Media Library',
+    'cli-login'    => 'CLI Login',
+    'upload'       => 'File Upload',
+    'translations' => 'Translations',
 
     'top_plugin' => 'Plugins',
     'plugins'    => 'Plugins',
