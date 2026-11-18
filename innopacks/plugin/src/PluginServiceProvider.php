@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
+use InnoCMS\Plugin\Console\PluginInstallCommand;
 use InnoCMS\Plugin\Core\PluginManager;
 
 class PluginServiceProvider extends ServiceProvider
@@ -41,6 +42,7 @@ class PluginServiceProvider extends ServiceProvider
         $this->app->singleton('plugin', function () {
             return new PluginManager;
         });
+        $this->commands([PluginInstallCommand::class]);
     }
 
     /**

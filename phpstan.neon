@@ -13,6 +13,7 @@ parameters:
     configDirectories:
         - config
         - innopacks/common/config
+        - innopacks/panel/config
         - innopacks/devtools/config
         - innopacks/restapi/config
     excludePaths:

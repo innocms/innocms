@@ -1,18 +1,18 @@
 // Default (official) theme palette: clean product blue + warm CTA accent
-$primary: #2563eb;
-$secondary: #64748b;
+$primary: #2563eb !default;
+$secondary: #64748b !default;
 
-$font-size-base: 0.84rem;
-$border-radius: 0.275rem;
+$font-size-base: 0.84rem !default;
+$border-radius: 0.275rem !default;
 
 // 开启负边距
-$enable-negative-margins: true;
+$enable-negative-margins: true !default;
 // $body-bg: #f7f8f4;
 
-$border-radius: 0.275rem;
-$btn-border-radius-sm: 0.175rem;
-$btn-border-radius-lg: 0.275rem;
-$border-radius-lg: 0.275rem;
+$border-radius: 0.275rem !default;
+$btn-border-radius-sm: 0.175rem !default;
+$btn-border-radius-lg: 0.275rem !default;
+$border-radius-lg: 0.275rem !default;
 
 $bootstrap-icons-font: "bootstrap-icons" !default;
 $bootstrap-icons-font-src: url("/vendor/bootstrap-icons/bootstrap-icons.woff2?08efbba7c53d8c5413793eecb19b20bb") format("woff2"),

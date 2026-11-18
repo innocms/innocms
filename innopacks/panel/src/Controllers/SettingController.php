@@ -43,7 +43,8 @@ class SettingController
      */
     public function update(Request $request): mixed
     {
-        $settings = $request->all();
+        // post() instead of all(): keep query string params out of settings
+        $settings = $request->post();
 
         try {
             SettingRepo::getInstance()->updateValues($settings);

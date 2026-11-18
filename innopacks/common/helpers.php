@@ -367,11 +367,11 @@ if (! function_exists('inno_path')) {
 
 if (! function_exists('current_customer')) {
     /**
-     * get current admin user.
+     * Get current front member (member guard, provided by innopacks/member).
      */
     function current_customer(): ?Authenticatable
     {
-        return auth('web')->user();
+        return auth('member')->user();
     }
 }
 

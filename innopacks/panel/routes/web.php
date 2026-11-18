@@ -13,6 +13,12 @@ use InnoCMS\Panel\Controllers;
 Route::get('login', [Controllers\LoginController::class, 'index'])->name('login.index');
 Route::post('login', [Controllers\LoginController::class, 'store'])->name('login.store');
 
+// Admin 2FA (TOTP): challenge verification and first-time binding wizard
+Route::get('login/totp', [Controllers\TotpController::class, 'challenge'])->name('login.challenge');
+Route::post('login/totp', [Controllers\TotpController::class, 'verify'])->name('login.verify');
+Route::get('login/totp/setup', [Controllers\TotpController::class, 'setup'])->name('login.setup');
+Route::post('login/totp/setup', [Controllers\TotpController::class, 'enable'])->name('login.enable');
+
 Route::get('cli-login', [Controllers\CliLoginController::class, 'index'])->name('cli-login.index');
 Route::post('cli-login', [Controllers\CliLoginController::class, 'store'])->name('cli-login.store');
 

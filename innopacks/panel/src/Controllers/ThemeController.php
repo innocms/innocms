@@ -14,8 +14,8 @@ use Illuminate\Http\Request;
 use InnoCMS\Common\Repositories\CatalogRepo;
 use InnoCMS\Common\Repositories\PageRepo;
 use InnoCMS\Common\Repositories\SettingRepo;
+use InnoCMS\Common\Services\ThemeDemoService;
 use InnoCMS\Panel\Repositories\ThemeRepo;
-use InnoCMS\Panel\Services\ThemeDemoService;
 use InnoCMS\Panel\Services\ThemeService;
 
 class ThemeController extends BaseController

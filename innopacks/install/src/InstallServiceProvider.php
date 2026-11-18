@@ -11,6 +11,7 @@ namespace InnoCMS\Install;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use InnoCMS\Install\Console\InstallCommand;
 
 class InstallServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,9 @@ class InstallServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->loadViewsFrom(inno_path('install/resources/views'), 'install');
+        // Registered in register() so the installer stays usable before the
+        // install lock exists (boot() bails out early in that state).
+        $this->commands([InstallCommand::class]);
     }
 
     /**

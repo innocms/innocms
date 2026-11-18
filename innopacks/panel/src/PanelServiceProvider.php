@@ -19,6 +19,8 @@ use InnoCMS\Common\Services\StorageService;
 use InnoCMS\Panel\Console\Commands\ChangeRootPassword;
 use InnoCMS\Panel\Middleware\AdminAuthenticate;
 use InnoCMS\Panel\Middleware\GlobalPanelData;
+use InnoCMS\Panel\Middleware\PanelIpAllowlist;
+use InnoCMS\Panel\Middleware\RequireRecentConfirmation;
 use InnoCMS\Panel\Middleware\SetPanelLocale;
 use InnoCMS\Panel\Services\ThemeService;
 use InnoCMS\Restapi\Services\MediaInterface;
@@ -35,6 +37,7 @@ class PanelServiceProvider extends ServiceProvider
     public function boot(): void
     {
         load_settings();
+        $this->mergeConfigFrom(__DIR__.'/../config/panel.php', 'panel');
         $this->registerGuard();
         $this->registerUploadFileSystem();
         $this->registerCommands();
@@ -50,7 +53,9 @@ class PanelServiceProvider extends ServiceProvider
     public function register(): void
     {
         app('router')->aliasMiddleware('admin_auth', AdminAuthenticate::class);
+        app('router')->aliasMiddleware('sensitive.confirm', RequireRecentConfirmation::class);
         $this->app->singleton(ThemeService::class);
+        $this->app['router']->pushMiddlewareToGroup('web', PanelIpAllowlist::class);
     }
 
     /**

@@ -17,12 +17,29 @@ use Illuminate\View\FileViewFinder;
 use InnoCMS\Common\Middleware\ContentFilterHook;
 use InnoCMS\Common\Middleware\EventActionHook;
 use InnoCMS\Common\Middleware\VisitTrackingMiddleware;
+use InnoCMS\Front\Console\ThemeCommand;
+use InnoCMS\Front\Console\ThemeDemoCommand;
 use InnoCMS\Front\Middleware\GlobalDataMiddleware;
 use InnoCMS\Front\Middleware\SetFrontLocale;
 use InnoCMS\Front\Repositories\MenuRepo;
 
 class FrontServiceProvider extends ServiceProvider
 {
+    /**
+     * Register front service provider.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        // Registered in register() so the commands stay usable regardless of
+        // the install lock state checked inside boot().
+        $this->commands([
+            ThemeCommand::class,
+            ThemeDemoCommand::class,
+        ]);
+    }
+
     /**
      * Boot front service provider.
      *

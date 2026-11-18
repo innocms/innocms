@@ -11,6 +11,7 @@ namespace InnoCMS\Common;
 
 use Illuminate\Support\ServiceProvider;
 use InnoCMS\Common\Console\Commands;
+use InnoCMS\Common\Support\DebugMode;
 
 class CommonServiceProvider extends ServiceProvider
 {
@@ -26,7 +27,11 @@ class CommonServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // The debug switch must override app.debug before any provider boots,
+        // see InnoCMS\Common\Support\DebugMode for details.
+        $this->app->booting(function ($app) {
+            (new DebugMode)->apply($app);
+        });
     }
 
     /**

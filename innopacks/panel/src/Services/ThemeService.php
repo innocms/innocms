@@ -12,6 +12,7 @@ namespace InnoCMS\Panel\Services;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use InnoCMS\Common\Services\ThemeDemoService;
 use InnoCMS\Panel\Repositories\ThemeRepo;
 
 /**

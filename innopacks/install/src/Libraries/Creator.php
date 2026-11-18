@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InnoCMS\Common\Models\Admin;
 use InnoCMS\Common\Repositories\SettingRepo;
-use InnoCMS\Panel\Services\ThemeDemoService;
+use InnoCMS\Common\Services\ThemeDemoService;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class Creator
@@ -72,16 +72,24 @@ class Creator
         }
 
         $dir = base_path('themes/'.$theme);
-        if (! is_dir($dir) || ! app(ThemeDemoService::class)->hasDemo($dir)) {
+        if (! is_dir($dir)) {
+            $this->outputLog->write('Theme not found, keeping default: '.$theme, 1);
+
             return;
         }
 
         try {
+            // Activate the theme regardless of demo availability — the demo
+            // flag only controls content import.
             SettingRepo::getInstance()->updateSystemValue('theme', $theme);
 
             if ($loadDemo) {
-                app(ThemeDemoService::class)->importDemo($theme, $dir, true);
-                $this->outputLog->write('Imported demo data for theme: '.$theme, 1);
+                if (app(ThemeDemoService::class)->hasDemo($dir)) {
+                    app(ThemeDemoService::class)->importDemo($theme, $dir, true);
+                    $this->outputLog->write('Imported demo data for theme: '.$theme, 1);
+                } else {
+                    $this->outputLog->write('Theme '.$theme.' ships no demo data, skipping import.', 1);
+                }
             }
         } catch (Exception $e) {
             $this->outputLog->write('Theme demo import skipped: '.$e->getMessage(), 1);

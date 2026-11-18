@@ -11,6 +11,8 @@ namespace InnoCMS\Common\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ContentFilterHook
 {
@@ -28,6 +30,12 @@ class ContentFilterHook
         $filteredRequest = fire_hook_filter($hookName.'.request', $request);
 
         $response = $next($filteredRequest);
+
+        // 二进制/流式响应（文件下载等）没有可过滤的文本内容，直接放行
+        if ($response instanceof BinaryFileResponse
+            || $response instanceof StreamedResponse) {
+            return $response;
+        }
 
         $filteredResponse = fire_hook_filter($hookName.'.response', $response->getContent());
 

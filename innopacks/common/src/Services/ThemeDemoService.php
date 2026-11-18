@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\Panel\Services;
+namespace InnoCMS\Common\Services;
 
 use Exception;
 use Illuminate\Support\Facades\File;
@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\File;
  * Theme demo package: resolves themes/{code}/demo/seeder.php (callable), copies images to public/static/themes/{code}/images.
  *
  * Mirrors InnoShop Factory behaviour adapted for InnoCMS CMS tables only.
+ * Lives in Common so panel (web import), install (Creator::applyTheme) and
+ * front (CLI command) can share one implementation.
+ *
+ * Note: the trans() fallback keys still point at lang/{locale}/panel/themes.php
+ * in the app skeleton (the pack-organised lang files, not the panel PHP pack).
  */
 class ThemeDemoService
 {

@@ -476,16 +476,17 @@ img {
   }
 }
 
+// Product listing section (shared by products/categories listings)
+.products-list-section {
+  padding: 3.5rem 0 5rem;
+
+  @media (max-width: 768px) {
+    padding: 2.5rem 0 3.5rem;
+  }
+}
+
 // Product listing page (wrapper-specific tweaks)
 .page-products {
-  .products-list-section {
-    padding: 3.5rem 0 5rem;
-
-    @media (max-width: 768px) {
-      padding: 2.5rem 0 3.5rem;
-    }
-  }
-
   .product-card {
     // Inherits global styles
   }

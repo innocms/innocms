@@ -7,7 +7,7 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace InnoCMS\Panel\Services;
+namespace InnoCMS\Common\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Clears CMS demo-related content (articles, catalogs, pages, tags).
  * Order matches FK dependencies; does not touch admins, settings, or locales.
+ * Moved from Panel\Services so install and front packs can reuse it.
  */
 class ThemeDemoCmsResetService
 {
