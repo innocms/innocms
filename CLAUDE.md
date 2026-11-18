@@ -6,6 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 InnoCMS is a lightweight enterprise CMS built on Laravel 11 (PHP 8.2+). It uses a modular "innopacks" architecture with a hook-based plugin system for extensibility.
 
+## Pack 与发布纪律（2026-11-18 Edward 立）
+
+- **pack 代码只能提交到 innoshop.work 的 `cmspacks` org**（cmspacks/{common,panel,...} 权威源）；本仓是社区版发布载体，**不直接在主仓改 pack、不随意 push origin（origin = GitHub 公开仓）**。
+- 需要发社区版时：从 innoshop.work 相应 cmspacks 仓**复制** pack 代码到本仓 → 提交 → 走 release 流程一起发布。
+- 日常对齐：cmspacks → 本仓的同步发生在发版前；本仓不得先于 cmspacks 出现 pack 改动。
+- 安全基线/吸收类工作的当前状态：cmspacks 已吸收（panel/common 两仓 main），本仓 `release-pending` 分支持有待发版的同步提交（45e9865 + 06ab80a），发版时合入 main。
+
 ## Commands
 
 ```bash
