@@ -7,7 +7,6 @@
     "require": {
         "php": "^8.3",
         "ext-pdo": "*",
-        "chillerlan/php-qrcode": "^6.0",
         "geoip2/geoip2": "^3.3",
         "intervention/image": "^3.5",
         "knuckleswtf/scribe": "^5",
@@ -20,7 +19,6 @@
         "mobiledetect/mobiledetectlib": "^4.8",
         "nelexa/zip": "^4.0",
         "overtrue/easy-sms": "^3.2",
-        "pragmarx/google2fa": "^9.1",
         "spatie/laravel-permission": "^6.9",
         "tormjens/eventy": "^0.9.3",
         "w7corp/easywechat": "^6.0",
@@ -68,7 +66,8 @@
             "InnoCMS\\Mcp\\Tests\\": "innopacks/mcp/tests",
             "InnoCMS\\Devtools\\Tests\\": "innopacks/devtools/tests",
             "InnoCMS\\Restapi\\Tests\\": "innopacks/restapi/tests",
-            "InnoCMS\\Common\\Tests\\": "innopacks/common/tests"
+            "InnoCMS\\Common\\Tests\\": "innopacks/common/tests",
+            "InnoCMS\\Panel\\Tests\\": "innopacks/panel/tests"
         }
     },
     "scripts": {

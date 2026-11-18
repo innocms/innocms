@@ -24,7 +24,10 @@ return [
     'analytics'    => '数据报表',
     'visits'       => '访问记录',
 
-    'media' => '媒体库',
+    'media'        => '媒体库',
+    'cli-login'    => '命令行登录',
+    'upload'       => '文件上传',
+    'translations' => '翻译',
 
     'top_plugin' => '插件扩展',
     'plugins'    => '插件列表',
