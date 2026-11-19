@@ -368,9 +368,17 @@ if (! function_exists('inno_path')) {
 if (! function_exists('current_customer')) {
     /**
      * Get current front member (member guard, provided by innopacks/member).
+     *
+     * The member pack registers the guard at runtime via Config::set().
+     * Community editions without it must resolve to null (anonymous),
+     * not throw "Auth guard [member] is not defined."
      */
     function current_customer(): ?Authenticatable
     {
+        if (! config('auth.guards.member')) {
+            return null;
+        }
+
         return auth('member')->user();
     }
 }
