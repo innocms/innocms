@@ -47,6 +47,7 @@ return [
     'countries'        => 'Paesi',
     'states'           => 'Province',
     'regions'          => 'Regioni',
+    'locale'           => 'Gestione lingue',
     'locales'          => 'Lingue',
     'tax_classes'      => 'Classi fiscali',
     'tax_rates'        => 'Aliquote',

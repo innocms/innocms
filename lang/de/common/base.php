@@ -34,11 +34,13 @@ return [
     'hint_delete'   => 'Möchten Sie wirklich löschen?',
     'loading'       => 'Laden...',
     'no'            => 'Nein',
+    'none'          => 'Keine',
     'no_data'       => 'Keine Daten',
     'please_choose' => 'Bitte wählen',
     'read_success'  => 'Erfolgreich gelesen',
     'reset'         => 'Zurücksetzen',
     'search'        => 'Suche',
+    'sort'          => 'Sortierung',
     'success'       => 'Erfolg',
     'yes'           => 'Ja',
 

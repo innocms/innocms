@@ -10,4 +10,12 @@
 return [
     'name'   => 'Italiano',
     'locale' => 'Lingua',
+
+    'asc'            => 'Crescente',
+    'desc'           => 'Decrescente',
+    'expand'         => 'Espandi',
+    'export'         => 'Esporta',
+    'back'           => 'Indietro',
+    'error'          => 'Errore',
+    'field_required' => 'Inserire :title',
 ];

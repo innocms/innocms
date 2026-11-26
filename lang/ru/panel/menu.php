@@ -47,6 +47,7 @@ return [
     'countries'        => 'Страны',
     'states'           => 'Области',
     'regions'          => 'Регионы',
+    'locale'           => 'Управление языками',
     'locales'          => 'Языки',
     'tax_classes'      => 'Классы налогов',
     'tax_rates'        => 'Ставки налогов',

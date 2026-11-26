@@ -47,6 +47,7 @@ return [
     'countries'        => 'Países',
     'states'           => 'Estados',
     'regions'          => 'Regiones',
+    'locale'           => 'Gestión de idiomas',
     'locales'          => 'Idiomas',
     'tax_classes'      => 'Clases de impuesto',
     'tax_rates'        => 'Tipos de impuesto',

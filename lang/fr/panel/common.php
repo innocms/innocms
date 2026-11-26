@@ -66,6 +66,7 @@ return [
     'read_success'    => 'Chargé avec succès',
     'deleted_success' => 'Supprimé avec succès',
     'verify_required' => 'Veuillez remplir ce champ',
+    'field_required'  => 'Veuillez renseigner :title',
 
     'enable_breadcrumb' => 'Activer le fil d\'Ariane',
 
@@ -84,4 +85,11 @@ return [
     'translated_languages' => ':count langue(s) traduite(s)',
     'translate_failed'     => 'Échec de la traduction de :count langue(s)',
     'drag_sort_hint'       => 'Glisser pour trier',
+
+    'asc'    => 'Croissant',
+    'desc'   => 'Décroissant',
+    'expand' => 'Déplier',
+    'export' => 'Exporter',
+    'back'   => 'Retour',
+    'error'  => 'Erreur',
 ];

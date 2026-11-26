@@ -66,6 +66,7 @@ return [
     'read_success'    => 'Carregado com sucesso',
     'deleted_success' => 'Excluído com sucesso',
     'verify_required' => 'Por favor, preencha',
+    'field_required'  => 'Por favor, preencha :title',
 
     'enable_breadcrumb' => 'Ativar Breadcrumb',
 
@@ -84,4 +85,11 @@ return [
     'translated_languages' => ':count idiomas traduzidos',
     'translate_failed'     => 'Falha ao traduzir :count idiomas',
     'drag_sort_hint'       => 'Arraste para ordenar',
+
+    'asc'    => 'Crescente',
+    'desc'   => 'Decrescente',
+    'expand' => 'Expandir',
+    'export' => 'Exportar',
+    'back'   => 'Voltar',
+    'error'  => 'Erro',
 ];

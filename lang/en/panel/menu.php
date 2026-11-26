@@ -57,6 +57,7 @@ return [
     'countries'   => 'Countries',
     'states'      => 'States',
     'regions'     => 'Regions',
+    'locale'      => 'Locale Management',
     'locales'     => 'Locales',
     'tax_classes' => 'Tax Classes',
     'tax_rates'   => 'Tax Rates',

@@ -40,6 +40,8 @@ return [
     'select_db_type'   => 'Selecione o Tipo de Banco de Dados',
     'host_address'     => 'Endereço do Host',
     'port_number'      => 'Número da Porta',
+    'host'             => 'Digite o host do banco de dados',
+    'port'             => 'Digite a porta do banco de dados',
     'db_name'          => 'Nome do Banco de Dados',
     'table_prefix'     => 'Prefixo da Tabela',
     'db_account'       => 'Conta do Banco de Dados',

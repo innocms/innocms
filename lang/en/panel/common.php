@@ -66,6 +66,7 @@ return [
     'read_success'    => 'Loaded successfully',
     'deleted_success' => 'Deleted successfully',
     'verify_required' => 'Please fill out',
+    'field_required'  => 'Please fill out :title',
 
     'enable_breadcrumb' => 'Enable Breadcrumb',
 
@@ -87,4 +88,11 @@ return [
     'translated_languages' => 'Translated :count languages',
     'translate_failed'     => 'Failed to translate :count languages',
     'drag_sort_hint'       => 'Drag to sort',
+
+    'asc'    => 'Ascending',
+    'desc'   => 'Descending',
+    'expand' => 'Expand',
+    'export' => 'Export',
+    'back'   => 'Back',
+    'error'  => 'Error',
 ];

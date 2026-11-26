@@ -41,6 +41,8 @@ return [
     'select_db_type'       => '请选择数据库类型',
     'host_address'         => '主机地址',
     'port_number'          => '端口号',
+    'host'                 => '请填写数据库主机地址',
+    'port'                 => '请填写数据库端口',
     'db_name'              => '数据库名',
     'table_prefix'         => '表前缀',
     'db_account'           => '数据库账号',

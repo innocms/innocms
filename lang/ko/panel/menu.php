@@ -57,6 +57,7 @@ return [
     'countries'   => '국가',
     'states'      => '주/도',
     'regions'     => '지역',
+    'locale'      => '언어 관리',
     'locales'     => '언어',
     'tax_classes' => '세금 클래스',
     'tax_rates'   => '세율',

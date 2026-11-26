@@ -36,11 +36,13 @@ return [
     'hint_delete'   => '정말 삭제하시겠습니까?',
     'loading'       => '로딩 중...',
     'no'            => '아니요',
+    'none'          => '없음',
     'no_data'       => '데이터 없음',
     'please_choose' => '선택해 주세요',
     'read_success'  => '불러오기 성공',
     'reset'         => '초기화',
     'search'        => '검색',
+    'sort'          => '정렬',
     'success'       => '성공',
     'yes'           => '예',
 

@@ -40,6 +40,8 @@ return [
     'select_db_type'   => '데이터베이스 유형 선택',
     'host_address'     => '호스트 주소',
     'port_number'      => '포트 번호',
+    'host'             => '데이터베이스 호스트를 입력하세요',
+    'port'             => '데이터베이스 포트를 입력하세요',
     'db_name'          => '데이터베이스 이름',
     'table_prefix'     => '테이블 접두사',
     'db_account'       => '데이터베이스 계정',

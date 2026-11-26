@@ -41,6 +41,8 @@ return [
     'select_db_type'       => 'Select Database Type',
     'host_address'         => 'Host Address',
     'port_number'          => 'Port Number',
+    'host'                 => 'Please enter the database host',
+    'port'                 => 'Please enter the database port',
     'db_name'              => 'Database Name',
     'table_prefix'         => 'Table Prefix',
     'db_account'           => 'Database Account',

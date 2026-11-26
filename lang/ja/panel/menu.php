@@ -47,6 +47,7 @@ return [
     'countries'        => '国',
     'states'           => '都道府県',
     'regions'          => '地域',
+    'locale'           => '言語管理',
     'locales'          => '言語',
     'tax_classes'      => '税クラス',
     'tax_rates'        => '税率',

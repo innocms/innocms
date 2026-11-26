@@ -66,6 +66,7 @@ return [
     'read_success'    => '加载成功',
     'deleted_success' => '删除成功',
     'verify_required' => '请填写',
+    'field_required'  => '请填写 :title',
 
     'enable_breadcrumb' => '启用面包屑',
 
@@ -87,4 +88,11 @@ return [
     'translated_languages' => '已翻译 :count 个语言',
     'translate_failed'     => ':count 个语言翻译失败',
     'drag_sort_hint'       => '拖拽排序',
+
+    'asc'    => '升序',
+    'desc'   => '降序',
+    'expand' => '展开',
+    'export' => '导出',
+    'back'   => '返回',
+    'error'  => '错误',
 ];

@@ -36,11 +36,13 @@ return [
     'hint_delete'   => 'Tem certeza de que deseja excluir?',
     'loading'       => 'Carregando...',
     'no'            => 'Não',
+    'none'          => 'Nenhum',
     'no_data'       => 'Sem dados',
     'please_choose' => 'Por favor, escolha',
     'read_success'  => 'Lido com sucesso',
     'reset'         => 'Redefinir',
     'search'        => 'Buscar',
+    'sort'          => 'Ordenar',
     'success'       => 'Sucesso',
     'yes'           => 'Sim',
 

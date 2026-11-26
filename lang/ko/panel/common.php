@@ -66,6 +66,7 @@ return [
     'read_success'    => '불러오기 성공',
     'deleted_success' => '삭제되었습니다',
     'verify_required' => '필수 항목을 입력해 주세요',
+    'field_required'  => ':title을(를) 입력해 주세요',
 
     'enable_breadcrumb' => '브레드크럼 사용',
 
@@ -84,4 +85,11 @@ return [
     'translated_languages' => ':count개 언어를 번역했습니다',
     'translate_failed'     => ':count개 언어 번역에 실패했습니다',
     'drag_sort_hint'       => '드래그하여 정렬',
+
+    'asc'    => '오름차순',
+    'desc'   => '내림차순',
+    'expand' => '펼치기',
+    'export' => '내보내기',
+    'back'   => '뒤로',
+    'error'  => '오류',
 ];

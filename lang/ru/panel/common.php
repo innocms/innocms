@@ -66,6 +66,7 @@ return [
     'read_success'    => 'Успешно загружено',
     'deleted_success' => 'Успешно удалено',
     'verify_required' => 'Пожалуйста, заполните',
+    'field_required'  => 'Пожалуйста, заполните :title',
 
     'enable_breadcrumb' => 'Включить хлебные крошки',
 
@@ -84,4 +85,11 @@ return [
     'translated_languages' => 'Переведено :count языков',
     'translate_failed'     => 'Не удалось перевести :count языков',
     'drag_sort_hint'       => 'Перетащите для сортировки',
+
+    'asc'    => 'По возрастанию',
+    'desc'   => 'По убыванию',
+    'expand' => 'Развернуть',
+    'export' => 'Экспорт',
+    'back'   => 'Назад',
+    'error'  => 'Ошибка',
 ];

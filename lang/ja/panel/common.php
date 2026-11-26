@@ -66,6 +66,7 @@ return [
     'read_success'    => '読み込みました',
     'deleted_success' => '削除しました',
     'verify_required' => '入力してください',
+    'field_required'  => ':titleを入力してください',
 
     'enable_breadcrumb' => 'パンくずリストを有効にする',
 
@@ -84,4 +85,11 @@ return [
     'translated_languages' => ':count 言語を翻訳しました',
     'translate_failed'     => ':count 言語の翻訳に失敗しました',
     'drag_sort_hint'       => 'ドラッグで並べ替え',
+
+    'asc'    => '昇順',
+    'desc'   => '降順',
+    'expand' => '展開',
+    'export' => 'エクスポート',
+    'back'   => '戻る',
+    'error'  => 'エラー',
 ];

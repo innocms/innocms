@@ -36,11 +36,13 @@ return [
     'hint_delete'   => 'Are you sure you want to delete?',
     'loading'       => 'Loading...',
     'no'            => 'No',
+    'none'          => 'None',
     'no_data'       => 'No data',
     'please_choose' => 'Please Choose',
     'read_success'  => 'Read successfully',
     'reset'         => 'Reset',
     'search'        => 'Search',
+    'sort'          => 'Sort',
     'success'       => 'Success',
     'yes'           => 'Yes',
 

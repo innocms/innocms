@@ -63,6 +63,7 @@ return [
     'read_success'         => 'Erfolgreich geladen',
     'deleted_success'      => 'Erfolgreich gelöscht',
     'verify_required'      => 'Bitte ausfüllen',
+    'field_required'       => 'Bitte :title ausfüllen',
     'enable_breadcrumb'    => 'Breadcrumb aktivieren',
     'whether_enable'       => 'Aktiv',
     'seo'                  => 'SEO',
@@ -77,4 +78,11 @@ return [
     'translated_languages' => ':count Sprachen übersetzt',
     'translate_failed'     => ':count Sprachen konnten nicht übersetzt werden',
     'drag_sort_hint'       => 'Ziehen zum Sortieren',
+
+    'asc'    => 'Aufsteigend',
+    'desc'   => 'Absteigend',
+    'expand' => 'Ausklappen',
+    'export' => 'Exportieren',
+    'back'   => 'Zurück',
+    'error'  => 'Fehler',
 ];

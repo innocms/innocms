@@ -36,11 +36,13 @@ return [
     'hint_delete'   => '确定要删除吗？',
     'loading'       => '加载中...',
     'no'            => '否',
+    'none'          => '无',
     'no_data'       => '没有数据',
     'please_choose' => '请选择',
     'read_success'  => '加载成功',
     'reset'         => '重置',
     'search'        => '搜索',
+    'sort'          => '排序',
     'success'       => '操作成功',
     'yes'           => '是',
 

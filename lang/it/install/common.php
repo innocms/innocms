@@ -38,6 +38,8 @@ return [
     'select_db_type'       => 'Seleziona tipo di database',
     'host_address'         => 'Indirizzo host',
     'port_number'          => 'Numero porta',
+    'host'                 => 'Inserire l\'host del database',
+    'port'                 => 'Inserire la porta del database',
     'db_name'              => 'Nome del database',
     'table_prefix'         => 'Prefisso tabella',
     'db_account'           => 'Account database',

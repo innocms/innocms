@@ -66,6 +66,7 @@ return [
     'read_success'    => 'Cargado correctamente',
     'deleted_success' => 'Eliminado correctamente',
     'verify_required' => 'Por favor, rellene el campo',
+    'field_required'  => 'Por favor, rellene :title',
 
     'enable_breadcrumb' => 'Activar migas de pan',
 
@@ -84,4 +85,11 @@ return [
     'translated_languages' => 'Traducidos :count idiomas',
     'translate_failed'     => 'Error al traducir :count idiomas',
     'drag_sort_hint'       => 'Arrastrar para ordenar',
+
+    'asc'    => 'Ascendente',
+    'desc'   => 'Descendente',
+    'expand' => 'Expandir',
+    'export' => 'Exportar',
+    'back'   => 'Volver',
+    'error'  => 'Error',
 ];
