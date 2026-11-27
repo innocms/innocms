@@ -95,4 +95,6 @@ return [
     'back'       => 'Назад',
     'error'      => 'Ошибка',
     'extra_info' => 'Дополнительная информация',
+
+    'pagination_summary' => 'Страниц: :last, записей: :total',
 ];

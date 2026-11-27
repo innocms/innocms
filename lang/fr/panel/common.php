@@ -95,4 +95,6 @@ return [
     'back'       => 'Retour',
     'error'      => 'Erreur',
     'extra_info' => 'Informations complémentaires',
+
+    'pagination_summary' => ':last pages, :total éléments',
 ];

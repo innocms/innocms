@@ -95,4 +95,6 @@ return [
     'back'       => 'Voltar',
     'error'      => 'Erro',
     'extra_info' => 'Informações extras',
+
+    'pagination_summary' => ':last páginas, :total itens',
 ];

@@ -95,4 +95,6 @@ return [
     'back'       => '戻る',
     'error'      => 'エラー',
     'extra_info' => 'その他の情報',
+
+    'pagination_summary' => '全:lastページ、全:total件',
 ];

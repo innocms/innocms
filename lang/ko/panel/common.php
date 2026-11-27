@@ -95,4 +95,6 @@ return [
     'back'       => '뒤로',
     'error'      => '오류',
     'extra_info' => '추가 정보',
+
+    'pagination_summary' => '총 :last페이지, 총 :total개',
 ];

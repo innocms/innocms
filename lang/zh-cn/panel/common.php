@@ -96,4 +96,6 @@ return [
     'back'       => '返回',
     'error'      => '错误',
     'extra_info' => '其他信息',
+
+    'pagination_summary' => '共:last页，共:total项',
 ];

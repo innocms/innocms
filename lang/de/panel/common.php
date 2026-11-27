@@ -88,4 +88,6 @@ return [
     'back'       => 'Zurück',
     'error'      => 'Fehler',
     'extra_info' => 'Weitere Informationen',
+
+    'pagination_summary' => ':last Seiten, :total Einträge',
 ];

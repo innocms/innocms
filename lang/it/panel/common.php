@@ -75,4 +75,6 @@ return [
     'all_languages'     => 'Tutte le lingue',
     'panel_locale'      => 'Lingua del pannello',
     'front_locale'      => 'Lingua del sito',
+
+    'pagination_summary' => ':last pagine, :total elementi',
 ];
