@@ -29,4 +29,14 @@ return [
     'browsing_history' => 'Browsing History',
     'event_type'       => 'Event Type',
     'event_time'       => 'Event Time',
+
+    'complete_data' => 'Complete data',
+
+    'refresh_location' => 'Refresh location',
+
+    'processing' => 'Processing...',
+
+    'completed_records' => 'Completed :count records',
+
+    'complete_failed' => 'Failed to complete the data, please try again',
 ];

@@ -30,6 +30,11 @@ return [
     'country'      => '국가',
     'visits'       => '방문수',
 
-    'reaggregate'         => '재집계',
-    'reaggregate_success' => '데이터 재집계가 완료되었습니다',
+    'reaggregate'            => '재집계',
+    'reaggregate_success'    => '데이터 재집계가 완료되었습니다',
+    'source_pc_web'          => 'PC 웹',
+    'source_mobile_web'      => '모바일 웹',
+    'source_miniapp'         => '미니 앱',
+    'source_wechat_official' => '위챗 공식 계정',
+    'source_app'             => '앱',
 ];

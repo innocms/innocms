@@ -26,4 +26,6 @@ return [
     'today_uv'          => "Today's UV",
     'today_ip'          => "Today's IP",
     'article_quantity'  => 'Articles',
+
+    'password_keep' => 'Leave blank to keep the current password',
 ];

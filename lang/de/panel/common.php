@@ -65,6 +65,8 @@ return [
     'verify_required'      => 'Bitte ausfüllen',
     'field_required'       => 'Bitte :title ausfüllen',
     'enable_breadcrumb'    => 'Breadcrumb aktivieren',
+    'content'              => 'Inhalt',
+    'template'             => 'Seitenvorlage',
     'whether_enable'       => 'Aktiv',
     'seo'                  => 'SEO',
     'all_languages'        => 'Alle Sprachen',
@@ -79,10 +81,13 @@ return [
     'translate_failed'     => ':count Sprachen konnten nicht übersetzt werden',
     'drag_sort_hint'       => 'Ziehen zum Sortieren',
 
-    'asc'    => 'Aufsteigend',
-    'desc'   => 'Absteigend',
-    'expand' => 'Ausklappen',
-    'export' => 'Exportieren',
-    'back'   => 'Zurück',
-    'error'  => 'Fehler',
+    'asc'        => 'Aufsteigend',
+    'desc'       => 'Absteigend',
+    'expand'     => 'Ausklappen',
+    'export'     => 'Exportieren',
+    'back'       => 'Zurück',
+    'error'      => 'Fehler',
+    'extra_info' => 'Weitere Informationen',
+
+    'pagination_summary' => ':last Seiten, :total Einträge',
 ];

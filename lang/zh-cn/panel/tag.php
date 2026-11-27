@@ -8,7 +8,10 @@
  */
 
 return [
-    'list'   => '标签列表',
-    'create' => '新建标签',
-    'name'   => '名称',
+    'list'        => '标签列表',
+    'create'      => '新建标签',
+    'name'        => '名称',
+    'tag_content' => '标签内容',
+    'title'       => '标题',
+    'position'    => '文章排序',
 ];

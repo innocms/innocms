@@ -11,4 +11,10 @@ return [
     'list'   => 'Tag List',
     'create' => 'New Tag',
     'name'   => 'Name',
+
+    'tag_content' => 'Tag Content',
+
+    'title' => 'Title',
+
+    'position' => 'Sorting position',
 ];

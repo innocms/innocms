@@ -8,6 +8,10 @@
  */
 
 return [
-    'list'   => 'Liste des pages',
-    'create' => 'Nouvelle page',
+    'list'                 => 'Liste des pages',
+    'create'               => 'Nouvelle page',
+    'title'                => 'Titre',
+    'page_content'         => 'Contenu de la page',
+    'template_placeholder' => 'HTML de la page entière (affiché tel quel, non compilé)',
+    'viewed'               => 'Vues',
 ];

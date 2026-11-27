@@ -10,4 +10,5 @@
 return [
     'cannot_disable_default_locale'   => 'デフォルトの言語は無効にできません',
     'cannot_uninstall_default_locale' => 'デフォルトの言語はアンインストールできません',
+    'flag'                            => '国旗',
 ];

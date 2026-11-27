@@ -13,4 +13,10 @@ return [
     'password' => 'Password',
     'locale'   => 'Lingua',
     'active'   => 'Attivo',
+
+    'top_articles'  => 'Articoli più letti',
+    'frontend'      => 'Sito pubblico',
+    'profile'       => 'Profilo',
+    'sign_out'      => 'Esci',
+    'password_keep' => 'Lascia vuoto per mantenere la password attuale',
 ];

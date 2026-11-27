@@ -8,6 +8,9 @@
  */
 
 return [
-    'list'   => '태그 목록',
-    'create' => '새 태그',
+    'list'        => '태그 목록',
+    'create'      => '새 태그',
+    'tag_content' => '태그 내용',
+    'title'       => '제목',
+    'position'    => '정렬 순서',
 ];

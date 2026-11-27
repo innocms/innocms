@@ -8,6 +8,9 @@
  */
 
 return [
-    'list'   => 'Elenco tag',
-    'create' => 'Nuovo tag',
+    'list'        => 'Elenco tag',
+    'create'      => 'Nuovo tag',
+    'tag_content' => 'Contenuto del tag',
+    'title'       => 'Titolo',
+    'position'    => 'Posizione di ordinamento',
 ];

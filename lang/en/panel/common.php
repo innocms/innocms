@@ -95,4 +95,8 @@ return [
     'export' => 'Export',
     'back'   => 'Back',
     'error'  => 'Error',
+
+    'extra_info' => 'Extra Info',
+
+    'pagination_summary' => ':last pages, :total items',
 ];

@@ -10,4 +10,5 @@
 return [
     'cannot_disable_default_locale'   => 'Impossibile disattivare la lingua predefinita',
     'cannot_uninstall_default_locale' => 'Impossibile disinstallare la lingua predefinita',
+    'flag'                            => 'Bandiera',
 ];

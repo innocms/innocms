@@ -8,5 +8,10 @@
  */
 
 return [
-    'name' => 'Español',
+    'name'     => 'Nombre',
+    'email'    => 'Correo electrónico',
+    'password' => 'Contraseña',
+    'locale'   => 'Idioma',
+    'active'   => 'Activo',
+    'roles'    => 'Roles',
 ];

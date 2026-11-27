@@ -36,6 +36,7 @@ return [
     'config'           => 'Configuração',
     'param_config'     => 'Configuração de Parâmetros',
     'db_config'        => 'Configuração do Banco de Dados',
+    'db_driver'        => 'Driver do banco de dados',
     'db_type'          => 'Tipo de Banco de Dados',
     'select_db_type'   => 'Selecione o Tipo de Banco de Dados',
     'host_address'     => 'Endereço do Host',

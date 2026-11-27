@@ -30,6 +30,11 @@ return [
     'country'      => '国家/地区',
     'visits'       => '访问量',
 
-    'reaggregate'         => '重新聚合',
-    'reaggregate_success' => '数据重新聚合完成',
+    'reaggregate'            => '重新聚合',
+    'reaggregate_success'    => '数据重新聚合完成',
+    'source_pc_web'          => 'PC网页',
+    'source_mobile_web'      => '手机网页',
+    'source_miniapp'         => '小程序',
+    'source_wechat_official' => '微信公众号',
+    'source_app'             => 'APP应用',
 ];

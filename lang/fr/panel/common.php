@@ -69,6 +69,8 @@ return [
     'field_required'  => 'Veuillez renseigner :title',
 
     'enable_breadcrumb' => 'Activer le fil d\'Ariane',
+    'content'           => 'Contenu',
+    'template'          => 'Modèle de page',
 
     'whether_enable' => 'Actif',
 
@@ -86,10 +88,13 @@ return [
     'translate_failed'     => 'Échec de la traduction de :count langue(s)',
     'drag_sort_hint'       => 'Glisser pour trier',
 
-    'asc'    => 'Croissant',
-    'desc'   => 'Décroissant',
-    'expand' => 'Déplier',
-    'export' => 'Exporter',
-    'back'   => 'Retour',
-    'error'  => 'Erreur',
+    'asc'        => 'Croissant',
+    'desc'       => 'Décroissant',
+    'expand'     => 'Déplier',
+    'export'     => 'Exporter',
+    'back'       => 'Retour',
+    'error'      => 'Erreur',
+    'extra_info' => 'Informations complémentaires',
+
+    'pagination_summary' => ':last pages, :total éléments',
 ];

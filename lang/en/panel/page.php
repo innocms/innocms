@@ -11,4 +11,10 @@ return [
     'list'   => 'Page List',
     'create' => 'New Page',
     'title'  => 'Title',
+
+    'page_content' => 'Page Content',
+
+    'template_placeholder' => 'Full-page HTML (output as-is, not compiled)',
+
+    'viewed' => 'Views',
 ];
