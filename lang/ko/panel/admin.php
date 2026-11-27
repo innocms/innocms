@@ -8,9 +8,10 @@
  */
 
 return [
-    'name'     => '한국어',
+    'name'     => '이름',
     'email'    => '이메일',
     'password' => '비밀번호',
     'locale'   => '언어',
     'active'   => '활성',
+    'roles'    => '역할',
 ];

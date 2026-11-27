@@ -8,6 +8,9 @@
  */
 
 return [
-    'list'   => 'タグ一覧',
-    'create' => '新規タグ',
+    'list'        => 'タグ一覧',
+    'create'      => '新規タグ',
+    'tag_content' => 'タグ内容',
+    'title'       => 'タイトル',
+    'position'    => '並び順',
 ];

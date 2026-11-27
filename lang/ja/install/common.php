@@ -34,6 +34,7 @@ return [
     'config'               => '設定',
     'param_config'         => 'パラメータ設定',
     'db_config'            => 'データベース設定',
+    'db_driver'            => 'データベースドライバー',
     'db_type'              => 'データベースタイプ',
     'select_db_type'       => 'データベースタイプを選択',
     'host_address'         => 'ホストアドレス',

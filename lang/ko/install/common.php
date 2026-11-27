@@ -36,6 +36,7 @@ return [
     'config'           => '설정',
     'param_config'     => '매개변수 설정',
     'db_config'        => '데이터베이스 설정',
+    'db_driver'        => 'DB 드라이버',
     'db_type'          => '데이터베이스 유형',
     'select_db_type'   => '데이터베이스 유형 선택',
     'host_address'     => '호스트 주소',

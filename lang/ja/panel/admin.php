@@ -8,5 +8,10 @@
  */
 
 return [
-    'name' => '日本語',
+    'name'     => '名前',
+    'email'    => 'メールアドレス',
+    'password' => 'パスワード',
+    'locale'   => '言語',
+    'active'   => '有効',
+    'roles'    => 'ロール',
 ];

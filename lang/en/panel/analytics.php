@@ -32,4 +32,14 @@ return [
 
     'reaggregate'         => 'Re-aggregate',
     'reaggregate_success' => 'Data re-aggregation complete',
+
+    'source_pc_web' => 'PC Web',
+
+    'source_mobile_web' => 'Mobile Web',
+
+    'source_miniapp' => 'Mini Program',
+
+    'source_wechat_official' => 'WeChat Official Account',
+
+    'source_app' => 'App',
 ];

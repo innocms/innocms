@@ -13,4 +13,10 @@ return [
     'password' => 'Passwort',
     'locale'   => 'Sprache',
     'active'   => 'Aktiv',
+
+    'top_articles'  => 'Meistgelesene Artikel',
+    'frontend'      => 'Frontend',
+    'profile'       => 'Profil',
+    'sign_out'      => 'Abmelden',
+    'password_keep' => 'Leer lassen, um das aktuelle Passwort zu behalten',
 ];

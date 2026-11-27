@@ -89,10 +89,11 @@ return [
     'translate_failed'     => ':count 个语言翻译失败',
     'drag_sort_hint'       => '拖拽排序',
 
-    'asc'    => '升序',
-    'desc'   => '降序',
-    'expand' => '展开',
-    'export' => '导出',
-    'back'   => '返回',
-    'error'  => '错误',
+    'asc'        => '升序',
+    'desc'       => '降序',
+    'expand'     => '展开',
+    'export'     => '导出',
+    'back'       => '返回',
+    'error'      => '错误',
+    'extra_info' => '其他信息',
 ];

@@ -8,6 +8,9 @@
  */
 
 return [
-    'list'   => 'Schlagwortliste',
-    'create' => 'Neues Schlagwort',
+    'list'        => 'Schlagwortliste',
+    'create'      => 'Neues Schlagwort',
+    'tag_content' => 'Schlagwort-Inhalt',
+    'title'       => 'Titel',
+    'position'    => 'Sortierposition',
 ];

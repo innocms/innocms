@@ -8,6 +8,10 @@
  */
 
 return [
-    'list'   => 'ページ一覧',
-    'create' => '新規ページ',
+    'list'                 => 'ページ一覧',
+    'create'               => '新規ページ',
+    'title'                => 'タイトル',
+    'page_content'         => 'ページ内容',
+    'template_placeholder' => 'ページ全体のHTML（そのまま出力、コンパイルなし）',
+    'viewed'               => '閲覧数',
 ];

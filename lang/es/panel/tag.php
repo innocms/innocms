@@ -8,6 +8,9 @@
  */
 
 return [
-    'list'   => 'Lista de etiquetas',
-    'create' => 'Nueva etiqueta',
+    'list'        => 'Lista de etiquetas',
+    'create'      => 'Nueva etiqueta',
+    'tag_content' => 'Contenido de la etiqueta',
+    'title'       => 'Título',
+    'position'    => 'Posición de ordenación',
 ];

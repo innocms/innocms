@@ -30,6 +30,11 @@ return [
     'country'      => 'País',
     'visits'       => 'Visitas',
 
-    'reaggregate'         => 'Reagregar',
-    'reaggregate_success' => 'Reagregação de dados concluída',
+    'reaggregate'            => 'Reagregar',
+    'reaggregate_success'    => 'Reagregação de dados concluída',
+    'source_pc_web'          => 'Web para PC',
+    'source_mobile_web'      => 'Web móvel',
+    'source_miniapp'         => 'Mini programa',
+    'source_wechat_official' => 'Conta oficial do WeChat',
+    'source_app'             => 'Aplicativo',
 ];

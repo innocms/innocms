@@ -95,4 +95,6 @@ return [
     'export' => 'Export',
     'back'   => 'Back',
     'error'  => 'Error',
+
+    'extra_info' => 'Extra Info',
 ];

@@ -22,4 +22,5 @@ return [
     'frontend'          => '프론트엔드',
     'profile'           => '프로필',
     'sign_out'          => '로그아웃',
+    'password_keep'     => '비워 두면 현재 비밀번호를 유지합니다',
 ];

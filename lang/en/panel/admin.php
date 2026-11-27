@@ -13,4 +13,6 @@ return [
     'password' => 'Password',
     'locale'   => 'Locale',
     'active'   => 'Active',
+
+    'roles' => 'Roles',
 ];

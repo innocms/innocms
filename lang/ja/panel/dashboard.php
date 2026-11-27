@@ -13,4 +13,10 @@ return [
     'password' => 'パスワード',
     'locale'   => '言語',
     'active'   => '有効',
+
+    'top_articles'  => '人気の記事',
+    'frontend'      => 'サイトトップ',
+    'profile'       => 'プロフィール',
+    'sign_out'      => 'ログアウト',
+    'password_keep' => '空欄にすると現在のパスワードを維持します',
 ];

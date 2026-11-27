@@ -69,6 +69,8 @@ return [
     'field_required'  => ':titleを入力してください',
 
     'enable_breadcrumb' => 'パンくずリストを有効にする',
+    'content'           => 'コンテンツ',
+    'template'          => 'ページテンプレート',
 
     'whether_enable' => '有効',
 
@@ -86,10 +88,11 @@ return [
     'translate_failed'     => ':count 言語の翻訳に失敗しました',
     'drag_sort_hint'       => 'ドラッグで並べ替え',
 
-    'asc'    => '昇順',
-    'desc'   => '降順',
-    'expand' => '展開',
-    'export' => 'エクスポート',
-    'back'   => '戻る',
-    'error'  => 'エラー',
+    'asc'        => '昇順',
+    'desc'       => '降順',
+    'expand'     => '展開',
+    'export'     => 'エクスポート',
+    'back'       => '戻る',
+    'error'      => 'エラー',
+    'extra_info' => 'その他の情報',
 ];

@@ -8,7 +8,10 @@
  */
 
 return [
-    'list'   => '单页列表',
-    'create' => '新建单页',
-    'title'  => '标题',
+    'list'                 => '单页列表',
+    'create'               => '新建单页',
+    'title'                => '标题',
+    'page_content'         => '单页内容',
+    'template_placeholder' => '整页 HTML(原样输出,不编译)',
+    'viewed'               => '浏览次数',
 ];

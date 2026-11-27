@@ -13,4 +13,5 @@ return [
     'password' => '密码',
     'locale'   => '地区设置',
     'active'   => '激活状态',
+    'roles'    => '角色',
 ];

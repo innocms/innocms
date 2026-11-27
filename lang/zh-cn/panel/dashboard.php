@@ -26,4 +26,5 @@ return [
     'today_uv'          => '今日 UV',
     'today_ip'          => '今日 IP',
     'article_quantity'  => '文章数量',
+    'password_keep'     => '密码留空则不修改',
 ];

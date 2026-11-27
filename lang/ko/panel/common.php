@@ -69,6 +69,8 @@ return [
     'field_required'  => ':title을(를) 입력해 주세요',
 
     'enable_breadcrumb' => '브레드크럼 사용',
+    'content'           => '내용',
+    'template'          => '페이지 템플릿',
 
     'whether_enable' => '활성',
 
@@ -86,10 +88,11 @@ return [
     'translate_failed'     => ':count개 언어 번역에 실패했습니다',
     'drag_sort_hint'       => '드래그하여 정렬',
 
-    'asc'    => '오름차순',
-    'desc'   => '내림차순',
-    'expand' => '펼치기',
-    'export' => '내보내기',
-    'back'   => '뒤로',
-    'error'  => '오류',
+    'asc'        => '오름차순',
+    'desc'       => '내림차순',
+    'expand'     => '펼치기',
+    'export'     => '내보내기',
+    'back'       => '뒤로',
+    'error'      => '오류',
+    'extra_info' => '추가 정보',
 ];

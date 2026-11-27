@@ -69,6 +69,8 @@ return [
     'field_required'  => 'Por favor, rellene :title',
 
     'enable_breadcrumb' => 'Activar migas de pan',
+    'content'           => 'Contenido',
+    'template'          => 'Plantilla de página',
 
     'whether_enable' => 'Activo',
 
@@ -86,10 +88,11 @@ return [
     'translate_failed'     => 'Error al traducir :count idiomas',
     'drag_sort_hint'       => 'Arrastrar para ordenar',
 
-    'asc'    => 'Ascendente',
-    'desc'   => 'Descendente',
-    'expand' => 'Expandir',
-    'export' => 'Exportar',
-    'back'   => 'Volver',
-    'error'  => 'Error',
+    'asc'        => 'Ascendente',
+    'desc'       => 'Descendente',
+    'expand'     => 'Expandir',
+    'export'     => 'Exportar',
+    'back'       => 'Volver',
+    'error'      => 'Error',
+    'extra_info' => 'Información adicional',
 ];
