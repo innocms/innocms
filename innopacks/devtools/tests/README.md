@@ -8,6 +8,7 @@ This directory contains test cases for the InnoCMS DevTools module, which provid
 tests/
 ├── Console/            # Console command tests
 ├── Services/           # Service layer tests
+├── fixtures/           # Test fixtures (i18n: sample views for dev:i18n-check)
 ├── TestCase.php        # Base test class (extends Common)
 └── README.md
 ```
@@ -78,7 +79,23 @@ tests/
   - Validates theme compatibility
   - Validates theme required files
 
+- **CheckTranslationsTest**: Tests the dev:i18n-check command
+  - Passes when every key of the scanned views is translated
+  - Fails and names the view that uses an untranslated key
+  - Reports hardcoded Chinese text only with --cjk
+  - Is available under the devtools: prefix
+  - `test_the_core_packs_have_no_untranslated_keys` guards against raw keys like `panel/setting.debug`
+
 ### Services
+
+- **TranslationCheckServiceTest**: Tests the translation check against a throwaway tree of views and language files
+  - Collects the keys the views use and where
+  - Reports keys the fallback locale lacks as raw
+  - Reports keys that only some locales have as fallback gaps
+  - Resolves nested array and JSON translations per locale
+  - Skips the framework views under vendor
+  - Lists hardcoded Chinese text but not comments
+  - Lists the locales that ship with the application
 
 - **ScaffoldServiceTest**: Tests scaffolding service
   - Creates plugin structure

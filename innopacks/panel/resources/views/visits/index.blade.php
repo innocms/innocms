@@ -5,7 +5,7 @@
 
 @section('page-title-right')
   <button type="button" class="btn btn-outline-primary btn-sm" id="btn-batch-locate">
-    <i class="bi bi-lightning-charge"></i> 补全数据
+    <i class="bi bi-lightning-charge"></i> {{ __('panel/visit.complete_data') }}
   </button>
 @endsection
 
@@ -43,7 +43,7 @@
             <td>{{ $item->ip_address }}</td>
             <td class="col-country">
               {{ $item->country_name ?: '-' }}
-              <a href="javascript:void(0)" class="text-secondary text-decoration-none btn-refresh-geo ms-1" title="刷新位置"><i class="bi bi-arrow-repeat"></i></a>
+              <a href="javascript:void(0)" class="text-secondary text-decoration-none btn-refresh-geo ms-1" title="{{ __('panel/visit.refresh_location') }}"><i class="bi bi-arrow-repeat"></i></a>
             </td>
             <td class="col-city">{{ $item->city ?: '-' }}</td>
             <td>
@@ -92,17 +92,17 @@
         batchBtn.addEventListener('click', function() {
             if (batchBtn.disabled) return;
             batchBtn.disabled = true;
-            batchBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 处理中...';
+            batchBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> {{ __('panel/visit.processing') }}';
             axios.post(batchUrl).then(function(data) {
                 if (data.success) {
-                    inno.msg('已补全 ' + data.updated + ' 条记录');
+                    inno.msg('{{ __('panel/visit.completed_records', ['count' => ':count']) }}'.replace(':count', data.updated));
                     setTimeout(function() { location.reload(); }, 800);
                 }
             }).catch(function(err) {
-                var msg = (err.response && err.response.data && err.response.data.error) || '补全失败，请重试';
+                var msg = (err.response && err.response.data && err.response.data.error) || '{{ __('panel/visit.complete_failed') }}';
                 inno.msg(msg);
                 batchBtn.disabled = false;
-                batchBtn.innerHTML = '<i class="bi bi-lightning-charge"></i> 补全数据';
+                batchBtn.innerHTML = '<i class="bi bi-lightning-charge"></i> {{ __('panel/visit.complete_data') }}';
             });
         });
     }

@@ -8,7 +8,7 @@
     @if ($error)
       {{ $error }}
     @else
-    请填写 {{ $title }}
+    {{ __('panel/common.field_required', ['title' => $title]) }}
     @endif
   </span>
   {{ $slot }}

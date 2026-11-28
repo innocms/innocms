@@ -52,8 +52,9 @@ class VisitTrackingService
                 return null;
             }
 
-            // Parse user agent
-            $this->detect->setUserAgent($request->userAgent());
+            // Parse user agent. A request without a User-Agent header makes userAgent() return
+            // null, and MobileDetect::setUserAgent() only accepts a string.
+            $this->detect->setUserAgent($request->userAgent() ?? '');
 
             // Get location information
             $ip       = $this->getClientIp($request);

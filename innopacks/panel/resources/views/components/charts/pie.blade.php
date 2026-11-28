@@ -3,11 +3,11 @@
     <span>{{ $title }}</span>
     @if($id === 'customer_source_distribution')
     <div class="btn-group">
-      <button class="btn btn-sm btn-primary active" onclick="switchSource{{ $id }}('pc_web')" id="source_btn_{{ $id }}_pc_web">PC网页</button>
-      <button class="btn btn-sm btn-success" onclick="switchSource{{ $id }}('mobile_web')" id="source_btn_{{ $id }}_mobile_web">手机网页</button>
-      <button class="btn btn-sm btn-info" onclick="switchSource{{ $id }}('miniapp')" id="source_btn_{{ $id }}_miniapp">小程序</button>
-      <button class="btn btn-sm btn-warning" onclick="switchSource{{ $id }}('wechat_official')" id="source_btn_{{ $id }}_wechat_official">微信公众号</button>
-      <button class="btn btn-sm btn-danger" onclick="switchSource{{ $id }}('app')" id="source_btn_{{ $id }}_app">APP应用</button>
+      <button class="btn btn-sm btn-primary active" onclick="switchSource{{ $id }}('pc_web')" id="source_btn_{{ $id }}_pc_web">{{ __('panel/analytics.source_pc_web') }}</button>
+      <button class="btn btn-sm btn-success" onclick="switchSource{{ $id }}('mobile_web')" id="source_btn_{{ $id }}_mobile_web">{{ __('panel/analytics.source_mobile_web') }}</button>
+      <button class="btn btn-sm btn-info" onclick="switchSource{{ $id }}('miniapp')" id="source_btn_{{ $id }}_miniapp">{{ __('panel/analytics.source_miniapp') }}</button>
+      <button class="btn btn-sm btn-warning" onclick="switchSource{{ $id }}('wechat_official')" id="source_btn_{{ $id }}_wechat_official">{{ __('panel/analytics.source_wechat_official') }}</button>
+      <button class="btn btn-sm btn-danger" onclick="switchSource{{ $id }}('app')" id="source_btn_{{ $id }}_app">{{ __('panel/analytics.source_app') }}</button>
     </div>
     @endif
   </div>

@@ -22,7 +22,7 @@ class TagController extends Controller
      */
     public function index(): RedirectResponse
     {
-        return redirect()->to(route('articles.index'));
+        return redirect()->to(front_route('articles.index'));
     }
 
     /**

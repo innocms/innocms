@@ -44,7 +44,6 @@
           @endif
       </ul>
   </nav>
-  <div class="text-secondary">共{{ $paginator->lastPage() }}页，</div>
-  <div class="text-secondary">共{{ $paginator->total() }}项</div>
+  <div class="text-secondary">{{ __('panel/common.pagination_summary', ['last' => $paginator->lastPage(), 'total' => $paginator->total()]) }}</div>
 </div>
 @endif

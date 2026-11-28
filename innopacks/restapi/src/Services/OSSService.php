@@ -19,6 +19,7 @@ use InnoCMS\Common\Services\FileSecurityValidator;
 use InnoCMS\Common\Services\MediaUrlResolver;
 use InnoCMS\Common\Services\StorageService;
 use InnoCMS\Restapi\Criteria\FileListCriteria;
+use InnoCMS\Restapi\Criteria\FileTypes;
 use Psr\Http\Message\StreamInterface;
 
 class OSSService implements MediaInterface
@@ -245,6 +246,13 @@ class OSSService implements MediaInterface
 
             // Filter nulls and merge
             $items = array_merge($directories, array_filter($files));
+
+            // File-type group filter (cmspacks/restapi#1): directories stay navigable
+            if ($c->type !== '') {
+                $items = array_values(array_filter($items, function ($item) use ($c) {
+                    return ($item['is_dir'] ?? false) || FileTypes::matches($item['name'], $c->type);
+                }));
+            }
 
             // Batch-resolve media_ids for all file items (avoid N+1).
             $storageKeys = array_filter(array_map(fn ($i) => $i['path'] ?? null, $files));

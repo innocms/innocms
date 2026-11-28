@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="{{ panel_route('home.index') }}">
   <title>@yield('title', '') - InnoCMS</title>
-  <meta name="keywords" content="@yield('keywords', 'InnoCMS, 创新, 开源, CMS, Laravel 11, 多语言, 多货币, Hook, 插件架构, 灵活, 强大')">
+  <meta name="keywords" content="@yield('keywords', __('panel/login.keywords'))">
   <meta name="generator" content="InnoCMS {{ innocms_version() }}">
   <meta name="asset" content="{{ asset('/') }}">
   <meta name="description" content="@yield('description', 'InnoCMS')">

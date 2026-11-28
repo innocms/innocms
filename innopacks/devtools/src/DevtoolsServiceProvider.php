@@ -47,6 +47,7 @@ class DevtoolsServiceProvider extends ServiceProvider
                 Console\Commands\MakeMigration::class,
                 Console\Commands\ValidatePlugin::class,
                 Console\Commands\ValidateTheme::class,
+                Console\Commands\CheckTranslations::class,
                 Console\Commands\PublishPlugin::class,
                 Console\Commands\PublishTheme::class,
                 Console\Commands\InitPluginGit::class,

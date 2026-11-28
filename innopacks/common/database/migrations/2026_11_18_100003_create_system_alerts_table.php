@@ -14,13 +14,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * notifications table (ported down from the platform package, with the tenant column removed).
+     * system_alerts table (ported down from the platform package, with the tenant column removed).
+     *
+     * Deliberately not named notifications: that name belongs to the Laravel-standard
+     * table (uuid + notifiable morphs) used by Notifiable-trait consumers (member pack).
+     * Pairs with audit_logs: audit records what happened, alerts notify someone.
      *
      * The system value of channel is used for in-site alerts (new IP / new device login in the panel); sending is consumed by the downstream event bus.
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('system_alerts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('admin_user_id')->nullable();
@@ -35,12 +39,12 @@ return new class extends Migration
             $table->dateTime('read_at')->nullable();
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
-            $table->index(['user_id', 'admin_user_id', 'worker_id', 'status', 'created_at'], 'idx_notifications_receiver');
+            $table->index(['user_id', 'admin_user_id', 'worker_id', 'status', 'created_at'], 'idx_system_alerts_receiver');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('system_alerts');
     }
 };

@@ -55,8 +55,8 @@ class NormalizeLocales extends Command
     public function handle(): void
     {
         // Check if system version is greater than or equal to 0.4.0
-        $currentVersion = config('innoshop.version');
-        if (version_compare($currentVersion, '0.4.0', '<')) {
+        $currentVersion = config('innocms.version') ?: config('innoshop.version');
+        if ($currentVersion && version_compare($currentVersion, '0.4.0', '<')) {
             $this->error('This command requires InnoCMS version 0.4.0 or higher.');
             $this->error('Current version: '.$currentVersion);
 
@@ -156,10 +156,12 @@ class NormalizeLocales extends Command
             'category_translations',
             'customer_group_translations',
             'customers',
+            'members',
             'orders',
             'page_translations',
             'product_translations',
             'tag_translations',
+            'visits',
         ];
 
         // Get specific table from option if provided

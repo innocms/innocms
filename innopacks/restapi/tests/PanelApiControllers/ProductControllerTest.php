@@ -10,6 +10,7 @@
 namespace InnoCMS\Restapi\Tests\PanelApiControllers;
 
 use InnoCMS\Restapi\PanelApiControllers\ProductController;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -17,6 +18,9 @@ use ReflectionClass;
 /**
  * Unit tests for Panel ProductController.
  * Tests method existence and basic structure without database dependencies.
+ *
+ * The test used to be copied from InnoShop and asserted methods InnoCMS does not have
+ * (names, skuAutocomplete, import) and parameter names of the InnoShop product model.
  */
 class ProductControllerTest extends TestCase
 {
@@ -44,109 +48,28 @@ class ProductControllerTest extends TestCase
         $this->assertEquals('InnoCMS\Restapi\PanelApiControllers\BaseController', $parentClass->getName());
     }
 
-    #[Test]
-    public function test_index_method_exists(): void
+    public static function controller_methods(): array
     {
-        $this->assertTrue(method_exists($this->controller, 'index'));
+        return [
+            'index'        => ['index'],
+            'autocomplete' => ['autocomplete'],
+            'store'        => ['store'],
+            'show'         => ['show'],
+            'update'       => ['update'],
+            'patch'        => ['patch'],
+            'destroy'      => ['destroy'],
+        ];
     }
 
     #[Test]
-    public function test_index_method_is_public(): void
+    #[DataProvider('controller_methods')]
+    public function test_the_method_exists_and_is_public(string $method): void
     {
+        $this->assertTrue(method_exists($this->controller, $method));
+
         $reflection = new ReflectionClass($this->controller);
-        $method     = $reflection->getMethod('index');
 
-        $this->assertTrue($method->isPublic());
-    }
-
-    #[Test]
-    public function test_names_method_exists(): void
-    {
-        $this->assertTrue(method_exists($this->controller, 'names'));
-    }
-
-    #[Test]
-    public function test_names_method_is_public(): void
-    {
-        $reflection = new ReflectionClass($this->controller);
-        $method     = $reflection->getMethod('names');
-
-        $this->assertTrue($method->isPublic());
-    }
-
-    #[Test]
-    public function test_autocomplete_method_exists(): void
-    {
-        $this->assertTrue(method_exists($this->controller, 'autocomplete'));
-    }
-
-    #[Test]
-    public function test_autocomplete_method_is_public(): void
-    {
-        $reflection = new ReflectionClass($this->controller);
-        $method     = $reflection->getMethod('autocomplete');
-
-        $this->assertTrue($method->isPublic());
-    }
-
-    #[Test]
-    public function test_sku_autocomplete_method_exists(): void
-    {
-        $this->assertTrue(method_exists($this->controller, 'skuAutocomplete'));
-    }
-
-    #[Test]
-    public function test_sku_autocomplete_method_is_public(): void
-    {
-        $reflection = new ReflectionClass($this->controller);
-        $method     = $reflection->getMethod('skuAutocomplete');
-
-        $this->assertTrue($method->isPublic());
-    }
-
-    #[Test]
-    public function test_import_method_exists(): void
-    {
-        $this->assertTrue(method_exists($this->controller, 'import'));
-    }
-
-    #[Test]
-    public function test_import_method_is_public(): void
-    {
-        $reflection = new ReflectionClass($this->controller);
-        $method     = $reflection->getMethod('import');
-
-        $this->assertTrue($method->isPublic());
-    }
-
-    #[Test]
-    public function test_update_method_exists(): void
-    {
-        $this->assertTrue(method_exists($this->controller, 'update'));
-    }
-
-    #[Test]
-    public function test_update_method_is_public(): void
-    {
-        $reflection = new ReflectionClass($this->controller);
-        $method     = $reflection->getMethod('update');
-
-        $this->assertTrue($method->isPublic());
-    }
-
-    #[Test]
-    public function test_patch_method_exists(): void
-    {
-        $this->assertTrue(method_exists($this->controller, 'patch'));
-    }
-
-    #[Test]
-    public function test_patch_method_is_public(): void
-    {
-        $reflection = new ReflectionClass($this->controller);
-        $method     = $reflection->getMethod('patch');
-
-        $this->assertTrue($method->isPublic());
+        $this->assertTrue($reflection->getMethod($method)->isPublic());
     }
 
     #[Test]
@@ -161,7 +84,7 @@ class ProductControllerTest extends TestCase
     }
 
     #[Test]
-    public function test_update_method_has_correct_parameters(): void
+    public function test_update_method_has_request_and_product_parameters(): void
     {
         $reflection = new ReflectionClass($this->controller);
         $method     = $reflection->getMethod('update');
@@ -169,11 +92,11 @@ class ProductControllerTest extends TestCase
 
         $this->assertCount(2, $parameters);
         $this->assertEquals('request', $parameters[0]->getName());
-        $this->assertEquals('id', $parameters[1]->getName());
+        $this->assertEquals('product', $parameters[1]->getName());
     }
 
     #[Test]
-    public function test_patch_method_has_correct_parameters(): void
+    public function test_patch_method_has_request_and_product_parameters(): void
     {
         $reflection = new ReflectionClass($this->controller);
         $method     = $reflection->getMethod('patch');
@@ -181,6 +104,6 @@ class ProductControllerTest extends TestCase
 
         $this->assertCount(2, $parameters);
         $this->assertEquals('request', $parameters[0]->getName());
-        $this->assertEquals('spuCode', $parameters[1]->getName());
+        $this->assertEquals('product', $parameters[1]->getName());
     }
 }

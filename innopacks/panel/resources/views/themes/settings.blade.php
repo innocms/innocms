@@ -104,7 +104,7 @@
                         <div class="panel-inno-link-mount" data-index="{{ $slide_index }}" style="min-width:260px"></div>
                       </td>
                       <td class="text-end">
-                        <button type="button" class="btn btn-danger" onclick="this.closest('tr').remove()">删除</button>
+                        <button type="button" class="btn btn-danger" onclick="this.closest('tr').remove()">{{ __('panel/common.delete') }}</button>
                       </td>
                     </tr>
                   @endforeach
@@ -112,7 +112,7 @@
                   <tfoot>
                   <tr>
                     <td colspan="3" class="text-end">
-                      <button type="button" class="btn btn-primary" onclick="addSlide(this)">添加</button>
+                      <button type="button" class="btn btn-primary" onclick="addSlide(this)">{{ __('panel/common.add') }}</button>
                     </td>
                   </tr>
                 </table>
@@ -338,7 +338,7 @@
           <div class="panel-inno-link-mount" data-index="${index}" style="min-width:260px"></div>
         </td>
         <td class="text-end">
-          <button type="button" class="btn btn-danger" onclick="this.closest('tr').remove()">删除</button>
+          <button type="button" class="btn btn-danger" onclick="this.closest('tr').remove()">{{ __('panel/common.delete') }}</button>
         </td>
       </tr>
     `;

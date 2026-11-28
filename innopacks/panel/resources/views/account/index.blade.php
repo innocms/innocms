@@ -13,9 +13,9 @@
       @csrf
       @method('put')
 
-      <x-panel-form-input title="名称" name="name" value="{{ old('name', $admin->name) }}" required />
-      <x-panel-form-input title="邮箱" name="email" value="{{ old('email', $admin->email) }}" required />
-      <x-panel-form-input title="密码" name="password" value="" type="password" description="密码留空则不修改" />
+      <x-panel-form-input title="{{ __('panel/common.name') }}" name="name" value="{{ old('name', $admin->name) }}" required />
+      <x-panel-form-input title="{{ __('panel/common.email') }}" name="email" value="{{ old('email', $admin->email) }}" required />
+      <x-panel-form-input title="{{ __('panel/common.password') }}" name="password" value="" type="password" description="{{ __('panel/dashboard.password_keep') }}" />
 
       <button type="submit" class="d-none"></button>
     </form>

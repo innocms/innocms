@@ -28,7 +28,7 @@
       <div class="modal-body"></div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('common/base.close') }}</button>
       </div>
     </div>
   </div>

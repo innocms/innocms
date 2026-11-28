@@ -22,6 +22,7 @@ InnoCMS 开发者工具包是一个强大的命令行工具集，用于快速开
 ### 规范验证
 - **插件验证**：检查插件是否符合 InnoCMS 开发规范
 - **主题验证**：验证主题配置和结构
+- **多语言检查**：核对视图用到的翻译 key 在语言包里是否存在，并找出写死的中文
 - **详细报告**：提供清晰的错误和警告信息
 
 ### 市场发布
@@ -315,6 +316,47 @@ Warnings:
 
 ```bash
 php artisan dev:validate-theme themes/modern_shop
+```
+
+#### `dev:i18n-check` / `devtools:i18n-check`
+
+检查 Blade 视图里的翻译 key（`__()`、`trans()`、`@lang()`）在语言包中是否存在。
+
+**检查项：**
+- 🔴 **原样输出 key**：兜底语言（`app.fallback_locale`）也缺这个 key，所有语言都会直接显示 `panel/setting.xxx`，命令以非 0 退出
+- 🟡 **回退到兜底语言**：部分语言缺 key，界面显示英文，仅统计不报错
+- 🔴 **写死的中文**（加 `--cjk`）：视图中未走翻译函数的中文字符，注释不计
+
+**选项：**
+- `--dir`：要扫描的视图目录，相对项目根，可重复。默认扫描 `innopacks/*/resources/views`（不含 `vendor/` 下的框架视图）
+- `--fallback`：列出所有回退到兜底语言的 key 及缺失的语言
+- `--cjk`：同时检查写死的中文
+
+**示例：**
+
+```bash
+# 全量检查（php artisan test 里的 `test_the_core_packs_have_no_untranslated_keys` 用的就是它）
+php artisan dev:i18n-check
+
+# 只查 panel，并列出哪些 key 在哪些语言里缺失
+php artisan dev:i18n-check --dir=innopacks/panel/resources/views --fallback
+
+# 顺带找出写死的中文
+php artisan dev:i18n-check --cjk
+```
+
+**输出示例：**
+
+```
+Checked 760 translation keys in 142 view files across 10 locales: de, en, es, fr, it, ja, ko, pt, ru, zh-cn
+
+Printed as raw key (also missing in the fallback locale "en"): 1
+  panel/setting.debug
+    used in innopacks/panel/resources/views/settings/index.blade.php:113
+
+Falling back to "en" in some locales: 304
+  de       250 keys
+  ...
 ```
 
 ### Git 初始化命令

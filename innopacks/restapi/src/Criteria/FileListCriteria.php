@@ -26,6 +26,7 @@ final class FileListCriteria
         public int $page = 1,
         public int $perPage = 20,
         public bool $includeDirectories = false,
+        public string $type = '',
     ) {}
 
     public static function fromRequest(Request $request): self
@@ -38,6 +39,7 @@ final class FileListCriteria
             page: (int) $request->input('page', 1),
             perPage: (int) $request->input('per_page', 20),
             includeDirectories: (bool) $request->input('include_directories', false),
+            type: FileTypes::normalize((string) $request->input('type', '')),
         );
     }
 }

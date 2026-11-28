@@ -18,6 +18,7 @@ use InnoCMS\Common\Services\FileSecurityValidator;
 use InnoCMS\Common\Services\MediaUrlResolver;
 use InnoCMS\Common\Services\StorageService;
 use InnoCMS\Restapi\Criteria\FileListCriteria;
+use InnoCMS\Restapi\Criteria\FileTypes;
 
 class MediaService implements MediaInterface
 {
@@ -128,7 +129,7 @@ class MediaService implements MediaInterface
         }
 
         $currentBasePath = rtrim($this->fileBasePath.$baseFolder, '/');
-        $fileEntries     = $this->collectFileEntries($currentBasePath, $realBasePath, $keyword);
+        $fileEntries     = $this->collectFileEntries($currentBasePath, $realBasePath, $keyword, $c->type);
         $allItems        = $includeDirectories
             ? array_merge($this->collectFolders($currentBasePath, $realBasePath), $fileEntries)
             : $fileEntries;
@@ -671,7 +672,7 @@ class MediaService implements MediaInterface
      * Collect lightweight file entries (name and path only, no metadata).
      * Metadata is loaded only for the current page items via enrichFileMetadata().
      */
-    protected function collectFileEntries(string $currentBasePath, string $realBasePath, string $keyword = ''): array
+    protected function collectFileEntries(string $currentBasePath, string $realBasePath, string $keyword = '', string $type = ''): array
     {
         $files  = glob($currentBasePath.'/*') ?: [];
         $images = [];
@@ -688,6 +689,11 @@ class MediaService implements MediaInterface
 
             $baseName = basename($file);
             if ($this->shouldSkipFile($baseName, $keyword)) {
+                continue;
+            }
+
+            // File-type group filter (cmspacks/restapi#1): '' = no filtering
+            if ($type !== '' && ! FileTypes::matches($baseName, $type)) {
                 continue;
             }
 

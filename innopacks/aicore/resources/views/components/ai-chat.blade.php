@@ -1,7 +1,7 @@
 <script src="{{ asset('vendor/marked.min.js') }}"></script>
 
 <div id="ai-chat-widget" class="ai-chat-widget">
-  <button id="ai-chat-toggle" class="ai-chat-toggle" title="AI 助手">
+  <button id="ai-chat-toggle" class="ai-chat-toggle" title="{{ __('aicore::chat.title') }}">
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 2a4 4 0 0 1 4 4v1h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2V6a4 4 0 0 1 4-4z"/>
       <circle cx="12" cy="14" r="1"/>
@@ -11,13 +11,13 @@
 
   <div id="ai-chat-panel" class="ai-chat-panel" style="display:none">
     <div class="ai-chat-header">
-      <span>AI 助手</span>
+      <span>{{ __('aicore::chat.title') }}</span>
       <button id="ai-chat-close" class="ai-chat-close">&times;</button>
     </div>
     <div id="ai-chat-messages" class="ai-chat-messages"></div>
     <div class="ai-chat-input-area">
-      <textarea id="ai-chat-input" rows="1" placeholder="输入问题，比如「最近一周销售情况如何？」"></textarea>
-      <button id="ai-chat-send" class="ai-chat-send" title="发送">
+      <textarea id="ai-chat-input" rows="1" placeholder="{{ __('aicore::chat.placeholder') }}"></textarea>
+      <button id="ai-chat-send" class="ai-chat-send" title="{{ __('aicore::chat.send') }}">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
           <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
         </svg>
@@ -149,9 +149,9 @@
               });
             }
           } else if (event === 'tool_call') {
-            addMessage('tool', '🔧 调用工具: ' + data.name);
+            addMessage('tool', @json(__('aicore::chat.tool_call')).replace(':name', data.name));
           } else if (event === 'tool_result') {
-            addMessage('tool', '✅ ' + data.name + ' 完成');
+            addMessage('tool', @json(__('aicore::chat.tool_done')).replace(':name', data.name));
           } else if (event === 'error') {
             addMessage('error', data.message);
           } else if (event === 'done') {

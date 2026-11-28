@@ -1,7 +1,7 @@
 @extends('panel::layouts.app')
 @section('body-class', 'page-home')
 
-@section('title', '系统设置')
+@section('title', __('panel/setting.setting'))
 
 <x-panel::form.right-btns />
 
@@ -12,10 +12,10 @@
   <div class="row">
     <div class="col-md-3">
       <div class="card" id="setting-menu">
-        <div class="card-header">系统设置</div>
+        <div class="card-header">{{ __('panel/setting.setting') }}</div>
         <div class="card-body">
           <ul class="nav flex-column settings-nav">
-            <a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-basics">基本设置</a>
+            <a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-basics">{{ __('panel/setting.basic') }}</a>
             <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-storage">{{ __('panel/setting.storage_settings') }}</a>
             <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#tab-setting-tools">{{ __('panel/setting.tools_setting') }}</a>
           </ul>
@@ -24,23 +24,23 @@
     </div>
     <div class="col-md-9">
       <div class="card h-min-600">
-        <div class="card-header setting-header">基本设置</div>
+        <div class="card-header setting-header">{{ __('panel/setting.basic') }}</div>
         <div class="card-body">
           <div class="tab-content">
             <!-- Basic Settings -->
             <div class="tab-pane fade show active" id="tab-setting-basics">
               <div class="row g-3">
                 <div class="col-md-3">
-                  <x-panel-form-image title="前台 Logo" name="front_logo" value="{{ old('front_logo', system_setting('front_logo')) }}"/>
+                  <x-panel-form-image title="{{ __('panel/setting.front_logo') }}" name="front_logo" value="{{ old('front_logo', system_setting('front_logo')) }}"/>
                 </div>
                 <div class="col-md-3">
-                  <x-panel-form-image title="后台 Logo" name="panel_logo" value="{{ old('panel_logo', system_setting('panel_logo')) }}"/>
+                  <x-panel-form-image title="{{ __('panel/setting.backend_logo') }}" name="panel_logo" value="{{ old('panel_logo', system_setting('panel_logo')) }}"/>
                 </div>
                 <div class="col-md-3">
-                  <x-panel-form-image title="缺省图" name="placeholder" value="{{ old('placeholder', system_setting('placeholder')) }}"/>
+                  <x-panel-form-image title="{{ __('panel/setting.placeholder') }}" name="placeholder" value="{{ old('placeholder', system_setting('placeholder')) }}"/>
                 </div>
                 <div class="col-md-3">
-                  <x-panel-form-image title="浏览器小图标" name="favicon" value="{{ old('favicon', system_setting('favicon')) }}"/>
+                  <x-panel-form-image title="{{ __('panel/setting.favicon') }}" name="favicon" value="{{ old('favicon', system_setting('favicon')) }}"/>
                 </div>
               </div>
               <div class="mb-3"></div>
@@ -106,16 +106,16 @@
                   label="{{ __('panel/setting.meta_description') }}"
                   :translations="system_setting_translations('meta_description')"
                   placeholder="{{ __('panel/setting.meta_description') }}"/>
-              <x-panel-form-switch-radio title="启用 html 后缀" name="has_suffix" :value="old('has_suffix', system_setting('has_suffix', 0))"
-                                         placeholder="启用 html 后缀"/>
-              <x-panel-form-switch-radio title="隐藏 URL 语言标识" name="hide_url_locale" :value="old('hide_url_locale', system_setting('hide_url_locale', 0))"
-                                         placeholder="仅一种语言时，URL 中不包含语言代码"/>
+              <x-panel-form-switch-radio title="{{ __('panel/setting.has_suffix') }}" name="has_suffix" :value="old('has_suffix', system_setting('has_suffix', 0))"
+                                         placeholder="{{ __('panel/setting.has_suffix_desc') }}"/>
+              <x-panel-form-switch-radio title="{{ __('panel/setting.hide_url_locale') }}" name="hide_url_locale" :value="old('hide_url_locale', system_setting('hide_url_locale', 0))"
+                                         placeholder="{{ __('panel/setting.hide_url_locale_desc') }}"/>
               <x-panel-form-switch-radio title="{{ __('panel/setting.debug') }}" name="debug" :value="old('debug', system_setting('debug', 0))"/>
               <div class="text-secondary mb-4"><small>{{ __('panel/setting.debug_desc') }}</small></div>
-              <x-panel-form-input title="ICP备案号" name="icp_number" value="{{ old('icp_number', system_setting('icp_number')) }}"/>
-              <x-panel-form-textarea title="第三方JS代码" name="js_code"
+              <x-panel-form-input title="{{ __('panel/setting.icp_number') }}" name="icp_number" value="{{ old('icp_number', system_setting('icp_number')) }}"/>
+              <x-panel-form-textarea title="{{ __('panel/setting.js_code') }}" name="js_code"
                                      value="{{ old('js_code', system_setting('js_code')) }}"
-                                     placeholder="第三方JS代码"/>
+                                     placeholder="{{ __('panel/setting.js_code') }}"/>
             </div>
 
             @include('panel::settings._storage_setting')

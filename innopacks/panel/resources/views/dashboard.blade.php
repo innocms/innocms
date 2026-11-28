@@ -33,7 +33,7 @@
   <div class="col-12 col-lg-8">
     <div class="card dashboard-chart-card">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-semibold">流量趋势</h6>
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.daily_trends') }}</h6>
       </div>
       <div class="card-body">
         <div id="chart-visit-trend" style="height:320px;"></div>
@@ -43,7 +43,7 @@
   <div class="col-12 col-lg-4">
     <div class="card dashboard-chart-card">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-semibold">设备分布</h6>
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.by_device') }}</h6>
       </div>
       <div class="card-body d-flex align-items-center justify-content-center">
         <div id="chart-device" style="height:320px;width:100%;"></div>
@@ -56,7 +56,7 @@
   <div class="col-12 col-md-7">
     <div class="card dashboard-chart-card">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 fw-semibold">浏览器分布</h6>
+        <h6 class="mb-0 fw-semibold">{{ __('panel/analytics.by_browser') }}</h6>
       </div>
       <div class="card-body">
         <div id="chart-browser" style="height:320px;"></div>
@@ -203,7 +203,7 @@
   if (deviceEl) {
     const deviceChart = echarts.init(deviceEl);
     const rawDevices = @json($device_data);
-    const deviceMap = { desktop: '桌面端', mobile: '移动端', tablet: '平板' };
+    const deviceMap = { desktop: '{{ __('panel/visit.device_desktop') }}', mobile: '{{ __('panel/visit.device_mobile') }}', tablet: '{{ __('panel/visit.device_tablet') }}' };
     const deviceColors = [colors.primary, colors.success, colors.warning];
     const deviceData = rawDevices.map((d, i) => ({
       name: deviceMap[d.device_type] || d.device_type,
@@ -236,7 +236,7 @@
         left: 'center',
         top: '52%',
         style: {
-          text: '总访问',
+          text: '{{ __('panel/analytics.total_visits') }}',
           fontSize: 12,
           fill: '#94A3B8',
           textAlign: 'center',

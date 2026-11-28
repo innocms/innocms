@@ -7,10 +7,13 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
+use InnoCMS\Common\Models\AuditLog;
+use InnoCMS\Common\Models\SystemAlert;
+
 return [
     'edition'      => 'community',
-    'version'      => '0.5.0',
-    'build'        => '20260826',
+    'version'      => '0.6.0',
+    'build'        => '20261128',
     'api_url'      => env('INNO_API_URL', 'https://www.innocms.com'),
     'locale_force' => env('APP_LOCALE_FORCE'),
 
@@ -25,13 +28,13 @@ return [
     /*
      * Model class extension points: downstream products may inject subclasses.
      *  - audit.model: the audit log model (default InnoCMS\Common\Models\AuditLog)
-     *  - notification.model: the in-site notification model (default InnoCMS\Common\Models\Notification)
+     *  - alert.model: the system alert model (default InnoCMS\Common\Models\SystemAlert)
      */
     'audit' => [
-        'model' => InnoCMS\Common\Models\AuditLog::class,
+        'model' => AuditLog::class,
     ],
 
-    'notification' => [
-        'model' => InnoCMS\Common\Models\Notification::class,
+    'alert' => [
+        'model' => SystemAlert::class,
     ],
 ];

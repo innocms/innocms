@@ -17,11 +17,11 @@
 
         <ul class="nav nav-tabs mb-4" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data" type="button">单页内容
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data" type="button">{{ __('panel/page.page_content') }}
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-info" type="button">其他信息</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-info" type="button">{{ __('panel/common.extra_info') }}</button>
           </li>
         </ul>
 
@@ -49,29 +49,29 @@
                     <div class="accordion-body">
                       <input name="translations[{{$localeCode}}][locale]" value="{{$localeCode}}" class="d-none">
 
-                      <x-panel-form-input title="标题" name="translations[{{$localeCode}}][title]"
+                      <x-panel-form-input title="{{ __('panel/page.title') }}" name="translations[{{$localeCode}}][title]"
                                           value="{{ old('translations.' . $localeCode . '.title', $page->translate($localeCode, 'title')) }}"
-                                          required placeholder="标题"/>
+                                          required placeholder="{{ __('panel/page.title') }}"/>
 
-                    <x-panel::form.row title="内容" width="900">
+                    <x-panel::form.row title="{{ __('panel/common.content') }}" width="900">
                       <ul class="nav nav-tabs mb-3 code-tabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-contentx-{{ $localeCode }}" type="button">内容
+                          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-contentx-{{ $localeCode }}" type="button">{{ __('panel/common.content') }}
                           </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-code-{{ $localeCode }}" type="button">模板</button>
+                          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-code-{{ $localeCode }}" type="button">{{ __('panel/common.template') }}</button>
                         </li>
                       </ul>
 
                       <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-contentx-{{ $localeCode }}">
-                          <textarea rows="4" type="text" name="translations[{{$localeCode}}][content]" class="tinymce" placeholder="内容">{{ old('translations.' . $localeCode . '.content', $page->translate($localeCode, 'content')) }}</textarea>
+                          <textarea rows="4" type="text" name="translations[{{$localeCode}}][content]" class="tinymce" placeholder="{{ __('panel/common.content') }}">{{ old('translations.' . $localeCode . '.content', $page->translate($localeCode, 'content')) }}</textarea>
                         </div>
                         <div class="tab-pane fade show" id="tab-code-{{ $localeCode }}">
-                          <x-panel-form-codemirror title="模板" name="translations[{{$localeCode}}][template]"
+                          <x-panel-form-codemirror title="{{ __('panel/common.template') }}" name="translations[{{$localeCode}}][template]"
                             value="{{ old('translations.' . $localeCode . '.template', $page->translate($localeCode, 'template')) }}"
-                            placeholder="整页 HTML(原样输出,不编译)"/>
+                            placeholder="{{ __('panel/page.template_placeholder') }}"/>
                         </div>
                       </div>
 
@@ -96,14 +96,14 @@
           </div>
 
           <div class="tab-pane fade" id="tab-info">
-            <x-panel-form-input title="SEO 别名" name="slug" :value="old('slug', $page->slug ?? '')"
-                                placeholder="SEO 别名" />
-            <x-panel-form-input title="浏览次数" name="viewed" :value="old('viewed', $page->viewed ?? 0)"
-                                placeholder="浏览次数"/>
+            <x-panel-form-input title="{{ __('panel/common.slug') }}" name="slug" :value="old('slug', $page->slug ?? '')"
+                                placeholder="{{ __('panel/common.slug') }}" />
+            <x-panel-form-input title="{{ __('panel/page.viewed') }}" name="viewed" :value="old('viewed', $page->viewed ?? 0)"
+                                placeholder="{{ __('panel/page.viewed') }}"/>
             <x-panel-form-switch-radio title="{{__('panel/common.enable_breadcrumb')}}" name="show_breadcrumb" :value="old('show_breadcrumb', $page->show_breadcrumb ?? true)"
                                          placeholder="{{__('panel/common.enable_breadcrumb')}}"/>
-            <x-panel-form-switch-radio title="是否启用" name="active" :value="old('active', $page->active ?? true)"
-              placeholder="是否启用"/>
+            <x-panel-form-switch-radio title="{{ __('panel/common.whether_enable') }}" name="active" :value="old('active', $page->active ?? true)"
+              placeholder="{{ __('panel/common.whether_enable') }}"/>
           </div>
         </div>
 

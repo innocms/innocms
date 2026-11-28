@@ -13,6 +13,9 @@
             <directory>innopacks/mcp/tests</directory>
             <directory>innopacks/devtools/tests</directory>
             <directory>innopacks/common/tests</directory>
+            <directory>innopacks/panel/tests</directory>
+            <directory>innopacks/front/tests</directory>
+            <directory>innopacks/restapi/tests</directory>
         </testsuite>
         <testsuite name="App">
             <directory suffix="Test.php">tests/Feature</directory>

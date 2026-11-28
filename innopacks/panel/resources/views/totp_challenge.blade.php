@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="{{ panel_route('dashboard.index') }}">
-  <title>动态码验证 - {{ system_setting('panel_name') ?: 'InnoAdmin' }}</title>
+  <title>{{ __('panel/login.totp_challenge_title') }} - {{ system_setting('panel_name') ?: 'InnoAdmin' }}</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
   <link rel="stylesheet" href="{{ asset('build/panel/css/app.css') }}">
@@ -20,7 +20,7 @@
   <div class="login-left">
     <div class="login-hero">
       <h1 class="hero-name">{{ system_setting('panel_name') ?: 'InnoAdmin' }}</h1>
-      <p class="hero-tagline">两步验证（2FA）为后台账号再加固一道锁</p>
+      <p class="hero-tagline">{{ __('panel/login.totp_tagline') }}</p>
     </div>
     <div class="login-decoration">
       <div class="deco-circle deco-circle-1"></div>
@@ -41,8 +41,8 @@
     </div>
     <div class="login-form-wrap">
       <div class="login-form-inner">
-        <h2 class="login-title">两步验证</h2>
-        <p class="login-subtitle">请输入身份验证器 App 中的 6 位动态码。</p>
+        <h2 class="login-title">{{ __('panel/login.totp_heading') }}</h2>
+        <p class="login-subtitle">{{ __('panel/login.totp_challenge_subtitle') }}</p>
 
         @if (session('error'))
           <div class="alert alert-danger">{{ session('error') }}</div>
@@ -51,16 +51,16 @@
         <form method="POST" action="{{ panel_route('login.verify') }}">
           @csrf
           <div class="form-group mb-4">
-            <label for="totp-code" class="form-label">动态码</label>
+            <label for="totp-code" class="form-label">{{ __('panel/login.totp_code_label') }}</label>
             <input type="text" name="code" id="totp-code" class="form-control form-control-lg text-center"
                    inputmode="numeric" autocomplete="one-time-code" maxlength="7"
                    pattern="[0-9\- ]*" placeholder="000000" required autofocus>
           </div>
-          <button type="submit" class="btn btn-login w-100">验证并登录</button>
+          <button type="submit" class="btn btn-login w-100">{{ __('panel/login.totp_verify_login') }}</button>
         </form>
 
         <div class="text-center mt-3">
-          <a href="{{ panel_route('login.index') }}">返回重新登录</a>
+          <a href="{{ panel_route('login.index') }}">{{ __('panel/login.totp_back_login') }}</a>
         </div>
       </div>
       <p class="text-center text-footer">

@@ -374,7 +374,8 @@
             base_folder: currentPath,
             include_directories: this.showFolders ? 1 : 0,
             sort: this.sortField,
-            order: this.sortOrder
+            order: this.sortOrder,
+            type: this.fileType
           };
 
           http.get('media/files', {

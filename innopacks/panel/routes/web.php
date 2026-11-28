@@ -45,21 +45,23 @@ Route::middleware(['admin_auth:admin'])
         Route::post('/translations/translate-text', [Controllers\TranslationController::class, 'translateText'])->name('translations.trans_text');
         Route::post('/translations/translate-html', [Controllers\TranslationController::class, 'translateHtml'])->name('translations.trans_html');
 
-        Route::resource('/articles', Controllers\ArticleController::class);
+        // The content resources have no read-only detail page: the form page edits the record,
+        // so the show route of the resource would point at a method that does not exist.
+        Route::resource('/articles', Controllers\ArticleController::class)->except(['show']);
         Route::put('/articles/{article}/active', [Controllers\ArticleController::class, 'active'])->name('articles.active');
-        Route::resource('/catalogs', Controllers\CatalogController::class);
+        Route::resource('/catalogs', Controllers\CatalogController::class)->except(['show']);
         Route::put('/catalogs/{catalog}/active', [Controllers\CatalogController::class, 'active'])->name('catalogs.active');
         Route::post('/catalogs/reorder', [Controllers\CatalogController::class, 'reorder'])->name('catalogs.reorder');
-        Route::resource('/pages', Controllers\PageController::class);
+        Route::resource('/pages', Controllers\PageController::class)->except(['show']);
         Route::put('/pages/{page}/active', [Controllers\PageController::class, 'active'])->name('pages.active');
-        Route::resource('/tags', Controllers\TagController::class);
+        Route::resource('/tags', Controllers\TagController::class)->except(['show']);
         Route::put('/tags/{tag}/active', [Controllers\TagController::class, 'active'])->name('tags.active');
 
         Route::post('/products/copy/{product}', [Controllers\ProductController::class, 'copy'])->name('products.copy');
-        Route::resource('/products', Controllers\ProductController::class);
+        Route::resource('/products', Controllers\ProductController::class)->except(['show']);
         Route::put('/products/{product}/active', [Controllers\ProductController::class, 'active'])->name('products.active');
 
-        Route::resource('/categories', Controllers\CategoryController::class);
+        Route::resource('/categories', Controllers\CategoryController::class)->except(['show']);
         Route::put('/categories/{category}/active', [Controllers\CategoryController::class, 'active'])->name('categories.active');
         Route::post('/categories/reorder', [Controllers\CategoryController::class, 'reorder'])->name('categories.reorder');
 

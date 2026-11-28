@@ -16,17 +16,17 @@
         @csrf
         @method($admin->id ? 'PUT' : 'POST')
 
-        <x-common-form-input title="姓名" name="name" value="{{ old('name', $admin->name) }}" required
-                             placeholder="姓名"/>
+        <x-common-form-input title="{{ __('panel/admin.name') }}" name="name" value="{{ old('name', $admin->name) }}" required
+                             placeholder="{{ __('panel/admin.name') }}"/>
 
-        <x-common-form-input title="密码" name="password" value="{{ old('email') }}" />
+        <x-common-form-input title="{{ __('panel/admin.password') }}" name="password" value="{{ old('email') }}" />
 
         <x-common-form-input title="Email" name="email" value="{{ old('email', $admin->email) }}" required/>
 
-        <x-common-form-input title="系统语言" name="locale" value="{{ old('locale', $admin->locale) }}" required
-                             placeholder="系统语言"/>
+        <x-common-form-input title="{{ __('panel/common.panel_locale') }}" name="locale" value="{{ old('locale', $admin->locale) }}" required
+                             placeholder="{{ __('panel/common.panel_locale') }}"/>
 
-        <x-panel::form.row title="角色" :required="true">
+        <x-panel::form.row title="{{ __('panel/admin.roles') }}" :required="true">
           <div class="form-control px-0 border-0 d-flex flex-wrap">
             @foreach ($roles as $item)
               <div class="form-check me-2">
@@ -40,8 +40,8 @@
           </div>
         </x-panel::form.row>
 
-        <x-common-form-switch-radio title="是否启用" name="active" :value="old('active', $page->active ?? true)"
-                                    placeholder="是否启用"/>
+        <x-common-form-switch-radio title="{{ __('panel/common.whether_enable') }}" name="active" :value="old('active', $page->active ?? true)"
+                                    placeholder="{{ __('panel/common.whether_enable') }}"/>
 
         <button type="submit" class="d-none"></button>
       </form>

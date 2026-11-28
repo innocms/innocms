@@ -14,7 +14,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * In-site notification (ported down from the platform package, with the tenant column removed).
+ * System alert (ported down from the platform package, with the tenant column removed).
+ *
+ * Lives in system_alerts, deliberately separate from the Laravel-standard notifications
+ * table used by Notifiable-trait consumers (member pack, etc.). Pairs with AuditLog:
+ * audit records what happened, alerts notify someone.
  *
  * The writer only inserts pending rows; sending/retrying is consumed by the downstream event bus.
  *
@@ -32,9 +36,11 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $read_at
  * @property Carbon $created_at
  */
-class Notification extends Model
+class SystemAlert extends Model
 {
     public const CHANNEL_SYSTEM = 'system';
+
+    protected $table = 'system_alerts';
 
     protected $fillable = [
         'user_id', 'admin_user_id', 'worker_id',

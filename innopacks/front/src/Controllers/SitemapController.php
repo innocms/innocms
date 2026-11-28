@@ -62,8 +62,7 @@ class SitemapController
         // Homepage
         $this->addUrl($urls, $this->localeRoute($locale, 'home.index'));
 
-        // Catalogs list
-        $this->addUrl($urls, $this->localeRoute($locale, 'catalogs.index'));
+        // The catalog and tag lists only redirect to the article list, so they are not listed here.
 
         // Catalogs
         $catalogs = CatalogRepo::getInstance()->withActive()->builder()->limit(1000)->get();
@@ -89,9 +88,6 @@ class SitemapController
             }
             $this->addUrl($urls, $url, $item->updated_at?->format('Y-m-d'));
         }
-
-        // Tags list
-        $this->addUrl($urls, $this->localeRoute($locale, 'tags.index'));
 
         // Tags
         $tags = TagRepo::getInstance()->withActive()->builder()->limit(1000)->get();

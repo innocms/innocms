@@ -17,22 +17,22 @@ const aiModal = {
    * User input is appended to the template to form the final prompt.
    */
   templates: {
-    product_summary:       '请根据以下商品信息生成简短的摘要：',
-    product_selling_point: '请根据以下商品信息生成卖点（多个用换行分隔）：',
-    product_slug:          '请为以下商品生成 URL slug（英文、短横线分隔、不超过 60 字符）：',
-    product_title:         '请为以下商品生成 SEO 标题（不超过 60 字符）：',
-    product_description:   '请为以下商品生成 SEO 描述（不超过 160 字符）：',
-    product_keywords:      '请为以下商品生成 SEO 关键词（逗号分隔，不超过 10 个）：',
-    product_content:       '请根据以下商品信息生成若干段商品描述片段。要求：仅输出可直接粘贴到富文本编辑器的 HTML 片段（如 h2/h3 标题、段落、无序列表、加粗文本等）；禁止输出 <!DOCTYPE>、<html>、<head>、<body> 等文档级标签；禁止用 Markdown 代码块包裹；禁止添加任何解释性文字。商品信息：',
-    article_summary:       '请根据以下文章信息生成简短摘要：',
-    article_slug:          '请为以下文章生成 URL slug（英文、短横线分隔）：',
-    article_title:         '请为以下文章生成 SEO 标题：',
-    article_description:   '请为以下文章生成 SEO 描述：',
-    article_keywords:      '请为以下文章生成 SEO 关键词：',
-    article_content:       '请根据以下文章信息生成正文内容。要求：仅输出可直接粘贴到富文本编辑器的 HTML 片段（如 h2/h3 标题、段落、无序列表、加粗文本、引用、图片占位等）；禁止输出 <!DOCTYPE>、<html>、<head>、<body> 等文档级标签；禁止用 Markdown 代码块包裹；禁止添加任何解释性文字。文章信息：',
-    category_content:      '请根据以下分类信息生成分类描述内容。要求：仅输出可直接粘贴到富文本编辑器的 HTML 片段（如 h2/h3 标题、段落、无序列表、加粗文本等）；禁止输出 <!DOCTYPE>、<html>、<head>、<body> 等文档级标签；禁止用 Markdown 代码块包裹；禁止添加任何解释性文字。分类信息：',
-    brand_content:         '请根据以下品牌信息生成品牌描述内容。要求：仅输出可直接粘贴到富文本编辑器的 HTML 片段（如 h2/h3 标题、段落、无序列表、加粗文本等）；禁止输出 <!DOCTYPE>、<html>、<head>、<body> 等文档级标签；禁止用 Markdown 代码块包裹；禁止添加任何解释性文字。品牌信息：',
-    page_content:          '请根据以下页面信息生成单页正文内容。要求：仅输出可直接粘贴到富文本编辑器的 HTML 片段（如 h2/h3 标题、段落、无序列表、加粗文本等）；禁止输出 <!DOCTYPE>、<html>、<head>、<body> 等文档级标签；禁止用 Markdown 代码块包裹；禁止添加任何解释性文字。页面信息：',
+    product_summary:       @json(__('aicore::modal.tpl_product_summary')),
+    product_selling_point: @json(__('aicore::modal.tpl_product_selling_point')),
+    product_slug:          @json(__('aicore::modal.tpl_product_slug')),
+    product_title:         @json(__('aicore::modal.tpl_product_title')),
+    product_description:   @json(__('aicore::modal.tpl_product_description')),
+    product_keywords:      @json(__('aicore::modal.tpl_product_keywords')),
+    product_content:       @json(__('aicore::modal.tpl_product_content')),
+    article_summary:       @json(__('aicore::modal.tpl_article_summary')),
+    article_slug:          @json(__('aicore::modal.tpl_article_slug')),
+    article_title:         @json(__('aicore::modal.tpl_article_title')),
+    article_description:   @json(__('aicore::modal.tpl_article_description')),
+    article_keywords:      @json(__('aicore::modal.tpl_article_keywords')),
+    article_content:       @json(__('aicore::modal.tpl_article_content')),
+    category_content:      @json(__('aicore::modal.tpl_category_content')),
+    brand_content:         @json(__('aicore::modal.tpl_brand_content')),
+    page_content:          @json(__('aicore::modal.tpl_page_content')),
   },
 
   init() {
@@ -137,7 +137,7 @@ const aiModal = {
     $("#aiModalLocale").val(this.state.sourceLocale || "");
 
     // Reset prompt area
-    const tpl = this.templates[this.state.column] || "请生成内容：";
+    const tpl = this.templates[this.state.column] || @json(__('aicore::modal.tpl_default'));
     $("#aiModalPrompt").val("");
     this.setSimpleModeDefault(tpl);
 

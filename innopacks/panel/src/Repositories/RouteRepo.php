@@ -24,8 +24,6 @@ class RouteRepo
 
     private Role $adminRole;
 
-    private array $systemModules = [];
-
     /**
      * @param  Role  $adminRole
      */
@@ -51,18 +49,13 @@ class RouteRepo
         $permissions = [];
         $panelRoutes = $this->getPanelRoutes();
         foreach ($panelRoutes as $module => $routes) {
-            $isSystem = in_array($module, $this->systemModules);
-            if ($isSystem) {
-                $label = trans("panel::menu.$module");
-            } else {
-                $module = Str::studly(Str::singular($module));
-                $label  = trans("$module::route.title");
-            }
+            $namespace = $this->getModuleNamespace($routes);
+
             $permissions[] = [
-                'is_plugin'   => ! $isSystem,
+                'is_plugin'   => $this->isPluginModule($routes),
                 'module'      => $module,
-                'label'       => $label,
-                'permissions' => $this->getPermissionList($routes),
+                'label'       => $this->resolveModuleLabel($namespace, $module),
+                'permissions' => $this->getPermissionList($module, $routes),
             ];
         }
 
@@ -90,15 +83,12 @@ class RouteRepo
             $parseNames  = explode('.', $routeName);
             $routeModule = $parseNames[0];
             $controller  = $route->getControllerClass();
-            $pluginSpace = $this->getPluginNamespace($controller);
-            if (empty($pluginSpace)) {
-                $this->systemModules[] = $routeModule;
-            }
 
             $routeList[$routeModule][] = [
-                'route_name'   => $routeName,
-                'action_name'  => $controller,
-                'plugin_space' => $pluginSpace,
+                'route_name'  => $routeName,
+                'action_name' => $controller,
+                'namespace'   => $this->getRouteNamespace($controller),
+                'is_plugin'   => $this->isPluginController($controller),
             ];
         }
 
@@ -106,41 +96,159 @@ class RouteRepo
     }
 
     /**
-     * @param  $controller
+     * Resolve the translation namespace owning the route label.
+     *
+     * An empty namespace means the core panel language files. Core packages
+     * and plugins ship their own language namespace, so their labels stay in
+     * their own repository instead of the core one.
+     *
+     * @param  string|null  $controller
      * @return string
      */
-    private function getPluginNamespace($controller): string
+    private function getRouteNamespace($controller): string
     {
+        // Closure routes have no controller class, they fall back to the core language files.
+        if (! is_string($controller) || $controller === '') {
+            return '';
+        }
+
         if (Str::startsWith($controller, 'InnoCMS\\Panel')
             || Str::startsWith($controller, 'InnoCMS\\Plugin')) {
             return '';
         }
+
         $parts = explode('\\', $controller);
+        if (count($parts) < 2) {
+            return '';
+        }
+
+        if ($parts[0] === 'InnoCMS') {
+            // Core package, e.g. InnoCMS\Aicore -> aicore language namespace.
+            return strtolower($parts[1]);
+        }
 
         return $parts[1];
     }
 
     /**
+     * @param  string|null  $controller
+     * @return bool
+     */
+    private function isPluginController($controller): bool
+    {
+        return is_string($controller) && Str::startsWith($controller, 'Plugin\\');
+    }
+
+    /**
+     * @param  array  $routes
+     * @return string
+     */
+    private function getModuleNamespace(array $routes): string
+    {
+        foreach ($routes as $route) {
+            if ($route['namespace'] !== '') {
+                return $route['namespace'];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * A module counts as a plugin module when any of its routes belongs to a
+     * plugin, so one legacy closure redirect does not hide the plugin origin.
+     *
+     * @param  array  $routes
+     * @return bool
+     */
+    private function isPluginModule(array $routes): bool
+    {
+        foreach ($routes as $route) {
+            if ($route['is_plugin']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Resolve the module label. A module level key wins over the namespace wide
+     * one, so a plugin shipping several modules can name each of them.
+     *
+     * @param  string  $namespace
+     * @param  string  $module
+     * @return string
+     */
+    private function resolveModuleLabel(string $namespace, string $module): string
+    {
+        if ($namespace === '') {
+            return $this->resolveLabel("panel/menu.$module", $module, null);
+        }
+
+        $specificKey = "{$namespace}::route.title_{$module}";
+        if (trans($specificKey) !== $specificKey) {
+            return $this->resolveLabel($specificKey, $module, null);
+        }
+
+        return $this->resolveLabel("{$namespace}::route.title", $module, null);
+    }
+
+    /**
+     * Resolve a permission label, allowing themes and plugins to provide their
+     * own wording without the core knowing anything about them.
+     *
+     * @param  string  $translationKey
+     * @param  string  $module
+     * @param  string|null  $routeName
+     * @return string
+     */
+    private function resolveLabel(string $translationKey, string $module, ?string $routeName): string
+    {
+        $label = trans($translationKey);
+        if (! is_string($label)) {
+            // A partially nested language file would return an array here.
+            $label = $routeName ?? $module;
+        }
+
+        $filtered = fire_hook_filter('panel.permission.label', [
+            'translation_key' => $translationKey,
+            'label'           => $label,
+            'module'          => $module,
+            'route'           => $routeName,
+        ]);
+
+        if (is_array($filtered) && isset($filtered['label']) && is_string($filtered['label'])) {
+            return $filtered['label'];
+        }
+
+        return $label;
+    }
+
+    /**
      * Get permission list by module and route.
      *
-     * @param  $routes
+     * @param  string  $module
+     * @param  array  $routes
      * @return array
      */
-    private function getPermissionList($routes): array
+    private function getPermissionList(string $module, array $routes): array
     {
         $items = [];
         foreach ($routes as $route) {
-            $routeName   = $route['route_name'];
-            $pluginSpace = $route['plugin_space'];
+            $routeName = $route['route_name'];
+            $namespace = $route['namespace'];
 
             $routeSlug = str_replace('.', '_', $routeName);
-            if ($pluginSpace) {
-                $label = trans("{$route['plugin_space']}::route.{$routeSlug}");
-            } else {
-                $label = trans("panel::route.{$routeSlug}");
-            }
+            $labelKey  = $namespace === ''
+                ? "panel/route.{$routeSlug}"
+                : "{$namespace}::route.{$routeSlug}";
 
-            $items[] = ['route_slug' => $routeSlug, 'label' => $label, 'selected' => $this->hasPermission($routeSlug)];
+            $items[] = [
+                'route_slug' => $routeSlug,
+                'label'      => $this->resolveLabel($labelKey, $module, $routeName),
+                'selected'   => $this->hasPermission($routeSlug),
+            ];
         }
 
         return $items;
@@ -152,7 +260,7 @@ class RouteRepo
      * @param  $permission
      * @return bool
      */
-    private function hasPermission($permission): bool
+    private function hasPermission(string $permission): bool
     {
         try {
             return $this->adminRole->hasPermissionTo($permission);

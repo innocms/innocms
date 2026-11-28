@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use InnoCMS\Common\Audit\AuditLogger;
 use InnoCMS\Common\Models\Admin;
 use InnoCMS\Common\Models\AuditLog;
-use InnoCMS\Common\Models\Notification;
+use InnoCMS\Common\Models\SystemAlert;
 
 /**
  * Abnormal login alerts (sunk down from the platform pack, tenant column removed).
@@ -23,8 +23,8 @@ use InnoCMS\Common\Models\Notification;
  * - Every successful login writes audit_logs (action=auth.login) — both a trace and the source of truth
  *   for "known IP/device"
  * - A first-seen IP / User-Agent additionally writes auth.login.new_ip / auth.login.new_device audit
- *   + notifications(system) alert rows
- * - Actual delivery (in-site/email/WeCom) is consumed from notifications by the downstream event bus
+ *   + system_alerts(channel=system) rows
+ * - Actual delivery (in-site/email/WeCom) is consumed from system_alerts by the downstream event bus
  */
 class LoginAlerts
 {
@@ -87,7 +87,7 @@ class LoginAlerts
             'username' => $username,
         ]);
 
-        $model = static::notificationModel();
+        $model = static::alertModel();
 
         $model::query()->create([
             'admin_user_id' => $adminId,
@@ -109,14 +109,14 @@ class LoginAlerts
     }
 
     /**
-     * Notification model class (extension point): downstream products may inject a subclass with a tenant column (config('innocms.notification.model')).
+     * System alert model class (extension point): downstream products may inject a subclass with a tenant column (config('innocms.alert.model')).
      *
      * @return class-string<Model>
      */
-    protected static function notificationModel(): string
+    protected static function alertModel(): string
     {
         /** @var class-string<Model> $class */
-        $class = (string) config('innocms.notification.model', Notification::class);
+        $class = (string) config('innocms.alert.model', SystemAlert::class);
 
         return $class;
     }

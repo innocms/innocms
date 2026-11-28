@@ -13,11 +13,11 @@
 
         <ul class="nav nav-tabs mb-4" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data" type="button">标签内容
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data" type="button">{{ __('panel/tag.tag_content') }}
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-info" type="button">其他信息</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-info" type="button">{{ __('panel/common.extra_info') }}</button>
           </li>
         </ul>
 
@@ -45,9 +45,9 @@
                     <div class="accordion-body">
                       <input name="translations[{{$localeCode}}][locale]" value="{{$localeCode}}" class="d-none">
 
-                      <x-panel-form-input title="标题" name="translations[{{$localeCode}}][name]"
+                      <x-panel-form-input title="{{ __('panel/tag.title') }}" name="translations[{{$localeCode}}][name]"
                                           value="{{ old('translations.' . $localeCode . '.name', $tag->translate($localeCode, 'name')) }}"
-                                          required placeholder="标题"/>
+                                          required placeholder="{{ __('panel/tag.title') }}"/>
 
                     </div>
                   </div>
@@ -57,12 +57,12 @@
           </div>
 
           <div class="tab-pane fade" id="tab-info">
-            <x-panel-form-input title="SEO 别名" name="slug" :value="old('slug', $tag->slug ?? '')"
-                                placeholder="SEO 别名" />
-            <x-panel-form-input title="文章排序" name="position" :value="old('position', $tag->position ?? 0)"
-                                placeholder="文章排序"/>
-            <x-panel-form-switch-radio title="是否启用" name="active" :value="old('active', $tag->active ?? true)"
-              placeholder="是否启用"/>
+            <x-panel-form-input title="{{ __('panel/common.slug') }}" name="slug" :value="old('slug', $tag->slug ?? '')"
+                                placeholder="{{ __('panel/common.slug') }}" />
+            <x-panel-form-input title="{{ __('panel/tag.position') }}" name="position" :value="old('position', $tag->position ?? 0)"
+                                placeholder="{{ __('panel/tag.position') }}"/>
+            <x-panel-form-switch-radio title="{{ __('panel/common.whether_enable') }}" name="active" :value="old('active', $tag->active ?? true)"
+              placeholder="{{ __('panel/common.whether_enable') }}"/>
           </div>
         </div>
 

@@ -199,7 +199,9 @@ final class Plugin
         if (! file_exists($fieldsPath)) {
             return $this;
         }
-        $this->fields = require_once $fieldsPath;
+        // 必须用 require 而非 require_once：Plugin 随 app 实例重建（测试套件 / 常驻进程），
+        // 同一进程二次加载时 require_once 返回 true，赋给 array 类型属性直接 TypeError。
+        $this->fields = require $fieldsPath;
 
         return $this;
     }

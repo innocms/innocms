@@ -10,6 +10,9 @@
 use Illuminate\Support\Facades\Route;
 use InnoCMS\Plugin\Controllers\PluginController;
 
-Route::resource('/plugins', PluginController::class);
+// There is no page for creating a plugin and no separate detail page: the form page of a
+// plugin is its configuration. The resource routes for both would point at methods that
+// do not exist.
+Route::resource('/plugins', PluginController::class)->except(['create', 'show']);
 Route::post('/plugins/enabled', [PluginController::class, 'updateStatus'])->name('plugins.update_status');
 Route::post('/plugins/seeders', [PluginController::class, 'runSeeders'])->name('plugins.run_seeders');
