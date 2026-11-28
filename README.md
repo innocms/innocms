@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://www.innocms.com"><img src="https://www.innocms.com/images/logo.png?v=20261128" alt="InnoCMS"></a>
+    <a href="https://www.innocms.com"><img src="https://www.innocms.com/images/logo.png?v=20261128b" alt="InnoCMS"></a>
 </p>
 
 ---
