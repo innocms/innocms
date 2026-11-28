@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://www.innocms.com"><img src="https://www.innocms.com/images/logo.png" alt="InnoCMS"></a>
+    <a href="https://www.innocms.com"><img src="https://www.innocms.com/images/logo.png?v=20261128" alt="InnoCMS"></a>
 </p>
 
 ---
@@ -58,14 +58,14 @@ InnoCMS shares the same underlying architecture as [InnoShop](https://github.com
 ### Frontend Screenshot
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
-        <img src="https://www.innocms.com/images/readme/front.jpg?" alt="Front">
+        <img src="https://www.innocms.com/images/readme/front.jpg?v=20261128" alt="Front">
     </a>
 </p>
 
 ### Backend Screenshot
 <p align="center">
     <a href="https://www.innocms.com" target="_blank">
-        <img src="https://www.innocms.com/images/readme/panel.jpg?" alt="Panel">
+        <img src="https://www.innocms.com/images/readme/panel.jpg?v=20261128" alt="Panel">
     </a>
 </p>
 
